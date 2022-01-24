@@ -1,0 +1,23 @@
+.time_input{
+    height: 3rem;
+    width: 3.5rem;
+    text-align: center;
+    border: none;
+    font-size: x-large;
+    background-color: inherit;
+}
+
+.time_input:focus{
+    outline: none;
+}
+
+.time_display {
+    border: 3px solid #333;
+    border-radius: 500px;
+    width: 200px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
