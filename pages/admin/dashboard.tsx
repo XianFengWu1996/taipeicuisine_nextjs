@@ -1,11 +1,11 @@
-import { Paper, Typography, SxProps } from '@mui/material';
+import { Paper, Typography, SxProps, Button } from '@mui/material';
 import ResponsiveAppBar from '../../components/appbar';
 import { Box, Theme } from '@mui/system';
 import { DayOfWeekTile} from '../../components/admin/dashboard/dayHourTile';
 import { useState } from 'react';
 import { useStore } from '../../context/storeContext'
 import { CSSProperties } from '@mui/styled-engine';
-import HourEditDialog from '../../components/admin/dashboard/hourEditDialog';
+import HourEditDialog from '../../components/admin/dashboard/dialog/hourEditDialog';
 
 export const convertMinuteToDate = (min: number) => {
     // 9:10 = 550 
@@ -34,13 +34,13 @@ export default function Dashboard ({ storeData} : {storeData: store}){
     }
     
     const titleStyle: CSSProperties | undefined = {
-        margin: '20px 0px 20px 20px',
+        margin: '20px 0px ',
         fontSize: '20px',
         textTransform: 'uppercase',
         fontWeight: 'bold',
     }
     
-    const { hours } = useStore();
+    const { hours, updateRequired, updateHourToDB } = useStore();
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleClickOpen = () => {
@@ -55,7 +55,10 @@ export default function Dashboard ({ storeData} : {storeData: store}){
         <ResponsiveAppBar />
         <Box sx={boxStyle}>
             <Paper>
-                <Typography style={titleStyle}>Hours</Typography>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 30px', alignItems: 'center'}}>
+                    <Typography style={titleStyle}>Hours</Typography>
+                    <Button variant='contained' disabled={!updateRequired} onClick={updateHourToDB}>Save</Button>
+                </div>
                 {
                     hours.map((day, index) => {
                         return <DayOfWeekTile
