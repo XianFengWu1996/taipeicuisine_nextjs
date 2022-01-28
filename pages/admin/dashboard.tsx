@@ -2,10 +2,12 @@ import { Paper, Typography, SxProps, Button } from '@mui/material';
 import ResponsiveAppBar from '../../components/appbar';
 import { Box, Theme } from '@mui/system';
 import { DayOfWeekTile} from '../../components/admin/dashboard/dayHourTile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from '../../context/storeContext'
 import { CSSProperties } from '@mui/styled-engine';
 import HourEditDialog from '../../components/admin/dashboard/dialog/hourEditDialog';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import axios from 'axios';
 
 export const convertMinuteToDate = (min: number) => {
     // 9:10 = 550 
@@ -22,7 +24,7 @@ export const convertMinuteToDate = (min: number) => {
     }
 }
 
-export default function Dashboard ({ storeData} : {storeData: store}){
+export default function Dashboard ({ storeData} : {storeData: IStore}){
     const boxStyle: SxProps<Theme> | undefined = {
         display: 'flex',
         flexWrap: 'wrap',
@@ -30,6 +32,7 @@ export default function Dashboard ({ storeData} : {storeData: store}){
         m: 1,
         width: 500,
         height: 500,
+        margin: '50px 20px'
         }
     }
     
@@ -40,7 +43,7 @@ export default function Dashboard ({ storeData} : {storeData: store}){
         fontWeight: 'bold',
     }
     
-    const { hours, updateRequired, updateHourToDB } = useStore();
+    const { hours, updateRequired, updateHourToDB, getHours} = useStore();
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleClickOpen = () => {
@@ -51,12 +54,22 @@ export default function Dashboard ({ storeData} : {storeData: store}){
         setOpenDialog(false);
     }
 
+    useEffect(() => {
+        getHours(storeData.hours);
+    }, [])
+
     return <div>
         <ResponsiveAppBar />
+            <Paper >
+                <div>{storeData.name}</div>
+                <div>{storeData.address.street}, {storeData.address.city}, {storeData.address.state} {storeData.address.zipcode}</div>
+                <div>Primary Phone Number: {storeData.primary_phone_number}</div>
+                <div>Secondary Phone Number: {storeData.sub_phone_number[0]}</div>
+            </Paper>
         <Box sx={boxStyle}>
             <Paper>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 30px', alignItems: 'center'}}>
-                    <Typography style={titleStyle}>Hours</Typography>
+                    <Typography sx={titleStyle}>Hours</Typography>
                     <Button variant='contained' disabled={!updateRequired} onClick={updateHourToDB}>Save</Button>
                 </div>
                 {
@@ -79,38 +92,40 @@ export default function Dashboard ({ storeData} : {storeData: store}){
     </div>
 }
 
-// export const getServerSideProps:GetServerSideProps = async(context: GetServerSidePropsContext) => {
-//     try{
+export const getServerSideProps:GetServerSideProps = async(context: GetServerSidePropsContext) => {
+    try{        
+        if(!context.req.headers.cookie?.includes('ID_TOKEN')){
+            throw new Error('Not Authenticated')
+        }
+
+        let response = await axios({
+            method: 'GET',
+            url: 'http://localhost:5001/foodorder-43af7/us-central1/admin/store',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                Cookie: context.req.headers.cookie!,
+            },
+            withCredentials: true,
+        })
+
+        if(response.status !== 200 && !response.data.storeData){
+            throw new Error('Failed to get store data')
+        }
+
         
-//         if(!context.req.headers.cookie?.includes('ID_TOKEN')){
-//             throw new Error('Not Authenticated')
-//         }
 
-//         let response = await axios({
-//             method: 'GET',
-//             url: 'http://localhost:5001/foodorder-43af7/us-central1/admin/store',
-//             headers: {
-//                 'Access-Control-Allow-Origin': '*',
-//                 'Content-Type': 'application/json',
-//                 Cookie: context.req.headers.cookie!,
-//             }
-//         })
+        return {
+            props: {
+                storeData: response.data.storeData
+            }
+        }      
+    } catch (error) {
+        console.log(error);
+    }
 
-//         if(response.status !== 200 && !response.data.storeData){
-//             throw new Error('Failed to get store data')
-//         }
-
-//         return {
-//             props: {
-//                 storeData: response.data.storeData
-//             }
-//         }      
-//     } catch (error) {
-//         console.log(error);
-//     }
-
-//     return {
-//         props: {}
-//     } 
+    return {
+        props: {}
+    } 
     
-// }
+}

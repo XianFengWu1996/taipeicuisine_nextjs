@@ -1,7 +1,7 @@
 export {};
 
 declare global {
-    interface store {
+    interface IStore {
         store_id: string,
         server_is_on: boolean,
         name: string,
@@ -10,29 +10,37 @@ declare global {
         message: message,
         special_hour: [special_hour],
         primary_phone_number: string,
-        sub_phone_number: [string]
+        sub_phone_number: [string],
+        address: address
+    }
+
+    interface IAddress {
+        street: string,
+        city: string,
+        state: string,
+        zipcode: string,
     }
     
-    export interface hours {
+    export interface IHours {
         day_of_week: string,
         open_hour: number,
         close_hour: number,
         open_for_business: boolean
     }
     
-    interface special_hour {
+    interface ISpecial_hour {
         date: string | number,
         open_hour: number,
         close_hour: number,
         open_for_business: boolean,
     }
     
-    interface reward {
+    interface IReward {
         cash: string, 
         card: string,
     }
     
-    interface message {
+    interface IMessage {
         payment_message: [string],
         maintenance_message: [string],
         update_message: [string],

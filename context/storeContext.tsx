@@ -5,17 +5,19 @@ import { createContext } from "react";
 
 //  CREATE CONTEXT 
 type IStoreContextType = {
-    hours: hours[],
+    hours: IHours[],
     updateRequired: boolean,
     closeForDayOfWeek: (dayOfWeek: string, isOpen: boolean) => void,
+    getHours: (hours: IHours[]) => void,
     editHours: (dayOfWeek: string, openHr: number, closeHr: number) =>  void;
-    updateHourToDB:() =>  void
+    updateHourToDB:() =>  void,
 }
 
 const StoreContextDefaultValue: IStoreContextType = {
     hours: [],
     updateRequired: false,
     closeForDayOfWeek: (dayOfWeek: string, isOpen: boolean) => {},
+    getHours: (hours: IHours[]) => {},
     editHours: (dayOfWeek: string, openHr: number, closeHr: number) => {},
     updateHourToDB: () => {}
 };
@@ -31,50 +33,7 @@ type Props = {
 };
 
 export function StoreProvider({ children }: Props) {
-    const [hours, setHours] = useState([
-        {
-            day_of_week: 'Monday',
-            open_hour: 660,
-            close_hour: 1300,
-            open_for_business: true,
-        },
-        {
-            day_of_week: 'Tuesday',
-            open_hour: 660,
-            close_hour: 1300,
-            open_for_business: false,
-        },
-        {
-            day_of_week: 'Wednesday',
-            open_hour: 660,
-            close_hour: 1300,
-            open_for_business: true,
-        },
-        {
-            day_of_week: 'Thursday',
-            open_hour: 660,
-            close_hour: 1300,
-            open_for_business: true,
-        },
-        {
-            day_of_week: 'Friday',
-            open_hour: 660,
-            close_hour: 1300,
-            open_for_business: true,
-        },
-        {
-            day_of_week: 'Saturday',
-            open_hour: 660,
-            close_hour: 1300,
-            open_for_business: true,
-        },
-        {
-            day_of_week: 'Sunday',
-            open_hour: 660,
-            close_hour: 1300,
-            open_for_business: true,
-        },
-    ])
+    const [hours, setHours] = useState<IHours[]>([]);
 
     const [updateRequired, setUpdateRequired] = useState(false);
 
@@ -85,6 +44,10 @@ export function StoreProvider({ children }: Props) {
         tempHours[index].open_for_business = isOpen
         setHours(tempHours);
         setUpdateRequired(true);
+    }
+
+    const getHours = (hr: IHours[]) => {
+        setHours([...hr]);
     }
 
     // SETTING THE open_hour and close_hour FOR A SPECIAL DAY OF THE WEEK
@@ -124,6 +87,7 @@ export function StoreProvider({ children }: Props) {
         hours,
         updateRequired,
         closeForDayOfWeek,
+        getHours,
         editHours,
         updateHourToDB
     }
