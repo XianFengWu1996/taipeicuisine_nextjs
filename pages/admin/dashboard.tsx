@@ -1,4 +1,4 @@
-import { Paper, Typography, SxProps, Button } from '@mui/material';
+import { Paper, Typography, SxProps, Button, Grid, CardContent, Card } from '@mui/material';
 import ResponsiveAppBar from '../../components/appbar';
 import { Box, Theme } from '@mui/system';
 import { DayOfWeekTile} from '../../components/admin/dashboard/dayHourTile';
@@ -43,7 +43,7 @@ export default function Dashboard ({ storeData} : {storeData: IStore}){
         fontWeight: 'bold',
     }
     
-    const { hours, updateRequired, updateHourToDB, getHours} = useStore();
+    const { hours, updateRequired, updateHourToDB, getStoreData, serverOn, toggleServerStatus } = useStore();
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleClickOpen = () => {
@@ -55,17 +55,30 @@ export default function Dashboard ({ storeData} : {storeData: IStore}){
     }
 
     useEffect(() => {
-        getHours(storeData.hours);
+        getStoreData(storeData);
     }, [])
 
     return <div>
         <ResponsiveAppBar />
-            <Paper >
-                <div>{storeData.name}</div>
-                <div>{storeData.address.street}, {storeData.address.city}, {storeData.address.state} {storeData.address.zipcode}</div>
-                <div>Primary Phone Number: {storeData.primary_phone_number}</div>
-                <div>Secondary Phone Number: {storeData.sub_phone_number[0]}</div>
-            </Paper>
+        <Grid container spacing={4} sx={{ my: 3, mx: 3}} alignItems="center" >
+            <Grid item xs={12} md={8}>
+                    <div>{storeData.name}</div>
+                    <div>{storeData.address.street}, {storeData.address.city}, {storeData.address.state} {storeData.address.zipcode}</div>
+                    <div>Primary Phone Number: {storeData.primary_phone_number}</div>
+                    <div>Secondary Phone Number: {storeData.sub_phone_number[0]}</div>
+            </Grid>
+            <Grid item xs={12} md={4} >
+                    <Button
+                        onClick={toggleServerStatus}
+                        sx={{ 
+                            backgroundColor: !serverOn ? 'green' : 'red',
+                            color: '#fff',
+                        }}
+                        >{!serverOn ? 'Accept Order' : 'Pause Order'}
+                    </Button>
+            </Grid>
+        </Grid>
+       
         <Box sx={boxStyle}>
             <Paper>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 30px', alignItems: 'center'}}>
@@ -112,8 +125,6 @@ export const getServerSideProps:GetServerSideProps = async(context: GetServerSid
         if(response.status !== 200 && !response.data.storeData){
             throw new Error('Failed to get store data')
         }
-
-        
 
         return {
             props: {

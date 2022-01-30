@@ -49,6 +49,7 @@ export default function Login () {
                             'authorization': `Bearer ${token}`
                         }
                     });
+                    console.log(response);
 
                     if(response.status === 200){
                         Router.push('/admin/dashboard')

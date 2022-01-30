@@ -6,20 +6,24 @@ import { createContext } from "react";
 //  CREATE CONTEXT 
 type IStoreContextType = {
     hours: IHours[],
+    serverOn: boolean,
     updateRequired: boolean,
     closeForDayOfWeek: (dayOfWeek: string, isOpen: boolean) => void,
-    getHours: (hours: IHours[]) => void,
+    getStoreData: (storeData: IStore) => void,
     editHours: (dayOfWeek: string, openHr: number, closeHr: number) =>  void;
     updateHourToDB:() =>  void,
+    toggleServerStatus: () => void,
 }
 
 const StoreContextDefaultValue: IStoreContextType = {
     hours: [],
+    serverOn: false,
     updateRequired: false,
     closeForDayOfWeek: (dayOfWeek: string, isOpen: boolean) => {},
-    getHours: (hours: IHours[]) => {},
+    getStoreData: (storeData: IStore) => {},
     editHours: (dayOfWeek: string, openHr: number, closeHr: number) => {},
-    updateHourToDB: () => {}
+    updateHourToDB: () => {},
+    toggleServerStatus: () => {}
 };
 const StoreContext = createContext<IStoreContextType>(StoreContextDefaultValue) ;
 
@@ -34,6 +38,7 @@ type Props = {
 
 export function StoreProvider({ children }: Props) {
     const [hours, setHours] = useState<IHours[]>([]);
+    const [serverOn, setServerOn] = useState<boolean>(false);
 
     const [updateRequired, setUpdateRequired] = useState(false);
 
@@ -46,8 +51,9 @@ export function StoreProvider({ children }: Props) {
         setUpdateRequired(true);
     }
 
-    const getHours = (hr: IHours[]) => {
-        setHours([...hr]);
+    const getStoreData = (storeData: IStore) => {
+        setHours([...storeData.hours]);
+        setServerOn(data => storeData.server_is_on);
     }
 
     // SETTING THE open_hour and close_hour FOR A SPECIAL DAY OF THE WEEK
@@ -82,14 +88,40 @@ export function StoreProvider({ children }: Props) {
         }
     }
 
+    const toggleServerStatus = async () => {
+        try {
+            let response = await axios({
+                method: 'POST',
+                url: 'http://localhost:5001/foodorder-43af7/us-central1/store/status',
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                },
+                withCredentials:true,
+                data: {
+                    server_is_on: !serverOn
+                }
+            })
+
+            if(response.status === 200) {
+                setServerOn((prev) => !prev);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     const value = {
         hours,
+        serverOn,
         updateRequired,
         closeForDayOfWeek,
-        getHours,
+        getStoreData,
         editHours,
-        updateHourToDB
+        updateHourToDB,
+        toggleServerStatus
     }
     return (
         <>
