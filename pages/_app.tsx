@@ -2,9 +2,10 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
-import axios from 'axios'
 import { StoreProvider } from '../context/storeContext'
+import { SnackbarProvider } from 'notistack'
+import { SnackbarUtilsConfigurator } from '../components/snackbar'
+
 
 // place all varaibles into environment variables
 const app = initializeApp({
@@ -23,7 +24,10 @@ export const fbAuth = getAuth(app);
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
     <StoreProvider>
-      <Component {...pageProps} />
+      <SnackbarProvider maxSnack={3}>
+        <SnackbarUtilsConfigurator />
+        <Component {...pageProps} />
+      </SnackbarProvider>
     </StoreProvider>
   </>
 }

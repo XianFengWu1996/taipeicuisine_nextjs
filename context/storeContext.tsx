@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ReactNode, useContext, useState } from "react";
 import { createContext } from "react";
+import Snackbar from '../components/snackbar'
 
 
 //  CREATE CONTEXT 
@@ -83,8 +84,10 @@ export function StoreProvider({ children }: Props) {
             if(response.status === 200) {
                 setUpdateRequired(false);
             }
+            Snackbar.success('Hours has been updated')
+
         } catch (error) {
-            console.log(error);
+            Snackbar.error('Failed to update hour')
         }
     }
 
@@ -106,9 +109,10 @@ export function StoreProvider({ children }: Props) {
             if(response.status === 200) {
                 setServerOn((prev) => !prev);
             }
+            Snackbar.success('Server status has been update')
 
         } catch (error) {
-            console.log(error);
+            Snackbar.error('Failed to update server status')
         }
     }
 
@@ -131,3 +135,4 @@ export function StoreProvider({ children }: Props) {
         </>
     );
 }
+
