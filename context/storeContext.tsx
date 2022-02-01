@@ -1,7 +1,11 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import Router from "next/router";
 import { ReactNode, useContext, useState } from "react";
 import { createContext } from "react";
 import Snackbar from '../components/snackbar'
+import { signOut } from 'firebase/auth'
+import { fbAuth } from "../pages/_app";
+import { handleAdminAxiosError } from "../utils/functions/errors";
 
 
 //  CREATE CONTEXT 
@@ -54,7 +58,7 @@ export function StoreProvider({ children }: Props) {
 
     const getStoreData = (storeData: IStore) => {
         setHours([...storeData.hours]);
-        setServerOn(data => storeData.server_is_on);
+        setServerOn(_ => storeData.server_is_on);
     }
 
     // SETTING THE open_hour and close_hour FOR A SPECIAL DAY OF THE WEEK
@@ -67,53 +71,30 @@ export function StoreProvider({ children }: Props) {
         setUpdateRequired(true);
     }
 
-    const updateHourToDB = async () => {
-        try {
-            let response = await axios({
-                method: 'POST',
-                url: 'http://localhost:5001/foodorder-43af7/us-central1/store/hours',
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json',
-                },
-                withCredentials:true,
-                data: {
-                    hours
-                }
-            })
-            if(response.status === 200) {
+    const updateHourToDB = () => {
+        axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/hours', { hours })
+        .then((response) => {
+            // if the status is 200, then we update the 
+            if(response.status === 200){
                 setUpdateRequired(false);
+                Snackbar.success('Hours has been updated')
             }
-            Snackbar.success('Hours has been updated')
-
-        } catch (error) {
-            Snackbar.error('Failed to update hour')
-        }
+        }).catch((error: Error | AxiosError) => {
+            handleAdminAxiosError(error, 'Failed to update hours');
+        });    
     }
 
     const toggleServerStatus = async () => {
-        try {
-            let response = await axios({
-                method: 'POST',
-                url: 'http://localhost:5001/foodorder-43af7/us-central1/store/status',
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json',
-                },
-                withCredentials:true,
-                data: {
-                    server_is_on: !serverOn
-                }
-            })
-
-            if(response.status === 200) {
+        axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/status', {
+            server_is_on: !serverOn
+        }).then((response) => {
+            if(response.status === 200){
                 setServerOn((prev) => !prev);
+                Snackbar.success('Server status has been update')
             }
-            Snackbar.success('Server status has been update')
-
-        } catch (error) {
-            Snackbar.error('Failed to update server status')
-        }
+        }).catch((error) => {
+            handleAdminAxiosError(error, 'Failed to update server status');
+        });
     }
 
 

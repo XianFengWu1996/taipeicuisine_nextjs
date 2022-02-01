@@ -5,6 +5,7 @@ import { getAuth } from 'firebase/auth'
 import { StoreProvider } from '../context/storeContext'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfigurator } from '../components/snackbar'
+import axios from 'axios'
 
 
 // place all varaibles into environment variables
@@ -20,6 +21,12 @@ const app = initializeApp({
 })
 
 export const fbAuth = getAuth(app);
+
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <>

@@ -64,7 +64,8 @@ export default function Dashboard ({ storeData, error }
         if(error){
             signOut(fbAuth);
             Router.push('/admin/login');
-            return snackbar.error(error.msg);
+            snackbar.error(error.msg);
+            return;
         }
 
         if(storeData){
