@@ -8,6 +8,11 @@ import { CSSProperties } from '@mui/styled-engine';
 import HourEditDialog from '../../components/admin/dashboard/dialog/hourEditDialog';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import axios from 'axios';
+import snackbar from '../../components/snackbar';
+import Router from 'next/router';
+import { signOut} from 'firebase/auth'
+import { fbAuth } from '../_app';
+
 
 export const convertMinuteToDate = (min: number) => {
     // 9:10 = 550 
@@ -24,7 +29,8 @@ export const convertMinuteToDate = (min: number) => {
     }
 }
 
-export default function Dashboard ({ storeData} : {storeData: IStore}){
+export default function Dashboard ({ storeData, error } 
+    : {storeData: IStore | null, error: { msg: string } }){
     const boxStyle: SxProps<Theme> | undefined = {
         display: 'flex',
         flexWrap: 'wrap',
@@ -55,53 +61,65 @@ export default function Dashboard ({ storeData} : {storeData: IStore}){
     }
 
     useEffect(() => {
-        getStoreData(storeData);
+        if(error){
+            signOut(fbAuth);
+            Router.push('/admin/login');
+            return snackbar.error(error.msg);
+        }
+
+        if(storeData){
+            getStoreData(storeData);
+        }
     }, [])
 
     return <div>
         <ResponsiveAppBar />
-        <Grid container spacing={4} sx={{ my: 3, mx: 3}} alignItems="center" >
-            <Grid item xs={12} md={8}>
-                    <div>{storeData.name}</div>
-                    <div>{storeData.address.street}, {storeData.address.city}, {storeData.address.state} {storeData.address.zipcode}</div>
-                    <div>Primary Phone Number: {storeData.primary_phone_number}</div>
-                    <div>Secondary Phone Number: {storeData.sub_phone_number[0]}</div>
+        {
+            storeData ? <>
+            <Grid container spacing={4} sx={{ my: 3, mx: 3}} alignItems="center" >
+                <Grid item xs={12} md={8}>
+                        <div>{storeData.name}</div>
+                        <div>{storeData.address.street}, {storeData.address.city}, {storeData.address.state} {storeData.address.zipcode}</div>
+                        <div>Primary Phone Number: {storeData.primary_phone_number}</div>
+                        <div>Secondary Phone Number: {storeData.sub_phone_number[0]}</div>
+                </Grid>
+                <Grid item xs={12} md={4} >
+                        <Button
+                            onClick={toggleServerStatus}
+                            sx={{ 
+                                backgroundColor: !serverOn ? 'green' : 'red',
+                                color: '#fff',
+                            }}
+                            >{!serverOn ? 'Accept Order' : 'Pause Order'}
+                        </Button>
+                </Grid>
             </Grid>
-            <Grid item xs={12} md={4} >
-                    <Button
-                        onClick={toggleServerStatus}
-                        sx={{ 
-                            backgroundColor: !serverOn ? 'green' : 'red',
-                            color: '#fff',
-                        }}
-                        >{!serverOn ? 'Accept Order' : 'Pause Order'}
-                    </Button>
-            </Grid>
-        </Grid>
-       
-        <Box sx={boxStyle}>
-            <Paper>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 30px', alignItems: 'center'}}>
-                    <Typography sx={titleStyle}>Hours</Typography>
-                    <Button variant='contained' disabled={!updateRequired} onClick={updateHourToDB}>Save</Button>
-                </div>
-                {
-                    hours.map((day, index) => {
-                        return <DayOfWeekTile
-                            key={`${index}${day.day_of_week}`} 
-                            day={day}
-                            index={index}
-                            handleDialogOpen={handleClickOpen}
-                        />
-                    })
-                }
-            </Paper>
-        </Box>
-
-        <HourEditDialog
-            open={openDialog}
-            handleClose={handleClose}
-        />
+           
+            <Box sx={boxStyle}>
+                <Paper>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 30px', alignItems: 'center'}}>
+                        <Typography sx={titleStyle}>Hours</Typography>
+                        <Button variant='contained' disabled={!updateRequired} onClick={updateHourToDB}>Save</Button>
+                    </div>
+                    {
+                        hours.map((day, index) => {
+                            return <DayOfWeekTile
+                                key={`${index}${day.day_of_week}`} 
+                                day={day}
+                                index={index}
+                                handleDialogOpen={handleClickOpen}
+                            />
+                        })
+                    }
+                </Paper>
+            </Box>
+    
+            <HourEditDialog
+                open={openDialog}
+                handleClose={handleClose}
+            />
+            </> : <div></div>
+        }
     </div>
 }
 
@@ -128,15 +146,16 @@ export const getServerSideProps:GetServerSideProps = async(context: GetServerSid
 
         return {
             props: {
-                storeData: response.data.storeData
+                storeData: response.data.storeData, 
             }
         }      
     } catch (error) {
-        console.log(error);
+        return {
+            props: {
+                error: {
+                    msg: (error as Error).message ?? 'Authentication fail'
+                }
+            }
+        }
     }
-
-    return {
-        props: {}
-    } 
-    
 }

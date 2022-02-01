@@ -3,14 +3,13 @@ import { signInWithEmailAndPassword, signOut} from 'firebase/auth'
 import { fbAuth } from "../_app";
 import axios from 'axios';
 import Router from 'next/router'
-import ResponsiveAppBar from "../../components/appbar";
+import showSnackbar from '../../components/snackbar'
 
 export default function Login () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     return <>
-        <ResponsiveAppBar />
         <form>
             <input 
                 type="text" 
@@ -35,7 +34,9 @@ export default function Login () {
                         fbAuth, 
                         email,
                         password
-                    );
+                    ).catch((_) => {
+                        throw new Error('Please check your email or password')
+                    });
 
                     let token = await user.user.getIdToken();
 
@@ -48,52 +49,19 @@ export default function Login () {
                             'Content-Type': 'application/json',
                             'authorization': `Bearer ${token}`
                         }
+                    }).catch((_) => {
+                        throw new Error('Not authorized')
                     });
-                    console.log(response);
 
                     if(response.status === 200){
                         Router.push('/admin/dashboard')
                     } 
                   } catch (error) {
                     signOut(fbAuth); // if the operation failed, sign the user out
-                    console.log(error);
+                    showSnackbar.error((error as Error).message ?? 'Authentication Failed')
                   }
                 }}
-            />
-               
+            />  
         </form>
-
-        <input type="button" value="getuser" onClick={(_) => {
-            console.log(fbAuth.currentUser);
-        }}/>
     </> 
 }
-
-// export const getServerSideProps:GetServerSideProps = async(context: GetServerSidePropsContext) => {
-//     try {
-//         let token = await fbAuth.currentUser?.getIdToken();
-
-//         console.log(token);
-
-//         let response = await axios({ 
-//             method: 'POST',
-//             url: "http://localhost:5001/foodorder-43af7/us-central1/store/admin/login",
-//             headers: {
-//                 'Access-Control-Allow-Origin': '*',
-//                 'Content-Type': 'application/json',
-//                 'authorization': `Bearer ${token}`
-//             }
-//         });
-
-//         if(response.status === 200){
-//             Router.push('/admin/dashboard');
-//         }
-//     } catch (error) {
-//         signOut(fbAuth);
-//         console.log(error);
-//     }
-    
-//     return {    
-//       props: {}, // will be passed to the page component as props
-//     }
-//   }
