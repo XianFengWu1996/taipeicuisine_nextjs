@@ -5,7 +5,7 @@ interface IProps {
 }
 
 export const MenuItemList = (props: IProps) => {
-    return <div style={{ margin: '1.5rem 2rem'}}>
+    return <div style={{ margin: '3rem 2rem 0 2rem'}}>
         <Grid container spacing={4}>
                 {props.list.map((dish:IDish) => {
                     return <Grid key={dish.id} item xs={12} md={6}>

@@ -1,3 +1,10 @@
+interface IMenu {
+    id: string, 
+    category: ICategory[],
+    en_name: string, 
+    ch_name: string,
+}
+
 interface ICategory{
     id: string, 
     ch_name: string,
