@@ -9,7 +9,7 @@ import { convertMinuteToDate } from '../../../pages/admin/dashboard';
 // ==========================================
 
 interface TileProps {
-    day: hours,
+    day: IHours,
     index: number,
     handleDialogOpen: () => void
 }

@@ -30,6 +30,7 @@ export default function Login () {
             if(response.status === 200){
                 Router.push('/admin/dashboard')
             } 
+
           } catch (error) {
             signOut(fbAuth); // if the operation failed, sign the user out
             showSnackbar.error((error as Error).message ?? 'Authentication Failed')

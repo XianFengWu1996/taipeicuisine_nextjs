@@ -6,7 +6,14 @@ import { StoreProvider } from '../context/storeContext'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfigurator } from '../components/snackbar'
 import axios from 'axios'
+import { Provider } from 'react-redux'
+import { store } from '../store/store'
 
+
+
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 // place all varaibles into environment variables
 const app = initializeApp({
@@ -22,20 +29,18 @@ const app = initializeApp({
 
 export const fbAuth = getAuth(app);
 
-axios.defaults.withCredentials = true;
-axios.defaults.headers.common['Content-Type'] = 'application/json';
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-
 
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
-    <StoreProvider>
-      <SnackbarProvider maxSnack={3}>
-        <SnackbarUtilsConfigurator />
-        <Component {...pageProps} />
-      </SnackbarProvider>
-    </StoreProvider>
+    <Provider store={store}>
+      <StoreProvider>
+        <SnackbarProvider maxSnack={3}>
+          <SnackbarUtilsConfigurator />
+          <Component {...pageProps} />
+        </SnackbarProvider>
+      </StoreProvider>
+    </Provider>
   </>
 }
 
