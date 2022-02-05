@@ -15,13 +15,18 @@ interface IProps {
 
 export default function Menu (props:IProps){
     const [menu, setMenu] = React.useState(props.menus[0].en_name);
+    const [tabValue, setTabValue] = React.useState(0);
 
     // handles if the user change the menu
-    const handleMenuChange = (_: SelectChangeEvent) => {
-      setMenu(_.target.value);
+    const handleMenuChange = (e: SelectChangeEvent) => {
+      setMenu(e.target.value);
+      setTabValue(0);
     };
 
- 
+    // handles if the user change the tab
+    const handleTabChange = (_: React.SyntheticEvent<Element, Event>, newValue: number) => {
+        setTabValue(newValue);
+    };
 
     return <div>
         <ResponsiveAppBar />
@@ -33,6 +38,8 @@ export default function Menu (props:IProps){
         <MenuTab
             menus={props.menus}
             menuSelect={menu}
+            tabValue={tabValue}
+            handleTabChange={handleTabChange}
         />
     </div>
 }

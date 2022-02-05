@@ -6,11 +6,12 @@ import { MenuItemList } from "./menuItem";
 interface IProps {
     menus: IMenu[],
     menuSelect: string,
+    tabValue: number,
+    handleTabChange: (_:SyntheticEvent<Element, Event>, v: number) => void
 }
 
 export const MenuTab = (props: IProps) => {
     const [scrollPosition, setScrollPosition] = useState(0);
-    const [tabValue, setTabValue] = useState(0);
     let currentlySelected: IMenu | undefined;
 
 
@@ -20,11 +21,6 @@ export const MenuTab = (props: IProps) => {
         setScrollPosition(position);
     };
     
-    // handles if the user change the tab
-    const handleTabChange = (_: React.SyntheticEvent<Element, Event>, newValue: number) => {
-        setTabValue(newValue);
-    };
-
     // rendering correct tab base on the menu 
     const handleTabView = () => {
         currentlySelected = props.menus.find(el => el.en_name === props.menuSelect);        
@@ -32,7 +28,7 @@ export const MenuTab = (props: IProps) => {
             return <Tab
                 key={category.id} 
                 label={category.en_name} 
-                id={`tab-${tabValue}`} 
+                id={`tab-${props.tabValue}`} 
             />
         })
     }
@@ -40,7 +36,7 @@ export const MenuTab = (props: IProps) => {
     // rendering the tab children base on the selected menu and selected tab
     const handleTabChildren = () => {
         if(currentlySelected){
-            return <MenuItemList list={currentlySelected?.category[tabValue].dishes}/>
+            return <MenuItemList list={currentlySelected?.category[props.tabValue].dishes}/>
         }
     }
     
@@ -57,15 +53,15 @@ export const MenuTab = (props: IProps) => {
         };
     }, []);
 
-    return  <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', minHeight: '90vh', marginBottom: '4rem' }}
+    return  <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', minHeight: '90vh' }}
          >   
-            <Paper style={ scrollBarStyle} sx={{ marginBottom: '20px'}}>
+            <Paper style={ scrollBarStyle}>
                 <Tabs
                     variant="scrollable"
                     scrollButtons="auto"
                     allowScrollButtonsMobile
-                    value={tabValue}
-                    onChange={handleTabChange}
+                    value={props.tabValue}
+                    onChange={props.handleTabChange}
                     aria-label="Menu Display"
                     sx={{ borderRight: 1, borderColor: 'divider', padding: '0 3rem' }}
                 >

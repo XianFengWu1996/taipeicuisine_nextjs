@@ -1,19 +1,37 @@
-import { Card, CardContent, Grid, List, ListItem, Typography } from "@mui/material"
+import { Card, CardContent, Grid, Typography } from "@mui/material"
+import Image from "next/image"
+import { useRouter } from "next/router"
 
 interface IProps {
     list: IDish[],
 }
 
 export const MenuItemList = (props: IProps) => {
-    return <div style={{ margin: '3rem 2rem 0 2rem'}}>
-        <Grid container spacing={4}>
+    const { asPath } = useRouter()
+
+    return <div style={{ margin: '1.5rem 2rem 0 2rem'}}>
+        <Grid container spacing={2}>
                 {props.list.map((dish:IDish) => {
                     return <Grid key={dish.id} item xs={12} md={6}>
-                        <Card style={{ minHeight: 120}}>
-                            <CardContent>
-                                <Typography>{dish.label_id}. {dish.en_name} {dish.ch_name}</Typography>
-                                <Typography>{dish.description}</Typography>
-                                <Typography>${dish.price.toFixed(2)}</Typography>
+                        <Card style={{ minHeight: 120}} onClick={() => {
+                            console.log(dish);
+                            console.log(asPath);
+                        }}>
+                            <CardContent sx={{ display: 'flex'}}>
+                                    {
+                                        dish.pic_url ? <Image 
+                                            src={dish.pic_url} 
+                                            alt={`picture for ${dish.en_name}`} 
+                                            width={125}
+                                            height={80} 
+                                        /> : <div></div>
+                                    }
+
+                                    <div style={{ padding: '0 1.5rem'}}>
+                                        <Typography sx={{ fontWeight: 'bold', fontSize: 16}}>{dish.label_id}. {dish.en_name} {dish.ch_name}</Typography>
+                                        <Typography sx={{ fontWeight: 'bold', fontSize: '14px'}}>${dish.price.toFixed(2)}</Typography>
+                                        <Typography>{dish.description}</Typography>
+                                    </div>                                
                             </CardContent>
                         </Card>
                     </Grid>
