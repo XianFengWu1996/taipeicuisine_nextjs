@@ -2,9 +2,9 @@ import { SelectChangeEvent } from "@mui/material";
 import axios from "axios"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import React from "react";
-import { MenuSelect } from "../../components/admin/menu/menuSelect";
-import { MenuTab } from "../../components/admin/menu/menuTab";
-import ResponsiveAppBar from "../../components/appbar";
+import { MenuSelect } from "../../../components/admin/menu/menuSelect";
+import { MenuTab } from "../../../components/admin/menu/menuTab";
+import ResponsiveAppBar from "../../../components/appbar";
 
 interface IProps {
     menus: IMenu[],
