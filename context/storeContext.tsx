@@ -11,6 +11,7 @@ import { handleAdminAxiosError } from "../utils/functions/errors";
 //  CREATE CONTEXT 
 type IStoreContextType = {
     hours: IHours[],
+    menus: IMenu[],
     serverOn: boolean,
     updateRequired: boolean,
     closeForDayOfWeek: (dayOfWeek: string, isOpen: boolean) => void,
@@ -18,17 +19,20 @@ type IStoreContextType = {
     editHours: (dayOfWeek: string, openHr: number, closeHr: number) =>  void;
     updateHourToDB:() =>  void,
     toggleServerStatus: () => void,
+    getMenuData: (menus: IMenu[]) => void,
 }
 
 const StoreContextDefaultValue: IStoreContextType = {
     hours: [],
+    menus: [],
     serverOn: false,
     updateRequired: false,
     closeForDayOfWeek: (dayOfWeek: string, isOpen: boolean) => {},
     getStoreData: (storeData: IStore) => {},
     editHours: (dayOfWeek: string, openHr: number, closeHr: number) => {},
     updateHourToDB: () => {},
-    toggleServerStatus: () => {}
+    toggleServerStatus: () => {},
+    getMenuData: (menus: IMenu[]) => {}
 };
 const StoreContext = createContext<IStoreContextType>(StoreContextDefaultValue) ;
 
@@ -44,6 +48,7 @@ type Props = {
 export function StoreProvider({ children }: Props) {
     const [hours, setHours] = useState<IHours[]>([]);
     const [serverOn, setServerOn] = useState<boolean>(false);
+    const [menus, setMenus] = useState<IMenu[]>([]);
 
     const [updateRequired, setUpdateRequired] = useState(false);
 
@@ -97,16 +102,23 @@ export function StoreProvider({ children }: Props) {
         });
     }
 
+    const getMenuData = (menus: IMenu[]) => {
+        setMenus([]);
+        setMenus([...menus])
+    }
+
 
     const value = {
         hours,
+        menus,
         serverOn,
         updateRequired,
         closeForDayOfWeek,
         getStoreData,
         editHours,
         updateHourToDB,
-        toggleServerStatus
+        toggleServerStatus,
+        getMenuData,
     }
     return (
         <>

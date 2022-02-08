@@ -23,7 +23,8 @@ export const MenuTab = (props: IProps) => {
     
     // rendering correct tab base on the menu 
     const handleTabView = () => {
-        currentlySelected = props.menus.find(el => el.en_name === props.menuSelect);        
+        currentlySelected = props.menus.find(el => el.en_name === props.menuSelect); 
+
         return currentlySelected?.category.map((category) => {
             return <Tab
                 key={category.id} 
@@ -35,14 +36,21 @@ export const MenuTab = (props: IProps) => {
     
     // rendering the tab children base on the selected menu and selected tab
     const handleTabChildren = () => {
+
         if(currentlySelected){
-            return <MenuItemList list={currentlySelected?.category[props.tabValue].dishes}/>
+            let categoryId = currentlySelected.category[props.tabValue].id;
+
+            return <MenuItemList 
+                list={currentlySelected.category[props.tabValue].dishes}
+                menuId={currentlySelected.id}
+                categoryId={categoryId}
+            />
         }
     }
     
     const scrollBarStyle:React.CSSProperties | undefined = {
-        position: scrollPosition > 175 ? 'fixed' : 'relative',
-        top: scrollPosition > 175 ? 0 : undefined,
+        position: scrollPosition > 170 ? 'sticky' : 'relative',
+        top: scrollPosition > 170 ? 0 : undefined, 
     }
 
     useEffect(() => {
@@ -53,11 +61,12 @@ export const MenuTab = (props: IProps) => {
         };
     }, []);
 
-    return  <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', minHeight: '90vh' }}
-         >   
+    return  <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', minHeight: scrollPosition > 170 ? '90vh' : '100vh' }}
+         >  
             <Paper style={ scrollBarStyle}>
                 <Tabs
                     variant="scrollable"
+                    visibleScrollbar
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                     value={props.tabValue}
