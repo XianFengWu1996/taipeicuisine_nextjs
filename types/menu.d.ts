@@ -29,3 +29,23 @@ interface IDish {
     order: number,
     pic_url:string,
 }
+
+interface ICheckbox {
+    checked: boolean, 
+    onChange: (_: ChangeEvent<HTMLInputElement>) => void,
+    label: string,
+    name: string,
+}
+
+interface ITextFieldProps {
+    label: string,
+    name: string, 
+    value: string | number | undefined,
+    onChange: (_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
+    required?: boolean,
+    type?: HTMLInputTypeAttribute | undefined,
+}
+
+interface IFile extends File{
+    preview: string,
+  }

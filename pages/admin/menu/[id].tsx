@@ -1,18 +1,21 @@
-import { Checkbox, FormControlLabel, FormGroup, InputBaseComponentProps, Paper, TextField, Typography } from "@mui/material"
+import { Button, Checkbox, FormControlLabel, FormGroup, InputBaseComponentProps, Paper, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import axios from "axios"
+import Image from "next/image"
 import { useRouter } from "next/router"
-import { ChangeEvent, HTMLInputTypeAttribute, useEffect, useState } from "react"
+import { ChangeEvent, CSSProperties, HTMLInputTypeAttribute, useEffect, useState } from "react"
 import Dropzone from "react-dropzone"
 import { arrayBuffer } from "stream/consumers"
+import { CheckBoxList } from "../../../components/admin/edit_menu/CheckboxList"
+import { ImageUpload } from "../../../components/admin/edit_menu/ImageUpload"
+import { TextFieldList } from "../../../components/admin/edit_menu/TextFieldList"
 import { useStore } from "../../../context/storeContext"
 
+  
 
+ 
 
 export default function EditMenuItem () {
-    const router = useRouter()
-    const { menus } = useStore();
-
     const [label, setLabel] = useState<string>('');
     const [dish, setDish] = useState<IDish>({
         id: '',
@@ -29,7 +32,10 @@ export default function EditMenuItem () {
         order: 0,
         pic_url:'',
     });
+    const [file, setFile] = useState<IFile>();
 
+    const router = useRouter();
+    const { menus } = useStore();
     const { id, menuId, categoryId } = router.query;
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -77,9 +83,6 @@ export default function EditMenuItem () {
 
 
     return <>
-            <input type="file" id="file" name="file" onChange={(e) => {            
-            uploadImage(e.target.files!);
-        }}/>
         <Box
             component="form"
             sx={{
@@ -92,146 +95,31 @@ export default function EditMenuItem () {
             autoComplete="off"
             >
             <Typography>Edit {label}</Typography>
-            <MenuEditTextField 
-                label="Label Id"
-                name="label_id"
-                value={dish.label_id}
-                onChange={handleOnChange}
+            <TextFieldList 
+                dish={dish}
+                handleOnChange={handleOnChange}
+                handleOnChangeNumber={handleOnChangeNumber}
             />
 
-            <MenuEditTextField 
-                label="Dish Name (English)"
-                name="en_name"
-                value={dish.en_name}
-                onChange={handleOnChange}
+            <CheckBoxList 
+                dish={dish}
+                handleCheckboxChange={handleCheckboxChange}
             />
 
-            <MenuEditTextField 
-                label="Dish Name (Chinese)"
-                name='ch_name'
-                value={dish.ch_name}
-                onChange={handleOnChange}
+            <ImageUpload 
+                file={file}
+                handleOnDrop={acceptedFiles => {
+                    let newObj = Object.assign(acceptedFiles[0], { preview: URL.createObjectURL(acceptedFiles[0])});
+                    setFile({...newObj});
+                }}
             />
 
-            <MenuEditTextField 
-                label="Description"
-                name='description'
-                value={dish.description}
-                required={false}
-                onChange={handleOnChange}
-            />
-
-            <MenuEditTextField 
-                label="Price"
-                name="price"
-                value={dish.price.toString()}
-                type="number"
-                onChange={handleOnChangeNumber}
-            />
-
-            <FormGroup row>
-                <CheckBoxWithLabel 
-                    label="Spicy"
-                    name="is_spicy"
-                    checked={dish.is_spicy}
-                    onChange={handleCheckboxChange}
-                />
-
-                <CheckBoxWithLabel 
-                    label="In Stock"
-                    name="in_stock"
-                    checked={dish.in_stock}
-                    onChange={handleCheckboxChange}
-                />
-
-                <CheckBoxWithLabel 
-                    label="Popular"
-                    name="is_popular"
-                    checked={dish.is_popular}
-                    onChange={handleCheckboxChange}
-                />
-
-                <CheckBoxWithLabel 
-                    label="Lunch"
-                    name="is_lunch"
-                    checked={dish.is_lunch}
-                    onChange={handleCheckboxChange}
-                />  
-            </FormGroup>
-
-       
-
-            {/* <Dropzone onDrop={acceptedFiles => {
-                acceptedFiles.map(async file => {
-                    const reader = new FileReader();
-
-                    reader.onabort = () => console.log('file reading was aborted')
-                    reader.onerror = () => console.log('file reading has failed')
-                    reader.onload = () => {
-                    // Do whatever you want with the file contents
-                      const binaryStr = reader.result;
-
-                      if(binaryStr instanceof ArrayBuffer){
-                        const buffer = new Uint8Array(binaryStr);
-                        uploadImage(buffer);
-                      }
-                      
-
-                    }
-                    reader.readAsArrayBuffer(file)
-                })
-            }} 
-                accept={'image/jpeg, image/png, image/jpg'}
-                maxFiles={1}
-            >
-                {({getRootProps, getInputProps}) => (
-                    <Paper>
-                    <div {...getRootProps()}>
-                        <input {...getInputProps()} />
-                        <p>Drag {'n'} drop some files here, or click to select files</p>
-                    </div>
-                    </Paper>
-                )}
-                </Dropzone> */}
+            <Button
+                variant="contained"
+            >Save</Button>
         </Box>
     </>
 }
 
-interface ITextFieldProps {
-    label: string,
-    name: string, 
-    value: string | number | undefined,
-    onChange: (_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
-    required?: boolean,
-    type?: HTMLInputTypeAttribute | undefined,
-}
 
-export const MenuEditTextField = (props: ITextFieldProps) => {
-    return <TextField 
-        id="outlined-basic"
-        label={props.label} 
-        type={props.type ?? 'text'}
-        variant="outlined" 
-        name={props.name}
-        value={props.value}
-        onChange={props.onChange}
-        required={props.required ?? true}
-    />
-}
 
-interface ICheckbox {
-    checked: boolean, 
-    onChange: (_: ChangeEvent<HTMLInputElement>) => void,
-    label: string,
-    name: string,
-}
-
-export const CheckBoxWithLabel = (props: ICheckbox) => {
-    return <FormControlLabel control={
-        <Checkbox 
-            name={props.name}
-            checked={props.checked}
-            onChange={props.onChange}
-        />
-    } label={props.label} />
-}
