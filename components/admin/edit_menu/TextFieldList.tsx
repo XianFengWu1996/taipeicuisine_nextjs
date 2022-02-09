@@ -60,5 +60,9 @@ export const MenuEditTextField = (props: ITextFieldProps) => {
         value={props.value}
         onChange={props.onChange}
         required={props.required ?? true}
+        style={{
+            marginBottom: 20,
+            width: '100%'
+        }}
     />
 }

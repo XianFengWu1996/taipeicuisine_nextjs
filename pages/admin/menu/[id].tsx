@@ -1,19 +1,12 @@
-import { Button, Checkbox, FormControlLabel, FormGroup, InputBaseComponentProps, Paper, TextField, Typography } from "@mui/material"
+import { Button, Grid, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import axios from "axios"
-import Image from "next/image"
 import { useRouter } from "next/router"
-import { ChangeEvent, CSSProperties, HTMLInputTypeAttribute, useEffect, useState } from "react"
-import Dropzone from "react-dropzone"
-import { arrayBuffer } from "stream/consumers"
+import { ChangeEvent, useEffect, useState } from "react"
 import { CheckBoxList } from "../../../components/admin/edit_menu/CheckboxList"
 import { ImageUpload } from "../../../components/admin/edit_menu/ImageUpload"
 import { TextFieldList } from "../../../components/admin/edit_menu/TextFieldList"
 import { useStore } from "../../../context/storeContext"
-
-  
-
- 
 
 export default function EditMenuItem () {
     const [label, setLabel] = useState<string>('');
@@ -86,7 +79,7 @@ export default function EditMenuItem () {
         <Box
             component="form"
             sx={{
-                '& > :not(style)': { m: 1, width: '50ch' },
+                '& > :not(style)': { m: 1, width: '90%' },
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -94,25 +87,39 @@ export default function EditMenuItem () {
             noValidate
             autoComplete="off"
             >
-            <Typography>Edit {label}</Typography>
-            <TextFieldList 
-                dish={dish}
-                handleOnChange={handleOnChange}
-                handleOnChangeNumber={handleOnChangeNumber}
-            />
+            <Grid container spacing={5}>
+           
 
-            <CheckBoxList 
-                dish={dish}
-                handleCheckboxChange={handleCheckboxChange}
-            />
+                <Grid item xs={12} md={5}>
+                    <Typography style={{
+                        marginBottom: 20
+                    }}>Edit {label}</Typography>
+ 
+                    <ImageUpload 
+                        file={file}
+                        handleOnDrop={acceptedFiles => {
+                            let newObj = Object.assign(acceptedFiles[0], { preview: URL.createObjectURL(acceptedFiles[0])});
+                            setFile({...newObj});
+                        }}
+                    />
+                </Grid>
 
-            <ImageUpload 
-                file={file}
-                handleOnDrop={acceptedFiles => {
-                    let newObj = Object.assign(acceptedFiles[0], { preview: URL.createObjectURL(acceptedFiles[0])});
-                    setFile({...newObj});
-                }}
-            />
+                <Grid item xs={12} md={7}>
+                    <TextFieldList 
+                        dish={dish}
+                        handleOnChange={handleOnChange}
+                        handleOnChangeNumber={handleOnChangeNumber}
+                    />
+
+                    <CheckBoxList 
+                        dish={dish}
+                        handleCheckboxChange={handleCheckboxChange}
+                    />
+                </Grid>
+            </Grid>
+           
+
+          
 
             <Button
                 variant="contained"

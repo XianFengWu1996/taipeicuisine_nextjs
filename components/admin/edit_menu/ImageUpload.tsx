@@ -8,14 +8,15 @@ const thumbsContainer: CSSProperties | undefined = {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 16
+    marginTop: 16,
+    justifyContent: 'center',
   };
   
   const thumb: CSSProperties | undefined = {
     display: 'inline-flex',
     borderRadius: 2,
     border: '1px solid #eaeaea',
-    marginBottom: 8,
+    marginBottom: 40,
     marginRight: 8,
     width: 150,
     height: 150,
@@ -42,9 +43,9 @@ export const ImageUpload = (props: IImageUploadProps) => {
             >
                 {({getRootProps, getInputProps}) => (
                     <Paper>
-                    <div {...getRootProps()}>
+                    <div {...getRootProps()} style={{ display: 'flex', justifyContent:'center' }}>
                         <input {...getInputProps()} />
-                        <p>Drag {'n'} drop or click to select Image</p>
+                        <p>Drag & drop or click to select Image</p>
                     </div>
                     {
                         props.file?.preview ? <aside style={thumbsContainer}>
