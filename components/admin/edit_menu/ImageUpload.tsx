@@ -1,6 +1,7 @@
-import { Paper } from "@mui/material";
+import { ArrowRight, ArrowRightAlt } from "@mui/icons-material";
+import { Icon, Paper } from "@mui/material";
 import Image from "next/image";
-import { CSSProperties } from "react";
+import { CSSProperties, useState } from "react";
 import Dropzone, { DropEvent, FileRejection } from "react-dropzone";
 
 
@@ -8,8 +9,9 @@ const thumbsContainer: CSSProperties | undefined = {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 16,
     justifyContent: 'center',
+    minHeight: '12rem',
+    maxHeight: '30rem',
   };
   
   const thumb: CSSProperties | undefined = {
@@ -31,11 +33,30 @@ const thumbsContainer: CSSProperties | undefined = {
   };
 
 interface IImageUploadProps {
+    pic_url?: string, 
     file: IFile | undefined,
     handleOnDrop: (<T extends File>(acceptedFiles: T[], fileRejections: FileRejection[], event: DropEvent) => void) | undefined
 }
 
+const handleShowPicture = (photoUrl:string) => {
+    if(!photoUrl){
+        return null
+    }
+
+    return <div style={thumb}>
+            <div style={thumbInner}>
+            <Image
+                src={photoUrl} alt="preview image to be upload" 
+                width={300}
+                height={300}
+            />
+            </div>
+        </div>
+    
+}
+
 export const ImageUpload = (props: IImageUploadProps) => {
+    console.log(props.pic_url);
     return <>
         <Dropzone onDrop={props.handleOnDrop} 
                 accept={'image/*'}
@@ -47,19 +68,17 @@ export const ImageUpload = (props: IImageUploadProps) => {
                         <input {...getInputProps()} />
                         <p>Drag & drop or click to select Image</p>
                     </div>
-                    {
-                        props.file?.preview ? <aside style={thumbsContainer}>
-                        <div style={thumb}>
-                            <div style={thumbInner}>
-                                <Image
-                                    src={props.file?.preview} alt="preview image to be upload" 
-                                    width={300}
-                                    height={300}
-                                />
-                            </div>
-                            </div>
-                        </aside> : null
-                    }
+                      
+                    <div style={{ display: 'flex', justifyContent:'center', alignItems:'center',     margin: '20px 0',}}>
+                        <aside style={thumbsContainer}>
+                            {handleShowPicture(props.pic_url!)}
+                            {
+                                props.file?.preview && props.pic_url ? <ArrowRightAlt fontSize='large' /> : null
+                            }
+                            {handleShowPicture(props.file?.preview!)}
+                        </aside>
+                    </div>
+
                     </Paper>
                 )}
             </Dropzone>

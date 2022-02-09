@@ -43,6 +43,10 @@ export default function EditMenuItem () {
         setDish({ ...dish, [e.target.name] : e.target.checked });
     })
 
+    const onSaved = () => {
+        
+    }
+
     const uploadImage = async (files: FileList) => {
 
         const fd = new FormData()
@@ -87,9 +91,7 @@ export default function EditMenuItem () {
             noValidate
             autoComplete="off"
             >
-            <Grid container spacing={5}>
-           
-
+            <Grid container spacing={2}>
                 <Grid item xs={12} md={5}>
                     <Typography style={{
                         marginBottom: 20
@@ -97,6 +99,7 @@ export default function EditMenuItem () {
  
                     <ImageUpload 
                         file={file}
+                        pic_url={dish.pic_url}
                         handleOnDrop={acceptedFiles => {
                             let newObj = Object.assign(acceptedFiles[0], { preview: URL.createObjectURL(acceptedFiles[0])});
                             setFile({...newObj});
@@ -104,7 +107,7 @@ export default function EditMenuItem () {
                     />
                 </Grid>
 
-                <Grid item xs={12} md={7}>
+                <Grid item xs={12} md={6} alignItems='center' >
                     <TextFieldList 
                         dish={dish}
                         handleOnChange={handleOnChange}
@@ -118,12 +121,10 @@ export default function EditMenuItem () {
                 </Grid>
             </Grid>
            
-
-          
-
-            <Button
-                variant="contained"
-            >Save</Button>
+            
+        </Box>
+        <Box style={{ display: 'flex', justifyContent: 'center', marginTop: 15, marginBottom: 10}}>
+            <Button variant="contained" sx={{ width: '50vw'}} onClick={onSaved}>Save</Button>
         </Box>
     </>
 }
