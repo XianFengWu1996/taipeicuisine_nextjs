@@ -1,5 +1,5 @@
-import { ArrowRight, ArrowRightAlt } from "@mui/icons-material";
-import { Icon, Paper } from "@mui/material";
+import {  ArrowRightAlt } from "@mui/icons-material";
+import { Paper } from "@mui/material";
 import Image from "next/image";
 import { CSSProperties, useState } from "react";
 import Dropzone, { DropEvent, FileRejection } from "react-dropzone";
@@ -39,24 +39,22 @@ interface IImageUploadProps {
 }
 
 const handleShowPicture = (photoUrl:string) => {
-    if(!photoUrl){
-        return null
-    }
-
-    return <div style={thumb}>
+    if(photoUrl && typeof photoUrl === 'string'){
+        return <div style={thumb}>
             <div style={thumbInner}>
-            <Image
-                src={photoUrl} alt="preview image to be upload" 
-                width={300}
-                height={300}
-            />
+                <Image
+                    src={photoUrl} alt="preview image to be upload" 
+                    width={300}
+                    height={300}
+                />
             </div>
         </div>
-    
+    }
+
+    return null
 }
 
 export const ImageUpload = (props: IImageUploadProps) => {
-    console.log(props.pic_url);
     return <>
         <Dropzone onDrop={props.handleOnDrop} 
                 accept={'image/*'}

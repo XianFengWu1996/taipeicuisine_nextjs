@@ -1,3 +1,4 @@
+import { Router } from "@mui/icons-material"
 import { Button, Grid, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import axios from "axios"
@@ -43,33 +44,90 @@ export default function EditMenuItem () {
         setDish({ ...dish, [e.target.name] : e.target.checked });
     })
 
-    const onSaved = () => {
-        
+    const findDish = (menuId:string | string[] | undefined, categoryId:string | string[] | undefined, dishId:string | string[] | undefined) 
+        : { dish: IDish, category_name: string} | null  => {
+        const menu = menus.find((menu) => menu.id === menuId);
+
+        if(!menu) return null;
+
+        const category:ICategory | undefined = menu.category.find((category) => category.id === categoryId);
+
+        if(!category) return null
+
+        const dish:IDish | undefined = category.dishes.find((dish) => dish.id === dishId);
+
+        if(!dish) return null
+
+        return {
+            dish,
+            category_name: category.document_name
+        }
     }
 
-    const uploadImage = async (files: FileList) => {
-
-        const fd = new FormData()
-        fd.append('files', files[0]);
-
-        console.log(fd)
-        let response = await axios.post(
-            "http://localhost:5001/foodorder-43af7/us-central1/store/menus/image/upload",
-        fd,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+    const checkForDifference = (originalDish: { [x: string]: any }, updateDish: { [x: string]: any }) => {
+        let difference: {[x:string]: any} = {};
+        Object.keys(originalDish).forEach((key) => {
+            if(originalDish[key] instanceof Array && originalDish[key].length === updateDish[key].length){
+                return;
             }
+
+            if(originalDish[key] !== updateDish[key]){
+                difference[key] = updateDish[key];
+            }
+        })
+        return difference
+    }
+
+    const onSaved = async () => {
+        try {
+            // will return { dish, category_name } or null if not found 
+            const result = findDish(menuId, categoryId, id)!;
+            // will check the difference between the original dish and the updated dish
+            // return the difference object
+            let difference = checkForDifference(result.dish, dish);
+
+            if(file){
+                const fd = new FormData()
+                fd.append('files', file as File);
+
+                // store the image to the storage and form a url
+                let imageResult = await axios.post(`http://localhost:5001/foodorder-43af7/us-central1/store/menus/image/upload`,
+                    fd, 
+                    { headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }}
+                );
+
+                // throw error if no url was received
+                if(!imageResult.data.url){
+                    throw new Error('Failed to store image')
+                }
+                difference = {
+                    ...difference, 
+                    pic_url: imageResult.data.url
+                }
+            }
+
+            await axios.patch(
+                `http://localhost:5001/foodorder-43af7/us-central1/store/menus/${id}`,
+                {difference},
+                {
+                    headers: { 'Content-Type': 'application/json'},
+                    params: {
+                        category_name: result.category_name,
+                        menuId,
+                    }
+            });
+
+            router.push('/admin/menu');
+        } catch (error) {
+            console.log(error);
         }
-        ).catch((_) => {
-            console.log(_);
-        });
     }
     
     useEffect(() => {
-        const foundMenu = menus.find((menu) => menu.id === menuId);
-        const foundCategory = foundMenu?.category.find((category) => category.id === categoryId);
-        const foundDish = foundCategory?.dishes.find((dish) =>  dish.id === id);
+        const foundDish = findDish(menuId, categoryId, id)?.dish;
+     
         if(foundDish){
              // make a clone, so we dont alter the original array
             let cloneDish:IDish = JSON.parse(JSON.stringify(foundDish));
@@ -102,12 +160,12 @@ export default function EditMenuItem () {
                         pic_url={dish.pic_url}
                         handleOnDrop={acceptedFiles => {
                             let newObj = Object.assign(acceptedFiles[0], { preview: URL.createObjectURL(acceptedFiles[0])});
-                            setFile({...newObj});
+                            setFile(newObj);
                         }}
                     />
                 </Grid>
 
-                <Grid item xs={12} md={6} alignItems='center' >
+                <Grid item xs={12} md={7} alignItems='center' >
                     <TextFieldList 
                         dish={dish}
                         handleOnChange={handleOnChange}

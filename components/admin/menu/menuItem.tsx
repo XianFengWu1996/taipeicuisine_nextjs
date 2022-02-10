@@ -27,7 +27,7 @@ export const MenuItemList = (props: IProps) => {
                         }}>
                             <CardContent sx={{ display: 'flex'}}>
                                     {
-                                        dish.pic_url ? <Image 
+                                        dish.pic_url && typeof dish.pic_url === 'string' ? <Image 
                                             src={dish.pic_url} 
                                             alt={`picture for ${dish.en_name}`} 
                                             width={125}
