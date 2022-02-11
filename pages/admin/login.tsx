@@ -4,10 +4,13 @@ import { fbAuth } from "../_app";
 import axios from 'axios';
 import Router from 'next/router'
 import showSnackbar from '../../components/snackbar'
+import { useStore } from "react-redux";
 
 export default function Login () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const adminStore = useStore().getState().admin;
 
     const login:MouseEventHandler<HTMLInputElement> | undefined = async (e) => {
         try {
@@ -38,6 +41,7 @@ export default function Login () {
     }
 
     return <>
+        <div>{ adminStore.counter }</div>
         <form>
             <input 
                 type="text" 

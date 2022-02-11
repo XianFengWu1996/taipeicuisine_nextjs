@@ -12,6 +12,8 @@ import snackbar from '../../components/snackbar';
 import Router from 'next/router';
 import { signOut} from 'firebase/auth'
 import { fbAuth } from '../_app';
+import {  getInitialStoreInfo } from '../../store/slice/adminSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
 
 
 export const convertMinuteToDate = (min: number) => {
@@ -29,25 +31,18 @@ export const convertMinuteToDate = (min: number) => {
     }
 }
 
-export default function Dashboard ({ storeData, error } 
-    : {storeData: IStore | null, error: { msg: string } }){
-    const boxStyle: SxProps<Theme> | undefined = {
-        display: 'flex',
-        flexWrap: 'wrap',
-        '& > :not(style)': {
-        m: 1,
-        width: 500,
-        height: 500,
-        margin: '50px 20px'
-        }
+interface IDashboardProps {
+    storeData?: IStore,
+    error: {
+        msg: string
     }
-    
-    const titleStyle: CSSProperties | undefined = {
-        margin: '20px 0px ',
-        fontSize: '20px',
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
-    }
+}
+
+export default function Dashboard ({ storeData, error }: IDashboardProps){
+    const dispatch = useAppDispatch()
+    const admin = useAppSelector(state => state.admin);
+
+    console.log(admin);
     
     const { hours, updateRequired, updateHourToDB, getStoreData, serverOn, toggleServerStatus } = useStore();
     const [openDialog, setOpenDialog] = useState(false);
@@ -70,8 +65,28 @@ export default function Dashboard ({ storeData, error }
 
         if(storeData){
             getStoreData(storeData);
+            dispatch(getInitialStoreInfo(storeData));
         }
     }, [])
+
+    const boxStyle: SxProps<Theme> | undefined = {
+        display: 'flex',
+        flexWrap: 'wrap',
+        '& > :not(style)': {
+        m: 1,
+        width: 500,
+        height: 500,
+        margin: '50px 20px'
+        }
+    }
+    
+    const titleStyle: CSSProperties | undefined = {
+        margin: '20px 0px ',
+        fontSize: '20px',
+        textTransform: 'uppercase',
+        fontWeight: 'bold',
+    }
+
 
     return <div>
         <ResponsiveAppBar />
@@ -139,11 +154,9 @@ export const getServerSideProps:GetServerSideProps = async(context: GetServerSid
                 Cookie: context.req.headers.cookie!,
             },
             withCredentials: true,
-        })
+        })        
 
-        if(response.status !== 200 && !response.data.storeData){
-            throw new Error('Failed to get store data')
-        }
+        if(response.status !== 200 && !response.data.storeData) throw new Error('Failed to get store data') 
 
         return {
             props: {
