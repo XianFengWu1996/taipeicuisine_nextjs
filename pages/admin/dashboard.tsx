@@ -12,8 +12,9 @@ import snackbar from '../../components/snackbar';
 import Router from 'next/router';
 import { signOut} from 'firebase/auth'
 import { fbAuth } from '../_app';
-import {  getInitialStoreInfo } from '../../store/slice/adminSlice';
+import {  AdminState, getInitialStoreInfo } from '../../store/slice/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
+import { isEmpty } from 'lodash'
 
 
 export const convertMinuteToDate = (min: number) => {
@@ -40,11 +41,8 @@ interface IDashboardProps {
 
 export default function Dashboard ({ storeData, error }: IDashboardProps){
     const dispatch = useAppDispatch()
-    const admin = useAppSelector(state => state.admin);
-
-    console.log(admin);
-    
-    const { hours, updateRequired, updateHourToDB, getStoreData, serverOn, toggleServerStatus } = useStore();
+    const admin:AdminState = useAppSelector(state => state.admin);
+    const store_info = admin.store_info;
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleClickOpen = () => {
@@ -64,7 +62,6 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
         }
 
         if(storeData){
-            getStoreData(storeData);
             dispatch(getInitialStoreInfo(storeData));
         }
     }, [])
@@ -81,7 +78,7 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
     }
     
     const titleStyle: CSSProperties | undefined = {
-        margin: '20px 0px ',
+        margin: '20px 30px ',
         fontSize: '20px',
         textTransform: 'uppercase',
         fontWeight: 'bold',
@@ -91,34 +88,32 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
     return <div>
         <ResponsiveAppBar />
         {
-            storeData ? <>
+            !isEmpty(store_info) ? <>
             <Grid container spacing={4} sx={{ my: 3, mx: 3}} alignItems="center" >
                 <Grid item xs={12} md={8}>
-                        <div>{storeData.name}</div>
-                        <div>{storeData.address.street}, {storeData.address.city}, {storeData.address.state} {storeData.address.zipcode}</div>
-                        <div>Primary Phone Number: {storeData.primary_phone_number}</div>
-                        <div>Secondary Phone Number: {storeData.sub_phone_number[0]}</div>
+                        <div>{store_info.name}</div>
+                        <div>{store_info.address.street}, {store_info.address.city}, {store_info.address.state} {store_info.address.zipcode}</div>
+                        <div>Primary Phone Number: {store_info.primary_phone_number}</div>
+                        <div>Secondary Phone Number: {store_info.sub_phone_number[0]}</div>
                 </Grid>
                 <Grid item xs={12} md={4} >
                         <Button
-                            onClick={toggleServerStatus}
+                            onClick={() => {}}
                             sx={{ 
-                                backgroundColor: !serverOn ? 'green' : 'red',
+                                backgroundColor: !store_info.server_is_on ? 'green' : 'red',
                                 color: '#fff',
                             }}
-                            >{!serverOn ? 'Accept Order' : 'Pause Order'}
+                            >{!store_info.server_is_on ? 'Accept Order' : 'Pause Order'}
                         </Button>
                 </Grid>
             </Grid>
            
             <Box sx={boxStyle}>
                 <Paper>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 30px', alignItems: 'center'}}>
-                        <Typography sx={titleStyle}>Hours</Typography>
-                        <Button variant='contained' disabled={!updateRequired} onClick={updateHourToDB}>Save</Button>
-                    </div>
+                    <Typography sx={titleStyle}>Store Hours</Typography>
+
                     {
-                        hours.map((day, index) => {
+                        store_info.hours.map((day, index) => {
                             return <DayOfWeekTile
                                 key={`${index}${day.day_of_week}`} 
                                 day={day}

@@ -77,16 +77,7 @@ export function StoreProvider({ children }: Props) {
     }
 
     const updateHourToDB = () => {
-        axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/hours', { hours })
-        .then((response) => {
-            // if the status is 200, then we update the 
-            if(response.status === 200){
-                setUpdateRequired(false);
-                Snackbar.success('Hours has been updated')
-            }
-        }).catch((error: Error | AxiosError) => {
-            handleAdminAxiosError(error, 'Failed to update hours');
-        });    
+         
     }
 
     const toggleServerStatus = async () => {

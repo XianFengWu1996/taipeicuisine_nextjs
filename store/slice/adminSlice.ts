@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 
 // Define a type for the slice state
-interface AdminState {
+export interface AdminState {
   store_info: IStore,
 }
 
@@ -20,13 +20,16 @@ export const adminSlice = createSlice({
       state.store_info = {
         ...payload
       }
-    }
+    }, 
+    updateStoreHour: (state, { payload }: PayloadAction<IHours[]>) => {
+      state.store_info.hours.splice(0, state.store_info.hours.length, ...payload);
+    }, 
   }
 })
 
 export default adminSlice.reducer
 
-export const { getInitialStoreInfo } = adminSlice.actions
+export const { getInitialStoreInfo, updateStoreHour } = adminSlice.actions
 
 export const storeInfo = (state: AdminState) => state.store_info;
 
