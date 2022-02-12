@@ -1,6 +1,7 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material"
 import Image from "next/image"
-import Router, { useRouter } from "next/router"
+import { getCurrentDish } from "../../../store/slice/menuSlice";
+import { useAppDispatch } from "../../../store/store"
 
 interface IProps {
     list: IDish[],
@@ -9,21 +10,23 @@ interface IProps {
 }
 
 export const MenuItemList = (props: IProps) => {
-    const { asPath } = useRouter()
+    const dispatch = useAppDispatch();
 
     return <div style={{ margin: '1.5rem 2rem'}}>
         <Grid container spacing={2}>
                 {props.list.map((dish:IDish) => {
                     return <Grid key={dish.id} item xs={12} md={6}>
                         <Card style={{ minHeight: 120}} onClick={() => {
-                            console.log(asPath);
-                            Router.push({
-                                pathname:`menu/${dish.id}`,
-                                query: {
-                                    menuId: props.menuId,
-                                    categoryId: props.categoryId
-                                }
-                            })
+                            // console.log(asPath);
+                            // Router.push({
+                            //     pathname:`menu/${dish.id}`,
+                            //     query: {
+                            //         menuId: props.menuId,
+                            //         categoryId: props.categoryId
+                            //     }
+                            // })
+
+                            dispatch(getCurrentDish(dish));
                         }}>
                             <CardContent sx={{ display: 'flex'}}>
                                     {
@@ -32,7 +35,7 @@ export const MenuItemList = (props: IProps) => {
                                             alt={`picture for ${dish.en_name}`} 
                                             width={125}
                                             height={80} 
-                                        /> : <div></div>
+                                        /> : null
                                     }
 
                                     <div style={{ padding: '0 1.5rem'}}>

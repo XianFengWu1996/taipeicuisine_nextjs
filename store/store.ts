@@ -1,35 +1,23 @@
-import { Action, AnyAction, combineReducers, configureStore, ThunkAction } from '@reduxjs/toolkit';
-import { createWrapper, HYDRATE } from 'next-redux-wrapper';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import adminSlice from './slice/adminSlice';
+import menuSlice from './slice/menuSlice';
 
-const combinedReducer = combineReducers({
-    admin: adminSlice
-});
-  
-const reducer = (state: any, action: AnyAction) => {
-    if (action.type === HYDRATE) {
-        const nextState = {
-        ...state, // use previous state
-        ...action.payload, // apply delta from hydration
-        };
-        return nextState;
-    } else {
-        return combinedReducer(state, action);
-    }
-};
+const reducer = combineReducers({ 
+  admin: adminSlice,
+  menus: menuSlice,
+})
 
-export const makeStore = () =>
-  configureStore({ reducer });
+export const store = configureStore({
+  reducer: reducer,
+})
 
-type Store = ReturnType<typeof makeStore>;
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch
 
-export type AppDispatch = Store['dispatch'];
-export type RootState = ReturnType<Store['getState']>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
+export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
-export const wrapper = createWrapper(makeStore, { debug: true });
+export default store;

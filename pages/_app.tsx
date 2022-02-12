@@ -5,7 +5,8 @@ import { getAuth } from 'firebase/auth'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfigurator } from '../components/snackbar'
 import axios from 'axios'
-import { wrapper } from '../store/store'
+import { Provider } from 'react-redux'
+import store from '../store/store'
 
 
 
@@ -29,11 +30,13 @@ export const fbAuth = getAuth(app);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
-    <SnackbarProvider maxSnack={3}>
-      <SnackbarUtilsConfigurator />
-      <Component {...pageProps} />
-    </SnackbarProvider>
+    <Provider store={store}>
+      <SnackbarProvider maxSnack={3}>
+        <SnackbarUtilsConfigurator />
+        <Component {...pageProps} />
+      </SnackbarProvider>
+    </Provider>
   </>
 }
 
-export default wrapper.withRedux(MyApp) 
+export default MyApp

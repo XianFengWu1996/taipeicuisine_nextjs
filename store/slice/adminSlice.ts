@@ -3,15 +3,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // Define a type for the slice state
 export interface AdminState {
   store_info: IStore,
-  menus: IMenu[],
-  currentSelectedDish: IDish,
 }
 
 // Define the initial state using that type
 const initialState: AdminState = {
-  store_info: {} as IStore,
-  menus: [],
-  currentSelectedDish: {} as IDish
+  store_info: {} as IStore
 }
 
 export const adminSlice = createSlice({
@@ -30,15 +26,7 @@ export const adminSlice = createSlice({
     }, 
     toggleServer: (state, { payload } : PayloadAction<boolean>) => {
       state.store_info.server_is_on = payload
-    }, 
-    
-    // menus
-    getInitialMenuData: (state, { payload } : PayloadAction<IMenu[]>) => {
-      state.menus = payload;
-    }, 
-    // getCurrentDish: (state, {payload} : PayloadAction<IDish>) => {
-    //   state.currentSelectedDish = payload
-    // },
+    }
   }
 })
 
@@ -48,11 +36,6 @@ export const {
     getInitialStoreInfo, 
     updateStoreHour, 
     toggleServer, 
-    getInitialMenuData,
-    // getCurrentDish
 } = adminSlice.actions
 
 export const storeInfo = (state: AdminState) => state.store_info;
-
-export const menus = (state: AdminState) => state.menus;
-
