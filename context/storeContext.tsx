@@ -81,16 +81,7 @@ export function StoreProvider({ children }: Props) {
     }
 
     const toggleServerStatus = async () => {
-        axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/status', {
-            server_is_on: !serverOn
-        }).then((response) => {
-            if(response.status === 200){
-                setServerOn((prev) => !prev);
-                Snackbar.success('Server status has been update')
-            }
-        }).catch((error) => {
-            handleAdminAxiosError(error, 'Failed to update server status');
-        });
+        
     }
 
     const getMenuData = (menus: IMenu[]) => {

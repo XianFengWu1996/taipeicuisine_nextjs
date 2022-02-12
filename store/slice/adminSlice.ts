@@ -24,12 +24,15 @@ export const adminSlice = createSlice({
     updateStoreHour: (state, { payload }: PayloadAction<IHours[]>) => {
       state.store_info.hours.splice(0, state.store_info.hours.length, ...payload);
     }, 
+    toggleServer: (state, { payload } : PayloadAction<boolean>) => {
+      state.store_info.server_is_on = payload
+    }
   }
 })
 
 export default adminSlice.reducer
 
-export const { getInitialStoreInfo, updateStoreHour } = adminSlice.actions
+export const { getInitialStoreInfo, updateStoreHour, toggleServer } = adminSlice.actions
 
 export const storeInfo = (state: AdminState) => state.store_info;
 

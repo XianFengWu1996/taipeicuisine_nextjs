@@ -30,6 +30,8 @@ export default function Login () {
                 throw new Error('Not authorized')
             });
 
+            console.log(response);
+
             if(response.status === 200){
                 Router.push('/admin/dashboard')
             } 

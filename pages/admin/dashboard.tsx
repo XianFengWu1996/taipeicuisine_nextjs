@@ -1,9 +1,8 @@
-import { Paper, Typography, SxProps, Button, Grid, CardContent, Card } from '@mui/material';
+import { Paper, Typography, SxProps, Button, Grid } from '@mui/material';
 import ResponsiveAppBar from '../../components/appbar';
 import { Box, Theme } from '@mui/system';
 import { DayOfWeekTile} from '../../components/admin/dashboard/dayHourTile';
 import { useEffect, useState } from 'react';
-import { useStore } from '../../context/storeContext'
 import { CSSProperties } from '@mui/styled-engine';
 import HourEditDialog from '../../components/admin/dashboard/dialog/hourEditDialog';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
@@ -12,9 +11,10 @@ import snackbar from '../../components/snackbar';
 import Router from 'next/router';
 import { signOut} from 'firebase/auth'
 import { fbAuth } from '../_app';
-import {  AdminState, getInitialStoreInfo } from '../../store/slice/adminSlice';
+import {  AdminState, getInitialStoreInfo, toggleServer } from '../../store/slice/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { isEmpty } from 'lodash'
+import { handleAdminAxiosError } from '../../utils/functions/errors';
 
 
 export const convertMinuteToDate = (min: number) => {
@@ -42,7 +42,7 @@ interface IDashboardProps {
 export default function Dashboard ({ storeData, error }: IDashboardProps){
     const dispatch = useAppDispatch()
     const admin:AdminState = useAppSelector(state => state.admin);
-    const store_info = admin.store_info;
+    const { server_is_on, name, address, primary_phone_number, sub_phone_number, hours } = admin.store_info;
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleClickOpen = () => {
@@ -51,6 +51,20 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
 
     const handleClose = () => {
         setOpenDialog(false);
+    }
+
+    const handleToggleServer = () => {
+        axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/status', {
+            server_is_on: !server_is_on
+        }).then((response) => {
+            if(response.status === 200){
+                dispatch(toggleServer(!server_is_on))
+
+                snackbar.success('Server status has been update')
+            }
+        }).catch((error) => {
+            handleAdminAxiosError(error, 'Failed to update server status');
+        });
     }
 
     useEffect(() => {
@@ -88,22 +102,22 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
     return <div>
         <ResponsiveAppBar />
         {
-            !isEmpty(store_info) ? <>
+            !isEmpty(admin.store_info) ? <>
             <Grid container spacing={4} sx={{ my: 3, mx: 3}} alignItems="center" >
                 <Grid item xs={12} md={8}>
-                        <div>{store_info.name}</div>
-                        <div>{store_info.address.street}, {store_info.address.city}, {store_info.address.state} {store_info.address.zipcode}</div>
-                        <div>Primary Phone Number: {store_info.primary_phone_number}</div>
-                        <div>Secondary Phone Number: {store_info.sub_phone_number[0]}</div>
+                        <div>{name}</div>
+                        <div>{address.street}, {address.city}, {address.state} {address.zipcode}</div>
+                        <div>Primary Phone Number: {primary_phone_number}</div>
+                        <div>Secondary Phone Number: {sub_phone_number[0]}</div>
                 </Grid>
                 <Grid item xs={12} md={4} >
                         <Button
-                            onClick={() => {}}
+                            onClick={handleToggleServer}
                             sx={{ 
-                                backgroundColor: !store_info.server_is_on ? 'green' : 'red',
+                                backgroundColor: !server_is_on ? 'green' : 'red',
                                 color: '#fff',
                             }}
-                            >{!store_info.server_is_on ? 'Accept Order' : 'Pause Order'}
+                            >{!server_is_on ? 'Accept Order' : 'Pause Order'}
                         </Button>
                 </Grid>
             </Grid>
@@ -113,7 +127,7 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
                     <Typography sx={titleStyle}>Store Hours</Typography>
 
                     {
-                        store_info.hours.map((day, index) => {
+                        hours.map((day, index) => {
                             return <DayOfWeekTile
                                 key={`${index}${day.day_of_week}`} 
                                 day={day}
