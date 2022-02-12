@@ -2,11 +2,9 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { StoreProvider } from '../context/storeContext'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfigurator } from '../components/snackbar'
 import axios from 'axios'
-import { Provider } from 'react-redux'
 import { wrapper } from '../store/store'
 
 
@@ -31,12 +29,10 @@ export const fbAuth = getAuth(app);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
-      <StoreProvider>
-        <SnackbarProvider maxSnack={3}>
-          <SnackbarUtilsConfigurator />
-          <Component {...pageProps} />
-        </SnackbarProvider>
-      </StoreProvider>
+    <SnackbarProvider maxSnack={3}>
+      <SnackbarUtilsConfigurator />
+      <Component {...pageProps} />
+    </SnackbarProvider>
   </>
 }
 

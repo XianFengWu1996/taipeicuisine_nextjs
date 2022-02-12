@@ -5,7 +5,8 @@ import React, { useEffect } from "react";
 import { MenuSelect } from "../../../components/admin/menu/menuSelect";
 import { MenuTab } from "../../../components/admin/menu/menuTab";
 import ResponsiveAppBar from "../../../components/appbar";
-import { useStore } from "../../../context/storeContext";
+import { useAppDispatch, useAppSelector } from "../../../store/hook";
+import { AdminState, getInitialMenuData } from "../../../store/slice/adminSlice";
 
 interface IProps {
     menus: IMenu[],
@@ -15,7 +16,9 @@ interface IProps {
 }
 
 export default function Menu (props:IProps){
-    const { menus, getMenuData } = useStore()
+    const dispatch = useAppDispatch();
+    const admin:AdminState = useAppSelector(state => state.admin)
+    const menus = admin.menus;
 
     const [menuLabel, setMenuLabel] = React.useState(props.menus[0].en_name ?? '');
     const [tabValue, setTabValue] = React.useState(0);
@@ -32,7 +35,7 @@ export default function Menu (props:IProps){
     };
 
     useEffect(() => {
-        getMenuData(props.menus)
+        dispatch(getInitialMenuData(props.menus));
     }, [])
 
     return <div>

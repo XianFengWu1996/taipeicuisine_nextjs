@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../store'
 
 // Define a type for the slice state
 export interface AdminState {
   store_info: IStore,
+  menus: IMenu[],
+  currentSelectedDish: IDish,
 }
 
 // Define the initial state using that type
 const initialState: AdminState = {
   store_info: {} as IStore,
+  menus: [],
+  currentSelectedDish: {} as IDish
 }
 
 export const adminSlice = createSlice({
@@ -16,6 +19,7 @@ export const adminSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    // store data
     getInitialStoreInfo: (state, { payload }: PayloadAction<IStore>) => {
       state.store_info = {
         ...payload
@@ -26,13 +30,29 @@ export const adminSlice = createSlice({
     }, 
     toggleServer: (state, { payload } : PayloadAction<boolean>) => {
       state.store_info.server_is_on = payload
-    }
+    }, 
+    
+    // menus
+    getInitialMenuData: (state, { payload } : PayloadAction<IMenu[]>) => {
+      state.menus = payload;
+    }, 
+    // getCurrentDish: (state, {payload} : PayloadAction<IDish>) => {
+    //   state.currentSelectedDish = payload
+    // },
   }
 })
 
 export default adminSlice.reducer
 
-export const { getInitialStoreInfo, updateStoreHour, toggleServer } = adminSlice.actions
+export const { 
+    getInitialStoreInfo, 
+    updateStoreHour, 
+    toggleServer, 
+    getInitialMenuData,
+    // getCurrentDish
+} = adminSlice.actions
 
 export const storeInfo = (state: AdminState) => state.store_info;
+
+export const menus = (state: AdminState) => state.menus;
 
