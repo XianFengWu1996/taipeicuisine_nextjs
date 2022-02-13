@@ -6,7 +6,7 @@ import { MenuSelect } from "../../../components/admin/menu/menuSelect";
 import { MenuTab } from "../../../components/admin/menu/menuTab";
 import ResponsiveAppBar from "../../../components/appbar";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
-import { getInitialMenuData, MenuState } from "../../../store/slice/menuSlice";
+import { getInitialMenuData, handleOnMenuChange, handleOnTabChange, MenuState } from "../../../store/slice/menuSlice";
 
 interface IProps {
     menus: IMenu[],
@@ -19,18 +19,15 @@ export default function Menu (props:IProps){
     const dispatch = useAppDispatch();
     const menus: MenuState = useAppSelector(state => state.menus)
 
-    const [menuLabel, setMenuLabel] = React.useState(props.menus[0].en_name ?? '');
-    const [tabValue, setTabValue] = React.useState(0);
-
     // handles if the user change the menu
     const handleMenuChange = (e: SelectChangeEvent) => {
-        setMenuLabel(e.target.value);
-        setTabValue(0);
+        console.log(e.target.value);
     };
 
     // handles if the user change the tab
     const handleTabChange = (_: React.SyntheticEvent<Element, Event>, newValue: number) => {
-        setTabValue(newValue);
+        console.log(newValue);
+        dispatch(handleOnTabChange(newValue));
     };
 
     useEffect(() => {
@@ -39,17 +36,13 @@ export default function Menu (props:IProps){
 
     return <div>
         <ResponsiveAppBar />
-        <MenuSelect 
-            value={menuLabel}
-            handleChange={handleMenuChange}
+        <MenuSelect />
+        {/* <MenuTab
             menus={menus.menus}
-        />
-        <MenuTab
-            menus={menus.menus}
-            menuSelect={menuLabel}
-            tabValue={tabValue}
+            menuSelect={menus.currentSelectedMenu}
+            tabValue={menus.currentSelectedTab}
             handleTabChange={handleTabChange}
-        />
+        /> */}
     </div>
 }
 

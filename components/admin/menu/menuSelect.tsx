@@ -1,26 +1,40 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
+import { isEmpty } from "lodash";
+import { handleOnMenuChange, handleOnTabChange } from "../../../store/slice/menuSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/store"
 
-interface IProps {
-    value: string, 
-    handleChange: (_: SelectChangeEvent) => void,
-    menus: IMenu[]
-}
+export const MenuSelect = () => {
+    const menuState = useAppSelector(state => state.menus);
+    const dispatch = useAppDispatch();
 
-export const MenuSelect = (props: IProps) => {
-    return <FormControl sx={{ margin: '1.5rem 1rem', minWidth: '250px'}}>
-    <InputLabel id="menu-select">Menu</InputLabel>
-    <Select
-        labelId="menu-select-label"
-        id="menu-select"
-        value={props.value}
-        label="Menu"
-        onChange={props.handleChange}
-    >
-        {
-            props.menus.map((menu) => {
-               return <MenuItem key={menu.id} value={menu.en_name}>{menu.en_name} {menu.ch_name}</MenuItem>
-            })
+    const handleOnSelectChange = (e: SelectChangeEvent<string>) => {
+        //when the select has change, use the id to locate the selected menu
+        const selectedMenu = menuState.menus.find((menu) => menu.id ===  e.target.value);
+
+        // only when the menu is found, dispatch to the store
+        if(selectedMenu){
+            dispatch(handleOnMenuChange(selectedMenu));
+            dispatch(handleOnTabChange(0));
         }
-    </Select>
-</FormControl>
+    }
+    return <>
+        {
+            !isEmpty(menuState.currentSelectedMenu) ? <FormControl sx={{ margin: '1.5rem 1rem', minWidth: '250px'}}>
+                <InputLabel id="menu-select">Menu</InputLabel>
+                <Select
+                    labelId="menu-select-label"
+                    id="menu-select"
+                    value={menuState.currentSelectedMenu.id}
+                    label="Menu"
+                    onChange={handleOnSelectChange}
+                >
+                    {
+                        menuState.menus.map((menu) => {
+                        return <MenuItem key={menu.id} value={menu.id}>{menu.en_name} {menu.ch_name}</MenuItem>
+                        })
+                    }
+                </Select>
+            </FormControl> : null
+        }
+    </>
 }
