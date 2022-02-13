@@ -1,19 +1,15 @@
 import { Paper, Tab, Tabs } from "@mui/material"
 import { Box } from "@mui/system"
 import { SyntheticEvent, useEffect, useState } from "react";
+import { handleOnTabChange } from "../../../store/slice/menuSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { MenuItemList } from "./menuItem";
 
-interface IProps {
-    menus: IMenu[],
-    menuSelect: string,
-    tabValue: number,
-    handleTabChange: (_:SyntheticEvent<Element, Event>, v: number) => void
-}
+export const MenuTab = () => {
 
-export const MenuTab = (props: IProps) => {
+    const { currentSelectedMenu, currentSelectedTab} = useAppSelector(state => state.menus);
+    const dispatch = useAppDispatch();
     const [scrollPosition, setScrollPosition] = useState(0);
-    let currentlySelected: IMenu | undefined;
-
 
     // handles getting the scroll position
     const handleScroll = () => {
@@ -23,34 +19,34 @@ export const MenuTab = (props: IProps) => {
     
     // rendering correct tab base on the menu 
     const handleTabView = () => {
-        currentlySelected = props.menus.find(el => el.en_name === props.menuSelect); 
-
-        return currentlySelected?.category.map((category) => {
-            return <Tab
-                key={category.id} 
-                label={category.en_name} 
-                id={`tab-${props.tabValue}`} 
-            />
-        })
+        if(currentSelectedMenu) {
+            if(currentSelectedMenu.category){
+                return currentSelectedMenu.category.map((category) => {
+                    return <Tab
+                        key={category.id} 
+                        label={category.en_name} 
+                        id={`tab-${category.id}`} 
+                    />
+                })
+            }
+        }
     }
     
     // rendering the tab children base on the selected menu and selected tab
     const handleTabChildren = () => {
+        if(currentSelectedMenu){
+            return <MenuItemList />   
+        }   
+    }
 
-        if(currentlySelected){
-            let categoryId = currentlySelected.category[props.tabValue].id;
-
-            return <MenuItemList 
-                list={currentlySelected.category[props.tabValue].dishes}
-                menuId={currentlySelected.id}
-                categoryId={categoryId}
-            />
-        }
+    const handleTabChange = (_: SyntheticEvent<Element, Event>, newValue: number) => {
+        dispatch(handleOnTabChange({ tabIndex: newValue, category: currentSelectedMenu.category[newValue] }));
     }
     
     const scrollBarStyle:React.CSSProperties | undefined = {
         position: scrollPosition > 170 ? 'sticky' : 'relative',
-        top: scrollPosition > 170 ? 0 : undefined, 
+        top: scrollPosition > 170 ? -1 : 0, 
+        zIndex: 1000
     }
 
     useEffect(() => {
@@ -61,7 +57,7 @@ export const MenuTab = (props: IProps) => {
         };
     }, []);
 
-    return  <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', minHeight: scrollPosition > 170 ? '90vh' : '100vh' }}
+    return  <Box sx={{ flexGrow: 1, bgcolor: 'background.paper' }}
          >  
             <Paper style={ scrollBarStyle}>
                 <Tabs
@@ -69,11 +65,12 @@ export const MenuTab = (props: IProps) => {
                     visibleScrollbar
                     scrollButtons="auto"
                     allowScrollButtonsMobile
-                    value={props.tabValue}
-                    onChange={props.handleTabChange}
+                    value={currentSelectedTab ?? 0  }
+                    onChange={handleTabChange}
                     aria-label="Menu Display"
                     sx={{ borderRight: 1, borderColor: 'divider', padding: '0 3rem' }}
                 >
+                
                 {handleTabView()}
                 </Tabs>
             </Paper>

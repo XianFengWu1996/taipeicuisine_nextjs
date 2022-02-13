@@ -1,12 +1,11 @@
-import { SelectChangeEvent } from "@mui/material";
 import axios from "axios"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import React, { useEffect } from "react";
 import { MenuSelect } from "../../../components/admin/menu/menuSelect";
 import { MenuTab } from "../../../components/admin/menu/menuTab";
 import ResponsiveAppBar from "../../../components/appbar";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
-import { getInitialMenuData, handleOnMenuChange, handleOnTabChange, MenuState } from "../../../store/slice/menuSlice";
+import { useAppDispatch } from "../../../store/store";
+import { getInitialMenuData } from "../../../store/slice/menuSlice";
 
 interface IProps {
     menus: IMenu[],
@@ -17,18 +16,6 @@ interface IProps {
 
 export default function Menu (props:IProps){
     const dispatch = useAppDispatch();
-    const menus: MenuState = useAppSelector(state => state.menus)
-
-    // handles if the user change the menu
-    const handleMenuChange = (e: SelectChangeEvent) => {
-        console.log(e.target.value);
-    };
-
-    // handles if the user change the tab
-    const handleTabChange = (_: React.SyntheticEvent<Element, Event>, newValue: number) => {
-        console.log(newValue);
-        dispatch(handleOnTabChange(newValue));
-    };
 
     useEffect(() => {
         dispatch(getInitialMenuData(props.menus));
@@ -37,12 +24,7 @@ export default function Menu (props:IProps){
     return <div>
         <ResponsiveAppBar />
         <MenuSelect />
-        {/* <MenuTab
-            menus={menus.menus}
-            menuSelect={menus.currentSelectedMenu}
-            tabValue={menus.currentSelectedTab}
-            handleTabChange={handleTabChange}
-        /> */}
+        <MenuTab />
     </div>
 }
 
