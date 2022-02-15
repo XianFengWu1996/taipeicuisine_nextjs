@@ -12,28 +12,28 @@ export const CheckBoxList = (props: ICheckboxListProps) => {
                 <CheckBoxWithLabel
                     label="Spicy"
                     name="is_spicy"
-                    checked={props.dish.is_spicy}
+                    checked={props.dish.is_spicy ?? false}
                     onChange={props.handleCheckboxChange}
                 />
 
                 <CheckBoxWithLabel 
                     label="In Stock"
                     name="in_stock"
-                    checked={props.dish.in_stock}
+                    checked={props.dish.in_stock ?? false}
                     onChange={props.handleCheckboxChange}
                 />
 
                 <CheckBoxWithLabel 
                     label="Popular"
                     name="is_popular"
-                    checked={props.dish.is_popular}
+                    checked={props.dish.is_popular ?? false}
                     onChange={props.handleCheckboxChange}
                 />
 
                 <CheckBoxWithLabel 
                     label="Lunch"
                     name="is_lunch"
-                    checked={props.dish.is_lunch}
+                    checked={props.dish.is_lunch ?? false}
                     onChange={props.handleCheckboxChange}
                 />  
             </FormGroup>

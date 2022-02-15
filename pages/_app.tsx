@@ -7,9 +7,7 @@ import { SnackbarUtilsConfigurator } from '../components/snackbar'
 import axios from 'axios'
 import { Provider } from 'react-redux'
 import store from '../store/store'
-
-
-
+ 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';

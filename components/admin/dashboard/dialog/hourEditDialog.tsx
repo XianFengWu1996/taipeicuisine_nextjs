@@ -3,11 +3,11 @@ import Button from '@mui/material/Button';
 import { Dialog,DialogActions,DialogContent,DialogTitle  } from '@mui/material'
 import { HourEditDialogContent } from './hourEditDialogContent';
 import { AdminState, updateStoreHour } from '../../../../store/slice/adminSlice';
-import { useAppDispatch, useAppSelector } from '../../../../store/hook';
 import { cloneDeep, isEqual, toNumber } from 'lodash';
 import axios, { AxiosError } from 'axios';
 import snackbar from '../../../snackbar';
 import { handleAdminAxiosError } from '../../../../utils/functions/errors';
+import { useAppDispatch, useAppSelector } from '../../../../store/store';
 
 interface dialogProps {
     open: boolean,

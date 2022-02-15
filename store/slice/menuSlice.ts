@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { isEmpty } from 'lodash';
 
+
 // Define a type for the slice state
 export interface MenuState {
   menus: IMenu[],
@@ -26,7 +27,9 @@ export const menuSlice = createSlice({
     // menus
     getInitialMenuData: (state, { payload } : PayloadAction<IMenu[]>) => {
       // assign the menus
-      state.menus = payload;
+      if(payload){
+        state.menus = payload;
+      }
   
       // initialize the default menu
       state.currentSelectedMenu = state.menus[0];
@@ -46,6 +49,18 @@ export const menuSlice = createSlice({
         state.currentSelectedCategory = payload.category
       }
     },
+    handleUpdateDish: (state, { payload } : PayloadAction<IDish>) => {
+      let menus = state.menus.find((menu) => menu.id === state.currentSelectedMenu.id);
+
+      if(menus){
+        let category = menus.category.find((category) => category.id === state.currentSelectedCategory.id);
+        if(category){
+          let index = category.dishes.findIndex((dish) =>  dish.id === payload.id);
+          category.dishes.splice(index, 1, payload);
+          state.currentSelectedCategory.dishes.splice(index, 1, payload);
+        }
+      }
+    }
   }
 })
 
@@ -56,6 +71,7 @@ export const {
     getCurrentDish,
     handleOnMenuChange,
     handleOnTabChange,
+    handleUpdateDish
 } = menuSlice.actions
 
 export const menus = (state: MenuState) => state.menus;

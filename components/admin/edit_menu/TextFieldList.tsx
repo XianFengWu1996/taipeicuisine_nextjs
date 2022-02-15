@@ -12,28 +12,28 @@ export const TextFieldList = (props: ITextFieldListProps) => {
             <MenuEditTextField 
                 label="Label Id"
                 name="label_id"
-                value={props.dish.label_id}
+                value={props.dish.label_id ?? ''}
                 onChange={props.handleOnChange}
             />
 
             <MenuEditTextField 
                 label="Dish Name (English)"
                 name="en_name"
-                value={props.dish.en_name}
+                value={props.dish.en_name ?? ''}
                 onChange={props.handleOnChange}
             />
 
             <MenuEditTextField 
                 label="Dish Name (Chinese)"
                 name='ch_name'
-                value={props.dish.ch_name}
+                value={props.dish.ch_name ?? ''}
                 onChange={props.handleOnChange}
             />
 
             <MenuEditTextField 
                 label="Description"
                 name='description'
-                value={props.dish.description}
+                value={props.dish.description ?? ''}
                 required={false}
                 onChange={props.handleOnChange}
             />
@@ -41,7 +41,7 @@ export const TextFieldList = (props: ITextFieldListProps) => {
             <MenuEditTextField
                 label="Price"
                 name="price"
-                value={props.dish.price.toString()}
+                value={props.dish.price.toString() ?? ''}
                 type="number"
                 onChange={props.handleOnChangeNumber}
             />
@@ -52,7 +52,7 @@ export const TextFieldList = (props: ITextFieldListProps) => {
 
 export const MenuEditTextField = (props: ITextFieldProps) => {
     return <TextField
-        id="outlined-basic"
+        id="outlined-basic"        
         label={props.label} 
         type={props.type ?? 'text'}
         variant="outlined" 

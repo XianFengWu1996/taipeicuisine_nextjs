@@ -12,7 +12,7 @@ import Router from 'next/router';
 import { signOut} from 'firebase/auth'
 import { fbAuth } from '../_app';
 import {  AdminState, getInitialStoreInfo, toggleServer } from '../../store/slice/adminSlice';
-import { useAppDispatch, useAppSelector } from '../../store/hook';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import { isEmpty } from 'lodash'
 import { handleAdminAxiosError } from '../../utils/functions/errors';
 

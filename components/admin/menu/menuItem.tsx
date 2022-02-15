@@ -1,11 +1,22 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material"
 import Image from "next/image"
+import { useState } from "react";
 import { getCurrentDish } from "../../../store/slice/menuSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/store"
+import { AdminMenuDialog } from "./menuDialog";
 
 export const MenuItemList = () => {
     const dispatch = useAppDispatch();
     const { currentSelectedCategory } = useAppSelector(state => state.menus)
+    const [open, setOpen] = useState<boolean>(false);
+
+    const handleOnClose = () => {
+        setOpen(false);
+    }
+
+    const handleOpen = () => {
+        setOpen(true);
+    }
 
     return <div style={{ margin: '1.5rem 2rem'}}>
         <Grid container spacing={2}>
@@ -14,6 +25,7 @@ export const MenuItemList = () => {
                     return <Grid key={dish.id} item xs={12} md={6}>
                            <Card style={{ minHeight: 120}} onClick={() => {
                                dispatch(getCurrentDish(dish));
+                               handleOpen();
                            }}>
                                <CardContent sx={{ display: 'flex'}}>
                                        {
@@ -36,5 +48,11 @@ export const MenuItemList = () => {
                    }) : null
             }
         </Grid>
+
+
+        <AdminMenuDialog 
+            open={open}
+            handleClose={handleOnClose}
+        />
     </div>
 }
