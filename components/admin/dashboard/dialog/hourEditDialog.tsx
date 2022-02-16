@@ -6,7 +6,7 @@ import { AdminState, updateStoreHour } from '../../../../store/slice/adminSlice'
 import { cloneDeep, isEqual, toNumber } from 'lodash';
 import axios, { AxiosError } from 'axios';
 import snackbar from '../../../snackbar';
-import { handleAdminAxiosError } from '../../../../utils/functions/errors';
+import { handleAdminTryCatchError } from '../../../../utils/functions/errors';
 import { useAppDispatch, useAppSelector } from '../../../../store/store';
 
 interface dialogProps {
@@ -54,7 +54,7 @@ export default function HourEditDialog({ open, handleClose }:dialogProps) {
             handleClose();
         }
     }).catch((error: Error | AxiosError) => {
-        handleAdminAxiosError(error, 'Failed to update hours');
+        handleAdminTryCatchError(error, 'Failed to update hours');
     });  
 
   }

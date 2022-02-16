@@ -1,20 +1,20 @@
 import { Paper, Typography, SxProps, Button, Grid } from '@mui/material';
-import ResponsiveAppBar from '../../components/appbar';
+import ResponsiveAppBar from '../../../components/appbar';
 import { Box, Theme } from '@mui/system';
-import { DayOfWeekTile} from '../../components/admin/dashboard/dayHourTile';
+import { DayOfWeekTile} from '../../../components/admin/dashboard/dayHourTile';
 import { useEffect, useState } from 'react';
 import { CSSProperties } from '@mui/styled-engine';
-import HourEditDialog from '../../components/admin/dashboard/dialog/hourEditDialog';
+import HourEditDialog from '../../../components/admin/dashboard/dialog/hourEditDialog';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import axios from 'axios';
-import snackbar from '../../components/snackbar';
+import snackbar from '../../../components/snackbar';
 import Router from 'next/router';
 import { signOut} from 'firebase/auth'
-import { fbAuth } from '../_app';
-import {  AdminState, getInitialStoreInfo, toggleServer } from '../../store/slice/adminSlice';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { fbAuth } from '../../_app';
+import {  AdminState, getInitialStoreInfo, toggleServer } from '../../../store/slice/adminSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { isEmpty } from 'lodash'
-import { handleAdminAxiosError } from '../../utils/functions/errors';
+import { handleAdminTryCatchError } from '../../../utils/functions/errors';
 
 
 export const convertMinuteToDate = (min: number) => {
@@ -63,7 +63,7 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
                 snackbar.success('Server status has been update')
             }
         }).catch((error) => {
-            handleAdminAxiosError(error, 'Failed to update server status');
+            handleAdminTryCatchError(error, 'Failed to update server status');
         });
     }
 

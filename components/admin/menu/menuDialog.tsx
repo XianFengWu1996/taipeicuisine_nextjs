@@ -2,8 +2,9 @@ import { deepCopy } from "@firebase/util"
 import { Button, Dialog, DialogActions, DialogContent, Grid, Typography } from "@mui/material"
 import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react"
-import { getCurrentDish, handleUpdateDish } from "../../../store/slice/menuSlice"
+import { handleUpdateDish } from "../../../store/slice/menuSlice"
 import { useAppDispatch, useAppSelector } from "../../../store/store"
+import { handleAdminTryCatchError } from "../../../utils/functions/errors"
 import { CheckBoxList } from "../edit_menu/CheckboxList"
 import { ImageUpload } from "../edit_menu/ImageUpload"
 import { TextFieldList } from "../edit_menu/TextFieldList"
@@ -80,14 +81,15 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
                     }}
                 );
 
-                // throw error if no url was received
                 if(!imageResult.data.url){
-                    throw new Error('Failed to store image')
+                    throw new Error('Failed to generate image url')
                 }
                 difference = {
                     ...difference, 
                     pic_url: imageResult.data.url
                 }
+
+                setFile({} as IFile);              
             }
 
             await axios.patch(
@@ -99,29 +101,26 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
                         category_name: currentSelectedCategory.document_name,
                         menuId:  currentSelectedMenu.id
                     }
-            });
+            })
+            
+            let newDish = {
+                ...dish,
+                ...difference
+            }
 
             props.handleClose();
-
-            dispatch(handleUpdateDish(dish));
-
-            
+            dispatch(handleUpdateDish(newDish));
         } catch (error) {
-            console.log(error);
+            handleAdminTryCatchError(error, 'Failed to update dish'); 
         }
     }
 
     useEffect(() => {
-        console.log('start')
         let deepCopyDish = deepCopy(currentSelectedDish);
 
         setDish(deepCopyDish)
         setLabel(`${deepCopyDish.label_id}. ${deepCopyDish.en_name} ${deepCopyDish.ch_name}`);
     }, [currentSelectedDish])
-
-    useEffect(() => {
-        return () => console.log('clean up')
-    }, [])
 
     return <Dialog open={props.open} onClose={props.handleClose} maxWidth='lg' >
         <DialogContent sx={{ padding: '5%'}}>
@@ -143,7 +142,6 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
                         </Grid>
 
                 <Grid item xs={12} md={7} alignItems='center' >
-
                     <TextFieldList
                         dish={dish}
                         handleOnChange={handleOnChange}
@@ -154,7 +152,6 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
                         dish={dish}
                         handleCheckboxChange={handleCheckboxChange}
                     />
-        
                 </Grid>
                 </Grid>
             </form>

@@ -1,6 +1,6 @@
 import { ListItem, ListItemButton, ListItemText } from '@mui/material';
 import React from 'react';
-import { convertMinuteToDate } from '../../../pages/admin/dashboard';
+import { convertMinuteToDate } from '../../../pages/admin/dashboard/dashboard';
 
 // ==========================================
 // THE COMPONENTS WILL TAKING IN AN HOUR OBJECT AND THE CURRENT INDEX

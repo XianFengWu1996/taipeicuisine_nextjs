@@ -1,5 +1,5 @@
 import { Box, ButtonBase, Typography } from "@mui/material";
-import { convertMinuteToDate } from "../../../../pages/admin/dashboard";
+import { convertMinuteToDate } from "../../../../pages/admin/dashboard/dashboard";
 
 export const HourDisplayBox = ({day, toggleCard} : {day: IHours, toggleCard: () => void}) => {
     const openHour = convertMinuteToDate(day.open_hour).hourToString;

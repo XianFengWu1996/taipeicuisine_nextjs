@@ -1,6 +1,6 @@
 import { Box, Button, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 import React from "react";
-import { convertMinuteToDate } from "../../../../pages/admin/dashboard";
+import { convertMinuteToDate } from "../../../../pages/admin/dashboard/dashboard";
 
 const selectStyle:React.CSSProperties | undefined = {
     width: 70,

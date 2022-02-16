@@ -37,7 +37,6 @@ export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePro
         }
 
         let menus: IMenu[] = [];
-        menus.push(response.data.special);
         menus.push(response.data.fullday);
         menus.push(response.data.lunch);
 
