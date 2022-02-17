@@ -12,3 +12,7 @@ export const convertMinuteToDate = (min: number) => {
         minuteToString: minute < 10 ? `0${minute}` : minute.toString(),
     }
 }
+
+export const hasExpired = (timestamp: number | undefined) => {
+    return timestamp && timestamp <= Date.now()
+}

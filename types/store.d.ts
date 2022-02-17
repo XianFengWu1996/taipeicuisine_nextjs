@@ -9,7 +9,8 @@ declare global {
         special_hour: [ISpecial_hour],
         primary_phone_number: string,
         sub_phone_number: [string],
-        address: IAddress
+        address: IAddress,
+        expiration: number
     }
 
     interface IAddress {

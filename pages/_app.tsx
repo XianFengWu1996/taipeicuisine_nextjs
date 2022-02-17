@@ -29,10 +29,10 @@ export const fbAuth = getAuth(app);
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
     <Provider store={store}>
-      <SnackbarProvider maxSnack={3}>
-        <SnackbarUtilsConfigurator />
-        <Component {...pageProps} />
-      </SnackbarProvider>
+        <SnackbarProvider maxSnack={3}>
+          <SnackbarUtilsConfigurator />
+          <Component {...pageProps} />
+        </SnackbarProvider>
     </Provider>
   </>
 }

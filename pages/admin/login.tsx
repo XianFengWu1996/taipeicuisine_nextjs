@@ -12,7 +12,7 @@ import { LoadingButton } from "@mui/lab";
 export default function Login () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false); // move this loading to redux store 
 
     const login:MouseEventHandler<HTMLButtonElement> | undefined= async (e) => {
         setLoading(true);

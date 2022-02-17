@@ -14,6 +14,7 @@ import { isEmpty } from 'lodash'
 import { handleAdminNotAuthRedirect, handleAdminTryCatchError, serverSideCheckAuth } from '../../../utils/functions/errors';
 import { isNotAuthError } from '../../../components/error/custom';
 import { LoadingButton } from '@mui/lab';
+import { hasExpired } from '../../../utils/functions/time';
 
 
 
@@ -54,13 +55,13 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
                 handleAdminTryCatchError(error, 'Failed to update server status');
             }
         }
-
         setLoading(false);
-        
     }
 
     useEffect(() => {
         handleAdminNotAuthRedirect(error);
+
+        console.log(storeData);
 
         if(storeData){
             dispatch(getInitialStoreInfo(storeData));
@@ -138,6 +139,15 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
 
 export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
     try{        
+
+        // check if there is expiration
+        if(ctx.query.expiration){
+            // if not expired
+            if(!hasExpired(Number(ctx.query.expiration))){
+                return { props: { }};
+            }
+        }
+
         let cookies: string | undefined = ctx.req.headers.cookie;
         serverSideCheckAuth(cookies);
 
