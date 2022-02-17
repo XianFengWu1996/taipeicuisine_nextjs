@@ -1,6 +1,6 @@
 import { Box, Button, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 import React from "react";
-import { convertMinuteToDate } from "../../../../pages/admin/dashboard/dashboard";
+import { convertMinuteToDate } from "../../../../utils/functions/time";
 
 const selectStyle:React.CSSProperties | undefined = {
     width: 70,
@@ -46,15 +46,16 @@ interface IEditHourCardProps {
 }
 
 export const EditHourCard = ({ day, handleOnCardSave, closeCard }:IEditHourCardProps) => {
-
+    const openTime = convertMinuteToDate(day.open_hour);
+    const closeTime = convertMinuteToDate(day.close_hour);
     const [openHour, setOpenHour] = React.useState({ 
-        hr: convertMinuteToDate(day.open_hour).hourToString,
-        min: convertMinuteToDate(day.open_hour).minuteToString,
+        hr: openTime.hourToString,
+        min: openTime.minuteToString,
     });
 
     const [closeHour, setCloseHour] = React.useState({
-        hr: convertMinuteToDate(day.close_hour).hourToString,
-        min: convertMinuteToDate(day.close_hour).minuteToString,
+        hr: closeTime.hourToString,
+        min: closeTime.minuteToString,
     });
   
     const editHourHour = (e: SelectChangeEvent<string>, _: React.ReactNode) => {

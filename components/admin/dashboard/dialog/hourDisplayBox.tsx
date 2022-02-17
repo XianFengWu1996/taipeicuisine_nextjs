@@ -1,11 +1,10 @@
 import { Box, ButtonBase, Typography } from "@mui/material";
-import { convertMinuteToDate } from "../../../../pages/admin/dashboard/dashboard";
+import { convertMinuteToDate } from "../../../../utils/functions/time";
 
 export const HourDisplayBox = ({day, toggleCard} : {day: IHours, toggleCard: () => void}) => {
-    const openHour = convertMinuteToDate(day.open_hour).hourToString;
-    const openMinute = convertMinuteToDate(day.open_hour).minuteToString;
-    const closeHour = convertMinuteToDate(day.close_hour).hourToString;
-    const closeMinute = convertMinuteToDate(day.close_hour).minuteToString;
+    const openTime = convertMinuteToDate(day.open_hour);
+    const closeTime = convertMinuteToDate(day.close_hour);
+
     return <>
         <Box    
             sx={{
@@ -24,7 +23,7 @@ export const HourDisplayBox = ({day, toggleCard} : {day: IHours, toggleCard: () 
                 }}
             >
                 <Typography>
-                    {openHour}:{openMinute}
+                    {openTime.hourToString}:{openTime.minuteToString}
                 </Typography>
             </ButtonBase>    
 
@@ -36,7 +35,7 @@ export const HourDisplayBox = ({day, toggleCard} : {day: IHours, toggleCard: () 
                 }}
             >
                 <Typography>
-                    {closeHour}:{closeMinute}
+                    {closeTime.hourToString}:{closeTime.minuteToString}
                 </Typography>
             </ButtonBase>
             </Box>

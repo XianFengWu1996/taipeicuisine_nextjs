@@ -3,6 +3,8 @@ import { signOut } from "firebase/auth";
 import Router from "next/router";
 import { fbAuth } from "../../pages/_app";
 import snackbar from "../../components/snackbar";
+import { GetServerSidePropsContext } from "next";
+import { NotAuthorizeError } from "../../components/error/custom";
 
 export const handleAdminTryCatchError = (error: unknown, genericMsg?: string) => {
     // check if the error is an axios error
@@ -31,5 +33,24 @@ export const handleAdminTryCatchError = (error: unknown, genericMsg?: string) =>
        
     } else {
         snackbar.error((error as Error).message ?? 'Unexpected error')
+    }
+}
+
+export const serverSideCheckAuth = (cookies: string | undefined) => {
+    if(cookies && !cookies.includes('ID_TOKEN')) {
+        throw new NotAuthorizeError('Not Authenticated');
+    }
+}
+
+export const handleAdminNotAuthRedirect = (error : { msg: string, code: number}) => {
+    if(error){
+        if(error.code === 401){
+            signOut(fbAuth);
+            Router.push('/admin/login');
+            snackbar.error(error.msg);
+            return;
+        }
+
+        snackbar.error(error.msg)
     }
 }

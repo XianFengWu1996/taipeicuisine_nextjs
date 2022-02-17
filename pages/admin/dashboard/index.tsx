@@ -8,34 +8,20 @@ import HourEditDialog from '../../../components/admin/dashboard/dialog/hourEditD
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import axios from 'axios';
 import snackbar from '../../../components/snackbar';
-import Router from 'next/router';
-import { signOut} from 'firebase/auth'
-import { fbAuth } from '../../_app';
 import {  AdminState, getInitialStoreInfo, toggleServer } from '../../../store/slice/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { isEmpty } from 'lodash'
-import { handleAdminTryCatchError } from '../../../utils/functions/errors';
+import { handleAdminNotAuthRedirect, handleAdminTryCatchError, serverSideCheckAuth } from '../../../utils/functions/errors';
+import { isNotAuthError } from '../../../components/error/custom';
 
 
-export const convertMinuteToDate = (min: number) => {
-    // 9:10 = 550 
-    let hour, minute;
 
-    minute = min % 60;
-    hour = (min - minute) / 60;
-
-    return {
-        hour,
-        minute,
-        hourToString: hour < 10 ? `0${hour}` : hour.toString(),
-        minuteToString: minute < 10 ? `0${minute}` : minute.toString(),
-    }
-}
 
 interface IDashboardProps {
     storeData?: IStore,
     error: {
-        msg: string
+        msg: string,
+        code: number,
     }
 }
 
@@ -53,27 +39,20 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
         setOpenDialog(false);
     }
 
-    const handleToggleServer = () => {
-        axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/status', {
-            server_is_on: !server_is_on
-        }).then((response) => {
-            if(response.status === 200){
-                dispatch(toggleServer(!server_is_on))
-
-                snackbar.success('Server status has been update')
-            }
-        }).catch((error) => {
+    const handleToggleServer = async  () => {
+        try {
+            await axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/status', {
+                server_is_on: !server_is_on
+            })
+            dispatch(toggleServer(!server_is_on))
+            snackbar.success('Server status has been update')
+        } catch (error) {
             handleAdminTryCatchError(error, 'Failed to update server status');
-        });
+        }
     }
 
     useEffect(() => {
-        if(error){
-            signOut(fbAuth);
-            Router.push('/admin/login');
-            snackbar.error(error.msg);
-            return;
-        }
+        handleAdminNotAuthRedirect(error);
 
         if(storeData){
             dispatch(getInitialStoreInfo(storeData));
@@ -148,35 +127,24 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
     </div>
 }
 
-export const getServerSideProps:GetServerSideProps = async(context: GetServerSidePropsContext) => {
+export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
     try{        
-        if(!context.req.headers.cookie?.includes('ID_TOKEN')){
-            throw new Error('Not Authenticated')
-        }
+        let cookies: string | undefined = ctx.req.headers.cookie;
+        serverSideCheckAuth(cookies);
 
-        let response = await axios({
-            method: 'GET',
-            url: 'http://localhost:5001/foodorder-43af7/us-central1/admin/store',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-                Cookie: context.req.headers.cookie!,
-            },
-            withCredentials: true,
-        })        
-
-        if(response.status !== 200 && !response.data.storeData) throw new Error('Failed to get store data') 
+        let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/admin/store', {
+            headers: {  Cookie: cookies! }
+        })     
 
         return {
-            props: {
-                storeData: response.data.storeData, 
-            }
+            props: { storeData: response.data.storeData }
         }      
     } catch (error) {
         return {
             props: {
                 error: {
-                    msg: (error as Error).message ?? 'Authentication fail'
+                    msg: (error as Error).message ?? 'Authentication fail',
+                    code: isNotAuthError(error as Error) ? 401 : 400
                 }
             }
         }

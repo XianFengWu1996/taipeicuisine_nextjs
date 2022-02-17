@@ -30,6 +30,10 @@ export default function Menu (props:IProps){
 
 export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
     try{        
+        if(!ctx.req.headers.cookie?.includes('ID_TOKEN')){
+            throw new Error('Not Authenticated')
+        }
+
         let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/store/menus');
 
         if(response.status !== 200){

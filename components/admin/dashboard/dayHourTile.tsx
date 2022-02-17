@@ -1,6 +1,6 @@
 import { ListItem, ListItemButton, ListItemText } from '@mui/material';
 import React from 'react';
-import { convertMinuteToDate } from '../../../pages/admin/dashboard/dashboard';
+import { convertMinuteToDate } from '../../../utils/functions/time';
 
 // ==========================================
 // THE COMPONENTS WILL TAKING IN AN HOUR OBJECT AND THE CURRENT INDEX
@@ -35,11 +35,14 @@ export const DayOfWeekTile = (props: TileProps) => {
 
     // DISPLAY THE HOUR OR 'CLOSE' DEPENDING ON THE VARIABLE
     const checkStoreClose = () => {
+        const openTime = convertMinuteToDate(day.open_hour);
+        const closeTime = convertMinuteToDate(day.close_hour);
+
         if(!day.open_for_business){
             return 'Close'
         } else {
-            return `${convertMinuteToDate(day.open_hour).hourToString}:${convertMinuteToDate(day.open_hour).minuteToString}
-            - ${convertMinuteToDate(day.close_hour).hourToString}:${convertMinuteToDate(day.close_hour).minuteToString}`
+            return `${openTime.hourToString}:${openTime.minuteToString}
+            - ${closeTime.hourToString}:${closeTime.minuteToString}`
         }
     }
     return <>
