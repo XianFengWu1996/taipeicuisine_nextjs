@@ -1,4 +1,5 @@
 import { deepCopy } from "@firebase/util"
+import { LoadingButton } from "@mui/lab"
 import { Button, Dialog, DialogActions, DialogContent, Grid, Typography } from "@mui/material"
 import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react"
@@ -18,6 +19,7 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
     const { currentSelectedDish, currentSelectedCategory, currentSelectedMenu, menus} = useAppSelector(state => state.menus)
     const dispatch = useAppDispatch();
     const [file, setFile] = useState<IFile>();
+    const [loading, setLoading] = useState(false);
     const [dish, setDish ] = useState<IDish>({
         id: '',
         en_name: '',
@@ -64,55 +66,60 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
     }
 
     const onSaved = async () => {
-        try {
-            // will check the difference between the original dish and the updated dish
-            // return the difference object
-            let difference = checkForDifference(currentSelectedDish, dish);
-
-            if(file){
-                const fd = new FormData()
-                fd.append('files', file as File);
-
-                // store the image to the storage and form a url
-                let imageResult = await axios.post(`http://localhost:5001/foodorder-43af7/us-central1/store/menus/image/upload`,
-                    fd, 
-                    { headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }}
-                );
-
-                if(!imageResult.data.url){
-                    throw new Error('Failed to generate image url')
-                }
-                difference = {
-                    ...difference, 
-                    pic_url: imageResult.data.url
-                }
-
-                setFile({} as IFile);              
-            }
-
-            await axios.patch(
-                `http://localhost:5001/foodorder-43af7/us-central1/store/menus/${dish.id}`,
-                {difference},
-                {
-                    headers: { 'Content-Type': 'application/json'},
-                    params: {
-                        category_name: currentSelectedCategory.document_name,
-                        menuId:  currentSelectedMenu.id
+        setLoading(true);
+        if(!loading){
+            try {
+                // will check the difference between the original dish and the updated dish
+                // return the difference object
+                let difference = checkForDifference(currentSelectedDish, dish);
+    
+                if(file){
+                    const fd = new FormData()
+                    fd.append('files', file as File);
+    
+                    // store the image to the storage and form a url
+                    let imageResult = await axios.post(`http://localhost:5001/foodorder-43af7/us-central1/store/menus/image/upload`,
+                        fd, 
+                        { headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }}
+                    );
+    
+                    if(!imageResult.data.url){
+                        throw new Error('Failed to generate image url')
                     }
-            })
-            
-            let newDish = {
-                ...dish,
-                ...difference
+                    difference = {
+                        ...difference, 
+                        pic_url: imageResult.data.url
+                    }
+    
+                    setFile({} as IFile);              
+                }
+    
+                await axios.patch(
+                    `http://localhost:5001/foodorder-43af7/us-central1/store/menus/${dish.id}`,
+                    {difference},
+                    {
+                        headers: { 'Content-Type': 'application/json'},
+                        params: {
+                            category_name: currentSelectedCategory.document_name,
+                            menuId:  currentSelectedMenu.id
+                        }
+                })
+                
+                let newDish = {
+                    ...dish,
+                    ...difference
+                }
+    
+                props.handleClose();
+                dispatch(handleUpdateDish(newDish));
+            } catch (error) {
+                handleAdminTryCatchError(error, 'Failed to update dish'); 
             }
-
-            props.handleClose();
-            dispatch(handleUpdateDish(newDish));
-        } catch (error) {
-            handleAdminTryCatchError(error, 'Failed to update dish'); 
         }
+
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -159,7 +166,12 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
         </DialogContent>
 
         <DialogActions>
-            <Button variant="contained" fullWidth onClick={onSaved}>Save</Button>
+            <LoadingButton 
+                loading={loading}
+                variant="contained" 
+                fullWidth 
+                onClick={onSaved}
+            >Save</LoadingButton>
             <Button onClick={props.handleClose}>Cancel</Button>
         </DialogActions>
     </Dialog>

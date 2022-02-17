@@ -6,19 +6,25 @@ import { MenuTab } from "../../../components/admin/menu/menuTab";
 import ResponsiveAppBar from "../../../components/appbar";
 import { useAppDispatch } from "../../../store/store";
 import { getInitialMenuData } from "../../../store/slice/menuSlice";
+import { handleAdminNotAuthRedirect, serverSideCheckAuth } from "../../../utils/functions/errors";
+import { isNotAuthError } from "../../../components/error/custom";
 
 interface IProps {
     menus: IMenu[],
-    error?: {
-        msg: string
+    error: {
+        msg: string,
+        code: number
     }
 }
 
-export default function Menu (props:IProps){
+export default function Menu ({ menus, error }:IProps){
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(getInitialMenuData(props.menus));
+        handleAdminNotAuthRedirect(error);
+        if(menus){
+            dispatch(getInitialMenuData(menus));
+        }
     }, [])
 
     return <div>
@@ -30,12 +36,11 @@ export default function Menu (props:IProps){
 
 export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
     try{        
-        if(!ctx.req.headers.cookie?.includes('ID_TOKEN')){
-            throw new Error('Not Authenticated')
-        }
+        serverSideCheckAuth(ctx.req.headers.cookie);
 
         let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/store/menus');
 
+        console.log('should not run because no cookie')
         if(response.status !== 200){
             throw new Error('Failed to get store data')
         }
@@ -45,15 +50,14 @@ export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePro
         menus.push(response.data.lunch);
 
         return {
-            props: {
-                menus
-            }
+            props: { menus }
         }      
     } catch (error) {
         return {
             props: {
                 error: {
-                    msg: (error as Error).message ?? 'Authentication fail'
+                    msg: (error as Error).message ?? 'Authentication fail',
+                    code: isNotAuthError(error as Error) ? 401 : 400
                 }
             }
         }

@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { isEmpty } from 'lodash'
 import { handleAdminNotAuthRedirect, handleAdminTryCatchError, serverSideCheckAuth } from '../../../utils/functions/errors';
 import { isNotAuthError } from '../../../components/error/custom';
+import { LoadingButton } from '@mui/lab';
 
 
 
@@ -30,6 +31,7 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
     const admin:AdminState = useAppSelector(state => state.admin);
     const { server_is_on, name, address, primary_phone_number, sub_phone_number, hours } = admin.store_info;
     const [openDialog, setOpenDialog] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleClickOpen = () => {
         setOpenDialog(true);
@@ -40,15 +42,21 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
     }
 
     const handleToggleServer = async  () => {
-        try {
-            await axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/status', {
-                server_is_on: !server_is_on
-            })
-            dispatch(toggleServer(!server_is_on))
-            snackbar.success('Server status has been update')
-        } catch (error) {
-            handleAdminTryCatchError(error, 'Failed to update server status');
+        setLoading(true);
+        if(!loading){
+            try {
+                await axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/status', {
+                    server_is_on: !server_is_on
+                })
+                dispatch(toggleServer(!server_is_on))
+                snackbar.success('Server status has been update')
+            } catch (error) {
+                handleAdminTryCatchError(error, 'Failed to update server status');
+            }
         }
+
+        setLoading(false);
+        
     }
 
     useEffect(() => {
@@ -90,14 +98,15 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
                         <div>Secondary Phone Number: {sub_phone_number[0]}</div>
                 </Grid>
                 <Grid item xs={12} md={4} >
-                        <Button
+                        <LoadingButton
+                            loading={loading}
                             onClick={handleToggleServer}
                             sx={{ 
                                 backgroundColor: !server_is_on ? 'green' : 'red',
                                 color: '#fff',
                             }}
                             >{!server_is_on ? 'Accept Order' : 'Pause Order'}
-                        </Button>
+                        </LoadingButton>
                 </Grid>
             </Grid>
            

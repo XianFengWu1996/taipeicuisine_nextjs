@@ -1,5 +1,5 @@
 export const convertMinuteToDate = (min: number) => {
-    // 9:10 = 550 
+    // 550 -> '09', '50'
     let hour, minute;
 
     minute = min % 60;

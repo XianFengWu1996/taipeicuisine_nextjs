@@ -8,6 +8,7 @@ import axios, { AxiosError } from 'axios';
 import snackbar from '../../../snackbar';
 import { handleAdminTryCatchError } from '../../../../utils/functions/errors';
 import { useAppDispatch, useAppSelector } from '../../../../store/store';
+import { LoadingButton } from '@mui/lab';
 
 interface dialogProps {
     open: boolean,
@@ -18,6 +19,7 @@ export default function HourEditDialog({ open, handleClose }:dialogProps) {
   const admin:AdminState = useAppSelector(state => state.admin);
   const [hours, setHours] = React.useState<IHours[]>(cloneDeep(admin.store_info.hours))
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = React.useState(false);
 
   const handleCloseForDayOfWeek = (dayOfWeek:string, isOpen:boolean) => {
     const index = hours.findIndex((day) => day.day_of_week === dayOfWeek)
@@ -37,7 +39,7 @@ export default function HourEditDialog({ open, handleClose }:dialogProps) {
     setHours((_) => tempHours);
   }
 
-  const handleOnSave = () => {
+  const handleOnSave = async () => {
     let noChangeMade = isEqual(admin.store_info.hours, hours);
 
     if(noChangeMade){
@@ -45,18 +47,20 @@ export default function HourEditDialog({ open, handleClose }:dialogProps) {
       return;
     }
 
-    axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/hours', { hours })
-    .then((response) => {
-        // if the status is 200, then we update the 
-        if(response.status === 200){
-            snackbar.success('Hours has been updated')
-            dispatch(updateStoreHour(hours));
-            handleClose();
-        }
-    }).catch((error: Error | AxiosError) => {
-        handleAdminTryCatchError(error, 'Failed to update hours');
-    });  
+    setLoading(true);
 
+    if(!loading){
+      try {
+        await axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/hours', { hours })
+        snackbar.success('Hours has been updated')
+        dispatch(updateStoreHour(hours));
+        handleClose();
+      } catch (error) {
+        handleAdminTryCatchError(error, 'Failed to update hours');
+      }  
+    }
+
+    setLoading(false);
   }
 
   return (
@@ -82,7 +86,7 @@ export default function HourEditDialog({ open, handleClose }:dialogProps) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button variant="contained" onClick={handleOnSave}>Save</Button>
+          <LoadingButton loading={loading} variant="contained" onClick={handleOnSave}>Save</LoadingButton>
         </DialogActions>
       </Dialog>
     </div>
