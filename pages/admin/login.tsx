@@ -3,21 +3,27 @@ import { signInWithEmailAndPassword, signOut} from 'firebase/auth'
 import { fbAuth } from "../_app";
 import axios from 'axios';
 import Router from 'next/router'
-import showSnackbar from '../../components/snackbar'
-import { Button, Grid, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { handleAdminTryCatchError } from "../../utils/functions/errors";
 import { LoadingButton } from "@mui/lab";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { toggleLoginLoading } from "../../store/slice/adminSlice";
 
 export default function Login () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false); // move this loading to redux store 
+
+    // redux store 
+    const admin = useAppSelector(state => state.admin)
+    const dispatch = useAppDispatch();
+    // const [loading, setLoading] = useState(false); // move this loading to redux store 
 
     const login:MouseEventHandler<HTMLButtonElement> | undefined= async (e) => {
-        setLoading(true);
+        // setLoading(true);
+        dispatch(toggleLoginLoading(true))
 
-        if(!loading){
+        if(!admin.login_loading){
             try {
                 e.preventDefault();
 
@@ -35,10 +41,10 @@ export default function Login () {
                 Router.push('/admin/dashboard')
             } catch (error) {
                 signOut(fbAuth); // if the operation failed, sign the user out
+                dispatch(toggleLoginLoading(false)); // end loading if error occurs
                 handleAdminTryCatchError(error ?? 'Authentication Failed');
             } 
         }
-        setLoading(false);
     }
 
     return <>
@@ -74,7 +80,7 @@ export default function Login () {
                     }}
                 />
                 <LoadingButton 
-                    loading={loading} 
+                    loading={admin.login_loading} 
                     onClick={login} 
                     variant="contained"
                 >

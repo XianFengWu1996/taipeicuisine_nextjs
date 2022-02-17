@@ -8,7 +8,7 @@ import HourEditDialog from '../../../components/admin/dashboard/dialog/hourEditD
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import axios from 'axios';
 import snackbar from '../../../components/snackbar';
-import {  AdminState, getInitialStoreInfo, toggleServer } from '../../../store/slice/adminSlice';
+import {  AdminState, getInitialStoreInfo, toggleServer, toggleLoginLoading } from '../../../store/slice/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { isEmpty } from 'lodash'
 import { handleAdminNotAuthRedirect, handleAdminTryCatchError, serverSideCheckAuth } from '../../../utils/functions/errors';
@@ -28,9 +28,12 @@ interface IDashboardProps {
 }
 
 export default function Dashboard ({ storeData, error }: IDashboardProps){
+    // redux store
     const dispatch = useAppDispatch()
     const admin:AdminState = useAppSelector(state => state.admin);
     const { server_is_on, name, address, primary_phone_number, sub_phone_number, hours } = admin.store_info;
+
+    // component states
     const [openDialog, setOpenDialog] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -60,12 +63,11 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
 
     useEffect(() => {
         handleAdminNotAuthRedirect(error);
-
-        console.log(storeData);
-
         if(storeData){
             dispatch(getInitialStoreInfo(storeData));
         }
+
+        dispatch(toggleLoginLoading(false))
     }, [])
 
     const boxStyle: SxProps<Theme> | undefined = {

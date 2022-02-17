@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // Define a type for the slice state
 export interface AdminState {
   store_info: IStore,
+  login_loading: boolean
 }
 
 // Define the initial state using that type
 const initialState: AdminState = {
-  store_info: {} as IStore
+  store_info: {} as IStore,
+  login_loading: false,
 }
 
 export const adminSlice = createSlice({
@@ -26,7 +28,12 @@ export const adminSlice = createSlice({
     }, 
     toggleServer: (state, { payload } : PayloadAction<boolean>) => {
       state.store_info.server_is_on = payload
-    }
+    },
+
+    // LOADING 
+    toggleLoginLoading: (state, { payload } : PayloadAction<boolean>) => {
+      state.login_loading = payload
+    },
   }
 })
 
@@ -36,6 +43,8 @@ export const {
     getInitialStoreInfo, 
     updateStoreHour, 
     toggleServer, 
+    toggleLoginLoading
 } = adminSlice.actions
 
 export const storeInfo = (state: AdminState) => state.store_info;
+export const login_loading = ((state: AdminState) => state.login_loading )
