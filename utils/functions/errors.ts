@@ -15,9 +15,9 @@ export const handleAdminTryCatchError = (error: unknown, genericMsg?: string) =>
             switch(err.response.status){
                 // 401 - unauthorize request
                 case 401:
-                    snackbar.error('Unauthorize request')
-                    Router.push('/admin/login');
                     signOut(fbAuth);
+                    Router.push('/admin/login');
+                    snackbar.error('Session has expired, please re-login')
                     break;
                 // 400 - request fail, check for reason
                 case 400:

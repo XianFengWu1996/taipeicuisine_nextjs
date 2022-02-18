@@ -7,7 +7,7 @@ import ResponsiveAppBar from "../../../components/appbar";
 import { useAppDispatch } from "../../../store/store";
 import { getInitialMenuData } from "../../../store/slice/menuSlice";
 import { handleAdminNotAuthRedirect, checkTokenInToken } from "../../../utils/functions/errors";
-import { isNotAuthError } from "../../../components/error/custom";
+import { isNotAuthError } from "../../../utils/errors/custom";
 import { hasExpired } from "../../../utils/functions/time";
 
 interface IMenuProps {

@@ -12,7 +12,7 @@ import {  AdminState, getInitialStoreInfo, toggleServer, toggleLoginLoading } fr
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { isEmpty } from 'lodash'
 import { checkTokenInToken, handleAdminNotAuthRedirect, handleAdminTryCatchError } from '../../../utils/functions/errors';
-import { isNotAuthError } from '../../../components/error/custom';
+import { isNotAuthError } from '../../../utils/errors/custom';
 import { LoadingButton } from '@mui/lab';
 import { hasExpired } from '../../../utils/functions/time';
 
