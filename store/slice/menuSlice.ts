@@ -5,6 +5,7 @@ import { isEmpty } from 'lodash';
 // Define a type for the slice state
 export interface MenuState {
   menus: IMenu[],
+  expiration: number,
   currentSelectedDish: IDish,
   currentSelectedMenu: IMenu,
   currentSelectedCategory: ICategory,
@@ -14,6 +15,7 @@ export interface MenuState {
 // Define the initial state using that type
 const initialState: MenuState = {
   menus: [],
+  expiration: 0,
   currentSelectedMenu: {} as IMenu,
   currentSelectedCategory: {} as ICategory,
   currentSelectedDish: {} as IDish,
@@ -25,10 +27,11 @@ export const menuSlice = createSlice({
   initialState,
   reducers: {
     // menus
-    getInitialMenuData: (state, { payload } : PayloadAction<IMenu[]>) => {
+    getInitialMenuData: (state, { payload } : PayloadAction<{ menus: IMenu[], expiration: number}>) => {
       // assign the menus
       if(payload){
-        state.menus = payload;
+        state.menus = payload.menus;
+        state.expiration = payload.expiration
       }
   
       // initialize the default menu

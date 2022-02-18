@@ -8,22 +8,27 @@ import { useAppDispatch } from "../../../store/store";
 import { getInitialMenuData } from "../../../store/slice/menuSlice";
 import { handleAdminNotAuthRedirect, serverSideCheckAuth } from "../../../utils/functions/errors";
 import { isNotAuthError } from "../../../components/error/custom";
+import { hasExpired } from "../../../utils/functions/time";
 
 interface IProps {
     menus: IMenu[],
+    expiration: number,
     error: {
         msg: string,
         code: number
     }
 }
 
-export default function Menu ({ menus, error }:IProps){
+export default function Menu ({ menus, error, expiration }:IProps){
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         handleAdminNotAuthRedirect(error);
         if(menus){
-            dispatch(getInitialMenuData(menus));
+            dispatch(getInitialMenuData({
+                menus: menus ?? [],
+                expiration: expiration
+            }));
         }
     }, [])
 
@@ -36,11 +41,17 @@ export default function Menu ({ menus, error }:IProps){
 
 export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
     try{        
+        
+        if(ctx.query.expiration){
+            // proceed and check if the menu has expired
+            if(!hasExpired(Number(ctx.query.expiration))){
+                // return an empty props
+                return { props: {} }
+            }
+        }
         serverSideCheckAuth(ctx.req.headers.cookie);
 
         let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/store/menus');
-
-        console.log('should not run because no cookie')
         if(response.status !== 200){
             throw new Error('Failed to get store data')
         }
@@ -50,7 +61,7 @@ export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePro
         menus.push(response.data.lunch);
 
         return {
-            props: { menus }
+            props: { menus, expiration: response.data.expiration }
         }      
     } catch (error) {
         return {

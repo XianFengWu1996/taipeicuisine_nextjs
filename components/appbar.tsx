@@ -3,14 +3,9 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { MenuBookOutlined, Storefront } from '@mui/icons-material';
 import Image from 'next/image';
@@ -21,8 +16,10 @@ const ResponsiveAppBar = () => {
   const router = useRouter()
 
   const admin = useAppSelector(state => state.admin)
+  const menu = useAppSelector(state => state.menus)
 
-  let expiration = admin.store_info.expiration;
+  let store_expiration = admin.store_info.expiration;
+  let menu_expiration = menu.expiration;
 
   const [open, setOpen] = React.useState(false);
 
@@ -32,10 +29,6 @@ const ResponsiveAppBar = () => {
 
   const handleOnClose = () => {
     setOpen(false);
-  }
-
-  const handleOnToggle = () => {
-    setOpen(!open);
   }
 
   return (
@@ -67,9 +60,9 @@ const ResponsiveAppBar = () => {
                     <ListItem button onClick={() => {
                       router.push({
                         pathname: '/admin/dashboard',
-                        query: {
-                          expiration: expiration ?? 0
-                        }
+                        query: store_expiration ? {
+                          expiration: store_expiration
+                        } : {}
                       })
                     }}>
                       <ListItemIcon><Storefront /></ListItemIcon>
@@ -77,7 +70,12 @@ const ResponsiveAppBar = () => {
                     </ListItem>
 
                     <ListItem button onClick={() => {
-                        router.push('/admin/menu')
+                        router.push({
+                          pathname: '/admin/menu',
+                          query: menu_expiration ? {
+                            expiration: menu_expiration
+                          } : {}
+                        })
                     }}> 
                       <ListItemIcon><MenuBookOutlined /></ListItemIcon>
                       <ListItemText primary={'Edit Menu'} />
