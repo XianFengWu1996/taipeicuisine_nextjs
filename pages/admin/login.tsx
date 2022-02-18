@@ -1,14 +1,15 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { signInWithEmailAndPassword, signOut} from 'firebase/auth'
 import { fbAuth } from "../_app";
 import axios from 'axios';
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { handleAdminTryCatchError } from "../../utils/functions/errors";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { toggleLoginLoading } from "../../store/slice/adminSlice";
+import snackbar from "../../components/snackbar";
 
 export default function Login () {
     const [email, setEmail] = useState('');
@@ -46,6 +47,15 @@ export default function Login () {
             } 
         }
     }
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if(!router.isReady) return;
+        if(router.query.redirect){
+            snackbar.error('Unauthorize request')
+        }
+    }, [router.isReady])
 
     return <>
          <Box

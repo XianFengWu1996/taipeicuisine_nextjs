@@ -1,4 +1,4 @@
-import { Paper, Typography, SxProps, Button, Grid } from '@mui/material';
+import { Paper, Typography, SxProps, Grid } from '@mui/material';
 import ResponsiveAppBar from '../../../components/appbar';
 import { Box, Theme } from '@mui/system';
 import { DayOfWeekTile} from '../../../components/admin/dashboard/dayHourTile';
@@ -11,7 +11,7 @@ import snackbar from '../../../components/snackbar';
 import {  AdminState, getInitialStoreInfo, toggleServer, toggleLoginLoading } from '../../../store/slice/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { isEmpty } from 'lodash'
-import { handleAdminNotAuthRedirect, handleAdminTryCatchError, serverSideCheckAuth } from '../../../utils/functions/errors';
+import { checkTokenInToken, handleAdminNotAuthRedirect, handleAdminTryCatchError } from '../../../utils/functions/errors';
 import { isNotAuthError } from '../../../components/error/custom';
 import { LoadingButton } from '@mui/lab';
 import { hasExpired } from '../../../utils/functions/time';
@@ -141,6 +141,9 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
 
 export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
     try{        
+        if(checkTokenInToken(ctx.req.headers.cookie)){
+            return checkTokenInToken(ctx.req.headers.cookie)!
+        }
 
         // check if there is expiration
         if(ctx.query.expiration){
@@ -151,7 +154,6 @@ export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePro
         }
 
         let cookies: string | undefined = ctx.req.headers.cookie;
-        serverSideCheckAuth(cookies);
 
         let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/admin/store', {
             headers: {  Cookie: cookies! }

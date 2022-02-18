@@ -3,8 +3,8 @@ import { signOut } from "firebase/auth";
 import Router from "next/router";
 import { fbAuth } from "../../pages/_app";
 import snackbar from "../../components/snackbar";
-import { GetServerSidePropsContext } from "next";
-import { NotAuthorizeError } from "../../components/error/custom";
+import { v4 } from 'uuid'
+
 
 export const handleAdminTryCatchError = (error: unknown, genericMsg?: string) => {
     // check if the error is an axios error
@@ -36,13 +36,21 @@ export const handleAdminTryCatchError = (error: unknown, genericMsg?: string) =>
     }
 }
 
-export const serverSideCheckAuth = (cookies: string | undefined) => {
-    if(cookies && !cookies.includes('ID_TOKEN')) {
-        throw new NotAuthorizeError('Not Authenticated');
+export const checkTokenInToken = (cookies: string | undefined) => {
+    if(!cookies?.includes('ID_TOKEN')){
+        // if no token found, redirect the request back to login page with redirect query
+        return {
+            redirect: {
+                destination: `/admin/login?redirect=${v4()}`,
+                permanent: false,
+            }, 
+            props: {}
+        }
     }
 }
 
 export const handleAdminNotAuthRedirect = (error : { msg: string, code: number}) => {
+    // handle client side http request, if error returns an 401 error code
     if(error){
         if(error.code === 401){
             signOut(fbAuth);

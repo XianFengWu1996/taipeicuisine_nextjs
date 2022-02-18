@@ -6,11 +6,11 @@ import { MenuTab } from "../../../components/admin/menu/menuTab";
 import ResponsiveAppBar from "../../../components/appbar";
 import { useAppDispatch } from "../../../store/store";
 import { getInitialMenuData } from "../../../store/slice/menuSlice";
-import { handleAdminNotAuthRedirect, serverSideCheckAuth } from "../../../utils/functions/errors";
+import { handleAdminNotAuthRedirect, checkTokenInToken } from "../../../utils/functions/errors";
 import { isNotAuthError } from "../../../components/error/custom";
 import { hasExpired } from "../../../utils/functions/time";
 
-interface IProps {
+interface IMenuProps {
     menus: IMenu[],
     expiration: number,
     error: {
@@ -19,10 +19,10 @@ interface IProps {
     }
 }
 
-export default function Menu ({ menus, error, expiration }:IProps){
+export default function Menu ({ menus, error, expiration }:IMenuProps){
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
+    useEffect(() => {        
         handleAdminNotAuthRedirect(error);
         if(menus){
             dispatch(getInitialMenuData({
@@ -39,8 +39,14 @@ export default function Menu ({ menus, error, expiration }:IProps){
     </div>
 }
 
+
+
 export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
-    try{        
+    try{      
+      
+        if(checkTokenInToken(ctx.req.headers.cookie)){
+            return checkTokenInToken(ctx.req.headers.cookie)!
+        }
         
         if(ctx.query.expiration){
             // proceed and check if the menu has expired
@@ -49,7 +55,6 @@ export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePro
                 return { props: {} }
             }
         }
-        serverSideCheckAuth(ctx.req.headers.cookie);
 
         let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/store/menus');
         if(response.status !== 200){
