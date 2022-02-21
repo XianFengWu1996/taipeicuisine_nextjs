@@ -7,7 +7,7 @@ import { SectionTitle } from "./section_title"
 
 export const StoreDetails = () => {
     return <section style={{
-        height: '100vh',
+        minHeight: '100vh',
         width: '100vw'
     }}>
        <SectionTitle
