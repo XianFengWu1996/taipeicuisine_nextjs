@@ -5,6 +5,7 @@ import Reservation from '../../assets/images/reservations.png'
 import Image from "next/image"
 import {v4} from 'uuid'
 import { FaUtensils } from 'react-icons/fa'
+import { styled } from "@mui/system"
 
 const open_hours = [
     {
@@ -31,6 +32,13 @@ const open_hours = [
         close: false,
      },
 ]
+
+const ItemContainer = styled('div')(({theme}) => ({
+    padding: '0 80px 40px 80px',
+    [theme.breakpoints.down('sm')]: {
+        padding: '0 50px 40px 50px',
+    }
+}))
 
 export const AdditionalInfo = () => {
     return <section style={{
@@ -65,7 +73,7 @@ export const AdditionalInfo = () => {
 
             <Grid item xs={12} md={6} direction={'column'}>
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: 'inherit'}}>
-                    <div style={{ paddingBottom: 50}}>   
+                    <ItemContainer>   
                         <Image src={Reservation.src} alt='reservation icon' width={150} height={100}/> 
                         <Typography variant="h6" sx={{
                             fontWeight: 'bold',
@@ -78,8 +86,8 @@ export const AdditionalInfo = () => {
                                 fontFamily: 'Arial',
                             }}
                         >Reservations are only accept over the phone and we currently only reserve table for parties of 5 or more.</Typography>
-                    </div>
-                    <div>
+                    </ItemContainer>
+                    <ItemContainer>
                         <FaUtensils  size={80}/>
                         <Typography variant="h6" sx={{
                             fontWeight: 'bold',
@@ -90,7 +98,7 @@ export const AdditionalInfo = () => {
                                 fontSize: '20px',
                                 fontFamily: 'Arial',
                             }}>We offer Catering for events. Please call in to get discuss more details. Call in a least a day ahead to allow time for prepration.</Typography>
-                    </div>
+                    </ItemContainer>
                 </div>
             </Grid>
         </Grid>
@@ -102,8 +110,8 @@ export const OpenHourDisplay = ({ date, close } : { date: string, close: boolean
     return <div style={{
         display: 'flex',
         justifyContent: 'space-between',
-        minWidth: '400px',
         padding: '5px 0',
+        width: '80%',
         fontSize: '20px',
         fontWeight: 'bold'
     }}>
