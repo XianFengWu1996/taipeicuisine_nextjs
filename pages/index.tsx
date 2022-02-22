@@ -7,13 +7,13 @@ import { StoreDetails } from '../components/home/store_details'
 
 const Home: NextPage = () => {
   return (
-    <div>
+    <>
       <HomePage />
       <StoreDetails />
       <CustomerTestimony />
       <AdditionalInfo />
       <Footer />
-    </div>
+    </>
   )
 }
 
