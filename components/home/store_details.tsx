@@ -63,7 +63,7 @@ export const StoreDetails = () => {
         <section style={{
                     minHeight: '100vh',
                     width: '100vw',
-                    paddingBottom: '50px'
+                    paddingBottom: '50px',
                 }}>
                 <SectionTitle
                         title="Best Chinese Food In - Quincy"

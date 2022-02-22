@@ -52,11 +52,16 @@ export const HomePage = () => {
                     marginBottom: '15px',
                     height: '40px'
                 }}>Order</Button>
-                <Button variant="outlined" size="large" style={{
-                    border: '1px solid #e74c3c',
-                    color: '#e74c3c',                    
-                    height: '40px'
-                }}>Explore Menu</Button>
+                <Button 
+                    variant="outlined" 
+                    href={'https://firebasestorage.googleapis.com/v0/b/foodorder-43af7.appspot.com/o/Menu.pdf?alt=media&token=6689dd02-5fe5-46b4-a219-3bb7fb2a7ec7'}
+                    size="large" 
+                    style={{
+                        border: '1px solid #e74c3c',
+                        color: '#e74c3c',                    
+                        height: '40px'
+                    }}
+                >Explore Menu</Button>
             </ButtonContainer>
         </div>
 

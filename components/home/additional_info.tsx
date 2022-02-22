@@ -60,7 +60,9 @@ export const AdditionalInfo = () => {
 
     return <section style={{
         minHeight: '100vh',
-        width: '100vw',
+        width: '100%',
+        overflow: 'hidden'
+
     }}>
         <SectionTitle title="Additional Information" />
 
@@ -72,15 +74,15 @@ export const AdditionalInfo = () => {
 
           
                 <Grid item xs={12} md={6} justifyContent={'center'} alignItems={'center'}>
-                <motion.div ref={ref} initial="hidden" animate={controls} variants={{
-                    hidden: {
-                        x: -100
-                    }, 
-                    visible: {
-                        x: 0,
-                        transition:{ duration: 1}
-                    }
-                }}>
+                    <motion.div ref={ref} initial="hidden" animate={controls} variants={{
+                        hidden: {
+                            x: -100
+                        }, 
+                        visible: {
+                            x: 0,
+                            transition:{ duration: 1}
+                        }
+                    }}>
                     <div style={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -104,14 +106,14 @@ export const AdditionalInfo = () => {
          
                 <Grid item xs={12} md={6} direction={'column'}>
                 <motion.div ref={ref} initial="hidden" animate={controls} variants={{
-                 hidden: {
-                    x: 100
-                }, 
-                visible: {
-                    x: 0,
-                    transition:{ duration: 1}
-                }
-           }}>
+                    hidden: {
+                        x: 100
+                    }, 
+                    visible: {
+                        x: 0,
+                        transition:{ duration: 1}
+                    }
+                }}>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: 'inherit'}}>
                         <ItemContainer>   
                             <Image src={Reservation.src} alt='reservation icon' width={150} height={100}/> 
