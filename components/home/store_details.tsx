@@ -4,6 +4,36 @@ import { RiParkingBoxLine } from 'react-icons/ri'
 import { BiShoppingBag, BiFoodMenu } from 'react-icons/bi'
 import { MdDeliveryDining } from 'react-icons/md'
 import { SectionTitle } from "./section_title"
+import { styled } from "@mui/system"
+
+const StoreDetailSubtitle = styled(Typography)(({theme}) => ({
+    textAlign: 'center',
+    marginTop: '40px',
+    fontFamily: 'Arial',
+    color: '#555555',
+    fontWeight: 'lighter',
+    [theme.breakpoints.down('md')]: {
+        fontSize: '18px',
+        padding: '0 20px'
+
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '15px',
+    }
+}))
+
+const StoreDetailGrid = styled(Grid)(({theme}) => ({
+    padding: '60px 100px',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+        padding: '40px 60px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        padding: '20px 30px',
+    }
+}))
+
+
 
 export const StoreDetails = () => {
     return <section style={{
@@ -14,17 +44,9 @@ export const StoreDetails = () => {
             title="Best Chinese Food In - Quincy"
        />
 
-        <Typography 
-            variant="h6"
-            style={{
-            textAlign: 'center',
-            marginTop: '40px',
-            fontFamily: 'Arial',
-            color: '#555555',
-            fontWeight: 'lighter'
-        }}>Located On Billings Road, We offer some of the best Chinese and Taiwanese food</Typography>
+        <StoreDetailSubtitle variant="h6">Located On Billings Road, We offer some of the best Chinese and Taiwanese food</StoreDetailSubtitle>
 
-        <Grid container spacing={5} alignItems={'center'} sx={{ padding: '60px 100px'}}>
+        <StoreDetailGrid container spacing={5}>
             <Grid item xs={12} md={6} lg={3}>
                 <StoreDetailCard 
                     title="Delivery"
@@ -64,7 +86,7 @@ export const StoreDetails = () => {
                     The dishes are created by chefs who are high experienced with the styles. 
                     Sichuan food is really about a variety of flavors: spicy, flowery (Sichuan peppercorns), salty, sour, sweet, smoky, etc"                />
             </Grid>
-        </Grid>
+        </StoreDetailGrid>
 
     </section>
 }
@@ -75,30 +97,50 @@ interface IStoreDetailCardProps {
     icon:ReactElement<any, any>
 }
 
+const CardContainer = styled(Card)(({theme}) => ({
+    height: '40vh',
+    [theme.breakpoints.down('md')]: {
+        height: '30vh',
+    },
+    [theme.breakpoints.down('sm')]: {
+        height: '35vh',
+    },
+   
+   
+}))
+
+const CardContents = styled(Typography)(({theme}) => ({
+    paddingTop: '15px', 
+    lineHeight: '1.5',
+    wordSpacing: '2px',
+    fontSize: '18px',
+    fontWeight: 'lighter',
+    [theme.breakpoints.down('md')]: {
+        wordSpacing: '1px',
+        fontSize: '16px',
+        fontWeight: 'normal',
+    },
+   
+}))
+
+    
 export const StoreDetailCard = (props: IStoreDetailCardProps) => {
-    return <Card style={{ height: '50vh'}}>
+    return <CardContainer>
         <CardContent>
-            <div style={{ display: 'flex', alignItems: 'center', width: '150px', justifyContent:'space-between'}}>
+            <div style={{ display: 'flex', alignItems: 'center'}}>
                 {props.icon}
-                <Typography 
-                    style={{ 
-                        textTransform: 'uppercase',
-                        color: '#555',
-                        fontWeight: 'lighter',
-                        fontSize: '20px'
-                    }}
-                >{props.title}</Typography>
+                <Typography style={{
+                    marginLeft: '13px',
+                    color: '#555',
+                    fontWeight: 'normal',
+                    fontSize: '19px'
+                
+                }}>{props.title}</Typography>
             </div>
 
-            <Typography style={{ 
-                paddingTop: '15px', 
-                lineHeight: '1.5',
-                wordSpacing: '2px',
-                fontSize: '18px',
-                fontWeight: 'lighter'
-            }}>
+            <CardContents>
                 {props.contents}
-            </Typography>
+            </CardContents>
         </CardContent>
-    </Card>
+    </CardContainer>
 }
