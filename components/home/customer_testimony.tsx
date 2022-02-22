@@ -4,6 +4,11 @@ import { SectionTitle } from './section_title'
 import { AiOutlineUser } from 'react-icons/ai'
 import { styled } from '@mui/system'
 
+// animation
+import { motion, useAnimation} from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import { useEffect } from 'react'
+
 const TestimonySection = styled('section')(({ theme }) => ({
     backgroundImage: `linear-gradient(rgb(0 0 0 / 52%), rgb(0 0 0 / 87%)), url(${CustomerBg.src})`,
     backgroundRepeat: 'no-repeat',  
@@ -17,54 +22,79 @@ const TestimonySection = styled('section')(({ theme }) => ({
 }))
 
 export const CustomerTestimony = () => {
-    return <TestimonySection >
-        <SectionTitle 
-            title='Here is what customers are saying'
-            color='#fff'
-        />
+    const controls = useAnimation();
+    const { ref, inView } = useInView();
 
-        <Grid 
-            container 
-            spacing={6} 
-            justifyContent={'center'}
-            style={{
-                paddingTop: '50px',
-                minHeight: '70vh'
-            }}>
-            <Grid item xs={12} md={3}>
-                <TestimonyDetails 
-                    contents="Authentic Taiwanese cuisine. I went for the beef noodles which 
-                    is a staple in Taiwan and how I gauged the authenticity. Two thumbs
-                    up from me and its always a plus if there is a wait and you see locals 
-                    in it. Only thing is you might have to share a table during busy hours 
-                    but don't let that take away from the experience. If anything its a 
-                    chance to make new friends!"
-                    customerName='Nissai K.'
-                />
-            </Grid>
+    useEffect(() => {
+        if (inView) {
+          controls.start('visible');
+        }
+        if (!inView) {
+          controls.start('hidden');
+        }
+      }, [controls, inView]);
 
-            <Grid item xs={12} md={3}>
-                <TestimonyDetails 
-                    contents="If you enjoy authentic, tasty Szechuan and Taiwanese cuisines,
-                     this is the place to be! Their lunch special runs daily and on the weekends 
-                     as well. If you are feeling too lazy to cook and would like some decent, 
-                     spicy, Asian food, this is the place to be. If you are looking for good service, 
-                     don't come here."
-                    customerName='Shawn S.'
+      return <TestimonySection >
+                <SectionTitle 
+                    title='Here is what customers are saying'
+                    color='#fff'
                 />
-            </Grid>
+                 <motion.div ref={ref} initial="hidden" animate={controls} variants={{
+                    hidden: {
+                        y: -100,
+                    },
+                    visible: {
+                        y: 0,
+                        transition: {
+                            duration: 0.8,
+                            ease: 'linear'
+                        }
+                    }
+                }} >  
 
-            <Grid item xs={12} md={3}>
-                <TestimonyDetails 
-                    contents="Best place in Quincy to get Taiwanese food in my opinion. Try the fish
-                     in chili oil, beef scallion pancake, oyster omelet, soup dumplings, and cumin 
-                     lamb skewers - everything is delicious and reasonably priced!"
-                    customerName='Victoria B.'
-                />
-            </Grid> 
-        </Grid>
-    
-    </TestimonySection>
+                    <Grid 
+                        container 
+                        spacing={6} 
+                        justifyContent={'center'}
+                        style={{
+                            paddingTop: '50px',
+                            minHeight: '70vh'
+                        }}>
+                        <Grid item xs={12} md={3}>
+                            <TestimonyDetails 
+                                contents="Authentic Taiwanese cuisine. I went for the beef noodles which 
+                                is a staple in Taiwan and how I gauged the authenticity. Two thumbs
+                                up from me and its always a plus if there is a wait and you see locals 
+                                in it. Only thing is you might have to share a table during busy hours 
+                                but don't let that take away from the experience. If anything its a 
+                                chance to make new friends!"
+                                customerName='Nissai K.'
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} md={3}>
+                            <TestimonyDetails 
+                                contents="If you enjoy authentic, tasty Szechuan and Taiwanese cuisines,
+                                this is the place to be! Their lunch special runs daily and on the weekends 
+                                as well. If you are feeling too lazy to cook and would like some decent, 
+                                spicy, Asian food, this is the place to be. If you are looking for good service, 
+                                don't come here."
+                                customerName='Shawn S.'
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} md={3}>
+                            <TestimonyDetails 
+                                contents="Best place in Quincy to get Taiwanese food in my opinion. Try the fish
+                                in chili oil, beef scallion pancake, oyster omelet, soup dumplings, and cumin 
+                                lamb skewers - everything is delicious and reasonably priced!"
+                                customerName='Victoria B.'
+                            />
+                        </Grid> 
+                    </Grid>
+                </motion.div>
+
+        </TestimonySection>
 }
 
 export const TestimonyDetails = ({ contents, customerName } : { contents: string, customerName: string}) => {
