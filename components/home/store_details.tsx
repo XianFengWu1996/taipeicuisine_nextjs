@@ -38,7 +38,8 @@ const StoreDetailGrid = styled(Grid)(({theme}) => ({
 export const StoreDetails = () => {
     return <section style={{
         minHeight: '100vh',
-        width: '100vw'
+        width: '100vw',
+        paddingBottom: '50px'
     }}>
        <SectionTitle
             title="Best Chinese Food In - Quincy"

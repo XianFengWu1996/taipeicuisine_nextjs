@@ -2,18 +2,22 @@ import { Grid } from '@mui/material'
 import CustomerBg from '../../assets/images/customer-background.jpeg'
 import { SectionTitle } from './section_title'
 import { AiOutlineUser } from 'react-icons/ai'
+import { styled } from '@mui/system'
+
+const TestimonySection = styled('section')(({ theme }) => ({
+    backgroundImage: `linear-gradient(rgb(0 0 0 / 52%), rgb(0 0 0 / 87%)), url(${CustomerBg.src})`,
+    backgroundRepeat: 'no-repeat',  
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    minHeight: '100vh',
+    width: '100vw',
+    [theme.breakpoints.down('md')]: {
+        padding: '0 50px 50px 50px',
+    }
+}))
 
 export const CustomerTestimony = () => {
-    return <section 
-        style={{
-            backgroundImage: `linear-gradient(rgb(0 0 0 / 52%), rgb(0 0 0 / 87%)), url(${CustomerBg.src})`,
-            backgroundRepeat: 'no-repeat',  
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            minHeight: '100vh',
-            width: '100vw',
-        }}
-    >
+    return <TestimonySection >
         <SectionTitle 
             title='Here is what customers are saying'
             color='#fff'
@@ -60,7 +64,7 @@ export const CustomerTestimony = () => {
             </Grid> 
         </Grid>
     
-    </section>
+    </TestimonySection>
 }
 
 export const TestimonyDetails = ({ contents, customerName } : { contents: string, customerName: string}) => {
@@ -68,14 +72,14 @@ export const TestimonyDetails = ({ contents, customerName } : { contents: string
         <span
             style={{
                 color: '#fff',
-                fontSize: '500%'
+                fontSize: '400%'
             }}
         >&#8220;</span>
         <div style={{
                 color: '#fff',
                 fontSize: '18px',
                 fontStyle: 'italic',
-                fontWeight: 300,
+                fontWeight: 200,
                 wordSpacing: 2.5,
                 lineHeight: 1.3
             }}>
