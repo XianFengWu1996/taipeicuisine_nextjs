@@ -75,7 +75,7 @@ export const StoreDetails = () => {
                     icon={<RiParkingBoxLine size={30} />}
                     contents="Street parking are available all around the restaurant 
                     and there is a public parking lot across the resturant in Vane Street. 
-                    Most of the street parking are 60 and 90 minutes and free"
+                    Most of the street parking are 60 and 90 minutes and free."
                 />
             </Grid>
 
@@ -99,12 +99,12 @@ interface IStoreDetailCardProps {
 }
 
 const CardContainer = styled(Card)(({theme}) => ({
-    height: '40vh',
+    height: '45vh',
     [theme.breakpoints.down('md')]: {
         height: '30vh',
     },
     [theme.breakpoints.down('sm')]: {
-        height: '35vh',
+        height: '50vh',
     },
    
    

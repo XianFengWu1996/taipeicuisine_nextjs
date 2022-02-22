@@ -36,7 +36,7 @@ const open_hours = [
 const ItemContainer = styled('div')(({theme}) => ({
     padding: '0 80px 40px 80px',
     [theme.breakpoints.down('sm')]: {
-        padding: '0 50px 40px 50px',
+        padding: '0 15px 40px 15px',
     }
 }))
 
@@ -105,17 +105,22 @@ export const AdditionalInfo = () => {
     </section>
 }
 
+const OpenHourContainer = styled('div')(({theme}) => ({
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '5px 0',
+    width: '80%',
+    fontSize: '20px',
+    fontWeight: 'bold',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '15px',
+        width: '90%',
+    }
+}))
 
 export const OpenHourDisplay = ({ date, close } : { date: string, close: boolean }) => {
-    return <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '5px 0',
-        width: '80%',
-        fontSize: '20px',
-        fontWeight: 'bold'
-    }}>
+    return <OpenHourContainer>
         <div>{date.toUpperCase()}</div>
         <div>{ !close ? '11:00AM - 9:50PM' : 'Close'}</div>
-    </div>
+    </OpenHourContainer>
 }

@@ -9,7 +9,9 @@ export const Footer = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: '0 20px',
+        textAlign: 'center'
     }}>
         <Typography>Contact us</Typography>
         <Typography>617-328-4188</Typography>
