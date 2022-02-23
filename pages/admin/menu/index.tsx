@@ -1,9 +1,9 @@
 import axios from "axios"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import React, { useEffect } from "react";
-import { MenuSelect } from "../../../components/admin/menu/menuSelect";
-import { MenuTab } from "../../../components/admin/menu/menuTab";
-import ResponsiveAppBar from "../../../components/appbar";
+import { MenuSelect } from "../../../components/menu/menuSelect";
+import { MenuTab } from "../../../components/menu/menuTab";
+import ResponsiveAppBar from "../../../components/admin/appbar";
 import { useAppDispatch } from "../../../store/store";
 import { getInitialMenuData } from "../../../store/slice/menuSlice";
 import { handleAdminNotAuthRedirect, checkTokenInToken } from "../../../utils/functions/errors";
@@ -42,8 +42,7 @@ export default function Menu ({ menus, error, expiration }:IMenuProps){
 
 
 export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
-    try{      
-      
+    try{        
         if(checkTokenInToken(ctx.req.headers.cookie)){
             return checkTokenInToken(ctx.req.headers.cookie)!
         }

@@ -1,8 +1,8 @@
 import { Paper, Tab, Tabs } from "@mui/material"
 import { Box } from "@mui/system"
 import { SyntheticEvent, useEffect, useState } from "react";
-import { handleOnTabChange } from "../../../store/slice/menuSlice";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { handleOnTabChange } from "../../store/slice/menuSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { MenuItemList } from "./menuItem";
 
 export const MenuTab = () => {

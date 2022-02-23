@@ -3,12 +3,12 @@ import { LoadingButton } from "@mui/lab"
 import { Button, Dialog, DialogActions, DialogContent, Grid, Typography } from "@mui/material"
 import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react"
-import { handleUpdateDish } from "../../../store/slice/menuSlice"
-import { useAppDispatch, useAppSelector } from "../../../store/store"
-import { handleAdminTryCatchError } from "../../../utils/functions/errors"
-import { CheckBoxList } from "../edit_menu/CheckboxList"
-import { ImageUpload } from "../edit_menu/ImageUpload"
-import { TextFieldList } from "../edit_menu/TextFieldList"
+import { handleUpdateDish } from "../../store/slice/menuSlice"
+import { useAppDispatch, useAppSelector } from "../../store/store"
+import { handleAdminTryCatchError } from "../../utils/functions/errors"
+import { CheckBoxList } from "../admin/edit_menu/CheckboxList"
+import { ImageUpload } from "../admin/edit_menu/ImageUpload"
+import { TextFieldList } from "../admin/edit_menu/TextFieldList"
 
 interface IAdminMenuDialogProps{
     open: boolean,

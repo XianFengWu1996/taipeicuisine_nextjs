@@ -1,7 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import { isEmpty } from "lodash";
-import { handleOnMenuChange, handleOnTabChange } from "../../../store/slice/menuSlice";
-import { useAppDispatch, useAppSelector } from "../../../store/store"
+import { handleOnMenuChange, handleOnTabChange } from "../../store/slice/menuSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store"
 
 export const MenuSelect = () => {
     const menuState = useAppSelector(state => state.menus);

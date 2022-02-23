@@ -1,8 +1,8 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material"
 import Image from "next/image"
 import { useState } from "react";
-import { getCurrentDish } from "../../../store/slice/menuSlice";
-import { useAppDispatch, useAppSelector } from "../../../store/store"
+import { getCurrentDish } from "../../store/slice/menuSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store"
 import { AdminMenuDialog } from "./menuDialog";
 
 export const MenuItemList = () => {
@@ -18,7 +18,7 @@ export const MenuItemList = () => {
         setOpen(true);
     }
 
-    return <div style={{ margin: '1.5rem 2rem'}}>
+    return <div style={{ margin: '1.5rem 5rem'}}>
         <Grid container spacing={2}>
             {
                    currentSelectedCategory && currentSelectedCategory.dishes ? currentSelectedCategory.dishes.map((dish: IDish) => {

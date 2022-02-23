@@ -1,6 +1,7 @@
 import { Button, Grid, Theme, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import BgImage from '../../assets/images/dumpling_background.jpg'
 import Logo from '../../assets/images/whitelogo.png'
 
@@ -40,6 +41,7 @@ const ButtonContainer = styled('div')(({ theme }) => ({
 }))
 
 export const HomePage = () => {
+    const router = useRouter();
     return <HomeSection>
         <Image src={Logo.src} alt="taipei logo" height={120} width={140} />
 
@@ -51,7 +53,11 @@ export const HomePage = () => {
                     backgroundColor: '#e74c3c', 
                     marginBottom: '15px',
                     height: '40px'
-                }}>Order</Button>
+                }}
+                onClick={() => {
+                    router.push('/order')
+                }}
+                >Order</Button>
                 <Button 
                     variant="outlined" 
                     href={'https://firebasestorage.googleapis.com/v0/b/foodorder-43af7.appspot.com/o/Menu.pdf?alt=media&token=6689dd02-5fe5-46b4-a219-3bb7fb2a7ec7'}

@@ -10,7 +10,7 @@ import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mu
 import { MenuBookOutlined, Storefront } from '@mui/icons-material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useAppSelector } from '../store/store';
+import { useAppSelector } from '../../store/store';
 
 const ResponsiveAppBar = () => {
   const router = useRouter()

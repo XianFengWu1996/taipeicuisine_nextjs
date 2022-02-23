@@ -1,5 +1,5 @@
 import { Paper, Typography, SxProps, Grid } from '@mui/material';
-import ResponsiveAppBar from '../../../components/appbar';
+import ResponsiveAppBar from '../../../components/admin/appbar';
 import { Box, Theme } from '@mui/system';
 import { DayOfWeekTile} from '../../../components/admin/dashboard/dayHourTile';
 import { useEffect, useState } from 'react';

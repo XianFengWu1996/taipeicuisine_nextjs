@@ -104,7 +104,7 @@ export const AdditionalInfo = () => {
                 </Grid>
             
          
-                <Grid item xs={12} md={6} direction={'column'}>
+                <Grid item xs={12} md={6}>
                 <motion.div ref={ref} initial="hidden" animate={controls} variants={{
                     hidden: {
                         x: 100
