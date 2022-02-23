@@ -19,14 +19,16 @@ export const MenuSelect = () => {
     }
     return <>
         {
-            !isEmpty(menuState.currentSelectedMenu) ? <FormControl sx={{ margin: '1.5rem 1rem', minWidth: '250px'}}>
-                <InputLabel id="menu-select">Menu</InputLabel>
+            !isEmpty(menuState.currentSelectedMenu) ? 
+            <FormControl size="medium" sx={{ margin: '1.5rem 5rem'}}>
+                <InputLabel id="menu-select">Menu 菜单</InputLabel>
                 <Select
                     labelId="menu-select-label"
                     id="menu-select"
                     value={menuState.currentSelectedMenu.id}
-                    label="Menu"
+                    label="Menu 菜单"
                     onChange={handleOnSelectChange}
+                    sx={{ minWidth: '40vw'}}
                 >
                     {
                         menuState.menus.map((menu) => {

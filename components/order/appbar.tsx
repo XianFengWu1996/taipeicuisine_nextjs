@@ -1,4 +1,4 @@
-import { AppBar, Button, IconButton, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, Toolbar, Typography } from "@mui/material"
+import { AppBar, Button, IconButton, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, Toolbar, Typography, useMediaQuery } from "@mui/material"
 import { Box, styled } from "@mui/system"
 import MenuIcon from '@mui/icons-material/Menu';
 import { AiOutlineShoppingCart, AiOutlineUser, AiOutlineSetting, AiOutlineHome, AiOutlineClose } from 'react-icons/ai'
@@ -13,8 +13,15 @@ const StyleAppbar = styled(AppBar)(({theme}) => ({
     position: 'static',
     backgroundColor: '#fff',
     color: '#555',
+    width: '100%',
     boxShadow: '3px 3px 6px 0px rgba(0,0,0,0.35)',
     padding: '0 40px',
+    [theme.breakpoints.down('md')]: {
+        padding: '0 20px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        padding: '0 10px',
+    }
 }))
 
 const CartButton = styled(Button)(({theme}) => ({
@@ -24,6 +31,10 @@ const CartButton = styled(Button)(({theme}) => ({
     padding: '10px 40px',
     '&:hover':{
         backgroundColor: '#bbb'
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 18,
+        padding: '10px 30px',
     }
 }))
 
@@ -37,11 +48,28 @@ const CartCount = styled('span')(({theme}) => ({
     border: '1px solid #fff',
     borderRadius: '50%',
     backgroundColor: '#fff',
-    color: '#555'
+    color: '#555',
+    [theme.breakpoints.down('sm')]: {
+        height: '14px',
+        width: '14px',
+        fontSize: '7px',
+        top: '2px', 
+        right: '22px',
+    }
 }))
 
 const DrawerItem = styled('div')(({theme}) => ({
     width: '250px'
+}))
+
+const LogoutButton = styled(Button)(({theme}) => ({
+    backgroundColor: 'red',
+    color: '#fff',
+    width: '80%',
+    alignSelf: 'center',
+    '&:focus': {
+        backgroundColor: '#ff7f7f   '
+    }
 }))
 
 const navigation_list = [
@@ -81,6 +109,16 @@ const navigation_list = [
 export const PublicAppBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
+    const isMobile = useMediaQuery('(max-width: 480px)');
+
+    const handleMenuOpen = () => {
+        setMenuOpen(true)
+    }
+
+    const handleMenuClose = () => {
+        setMenuOpen(false)
+    }
+
     return <>
         <Box>
             <StyleAppbar>
@@ -92,17 +130,19 @@ export const PublicAppBar = () => {
                         color="inherit"
                         aria-label="menu"
                         sx={{ mr: 2 }}
-                        onClick={() => setMenuOpen(true)}
+                        onClick={handleMenuOpen}
                     >
-                    <MenuIcon />
+                        <MenuIcon />
                     </IconButton>
-                    <Image src={BlackLogo.src} alt="taipei cuisine logo" width={60} height={50}/>
+                    {!isMobile ? <Image src={BlackLogo.src} alt="taipei cuisine logo" width={60} height={50}/> : null }
                 </div>
                 <div>
-                    <IconButton sx={{ marginRight: 4 }}>
+                    {!isMobile 
+                    ? <IconButton sx={{ marginRight: 4 }}>
                         <AiOutlineUser />
-                    </IconButton>
-                    <CartButton>
+                    </IconButton> 
+                    : null }
+                    <CartButton> 
                         <AiOutlineShoppingCart />
                         <CartCount>25</CartCount>
                     </CartButton>
@@ -114,28 +154,49 @@ export const PublicAppBar = () => {
         <SwipeableDrawer
             anchor='left'
             open={menuOpen}
-            onClose={() => setMenuOpen(false)}
-            onOpen={() => setMenuOpen(true)}
+            onClose={handleMenuClose}
+            onOpen={handleMenuOpen}
         >
             <div>
-                <IconButton>
+                <IconButton sx={{ padding: '20px'}} onClick={handleMenuClose}>
                     <AiOutlineClose />
                 </IconButton>
             </div>
-            {
-                navigation_list.map((item) => {
-                    return <DrawerItem key={item.id}>
-                        <ListItem button onClick={() => {
-                            Router.push(item.path);
-                        }}>
-                            <ListItemIcon>
-                                {item.icon}
-                            </ListItemIcon>
-                            <ListItemText primary={item.text} />
-                        </ListItem>
-                    </DrawerItem>
-                })
-            }
+        
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80%'}}>
+                <div >
+                    {
+                        isMobile ? <DrawerItem>
+                            <ListItem button onClick={() => Router.push('/account') }>
+                                <ListItemIcon>
+                                    <AiOutlineUser />
+                                </ListItemIcon>
+                                <ListItemText primary={'Account'} />
+                            </ListItem>
+                        </DrawerItem> : null
+                    }
+                    {
+                        navigation_list.map((item) => {
+                            return <DrawerItem key={item.id}>
+                                <ListItem button onClick={() => {
+                                    Router.push(item.path);
+                                }}>
+                                    <ListItemIcon>
+                                        {item.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.text} />
+                                </ListItem>
+                            </DrawerItem>
+                        })
+                    }
+                </div>
+            
+
+                <LogoutButton>
+                    Logout
+                </LogoutButton>
+            </div>
+            
         </SwipeableDrawer>
     </>
 }

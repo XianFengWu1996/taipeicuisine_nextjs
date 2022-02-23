@@ -21,7 +21,7 @@ export default function OrderPage (props: IOrderPageProps){
             dispatch(getInitialMenuData({ menus: props.menus, expiration: props.expiration }))
         }
     })
-    return <div>
+    return <div style={{ width: '100%'}}>
         <PublicAppBar />
         <MenuSelect />
         <MenuTab />
