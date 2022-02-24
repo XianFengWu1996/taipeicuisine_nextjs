@@ -1,6 +1,6 @@
 import { deepCopy } from "@firebase/util"
 import { LoadingButton } from "@mui/lab"
-import { Button, Dialog, DialogActions, DialogContent, Grid, Typography } from "@mui/material"
+import { Button, Dialog, DialogActions, DialogContent, Grid, Typography, useMediaQuery } from "@mui/material"
 import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react"
 import { handleUpdateDish } from "../../store/slice/menuSlice"
@@ -9,6 +9,9 @@ import { handleAdminTryCatchError } from "../../utils/functions/errors"
 import { CheckBoxList } from "../admin/edit_menu/CheckboxList"
 import { ImageUpload } from "../admin/edit_menu/ImageUpload"
 import { TextFieldList } from "../admin/edit_menu/TextFieldList"
+import { GoFlame } from 'react-icons/go'
+import { DishText, PriceText } from "./menuItem"
+import { ImageWithFallback } from "../images"
 
 interface IAdminMenuDialogProps{
     open: boolean,
@@ -176,3 +179,33 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
         </DialogActions>
     </Dialog>
 }
+
+interface IPublicMenuDialogProps {
+    open: boolean,
+    handleClose: () => void
+}
+
+export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
+    const isMobile = useMediaQuery('(max-width: 480px)');
+    const { currentSelectedDish: dish } = useAppSelector(state => state.menus)
+
+    return <Dialog 
+            open={props.open}
+            onClose={props.handleClose}
+            fullWidth
+            fullScreen={isMobile}
+
+        >
+        <DialogContent>
+            <ImageWithFallback src={dish.pic_url} label={dish.en_name}/>
+            <DishText>{dish.label_id}. {dish.en_name} {dish.ch_name} {dish.is_spicy ? <GoFlame color="red"/>: null}</DishText>
+            <PriceText>${dish.price}</PriceText>
+            <Typography>{dish.description}</Typography>
+        </DialogContent>
+
+        <DialogActions> 
+            <Button>Add to cart</Button>
+        </DialogActions>
+    </Dialog>
+}
+

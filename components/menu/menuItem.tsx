@@ -1,14 +1,46 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material"
-import Image from "next/image"
+import { styled } from "@mui/system";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { getCurrentDish } from "../../store/slice/menuSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store"
-import { AdminMenuDialog } from "./menuDialog";
+import { AdminMenuDialog, PublicMenuDialog } from "./menuDialog";
+import { GoFlame } from 'react-icons/go'
+import { ImageWithFallback } from "../images";
+
+
+const CardContainer = styled('div')(({theme}) => ({
+    margin: '1.5rem 5rem',
+    [theme.breakpoints.down('md')]: {
+        margin: '1.5rem 3.5rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '1.5rem 1rem',
+    },
+}))
+
+export const DishText = styled(Typography)(({theme}) => ({
+    fontFamily: 'Montserrat',
+    fontWeight: 700, 
+    
+    [theme.breakpoints.down('md')]:{
+        fontSize: 16
+    }
+}))
+
+export const PriceText = styled(Typography)(({theme}) => ({
+    fontWeight: 600, 
+    fontSize: 14,
+    [theme.breakpoints.down('md')]:{
+        fontSize: 12
+    }
+}))
 
 export const MenuItemList = () => {
     const dispatch = useAppDispatch();
     const { currentSelectedCategory } = useAppSelector(state => state.menus)
     const [open, setOpen] = useState<boolean>(false);
+    const router = useRouter();
 
     const handleOnClose = () => {
         setOpen(false);
@@ -18,7 +50,20 @@ export const MenuItemList = () => {
         setOpen(true);
     }
 
-    return <div style={{ margin: '1.5rem 5rem'}}>
+    const renderDialog = () => {
+        if(router.asPath === '/admin/menu'){
+            return <AdminMenuDialog 
+                open={open}
+                handleClose={handleOnClose}
+            />
+        }
+        return <PublicMenuDialog 
+            open={open}
+            handleClose={handleOnClose}
+        /> 
+    }
+
+    return <CardContainer>
         <Grid container spacing={2}>
             {
                    currentSelectedCategory && currentSelectedCategory.dishes ? currentSelectedCategory.dishes.map((dish: IDish) => {
@@ -27,20 +72,12 @@ export const MenuItemList = () => {
                                dispatch(getCurrentDish(dish));
                                handleOpen();
                            }}>
-                               <CardContent sx={{ display: 'flex'}}>
-                                       {
-                                           dish.pic_url && typeof dish.pic_url === 'string' ? <Image 
-                                               src={dish.pic_url} 
-                                               alt={`picture for ${dish.en_name}`} 
-                                               width={125}
-                                               height={80} 
-                                           /> : null
-                                       }
+                               <CardContent sx={{ display: 'flex', padding: '13px', '&:last-child': { paddingBottom: '13px'}}}>
+                                       <ImageWithFallback src={dish.pic_url} label={dish.en_name}/>
            
-                                       <div style={{ padding: '0 1.5rem'}}>
-                                           <Typography sx={{ fontWeight: 'bold', fontSize: 16}}>{dish.label_id}. {dish.en_name} {dish.ch_name}</Typography>
-                                           <Typography sx={{ fontWeight: 'bold', fontSize: '14px'}}>${dish.price.toFixed(2)}</Typography>
-                                           <Typography>{dish.description}</Typography>
+                                       <div>
+                                           <DishText>{dish.label_id}. {dish.en_name} {dish.ch_name} {dish.is_spicy ? <GoFlame color="red"/> : null}</DishText>
+                                           <PriceText>${dish.price.toFixed(2)}</PriceText>
                                        </div>                                
                                </CardContent>
                            </Card>
@@ -49,10 +86,7 @@ export const MenuItemList = () => {
             }
         </Grid>
 
-
-        <AdminMenuDialog 
-            open={open}
-            handleClose={handleOnClose}
-        />
-    </div>
+        {renderDialog()}
+     
+    </CardContainer>
 }

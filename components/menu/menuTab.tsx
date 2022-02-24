@@ -1,9 +1,28 @@
 import { Paper, Tab, Tabs } from "@mui/material"
-import { Box } from "@mui/system"
+import { Box, styled } from "@mui/system"
 import { SyntheticEvent, useEffect, useState } from "react";
 import { handleOnTabChange } from "../../store/slice/menuSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { MenuItemList } from "./menuItem";
+
+const StyledMenuTabContainer = styled(Tabs)(({ theme }) => ({
+    borderRight: 1, 
+    borderColor: 'divider', 
+    padding: '0 3rem',
+    [theme.breakpoints.down('md')]: {
+        padding: '0 2rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        padding: '0',
+    },
+}))
+
+const StyledMenuTab = styled(Tab)(({ theme }) => ({
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '12px',
+        fontWeight: 600
+    },
+}))
 
 export const MenuTab = () => {
 
@@ -22,9 +41,9 @@ export const MenuTab = () => {
         if(currentSelectedMenu) {
             if(currentSelectedMenu.category){
                 return currentSelectedMenu.category.map((category) => {
-                    return <Tab
+                    return <StyledMenuTab
                         key={category.id} 
-                        label={category.en_name} 
+                        label={`${category.en_name} ${category.ch_name}`} 
                         id={`tab-${category.id}`} 
                     />
                 })
@@ -57,22 +76,19 @@ export const MenuTab = () => {
         };
     }, []);
 
-    return  <Box sx={{ flexGrow: 1, bgcolor: 'background.paper' }}
-         >  
+    return  <Box sx={{ bgcolor: 'background.paper' }}>  
             <Paper style={ scrollBarStyle}>
-                <Tabs
+                <StyledMenuTabContainer
                     variant="scrollable"
-                    visibleScrollbar
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                     value={currentSelectedTab ?? 0  }
                     onChange={handleTabChange}
                     aria-label="Menu Display"
-                    sx={{ borderRight: 1, borderColor: 'divider', padding: '0 3rem' }}
                 >
                 
                 {handleTabView()}
-                </Tabs>
+                </StyledMenuTabContainer>
             </Paper>
 
             {handleTabChildren()}

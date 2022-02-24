@@ -109,7 +109,7 @@ export const StoreDetails = () => {
                                 icon={<BiFoodMenu size={30}/>}
                                 contents="Offering the best dishes from SiChuan and Taiwan. 
                                 The dishes are created by chefs who are high experienced with the styles. 
-                                Sichuan food is really about a variety of flavors: spicy, flowery (Sichuan peppercorns), salty, sour, sweet, smoky, etc"                />
+                                Sichuan food is really about a variety of flavors: spicy, Sichuan peppercorns, salty, sour, sweet, etc"                />
                         </Grid>
                     </StoreDetailGrid>
 

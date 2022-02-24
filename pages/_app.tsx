@@ -10,6 +10,8 @@ import store from '../store/store'
 import NProgress from 'nprogress'
 import Router from 'next/router'
 import "nprogress/nprogress.css";
+import { ThemeProvider } from '@emotion/react'
+import { muiCustomTheme } from '../components/theme'
 
 
 axios.defaults.withCredentials = true;
@@ -44,10 +46,12 @@ Router.events.on('routeChangeError', () => NProgress.done());
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
     <Provider store={store}>
-        <SnackbarProvider maxSnack={3}>
-          <SnackbarUtilsConfigurator />
-          <Component {...pageProps} />
-        </SnackbarProvider>
+        <ThemeProvider theme={muiCustomTheme}>
+          <SnackbarProvider maxSnack={3}>
+            <SnackbarUtilsConfigurator />
+            <Component {...pageProps} />
+          </SnackbarProvider>
+        </ThemeProvider>
     </Provider>
   </>
 }

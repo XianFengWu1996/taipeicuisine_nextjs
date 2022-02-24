@@ -46,9 +46,9 @@ export const menuSlice = createSlice({
       state.currentSelectedCategory = payload.category[0]; // set the category to the first one in the menu
       state.currentSelectedTab = 0; // set to the first tab
     },
-    handleOnTabChange: (state, {payload} : PayloadAction<{ tabIndex: number, category: ICategory}>) => {
+    handleOnTabChange: (state, {payload} : PayloadAction<{ tabIndex: number, category?: ICategory | undefined}>) => {
       state.currentSelectedTab = payload.tabIndex
-      if(!isEmpty(payload.category)){
+      if(payload.category && !isEmpty(payload.category)){
         state.currentSelectedCategory = payload.category
       }
     },
