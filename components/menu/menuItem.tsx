@@ -72,10 +72,10 @@ export const MenuItemList = () => {
                                dispatch(getCurrentDish(dish));
                                handleOpen();
                            }}>
-                               <CardContent sx={{ display: 'flex', padding: '13px', '&:last-child': { paddingBottom: '13px'}}}>
-                                       <ImageWithFallback src={dish.pic_url} label={dish.en_name}/>
+                               <CardContent sx={{ display: 'flex'}}>
+                                       <ImageWithFallback src={dish.pic_url} label={dish.en_name} width={100} height={100}/>
            
-                                       <div>
+                                       <div style={{ paddingLeft: 10}}>
                                            <DishText>{dish.label_id}. {dish.en_name} {dish.ch_name} {dish.is_spicy ? <GoFlame color="red"/> : null}</DishText>
                                            <PriceText>${dish.price.toFixed(2)}</PriceText>
                                        </div>                                
