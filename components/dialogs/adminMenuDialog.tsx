@@ -1,6 +1,6 @@
 import { deepCopy } from "@firebase/util"
 import { LoadingButton } from "@mui/lab"
-import { Button, Dialog, DialogActions, DialogContent, Grid, IconButton, styled, Typography, useMediaQuery } from "@mui/material"
+import { Button, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, FormLabel, Grid, IconButton, Radio, RadioGroup, styled, Typography, useMediaQuery } from "@mui/material"
 import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react"
 import { handleUpdateDish } from "../../store/slice/menuSlice"
@@ -10,7 +10,7 @@ import { CheckBoxList } from "../admin/edit_menu/CheckboxList"
 import { ImageUpload } from "../admin/edit_menu/ImageUpload"
 import { TextFieldList } from "../admin/edit_menu/TextFieldList"
 import { GoFlame } from 'react-icons/go'
-import { DishText, PriceText } from "./menuItem"
+import { DishText, PriceText } from "../menu/menuItem"
 import { ImageWithFallback } from "../images"
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
@@ -182,66 +182,5 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
     </Dialog>
 }
 
-const AddToCartButton = styled(Button)(({theme}) => ({
-    backgroundColor: '#555',
-    minWidth: '200px',
-    color: '#fff',
-    display: 'flex',
-    justifyContent: 'space-around',
-    padding: '10px'
-}))
 
-interface IPublicMenuDialogProps {
-    open: boolean,
-    handleClose: () => void
-}
-
-export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
-    const isMobile = useMediaQuery('(max-width: 480px)');
-    const { currentSelectedDish: dish } = useAppSelector(state => state.menus)
-
-    return <Dialog 
-            open={props.open}
-            onClose={props.handleClose}
-            fullWidth
-            maxWidth={'md'}
-            fullScreen={isMobile}
-
-        >
-        <DialogContent>
-            <div style={{ display: 'flex'}}>
-                <ImageWithFallback src={dish.pic_url} label={dish.en_name} width={250} height={200}/>
-                <div style={{ paddingLeft: 20}}>
-                    <DishText>{dish.label_id}. {dish.en_name} {dish.ch_name} {dish.is_spicy ? <GoFlame color="red"/>: null}</DishText>
-                    <PriceText>${dish.price}</PriceText>
-                    <Typography>{dish.description}</Typography>
-                </div>
-            </div>  
-        </DialogContent>
-
-        <DialogActions> 
-
-            <div style={{ 
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '40px',
-                width: '120px',
-                backgroundColor: '#fff',
-                marginRight: 10,
-                border: '1px solid #000',
-                borderRadius: '100px'
-            }}>
-                <IconButton sx={{ color: '#000'}}><FiChevronLeft /></IconButton>
-                <Typography sx={{ color: '#000', padding: '0 8px', fontWeight: 400}}>1</Typography>
-                <IconButton sx={{ color: '#000'}}><FiChevronRight /></IconButton>
-            </div>
-
-            <AddToCartButton>
-                <AiOutlineShoppingCart fontSize={18} />
-                <Typography>Add to Cart</Typography>
-            </AddToCartButton>
-        </DialogActions>
-    </Dialog>
-}
 

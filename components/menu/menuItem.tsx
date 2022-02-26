@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { getCurrentDish } from "../../store/slice/menuSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store"
-import { AdminMenuDialog, PublicMenuDialog } from "./menuDialog";
+import { AdminMenuDialog } from "../dialogs/adminMenuDialog";
 import { GoFlame } from 'react-icons/go'
 import { ImageWithFallback } from "../images";
+import { PublicMenuDialog } from "../dialogs/publicMenuDialog";
 
 
 const CardContainer = styled('div')(({theme}) => ({
@@ -57,33 +58,40 @@ export const MenuItemList = () => {
                 handleClose={handleOnClose}
             />
         }
-        return <PublicMenuDialog 
+        return <PublicMenuDialog
             open={open}
             handleClose={handleOnClose}
         /> 
     }
 
+    const renderDishCard = () => {
+        if(!currentSelectedCategory) return null    
+        if(!currentSelectedCategory.dishes) return null;
+
+        return currentSelectedCategory.dishes.map((dish: IDish) => {  
+            if(!dish.in_stock) return null   
+
+            return <Grid key={dish.id} item xs={12} md={6}>
+                <Card style={{ minHeight: 120}} onClick={() => {
+                    dispatch(getCurrentDish(dish));
+                    handleOpen();
+                }}>
+                    <CardContent sx={{ display: 'flex'}}>
+                            <ImageWithFallback src={dish.pic_url} label={dish.en_name} width={90} height={80}/>
+
+                            <div style={{ paddingLeft: 10}}>
+                                <DishText>{dish.label_id}. {dish.en_name} {dish.ch_name} {dish.is_spicy ? <GoFlame color="red"/> : null}</DishText>
+                                <PriceText>${dish.price.toFixed(2)}</PriceText>
+                            </div>                                
+                    </CardContent>
+                </Card>
+            </Grid>
+        })
+    }
+
     return <CardContainer>
         <Grid container spacing={2}>
-            {
-                   currentSelectedCategory && currentSelectedCategory.dishes ? currentSelectedCategory.dishes.map((dish: IDish) => {
-                    return <Grid key={dish.id} item xs={12} md={6}>
-                           <Card style={{ minHeight: 120}} onClick={() => {
-                               dispatch(getCurrentDish(dish));
-                               handleOpen();
-                           }}>
-                               <CardContent sx={{ display: 'flex'}}>
-                                       <ImageWithFallback src={dish.pic_url} label={dish.en_name} width={100} height={100}/>
-           
-                                       <div style={{ paddingLeft: 10}}>
-                                           <DishText>{dish.label_id}. {dish.en_name} {dish.ch_name} {dish.is_spicy ? <GoFlame color="red"/> : null}</DishText>
-                                           <PriceText>${dish.price.toFixed(2)}</PriceText>
-                                       </div>                                
-                               </CardContent>
-                           </Card>
-                       </Grid>
-                   }) : null
-            }
+            { renderDishCard()}
         </Grid>
 
         {renderDialog()}
