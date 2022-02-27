@@ -31,6 +31,7 @@ interface IDish {
 }
 
 interface IVarirant{
+    id: string,
     en_name: string,
     ch_name:string,
     options: IVarirantOption[]
