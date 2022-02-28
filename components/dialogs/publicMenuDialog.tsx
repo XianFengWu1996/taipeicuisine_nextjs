@@ -1,11 +1,12 @@
 import { Button, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, Typography, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
-import { useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ImageWithFallback } from "../images";
 import { AiOutlineShoppingCart} from 'react-icons/ai'
 import { FiChevronLeft, FiChevronRight} from 'react-icons/fi'
 import { GoFlame } from 'react-icons/go'
 import {  useEffect, useState } from "react";
+import { addToCart } from "../../store/slice/cartSlice";
 
 const AddToCartButton = styled(Button)(({theme}) => ({
     backgroundColor: '#555',
@@ -48,12 +49,11 @@ interface IPublicMenuDialogProps {
 export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     const isMobile = useMediaQuery('(max-width: 480px)'); // check if it' mobile 
     const { currentSelectedDish: dish } = useAppSelector(state => state.menus)
+    const dispatch = useAppDispatch();
 
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(0)
-    const [option, setOption] = useState({
-        price: 0
-    } as IVarirantOption)
+    const [option, setOption] = useState({} as IVarirantOption)
 
     // QUANTITY HANDLER
     const increaseQuantity = () => {
@@ -70,7 +70,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
         props.handleClose();
         setQuantity(1);
         setTotal(dish.price);
-        setOption({ price: 0 } as IVarirantOption)
+        setOption({} as IVarirantOption)
     }
 
     const handleOnRadioChange = (id: string, options: IVarirantOption[]) => {
@@ -81,16 +81,29 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
         }    
     }
 
+    const handleAddToCart = () => {
+        dispatch(addToCart({
+            id: option.id ? `${dish.id}${option.id}` :dish.id,
+            dish: dish,
+            quantity: quantity,
+            option: option,
+            comment: '',
+            total: total,
+        }));
+        handleDialogClose();
+    }
+
     // set the total as the select dish price for one, will only change when the dish change
     useEffect(() => {
-        setTotal(dish.price)
+        // dish price will only change when the user select a different dish
+        setTotal(dish.price) 
     }, [dish])
 
     // will calculate the total, if quantity, the option price, or dish changes
     useEffect(() => {
-        let temp = quantity * (dish.price + option.price);
+        let temp = quantity * (dish.price + (option.price ?? 0));
         setTotal(temp);
-    }, [quantity, option.price, dish])
+    }, [quantity, option.price])
 
     const renderVarirant = () => {
         if(!dish.variant) return null 
@@ -151,7 +164,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
                 <IconButton sx={{ color: '#000'}}  onClick={increaseQuantity}><FiChevronRight /></IconButton>
             </QuantityContainer>
 
-            <AddToCartButton>
+            <AddToCartButton onClick={handleAddToCart}>
                 <AiOutlineShoppingCart fontSize={18} />
                 <Typography>Add to Cart | ${total ? total.toFixed(2): 0}</Typography>
             </AddToCartButton>

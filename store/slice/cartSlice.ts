@@ -16,9 +16,9 @@ export interface CartState {
 const initialState: CartState = {
     cart: [],
     cart_quantity: 0,
+    subtotal: 0,
     tip: 0,
     tax: 0,
-    subtotal: 0,
     total: 0,
     // delivery comments
 }
@@ -27,9 +27,13 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, { payload } : PayloadAction) => {
-    
-      }, 
+    addToCart: (state, { payload } : PayloadAction<ICartItem>) => {
+        state.cart.push(payload); // add the item to the cart
+        state.cart_quantity += payload.quantity; // update the quantity of the cart
+        state.subtotal += Number(payload.total.toFixed(2)); // add the dish total to the subtotal
+        state.tax += Number((payload.total * 0.07).toFixed(2))
+        state.total = Number((state.subtotal + state.tax).toFixed(2))
+    }, 
   }
 })
 

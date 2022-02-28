@@ -3,7 +3,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { useEffect } from "react";
 import { MenuSelect } from "../../components/menu/menuSelect";
 import { MenuTab } from "../../components/menu/menuTab";
-import { PublicAppBar } from "../../components/order/appbar";
+import { PublicAppBar } from "../../components/order/appbar/appbar";
 import { getInitialMenuData } from "../../store/slice/menuSlice";
 import { useAppDispatch } from "../../store/store";
 
