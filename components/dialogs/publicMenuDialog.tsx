@@ -28,12 +28,12 @@ const QuantityContainer = styled('div')(({theme}) => ({
     borderRadius: '100px'
 }))
 
-const DishText = styled('div')(({theme}) => ({
+const DishText = styled(Typography)(({theme}) => ({
     fontSize: 20, 
     fontWeight: 600
 }))
 
-const PriceText = styled('div')(({theme}) => ({
+const PriceText = styled(Typography)(({theme}) => ({
     fontSize: 15, 
     fontStyle: 'italic', 
     fontWeight: 500
