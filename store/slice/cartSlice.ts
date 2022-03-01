@@ -1,7 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { isEmpty } from 'lodash';
-import { DishText } from '../../components/menu/menuItem';
-
 
 // Define a type for the slice state
 export interface CartState {
@@ -33,6 +30,7 @@ export const cartSlice = createSlice({
         let index = state.cart.findIndex(item => item.id === payload.id);
 
         if(index !== -1){
+          // update the quantiy and total of the dish
           state.cart[index] = {
             ...state.cart[index],
             quantity: state.cart[index].quantity + payload.quantity,
@@ -41,9 +39,9 @@ export const cartSlice = createSlice({
         } else {
           state.cart.push(payload); // add the item to the cart
 
+          // sort the dish
           state.cart.sort((a, b) => {
             if(a.dish.label_id === b.dish.label_id) return 0;
- 
             return a.dish.label_id > b.dish.label_id ? 1 : -1
           });
         }  
@@ -91,7 +89,14 @@ export const cartSlice = createSlice({
       state.subtotal = Number((state.subtotal - payload.total).toFixed(2));
       state.tax = Number((state.subtotal * 0.07).toFixed(2));
       state.total = Number((state.subtotal + state.tax).toFixed(2));
-    }
+    },
+    clearCart: (state) => {
+      state.cart = [];
+      state.cart_quantity = 0
+      state.subtotal = 0;
+      state.tax = 0;
+      state.total = 0;
+    },  
   }
 })
 
@@ -101,7 +106,8 @@ export const {
  addToCart,
  increaseQty,
  decreaseQty,
- removeItemFromCart
+ removeItemFromCart,
+ clearCart
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;
