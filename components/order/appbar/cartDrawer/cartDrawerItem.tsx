@@ -1,16 +1,14 @@
-import { Card, CardContent, IconButton, SwipeableDrawer, Typography } from "@mui/material"
-import { Box, fontSize, styled } from "@mui/system"
-import { useAppDispatch, useAppSelector } from "../../../store/store"
-import { ImageWithFallback } from "../../images"
-import { QuantityController } from "../../quantityController"
+import { Card, CardContent, IconButton, Typography } from "@mui/material";
+import { isEmpty } from "lodash";
+import { decreaseQty, increaseQty, removeItemFromCart } from "../../../../store/slice/cartSlice";
+import { useAppDispatch } from "../../../../store/store";
+import { ImageWithFallback } from "../../../images";
+import { QuantityController } from "../../../quantityController";
 import { FiTrash2 } from 'react-icons/fi'
-import { isEmpty } from "lodash"
-import { decreaseQty, increaseQty, removeItemFromCart } from "../../../store/slice/cartSlice"
+import { styled } from "@mui/system";
 
-interface ICartDrawerProps {
-    open:boolean, 
-    handleOpen: () => void,
-    handleClose: () => void,
+interface ICartDrawerItemProps {
+    item: ICartItem
 }
 
 const PriceText = styled(Typography)(({ theme }) => ({
@@ -19,35 +17,7 @@ const PriceText = styled(Typography)(({ theme }) => ({
     fontWeight: 'bold'
 }))
 
-export const CartDrawer = (props: ICartDrawerProps) => {
-    const cartState = useAppSelector(state => state.cart);
-    return <SwipeableDrawer
-              anchor='right'
-              open={props.open}
-              onClose={props.handleClose}
-              onOpen={props.handleOpen}
-        >
-            <Box sx={{ width: '450px', backgroundColor: 'aliceblue'}}>
-                <Typography>Cart</Typography>
-
-                {
-                    cartState.cart.map((item) => {
-                        return <CartDrawerItem 
-                            key={item.id}
-                            item={item}
-                        />
-                    })
-                }
-                
-            </Box>
-        </SwipeableDrawer>
-}
-
-interface ICartDrawerItemProps {
-    item: ICartItem
-}
-
-const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
+export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
     let { dish } = item;
     const dispatch = useAppDispatch();
 
@@ -64,7 +34,7 @@ const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
                     </div>
 
                     <div style={{ paddingLeft: '5px'}}>
-                        <ImageWithFallback 
+                        <ImageWithFallback
                             src={dish.pic_url} 
                             label={dish.en_name} 
                             width={70}

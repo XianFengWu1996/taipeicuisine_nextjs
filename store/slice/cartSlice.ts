@@ -40,6 +40,12 @@ export const cartSlice = createSlice({
           }
         } else {
           state.cart.push(payload); // add the item to the cart
+
+          state.cart.sort((a, b) => {
+            if(a.dish.label_id === b.dish.label_id) return 0;
+ 
+            return a.dish.label_id > b.dish.label_id ? 1 : -1
+          });
         }  
 
         state.cart_quantity += payload.quantity; // update the quantity of the cart
