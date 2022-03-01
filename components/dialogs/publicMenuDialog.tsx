@@ -83,7 +83,10 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
 
         dispatch(addToCart({
             id: option.id ? `${dish.id}${option.id}` :dish.id,
-            dish: dish,
+            dish: {
+                ...dish,
+                price: dish.price + (option.price ?? 0)
+            },
             quantity: quantity,
             option: option,
             comment: '',

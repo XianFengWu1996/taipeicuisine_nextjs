@@ -1,10 +1,11 @@
 import { Card, CardContent, IconButton, SwipeableDrawer, Typography } from "@mui/material"
 import { Box, fontSize, styled } from "@mui/system"
-import { useAppSelector } from "../../../store/store"
+import { useAppDispatch, useAppSelector } from "../../../store/store"
 import { ImageWithFallback } from "../../images"
 import { QuantityController } from "../../quantityController"
 import { FiTrash2 } from 'react-icons/fi'
 import { isEmpty } from "lodash"
+import { decreaseQty, increaseQty, removeItemFromCart } from "../../../store/slice/cartSlice"
 
 interface ICartDrawerProps {
     open:boolean, 
@@ -48,16 +49,18 @@ interface ICartDrawerItemProps {
 
 const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
     let { dish } = item;
+    const dispatch = useAppDispatch();
+
     return <Card sx={{ margin: '15px'}}>
         <CardContent sx={{ display: 'flex', width: '100%'}}>
             <div style={{ display: 'flex', flexDirection: 'column', width: 'inherit' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                     <div>
-                        <Typography sx={{ fontSize: '13px'}}>{dish.label_id} {dish.en_name} {dish.ch_name}</Typography>
+                        <Typography sx={{ fontSize: '13px'}}>{dish.label_id}. {dish.en_name} {dish.ch_name}</Typography>
                         {
                             !isEmpty(item.option) ? <Typography sx={{ fontSize: '11px'}}>Option: {item.option.en_name} {item.option.ch_name}</Typography> : null
                         }
-                        <PriceText>${(dish.price + (item.option.price ?? 0) ).toFixed(2)}</PriceText>
+                        <PriceText>${dish.price.toFixed(2)}</PriceText>
                     </div>
 
                     <div style={{ paddingLeft: '5px'}}>
@@ -72,8 +75,12 @@ const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <QuantityController 
                         quantity={item.quantity}
-                        handleIncrease={() => {}}
-                        handleDecrease={() => {}}
+                        handleIncrease={() => {
+                            dispatch(increaseQty(item));
+                        }}
+                        handleDecrease={() => {
+                            dispatch(decreaseQty(item));
+                        }}
                         height={'35px'}
                         width={'100px'}
                         fontSize="14px"
@@ -82,7 +89,9 @@ const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
 
                     <PriceText>${item.total.toFixed(2)}</PriceText>
 
-                    <IconButton>
+                    <IconButton onClick={() => {
+                        dispatch(removeItemFromCart(item))
+                    }}>
                         <FiTrash2 />
                     </IconButton>
                 </div>
