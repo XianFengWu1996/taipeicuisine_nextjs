@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
-import { useAppSelector } from "../../../../store/store";
+import { clearCart } from "../../../../store/slice/cartSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store/store";
 
 export const CartDrawerActions = () => {
     const cartState = useAppSelector(state => state.cart);
+    const dispatch = useAppDispatch()
     return  <div style={{
         width: 'inherit',
         backgroundColor: '#fff',
@@ -14,5 +16,6 @@ export const CartDrawerActions = () => {
         alignItems: 'center',                    
     }}> 
         <Button variant="contained">Checkout | ${cartState.subtotal.toFixed(2)}</Button>
+        <Button sx={{ marginLeft: '15px'}} onClick={() => dispatch(clearCart())}>Clear Cart</Button>
     </div>
 }
