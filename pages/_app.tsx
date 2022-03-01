@@ -12,6 +12,7 @@ import Router from 'next/router'
 import "nprogress/nprogress.css";
 import { ThemeProvider } from '@emotion/react'
 import { muiCustomTheme } from '../components/theme'
+import { CssBaseline } from '@mui/material'
 
 
 axios.defaults.withCredentials = true;
@@ -47,6 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return <>
     <Provider store={store}>
         <ThemeProvider theme={muiCustomTheme}>
+        <CssBaseline />
           <SnackbarProvider maxSnack={3}>
             <SnackbarUtilsConfigurator />
             <Component {...pageProps} />

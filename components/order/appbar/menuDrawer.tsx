@@ -16,13 +16,8 @@ const DrawerItem = styled('div')(({theme}) => ({
 }))
 
 const LogoutButton = styled(Button)(({theme}) => ({
-    backgroundColor: 'red',
-    color: '#fff',
     width: '80%',
     alignSelf: 'center',
-    '&:focus': {
-        backgroundColor: '#ff7f7f   '
-    }
 }))
 
 const navigation_list = [
@@ -103,7 +98,7 @@ export const MenuDrawer = (props: IMenuDrawerProps) => {
             </div>
         
 
-            <LogoutButton>
+            <LogoutButton variant="contained">
                 Logout
             </LogoutButton>
         </div>

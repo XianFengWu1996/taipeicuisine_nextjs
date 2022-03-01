@@ -22,7 +22,7 @@ export const CartDrawer = (props: ICartDrawerProps) => {
             <Box sx={{ 
                 width: '450px', 
                 height: cartState.cart.length < 4 ? '100%':'auto',
-                backgroundColor: 'aliceblue',
+                backgroundColor: '#ecf2ff',
             }}>
                 <Typography 
                     sx={{
