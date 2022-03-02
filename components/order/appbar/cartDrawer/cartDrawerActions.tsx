@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import Router from "next/router";
 import { clearCart } from "../../../../store/slice/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 
@@ -15,7 +16,9 @@ export const CartDrawerActions = () => {
         justifyContent: 'center',
         alignItems: 'center',                    
     }}> 
-        <Button variant="contained">Checkout | ${cartState.subtotal.toFixed(2)}</Button>
+        <Button variant="contained" onClick={() => {
+            Router.push('/order/checkout');
+        }}>Checkout | ${cartState.subtotal.toFixed(2)}</Button>
         <Button sx={{ marginLeft: '15px'}} onClick={() => dispatch(clearCart())}>Clear Cart</Button>
     </div>
 }
