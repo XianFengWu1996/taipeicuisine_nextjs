@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
 
-export const CheckBoxWithDay = ({day, onChanged} :{day: hours, onChanged: (arg0: React.ChangeEvent<HTMLInputElement>) => void}) => {
+export const CheckBoxWithDay = ({day, onChanged} :{day: IHours, onChanged: (arg0: React.ChangeEvent<HTMLInputElement>) => void}) => {
     return <>
     <FormGroup>
         <FormControlLabel control={
