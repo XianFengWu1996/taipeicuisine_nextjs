@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, Card, CardActionArea, CardActions, CardContent, Divider, Grid, List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
 import { isEmpty } from "lodash";
 import { PublicAppBar } from "../../components/order/appbar/appbar";
+import { CartSummary } from "../../components/order/checkout/cartSummary";
 import { useAppSelector } from "../../store/store";
 
 export default function CheckoutPage() {
@@ -71,64 +72,7 @@ export default function CheckoutPage() {
                     </div>
                 </Grid>
                 <Grid item lg={4} md={5}>
-                    <Typography variant="h4" sx={{ marginTop: 5}}>Cart Summary</Typography>
-                    <List style={{ width: '90%'}}>
-                    {
-                                cartState.cart.map((item) => {
-                                    return <div key={item.id} style={{ display: 'flex', marginBottom: '3px'}}>
-                                        <div style={{ width: '10%'}}>
-                                        <Typography variant="subtitle2">x {item.quantity}</Typography>
-                                        </div>
-                                        <div style={{ width: '80%'}}>
-                                            <Typography variant="subtitle2">{item.dish.label_id} {item.dish.en_name} {item.dish.ch_name}</Typography>
-                                            {
-                                                !isEmpty(item.option) ?<Typography sx={{
-                                                    fontSize: '12px',
-                                                    fontWeight: 600,
-                                                    fontStyle: 'italic'
-                                                }}>Option: {item.option.en_name} {item.option.ch_name}</Typography> : null
-                                            }
-                                        </div>
-                                        <div style={{ width: '10%', display: 'flex', justifyContent: 'end'}}>
-                                        <Typography variant="subtitle2">${item.total.toFixed(2)}</Typography>
-                                        </div>
-
-                                    </div>
-                                })
-                            }
-                    </List>
-                   
-
-                    <List style={{ width: '90%'}}>
-                    <Typography>Number of items: {cartState.cart_quantity}</Typography> 
-
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                            <Typography>Subtotal: </Typography> 
-                            <Typography>${cartState.subtotal.toFixed(2)}</Typography>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                            <Typography>Delivery: </Typography> 
-                            <Typography>${'0.00'}</Typography>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                            <Typography>Tax: </Typography> 
-                            <Typography>${cartState.tax.toFixed(2)}</Typography>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                            <Typography>Tip: </Typography> 
-                            <Typography>${cartState.tip.toFixed(2)}</Typography>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                            <Typography>Total: </Typography> 
-                            <Typography>${cartState.total.toFixed(2)}</Typography>
-                        </div>
-                        
-
-                    </List>
+                    <CartSummary />
                 </Grid>
         </Grid>
     </>
