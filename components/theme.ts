@@ -8,8 +8,11 @@ export const muiCustomTheme = createTheme({
       paper: "#fcfcfc"
     },
     primary: {
-      main: red[400]
-    }
+      main: red[400],
+      light: red[200],
+      dark: red[500],
+      contrastText: '#fff'
+    },
     // secondary: {
     //   main: green[500],
     // },
@@ -28,6 +31,11 @@ export const muiCustomTheme = createTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
     ].join(','),
-    
-  }
+    h4: {
+      fontSize: '30px',
+      fontWeight: 700,
+      margin: '20px 0 5px 0'
+    }
+  },
+  
 });

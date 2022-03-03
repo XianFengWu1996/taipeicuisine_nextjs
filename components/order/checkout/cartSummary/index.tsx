@@ -2,7 +2,7 @@ import { Divider, List, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 import { useAppSelector } from "../../../../store/store"
 import { PriceDisplay } from "../cartSummary/priceDisplay"
-import { SummaryItem } from "../cartSummary/SummaryItem"
+import { SummaryItem } from "../cartSummary/summaryItem"
 
 const ListContainer = styled(List)(() => ({
     width: '90%', 
