@@ -8,7 +8,9 @@ export interface CartState {
     tax: number,
     subtotal: number,
     total: number,
+
     isDelivery: boolean,
+    tipType: string,
 }
 
 // Define the initial state using that type
@@ -19,9 +21,17 @@ const initialState: CartState = {
     tip: 0,
     tax: 0,
     total: 0,
+
     isDelivery: false,
+    tipType: '',
     // delivery comments
 }
+
+const calculateTotal = (state: CartState, value: number) => {
+  state.tip = Number((state.subtotal * value).toFixed(2));
+  state.total = Number((state.subtotal + state.tip + state.tax).toFixed(2));
+}
+
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -103,6 +113,38 @@ export const cartSlice = createSlice({
     // DELIVERY RELATED
     deliveryToggle: (state) => {
       state.isDelivery = !state.isDelivery
+    },
+
+    //TIP DELIVERY
+    setTip: (state, {payload} : PayloadAction<string>) => {
+      state.tipType = payload;
+
+      switch (payload) {
+        case '10%':
+          // state.tip = Number((state.subtotal * 0.10).toFixed(2));
+          // state.total = Number((state.subtotal + state.tip).toFixed(2));
+          calculateTotal(state, .10);
+        break;
+
+        case '15%':
+          calculateTotal(state, .15);
+        break;
+
+        case '18%':
+          calculateTotal(state, .18);
+        break;
+
+        case '20%':
+          calculateTotal(state, .20);
+        break;
+
+        default:
+          break;
+      }
+    },
+    setCustomTip: (state, { payload }: PayloadAction<number>) => {
+      state.tip = Number((payload).toFixed(2));
+      state.total = Number((state.subtotal + state.tip + state.tax).toFixed(2));
     }
   }
 })
@@ -115,7 +157,9 @@ export const {
  decreaseQty,
  removeItemFromCart,
  clearCart,
- deliveryToggle
+ deliveryToggle,
+ setTip,
+ setCustomTip
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;
