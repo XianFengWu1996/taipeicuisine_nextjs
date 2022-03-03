@@ -8,6 +8,7 @@ export interface CartState {
     tax: number,
     subtotal: number,
     total: number,
+    isDelivery: boolean,
 }
 
 // Define the initial state using that type
@@ -18,6 +19,7 @@ const initialState: CartState = {
     tip: 0,
     tax: 0,
     total: 0,
+    isDelivery: false,
     // delivery comments
 }
 
@@ -25,6 +27,7 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+    // CART RELATED
     addToCart: (state, { payload } : PayloadAction<ICartItem>) => {
       // CASE ONE: customer added a item 
         let index = state.cart.findIndex(item => item.id === payload.id);
@@ -97,6 +100,10 @@ export const cartSlice = createSlice({
       state.tax = 0;
       state.total = 0;
     },  
+    // DELIVERY RELATED
+    deliveryToggle: (state) => {
+      state.isDelivery = !state.isDelivery
+    }
   }
 })
 
@@ -107,7 +114,8 @@ export const {
  increaseQty,
  decreaseQty,
  removeItemFromCart,
- clearCart
+ clearCart,
+ deliveryToggle
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;

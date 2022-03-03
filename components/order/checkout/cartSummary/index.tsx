@@ -26,7 +26,9 @@ export const CartSummary = () => {
             <Divider />
             <Typography>Number of Items: {cartState.cart_quantity}</Typography> 
             <PriceDisplay title='Subtotal' value={cartState.subtotal} />
-            <PriceDisplay title='Delivery' value={0} />
+            {
+                cartState.isDelivery ? <PriceDisplay title='Delivery' value={0} /> : null
+            }
             <PriceDisplay title='Tax' value={cartState.tax} />
             <PriceDisplay title='Tip' value={cartState.tip} />
             <PriceDisplay title='Total' value={cartState.total} />

@@ -1,20 +1,23 @@
 import { Button, ButtonGroup } from "@mui/material"
 import { useState } from "react";
+import { deliveryToggle } from "../../../../store/slice/cartSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store/store";
 
 export const PickupOrDelivery = () => {
-    const [isDelivery, setIsDelivery] = useState(false);
+    const cartState = useAppSelector(state => state.cart);
+    const dispatch = useAppDispatch();
 
     const toggleDelivery = () => {
-        setIsDelivery(!isDelivery);
+        dispatch(deliveryToggle())
     }
 
     return <ButtonGroup size="large">
         <Button 
-            variant={isDelivery ? 'outlined' : 'contained'}
+            variant={cartState.isDelivery ? 'outlined' : 'contained'}
             onClick={toggleDelivery}
         >Pick Up</Button>
         <Button 
-            variant={isDelivery ? 'contained' : 'outlined'}
+            variant={cartState.isDelivery  ? 'contained' : 'outlined'}
             onClick={toggleDelivery}
         >Delivery</Button>
     </ButtonGroup>

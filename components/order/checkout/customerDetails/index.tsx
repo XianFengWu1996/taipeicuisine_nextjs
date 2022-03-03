@@ -5,9 +5,11 @@ import { GrContactInfo } from 'react-icons/gr'
 import { TipSelection } from "./tipSelection"
 import { CustomerCard } from "./customerCard"
 import { PaymentSelection } from "./paymentSelection"
+import { useAppSelector } from "../../../../store/store"
 
 
 export const CustomerDetails = () => {
+    const cartState = useAppSelector(state => state.cart)
     return <div style={{ margin: '40px'}}>
         <PickupOrDelivery />
 
@@ -20,15 +22,17 @@ export const CustomerDetails = () => {
             </>}
         />
 
-        <CustomerCard 
-            title="Delivery Address"
-            icon={<BiBuildingHouse />}
-            content={<>
-                <Typography>Address: 69 Harvard St, Quincy, MA 02171</Typography>
-                <Typography>Apt: 1022</Typography>
-                <Typography>Business: Taipei Cuisine</Typography>   
-            </>}
-        />
+        {
+            cartState.isDelivery ? <CustomerCard 
+                title="Delivery Address"
+                icon={<BiBuildingHouse />}
+                content={<>
+                    <Typography>Address: 69 Harvard St, Quincy, MA 02171</Typography>
+                    <Typography>Apt: 1022</Typography>
+                    <Typography>Business: Taipei Cuisine</Typography>   
+                </>}
+            /> : null
+        }
 
         <TipSelection />
 
