@@ -1,8 +1,8 @@
 import { Button, ButtonGroup, InputAdornment, TextField, Typography } from "@mui/material"
 import { red } from "@mui/material/colors";
 import { styled } from "@mui/system";
-import { isEmpty, isNaN } from "lodash";
-import { useRef, useState } from "react";
+import { isEmpty, isNaN, values } from "lodash";
+import { useRef } from "react";
 import { setCustomTip, setTip } from "../../../../store/slice/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { BsCurrencyDollar } from 'react-icons/bs'
@@ -21,23 +21,40 @@ export const TipSelection = () => {
     const dispatch = useAppDispatch();
     const cartState = useAppSelector(state => state.cart);
 
+    const handleTipOnChange = (value: string) => {
+        if(value === cartState.tipType){
+            dispatch(setTip('')) 
+            return;
+        }
+
+        dispatch(setTip(value)) 
+        inputRef.current!.value = ''
+    }
+
     return <>
         <Typography variant="h4">Tip</Typography>
         <div style={{ display: 'flex'}}>
             <ButtonGroup size="large">
-                <Button 
-                    variant={cartState.tipType === '10%' ? 'contained' : 'outlined'}
-                    onClick={() => dispatch(setTip('10%'))}>10%</Button>
-                <Button 
-                    variant={cartState.tipType === '15%' ? 'contained' : 'outlined'}  
-                    onClick={() => dispatch(setTip('15%'))}>15%</Button>
-                 <Button 
-                    variant={cartState.tipType === '18%' ? 'contained' : 'outlined'}
-                    onClick={() => dispatch(setTip('18%'))}>18%</Button>
-                
-                <Button 
-                    variant={cartState.tipType === '20%' ? 'contained' : 'outlined'}
-                    onClick={() => dispatch(setTip('20%'))}>20%</Button>
+                <TipButton 
+                    value="10%"
+                    tipType={cartState.tipType}
+                    handleOnClick={() => handleTipOnChange('10%')}
+                />
+                <TipButton 
+                    value="15%"
+                    tipType={cartState.tipType}
+                    handleOnClick={() => handleTipOnChange('15%')}
+                />
+                <TipButton 
+                    value="18%"
+                    tipType={cartState.tipType}
+                    handleOnClick={() => handleTipOnChange('18%')}
+                />
+                  <TipButton 
+                    value="20%"
+                    tipType={cartState.tipType}
+                    handleOnClick={() => handleTipOnChange('20%')}
+                />
             </ButtonGroup>
 
             <div style={{ display: 'flex', alignItems: 'stretch', marginLeft: '50px'}}>
@@ -49,6 +66,14 @@ export const TipSelection = () => {
                         }}
                         variant={cartState.tipType === 'custom' ? 'contained' : 'outlined'}
                         onClick={() => {
+                            if(cartState.tipType === 'custom'){
+                                dispatch(setTip(''));
+                                if(inputRef.current){
+                                    inputRef.current.value = ''
+                                }
+                                return;
+                            };
+
                             dispatch(setTip('custom'))
                             if(inputRef.current){
                                 inputRef.current.focus();
@@ -79,4 +104,20 @@ export const TipSelection = () => {
             </div>
         </div>
     </>
+}
+
+interface ITipButtonProps {
+    value: string,
+    tipType: string,
+    handleOnClick: () => void
+}
+
+const TipButton = ({ value, tipType, handleOnClick}: ITipButtonProps) => {
+    return <>
+        <Button 
+            variant={tipType === value ? 'contained' : 'outlined'}
+            onClick={handleOnClick}
+        >
+        {value}</Button>
+    </> 
 }

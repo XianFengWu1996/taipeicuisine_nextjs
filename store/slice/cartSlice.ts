@@ -139,6 +139,7 @@ export const cartSlice = createSlice({
         break;
 
         default:
+          calculateTotal(state, 0);
           break;
       }
     },
