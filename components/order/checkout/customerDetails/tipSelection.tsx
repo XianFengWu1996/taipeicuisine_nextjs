@@ -2,7 +2,7 @@ import { Button, ButtonGroup, InputAdornment, TextField, Typography } from "@mui
 import { red } from "@mui/material/colors";
 import { styled } from "@mui/system";
 import { isEmpty, isNaN, values } from "lodash";
-import { useRef } from "react";
+import { FocusEvent, Ref, useRef } from "react";
 import { setCustomTip, setTip } from "../../../../store/slice/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { BsCurrencyDollar } from 'react-icons/bs'
@@ -16,10 +16,21 @@ const CustomTipTextfield = styled(TextField)(() => ({
 }))
 
 export const TipSelection = () => {
-    const inputRef = useRef<HTMLInputElement | null>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useAppDispatch();
     const cartState = useAppSelector(state => state.cart);
+
+    const handleClearValue = () => {
+        if(inputRef.current){
+            inputRef.current.value = ''
+        }
+    }
+    const handleClearFocus = () => {
+        if(inputRef.current){
+            inputRef.current.focus();
+        }
+    }
 
     const handleTipOnChange = (value: string) => {
         if(value === cartState.tipType){
@@ -57,51 +68,12 @@ export const TipSelection = () => {
                 />
             </ButtonGroup>
 
-            <div style={{ display: 'flex', alignItems: 'stretch', marginLeft: '50px'}}>
-                    <Button 
-                        sx={{ 
-                            borderTopRightRadius: 0,
-                            borderBottomRightRadius: 0,
-                            borderRight: 0,
-                        }}
-                        variant={cartState.tipType === 'custom' ? 'contained' : 'outlined'}
-                        onClick={() => {
-                            if(cartState.tipType === 'custom'){
-                                dispatch(setTip(''));
-                                if(inputRef.current){
-                                    inputRef.current.value = ''
-                                }
-                                return;
-                            };
-
-                            dispatch(setTip('custom'))
-                            if(inputRef.current){
-                                inputRef.current.focus();
-                            }
-                        }}>Custom</Button>
-
-                     <CustomTipTextfield                      
-                        type={'number'} 
-                        inputRef={inputRef}
-                        InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <BsCurrencyDollar />
-                              </InputAdornment>
-                            ),
-                          }}
-                        onFocus={() => {
-                            dispatch(setTip('custom'))
-                        }}
-                        onBlur={(e) => {
-                            if(isEmpty(e.target.value)) return;
-
-                            if(isNaN(e.target.value)) return;
-
-                            dispatch(setCustomTip(Number(e.target.value)));
-                        }}
-                     />
-            </div>
+            <CustomTipButton 
+                tipType={cartState.tipType}
+                clearValue={handleClearValue}
+                clearFocus={handleClearFocus}
+                inputRef={inputRef}
+            />
         </div>
     </>
 }
@@ -109,7 +81,7 @@ export const TipSelection = () => {
 interface ITipButtonProps {
     value: string,
     tipType: string,
-    handleOnClick: () => void
+    handleOnClick: () => void,
 }
 
 const TipButton = ({ value, tipType, handleOnClick}: ITipButtonProps) => {
@@ -120,4 +92,64 @@ const TipButton = ({ value, tipType, handleOnClick}: ITipButtonProps) => {
         >
         {value}</Button>
     </> 
+}
+
+interface ICustomTipButtonProps {
+    tipType: string,
+    clearValue: () => void,
+    clearFocus: () =>  void,
+    inputRef: Ref<any> | undefined
+}
+
+const CustomTipButton = (props: ICustomTipButtonProps) => {
+
+    const dispatch = useAppDispatch();
+
+    const handleOnClick = () => {
+        if(props.tipType === 'custom'){
+            dispatch(setTip(''));
+            props.clearValue();
+            return;
+        };
+
+        dispatch(setTip('custom'))
+        props.clearFocus();
+    }
+
+    const handleOnFocus = () => {
+        dispatch(setTip('custom'))
+    }
+
+    const handleOnBlur = (e:FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+        if(isEmpty(e.target.value)) return;
+
+        if(isNaN(e.target.value)) return;
+
+        dispatch(setCustomTip(Number(e.target.value)));
+    }
+
+    return  <div style={{ display: 'flex', alignItems: 'stretch', marginLeft: '50px'}}>
+    <Button 
+        sx={{ 
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+            borderRight: 0,
+        }}
+        variant={props.tipType === 'custom' ? 'contained' : 'outlined'}
+        onClick={handleOnClick}>Custom</Button>
+
+     <CustomTipTextfield                      
+        type={'number'} 
+        inputRef={props.inputRef}
+        InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <BsCurrencyDollar />
+              </InputAdornment>
+            ),
+          }}
+        onFocus={handleOnFocus}
+        onBlur={handleOnBlur}
+     />
+</div>
 }
