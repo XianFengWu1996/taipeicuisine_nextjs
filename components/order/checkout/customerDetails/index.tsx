@@ -1,13 +1,13 @@
-import { Button, ButtonGroup, Card, CardContent, Checkbox, FormControlLabel, Typography } from "@mui/material"
+import { Button, Card, CardContent, Checkbox, FormControlLabel, Typography } from "@mui/material"
 import { PickupOrDelivery } from "./pickupOrDelivery"
 import { BiBuildingHouse } from 'react-icons/bi'
 import { GrContactInfo } from 'react-icons/gr'
 import { GiThreeLeaves } from 'react-icons/gi'
-import { TipSelection } from "./tipSelection"
 import { CustomerCard } from "./customerCard"
 import { PaymentSelection } from "./paymentSelection"
-import { useAppSelector } from "../../../../store/store"
+import { useAppDispatch, useAppSelector } from "../../../../store/store"
 import { blue } from "@mui/material/colors"
+import { AddSpecialComment } from "./AddSpecialComment"
 
 
 export const CustomerDetails = () => {
@@ -40,9 +40,9 @@ export const CustomerDetails = () => {
 
         <PaymentSelection />
 
-        <Button sx={{ color: blue[500]}}>Apply Discount</Button>
+        <ApplyDiscount />
 
-        <Button sx={{ color: blue[500], display: 'block'}}>Add Special Instructions</Button>
+        <AddSpecialComment />
 
         <Card sx={{ margin: '10px 0 25px 0', width: '300px', height: '100px'}}>
             <CardContent>
@@ -58,4 +58,11 @@ export const CustomerDetails = () => {
             <Button variant="contained" sx={{ backgroundColor: '#000', padding: '10px 50px'}}>Place Order</Button>
         </div>
     </div>
+}
+
+
+const ApplyDiscount = () => {
+    return <>
+        <Button sx={{ color: blue[500]}}>Apply Discount</Button>
+    </>
 }

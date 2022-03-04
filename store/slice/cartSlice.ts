@@ -12,6 +12,7 @@ export interface CartState {
     isDelivery: boolean,
     tipType: string,
     paymentType: string,
+    comments: string, 
 }
 
 // Define the initial state using that type
@@ -26,7 +27,7 @@ const initialState: CartState = {
     isDelivery: false,
     tipType: '',
     paymentType: '',
-    // delivery comments
+    comments: '',
 }
 
 const calculateTotal = (state: CartState, value: number) => {
@@ -154,6 +155,11 @@ export const cartSlice = createSlice({
       // paymentType: online, cash, or instore
       state.paymentType = payload
     },
+    // COMMENT RELATED
+    setComments: (state, {payload} : PayloadAction<string>) => {
+      // paymentType: online, cash, or instore
+      state.comments = payload
+    },
   }
 })
 
@@ -168,7 +174,8 @@ export const {
  deliveryToggle,
  setTip,
  setCustomTip,
- setPayment
+ setPayment,
+ setComments,
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;

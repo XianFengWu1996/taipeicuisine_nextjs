@@ -12,6 +12,16 @@ const ListContainer = styled(List)(() => ({
 export const CartSummary = () => {
     const cartState = useAppSelector((state) => state.cart)
 
+    const renderSpecialInstruction = () => {
+        if(isEmpty(cartState.comments)) return null
+
+        return <>
+            <Divider />
+            <Typography sx={{ marginLeft: '5px', marginY: '10px', fontWeight: 600, fontStyle: 'italic', color: 'red'}}>Special Instruction: { cartState.comments }</Typography>
+        </>
+        
+    }
+
     return <>
         <Typography variant="h4" sx={{ marginTop: 5}}>Cart Summary</Typography>
         <ListContainer>
@@ -24,6 +34,7 @@ export const CartSummary = () => {
         
 
         <ListContainer>
+            { renderSpecialInstruction() }
             <Divider />
             <Typography>Number of Items: {cartState.cart_quantity}</Typography> 
             <PriceDisplay title='Subtotal' value={cartState.subtotal} />

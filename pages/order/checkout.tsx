@@ -7,10 +7,10 @@ export default function CheckoutPage() {
     return <>
         <PublicAppBar />
         <Grid container>
-                <Grid item lg={8} md={7}>
+                <Grid item lg={7} md={6}>
                     <CustomerDetails />
                 </Grid>
-                <Grid item lg={4} md={5}>
+                <Grid item lg={5} md={6}>
                     <CartSummary />
                 </Grid>
         </Grid>
