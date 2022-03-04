@@ -1,5 +1,6 @@
 import { Divider, List, Typography } from "@mui/material"
 import { styled } from "@mui/system"
+import { isEmpty } from "lodash"
 import { useAppSelector } from "../../../../store/store"
 import { PriceDisplay } from "../cartSummary/priceDisplay"
 import { SummaryItem } from "../cartSummary/summaryItem"
@@ -30,7 +31,9 @@ export const CartSummary = () => {
                 cartState.isDelivery ? <PriceDisplay title='Delivery' value={0} /> : null
             }
             <PriceDisplay title='Tax' value={cartState.tax} />
-            <PriceDisplay title='Tip' value={cartState.tip} />
+            {
+                !isEmpty(cartState.tipType) ? <PriceDisplay title='Tip' value={cartState.tip} /> : null
+            }
             <PriceDisplay title='Total' value={cartState.total} />
         </ListContainer>
     </>

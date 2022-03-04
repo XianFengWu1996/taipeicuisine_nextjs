@@ -11,6 +11,7 @@ export interface CartState {
 
     isDelivery: boolean,
     tipType: string,
+    paymentType: string,
 }
 
 // Define the initial state using that type
@@ -24,6 +25,7 @@ const initialState: CartState = {
 
     isDelivery: false,
     tipType: '',
+    paymentType: '',
     // delivery comments
 }
 
@@ -115,7 +117,7 @@ export const cartSlice = createSlice({
       state.isDelivery = !state.isDelivery
     },
 
-    //TIP DELIVERY
+    //TIP RELATED
     setTip: (state, {payload} : PayloadAction<string>) => {
       state.tipType = payload;
 
@@ -146,7 +148,12 @@ export const cartSlice = createSlice({
     setCustomTip: (state, { payload }: PayloadAction<number>) => {
       state.tip = Number((payload).toFixed(2));
       state.total = Number((state.subtotal + state.tip + state.tax).toFixed(2));
-    }
+    },
+    // PAYMENT RELATED
+    setPayment: (state, {payload} : PayloadAction<string>) => {
+      // paymentType: online, cash, or instore
+      state.paymentType = payload
+    },
   }
 })
 
@@ -160,7 +167,8 @@ export const {
  clearCart,
  deliveryToggle,
  setTip,
- setCustomTip
+ setCustomTip,
+ setPayment
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;
