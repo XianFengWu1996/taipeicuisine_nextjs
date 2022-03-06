@@ -33,7 +33,7 @@ export const TipSelection = () => {
     }
 
     const handleTipOnChange = (value: string) => {
-        if(value === cartState.tipType){
+        if(value === cartState.tip_type){
             dispatch(setTip('')) 
             return;
         }
@@ -48,28 +48,28 @@ export const TipSelection = () => {
             <ButtonGroup size="large">
                 <TipButton 
                     value="10%"
-                    tipType={cartState.tipType}
+                    tip_type={cartState.tip_type}
                     handleOnClick={() => handleTipOnChange('10%')}
                 />
                 <TipButton 
                     value="15%"
-                    tipType={cartState.tipType}
+                    tip_type={cartState.tip_type}
                     handleOnClick={() => handleTipOnChange('15%')}
                 />
                 <TipButton 
                     value="18%"
-                    tipType={cartState.tipType}
+                    tip_type={cartState.tip_type}
                     handleOnClick={() => handleTipOnChange('18%')}
                 />
                   <TipButton 
                     value="20%"
-                    tipType={cartState.tipType}
+                    tip_type={cartState.tip_type}
                     handleOnClick={() => handleTipOnChange('20%')}
                 />
             </ButtonGroup>
 
             <CustomTipButton 
-                tipType={cartState.tipType}
+                tip_type={cartState.tip_type}
                 clearValue={handleClearValue}
                 clearFocus={handleClearFocus}
                 inputRef={inputRef}
@@ -80,14 +80,14 @@ export const TipSelection = () => {
 
 interface ITipButtonProps {
     value: string,
-    tipType: string,
+    tip_type: string,
     handleOnClick: () => void,
 }
 
-const TipButton = ({ value, tipType, handleOnClick}: ITipButtonProps) => {
+const TipButton = ({ value, tip_type, handleOnClick}: ITipButtonProps) => {
     return <>
         <Button 
-            variant={tipType === value ? 'contained' : 'outlined'}
+            variant={tip_type === value ? 'contained' : 'outlined'}
             onClick={handleOnClick}
         >
         {value}</Button>
@@ -95,7 +95,7 @@ const TipButton = ({ value, tipType, handleOnClick}: ITipButtonProps) => {
 }
 
 interface ICustomTipButtonProps {
-    tipType: string,
+    tip_type: string,
     clearValue: () => void,
     clearFocus: () =>  void,
     inputRef: Ref<any> | undefined
@@ -106,7 +106,7 @@ const CustomTipButton = (props: ICustomTipButtonProps) => {
     const dispatch = useAppDispatch();
 
     const handleOnClick = () => {
-        if(props.tipType === 'custom'){
+        if(props.tip_type === 'custom'){
             dispatch(setTip(''));
             props.clearValue();
             return;
@@ -135,7 +135,7 @@ const CustomTipButton = (props: ICustomTipButtonProps) => {
             borderBottomRightRadius: 0,
             borderRight: 0,
         }}
-        variant={props.tipType === 'custom' ? 'contained' : 'outlined'}
+        variant={props.tip_type === 'custom' ? 'contained' : 'outlined'}
         onClick={handleOnClick}>Custom</Button>
 
      <CustomTipTextfield                      

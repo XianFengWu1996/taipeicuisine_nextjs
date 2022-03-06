@@ -37,13 +37,16 @@ export const CartSummary = () => {
             { renderSpecialInstruction() }
             <Divider />
             <Typography>Number of Items: {cartState.cart_quantity}</Typography> 
+
+            <PriceDisplay title="Point Redemption" value={-Number((cartState.point_redemption / 100).toFixed(2))} />
+
             <PriceDisplay title='Subtotal' value={cartState.subtotal} />
             {
-                cartState.isDelivery ? <PriceDisplay title='Delivery' value={0} /> : null
+                cartState.is_delivery ? <PriceDisplay title='Delivery' value={0} /> : null
             }
             <PriceDisplay title='Tax' value={cartState.tax} />
             {
-                !isEmpty(cartState.tipType) ? <PriceDisplay title='Tip' value={cartState.tip} /> : null
+                !isEmpty(cartState.tip_type) ? <PriceDisplay title='Tip' value={cartState.tip} /> : null
             }
             <PriceDisplay title='Total' value={cartState.total} />
         </ListContainer>

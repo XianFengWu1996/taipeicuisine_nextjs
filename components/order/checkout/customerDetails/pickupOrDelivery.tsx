@@ -13,11 +13,11 @@ export const PickupOrDelivery = () => {
 
     return <ButtonGroup size="large">
         <Button 
-            variant={cartState.isDelivery ? 'outlined' : 'contained'}
+            variant={cartState.is_delivery ? 'outlined' : 'contained'}
             onClick={toggleDelivery}
         >Pick Up</Button>
         <Button 
-            variant={cartState.isDelivery  ? 'contained' : 'outlined'}
+            variant={cartState.is_delivery  ? 'contained' : 'outlined'}
             onClick={toggleDelivery}
         >Delivery</Button>
     </ButtonGroup>

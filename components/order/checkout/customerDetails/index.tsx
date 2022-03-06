@@ -8,6 +8,7 @@ import { PaymentSelection } from "./paymentSelection"
 import { useAppDispatch, useAppSelector } from "../../../../store/store"
 import { blue } from "@mui/material/colors"
 import { AddSpecialComment } from "./AddSpecialComment"
+import { ApplyDiscount } from "./ApplyDiscount"
 
 
 export const CustomerDetails = () => {
@@ -25,7 +26,7 @@ export const CustomerDetails = () => {
         />
 
         {
-            cartState.isDelivery ? <CustomerCard 
+            cartState.is_delivery ? <CustomerCard 
                 title="Delivery Address"
                 icon={<BiBuildingHouse />}
                 content={<>
@@ -60,9 +61,3 @@ export const CustomerDetails = () => {
     </div>
 }
 
-
-const ApplyDiscount = () => {
-    return <>
-        <Button sx={{ color: blue[500]}}>Apply Discount</Button>
-    </>
-}

@@ -9,21 +9,21 @@ export const PaymentSelection = () => {
         <Typography variant="h4">Payment</Typography>
         <ButtonGroup size="large">
             <Button
-                variant={cartState.paymentType === 'online' ? 'contained' : 'outlined'}
+                variant={cartState.payment_type === 'online' ? 'contained' : 'outlined'}
                 onClick={() => {
                     dispatch(setPayment('online'))
                 }}
             >Pay Online</Button>
             {
-                cartState.isDelivery 
+                cartState.is_delivery 
                 ? <Button 
-                    variant={cartState.paymentType === 'cash' ? 'contained' : 'outlined'}
+                    variant={cartState.payment_type === 'cash' ? 'contained' : 'outlined'}
                     onClick={() => {
                         dispatch(setPayment('cash'))
                     }}
                     >Cash</Button>
                 : <Button
-                variant={cartState.paymentType === 'instore' ? 'contained' : 'outlined'}
+                variant={cartState.payment_type === 'instore' ? 'contained' : 'outlined'}
                 onClick={() => {
                     dispatch(setPayment('instore'))
                 }}
