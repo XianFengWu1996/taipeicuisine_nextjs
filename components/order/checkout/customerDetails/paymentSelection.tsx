@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/store"
 export const PaymentSelection = () => {
     const cartState = useAppSelector(state => state.cart);
     const dispatch = useAppDispatch();
-    return <div style={{ marginBottom: '15px'}}>
+    return <div style={{ marginBottom: '25px'}}>
         <Typography variant="h4">Payment</Typography>
         <ButtonGroup size="large">
             <Button

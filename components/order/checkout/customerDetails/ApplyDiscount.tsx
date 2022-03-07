@@ -21,7 +21,7 @@ export const ApplyDiscount = () => {
     const { temp_point, original_subtoal } = useAppSelector(state => state.cart)
 
     return <>
-        <Button sx={{ color: blue[500]}} onClick={handleOpenToggle}>Apply Discount</Button>
+        <Button sx={{ color: blue[500],marginTop: '10px'}} onClick={handleOpenToggle}>Apply Discount</Button>
 
         <motion.div
             animate={ open ? 'open' : 'close' }

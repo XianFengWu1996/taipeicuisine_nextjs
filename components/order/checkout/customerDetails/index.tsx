@@ -40,13 +40,14 @@ export const CustomerDetails = () => {
 
         {/* <TipSelection /> */}
 
-        <PaymentSelection />
 
         <ApplyDiscount />
 
         <AddSpecialComment />
 
         <IncludeUtensils />
+
+        <PaymentSelection />
 
         <div>
             <Button variant="contained" sx={{ backgroundColor: '#000', padding: '10px 50px'}}>Place Order</Button>

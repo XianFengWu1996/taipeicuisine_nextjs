@@ -15,6 +15,7 @@ export interface CartState {
     payment_type: string,
     comments: string, 
     point_redemption: number,
+    includeUtensils: boolean,
 
     temp_point: number,
 }
@@ -42,6 +43,7 @@ const initialState: CartState = {
     payment_type: '',
     comments: '',
     point_redemption: 0,
+    includeUtensils: false, 
 
     temp_point: 1200,
 }
@@ -189,6 +191,10 @@ export const cartSlice = createSlice({
       calculateTotal(state);
 
     },
+    // UTENSILS
+    setToggleIncludeUtensils:(state, {payload} : PayloadAction<boolean>) => {
+      state.includeUtensils = payload;
+    },
   }
 })
 
@@ -205,7 +211,8 @@ export const {
   setCustomTip,
   setPayment,
   setComments,
-  setPointRedemption
+  setPointRedemption,
+  setToggleIncludeUtensils
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;
