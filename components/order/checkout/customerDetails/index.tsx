@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/store"
 import { blue } from "@mui/material/colors"
 import { AddSpecialComment } from "./AddSpecialComment"
 import { ApplyDiscount } from "./ApplyDiscount"
+import { IncludeUtensils } from "./includeUtensils"
 
 
 export const CustomerDetails = () => {
@@ -45,15 +46,7 @@ export const CustomerDetails = () => {
 
         <AddSpecialComment />
 
-        <Card sx={{ margin: '10px 0 25px 0', width: '300px', height: '100px'}}>
-            <CardContent>
-                <Typography sx={{ color: 'green', fontWeight: 700}}>
-                      <GiThreeLeaves />  Eco-Friendly
-                    </Typography>
-
-                <FormControlLabel control={<Checkbox />} label="Don&apos;t Include Utensils" />
-            </CardContent>
-        </Card>
+        <IncludeUtensils />
 
         <div>
             <Button variant="contained" sx={{ backgroundColor: '#000', padding: '10px 50px'}}>Place Order</Button>

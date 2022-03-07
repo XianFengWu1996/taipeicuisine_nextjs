@@ -43,7 +43,7 @@ export const ApplyDiscount = () => {
                 autoComplete='off'
                 type={'number'}
                 placeholder="Points Available: 105"
-                sx={{ width: '40%', marginBottom: '20px'}}
+                sx={{ width: '300px', marginBottom: '20px'}}
                 onBlur={(e) => {
                     let point = Number(e.target.value);
 
