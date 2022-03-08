@@ -12,8 +12,11 @@ import { ApplyDiscount } from "./ApplyDiscount"
 import { IncludeUtensils } from "./includeUtensils"
 
 
+
 export const CustomerDetails = () => {
     const cartState = useAppSelector(state => state.cart)
+    const { name, phone, phone_list } = useAppSelector(state => state.customer)
+
     return <div style={{ margin: '40px'}}>
         <PickupOrDelivery />
 
@@ -21,8 +24,8 @@ export const CustomerDetails = () => {
             title="Customer Information"
             icon={<GrContactInfo />}
             content={<>
-                <Typography>Name: Xian Feng Wu</Typography>    
-                <Typography>Phone: 917-578-7352</Typography>    
+                <Typography>Name: { name }</Typography>    
+                <Typography>Phone: {phone}</Typography>    
             </>}
         />
 
@@ -50,7 +53,11 @@ export const CustomerDetails = () => {
         <PaymentSelection />
 
         <div>
-            <Button variant="contained" sx={{ backgroundColor: '#000', padding: '10px 50px'}}>Place Order</Button>
+            <Button 
+                variant="contained" 
+                sx={{ backgroundColor: '#000', padding: '10px 50px'}}
+                disabled={cartState.payment_type !== 'cash' && cartState.payment_type !== 'instore'}
+            >Place Order</Button>
         </div>
     </div>
 }

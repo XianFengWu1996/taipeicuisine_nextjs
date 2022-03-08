@@ -29,7 +29,6 @@ export const PaymentSelection = () => {
                 }}
                 >In Store</Button>
             }
-            
         </ButtonGroup>
     </div>
 }

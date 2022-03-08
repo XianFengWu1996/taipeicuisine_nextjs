@@ -2,12 +2,14 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import adminSlice from './slice/adminSlice';
 import cartSlice from './slice/cartSlice';
+import customerSlice from './slice/customerSlice';
 import menuSlice from './slice/menuSlice';
 
 const reducer = combineReducers({ 
   admin: adminSlice,
   menus: menuSlice,
   cart: cartSlice,
+  customer: customerSlice, 
 })
 
 export const store = configureStore({

@@ -1,9 +1,13 @@
 interface ICustomer {
     name: string,
-    phone: number,
-    phone_list: number[],
+    phone: string,
+    phone_list: string[],
     address: IAddress,
     billings: IBillings,
+    reward: {
+        points: number,
+        transactions: IRewardTransaction[]
+    }
 }
 
 interface IAddress {
@@ -35,4 +39,11 @@ interface ICard {
         postal_code: string,
         country: string,
     }
+}
+
+interface IRewardTransaction {
+    type: string,
+    amount: number,
+    order_id: string, 
+    createdAt: number,
 }
