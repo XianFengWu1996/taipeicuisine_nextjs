@@ -41,7 +41,7 @@ export const CustomerCard = ({ title, icon,  content }: ICustomerCardProps) => {
                 }
             </CardActions>
 
-            <CustomerCollapse expand={expand} />
+            <CustomerCollapse expand={expand} handleCloseCard={handleToggleExpand}/>
         </Card>
         
       

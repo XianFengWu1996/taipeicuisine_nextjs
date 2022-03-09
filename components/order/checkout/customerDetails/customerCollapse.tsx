@@ -5,11 +5,12 @@ import { v4} from 'uuid'
 import { BiTrash } from "react-icons/bi";
 import { phoneFormat } from "../../../../utils/functions/phone";
 import { useEffect, useState } from "react";
-import { AiOutlineCheck, AiOutlineCheckCircle } from "react-icons/ai";
-import { setDefaultPhoneNumber } from "../../../../store/slice/customerSlice";
+import { AiFillPlusCircle, AiOutlineCheckCircle, AiOutlinePlus } from "react-icons/ai";
+import { removePhoneNumber, setDefaultPhoneNumber, updateCustomerName } from "../../../../store/slice/customerSlice";
 
 interface ICustomerCollapseProps {
     expand: boolean,
+    handleCloseCard: () => void 
 }
 
 export const CustomerCollapse = (props: ICustomerCollapseProps) => {
@@ -31,20 +32,15 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
             return <Grid 
                 item lg={6} sm={12} 
                 key={v4()} 
-            ><Card sx={{ padding: 1}} onClick={() => {
-                console.log(phone_num)
-            }}>
-                <CardContent> 
-                    {phoneFormat(phone_num)}
-                </CardContent>
-
-
+            ><Card sx={{ padding: 1}}>
+                <CardContent>{phoneFormat(phone_num)}</CardContent>
                 <CardActions>
                     <Button 
                         disabled={phone_num === phone}
                         onClick={() => {
-                            // make a request to database
+                            // todo update the backend
                             dispatch(setDefaultPhoneNumber(phone_num));
+                            props.handleCloseCard();
                         }}
                     >Select</Button>
 
@@ -54,7 +50,9 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
                         </Icon> : null
                     }
 
-                    <IconButton  color="primary" >
+                    <IconButton  color="primary" onClick={() => {
+                        dispatch(removePhoneNumber(phone_num))
+                    }}>
                         <BiTrash/>
                     </IconButton>
 
@@ -73,29 +71,56 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 '& > :not(style)': {my: 1.5, width: '90%'},
+                paddingBottom: '40px'
             }}
             noValidate
             autoComplete="off"
         >
-        <TextField
-            id="customer_name"
-            label="Name" 
-            variant="outlined" 
-            fullWidth
-            value={customer_name}
-            onChange={(e) => { setName(e.target.value); }}
-        />
+        <div style={{ display: 'flex'}}>
+            <TextField
+                id="customer_name"
+                label="Name" 
+                variant="outlined" 
+                fullWidth
+                value={customer_name}
+                onChange={(e) => { setName(e.target.value); }}
+            />
+
+            <Button 
+                variant="outlined" 
+                sx={{ paddingX: 5, marginLeft: '50px' }}
+                onClick={() => {
+                    // todo update the backend
+                    if(customer_name !== name){
+                        dispatch(updateCustomerName(customer_name));
+                    }
+
+                    props.handleCloseCard();
+
+                }}
+            >Save</Button>
+        </div>
     
 
         <Grid container spacing={2}>
             { renderPhoneList() }
             <Grid item  lg={6} sm={12}>
-                <Card sx={{ padding: 1, height: '100%'}}> Add New Phone Number</Card>
+                <Card 
+                    sx={{ 
+                        padding: 1, 
+                        height: '100%', 
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                    <Icon sx={{ fontSize: 45, color: '#555'}}>
+                        <AiOutlinePlus />
+                    </Icon>
+                </Card>
             </Grid>
         </Grid>
 
         
-        <Button sx={{ backgroundColor: '#000'}} variant="contained" size="large" disabled={customer_name !== name || customer_phone !== phone}>Edit</Button>
         </Box>
     </Collapse>
 }
