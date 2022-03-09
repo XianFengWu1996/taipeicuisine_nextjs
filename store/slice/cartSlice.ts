@@ -16,8 +16,6 @@ export interface CartState {
     comments: string, 
     point_redemption: number,
     includeUtensils: boolean,
-
-    temp_point: number,
 }
 
 // Define the initial state using that type
@@ -44,8 +42,6 @@ const initialState: CartState = {
     comments: '',
     point_redemption: 0,
     includeUtensils: false, 
-
-    temp_point: 1200,
 }
 
 const calculateTipTotal = (state: CartState, value: number) => {
@@ -55,8 +51,6 @@ const calculateTipTotal = (state: CartState, value: number) => {
 
 const calculateTotal = (state: CartState, value:number = 0, quantity: number = 0) => {
   let discount = Number((state.point_redemption / 100).toFixed(2));
-
-  console.log(discount);
 
   state.cart_quantity = state.cart_quantity + quantity;
   state.original_subtoal = Number((state.original_subtoal + value).toFixed(2));
