@@ -2,9 +2,10 @@ import { Button, TextField } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { motion, Variants } from "framer-motion";
 import { isEmpty } from "lodash";
-import { useState } from "react";
+import { FocusEvent, useState } from "react";
 import { setComments } from "../../../../store/slice/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
+import snackbar from "../../../snackbar";
 
 export const sliding_variant: Variants | undefined = {
     open: {
@@ -31,6 +32,23 @@ export const AddSpecialComment = () => {
         setOpen(!open);
     }
 
+    const handleCommentOnBlur = (e: FocusEvent<HTMLTextAreaElement | HTMLInputElement, Element>) => {
+        dispatch(setComments(e.target.value));
+        setOpen(false); 
+
+        if(isEmpty(e.target.value)){
+            snackbar.warning('Special instruction removed')
+            return
+        } 
+
+        if(isEmpty(comments)) {
+            snackbar.success('Special instruction added')
+            return;
+        } 
+    
+        snackbar.info('Special instruction updated')
+    }
+
     return <>
         <Button sx={{ color: blue[500], display: 'block'}} onClick={handleOpenToggle}>{!isEmpty(comments) ? 'Edit' : 'Add'} Special Instructions</Button>
 
@@ -39,17 +57,13 @@ export const AddSpecialComment = () => {
             initial={'close'}
             variants={sliding_variant}
             transition={{ duration: 0.5, ease: 'easeInOut'}}
-            
         >
             <TextField
                 placeholder="Leave some notes for the restaurant, ex. delivery instruction"
                 multiline
                 rows={3}
                 sx={{ width: '90%', marginBottom: '20px'}}
-                onBlur={(e) => {
-                    dispatch(setComments(e.target.value));
-                    setOpen(false); 
-                }}
+                onBlur={handleCommentOnBlur}
             />
             </motion.div>
     </>
