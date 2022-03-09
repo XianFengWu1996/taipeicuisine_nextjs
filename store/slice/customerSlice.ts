@@ -40,8 +40,6 @@ export const customerSlice = createSlice({
       let index = state.phone_list.findIndex(phone  => phone === payload);
       state.phone_list.splice(index, 1);
     },
-
-
     // NAME RELATED
     updateCustomerName: (state, {payload} : PayloadAction<string>) => {
       state.name = payload;

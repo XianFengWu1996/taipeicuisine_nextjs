@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material"
+import { Button, Typography, useMediaQuery } from "@mui/material"
 import { PickupOrDelivery } from "./pickupOrDelivery"
 import { BiBuildingHouse } from 'react-icons/bi'
 import { GrContactInfo } from 'react-icons/gr'
@@ -9,16 +9,23 @@ import { AddSpecialComment } from "./AddSpecialComment"
 import { ApplyDiscount } from "./ApplyDiscount"
 import { IncludeUtensils } from "./includeUtensils"
 import { phoneFormat } from "../../../../utils/functions/phone"
+import { CartSummary } from "../cartSummary"
 
 
 
 export const CustomerDetails = () => {
     const cartState = useAppSelector(state => state.cart)
-    const { name, phone, phone_list } = useAppSelector(state => state.customer)
+    const { name, phone } = useAppSelector(state => state.customer)
 
+    const desktop = useMediaQuery('(min-width: 900px)');
 
     return <div style={{ margin: '40px'}}>
+
         <PickupOrDelivery />
+
+        {
+            !desktop ? <CartSummary /> : null
+        }
 
         <CustomerCard
             title="Customer Information"
@@ -40,9 +47,6 @@ export const CustomerDetails = () => {
                 </>}
             /> : null
         }
-
-        {/* <TipSelection /> */}
-
 
         <ApplyDiscount />
 

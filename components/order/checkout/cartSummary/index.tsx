@@ -5,8 +5,19 @@ import { useAppSelector } from "../../../../store/store"
 import { PriceDisplay } from "../cartSummary/priceDisplay"
 import { SummaryItem } from "../cartSummary/summaryItem"
 
-const ListContainer = styled(List)(() => ({
+const ListContainer = styled(List)(({ theme }) => ({
     width: '90%', 
+    [theme.breakpoints.down('md')]: {
+        width: '100%',
+    }
+}))
+
+const SpecialInstructionText = styled(List)(() => ({
+    marginLeft: '5px',
+    marginY: '10px', 
+    fontWeight: 600, 
+    fontStyle: 'italic',
+    color: 'red'
 }))
 
 export const CartSummary = () => {
@@ -17,7 +28,7 @@ export const CartSummary = () => {
 
         return <>
             <Divider />
-            <Typography sx={{ marginLeft: '5px', marginY: '10px', fontWeight: 600, fontStyle: 'italic', color: 'red'}}>Special Instruction: { cartState.comments }</Typography>
+            <SpecialInstructionText>Special Instruction: { cartState.comments }</SpecialInstructionText>
         </>
         
     }
