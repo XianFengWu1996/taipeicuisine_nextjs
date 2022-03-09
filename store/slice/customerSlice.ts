@@ -5,7 +5,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 const initialState: ICustomer = {
     name: 'Xian Feng Wu',
     phone: '9175787352',
-    phone_list: ['9175787352'],
+    phone_list: ['9175787352', '7816669666', '1234567890', '9175787352', '7816669666', '1234567890'],
     address:{
         address: '',
         street: '',
@@ -28,15 +28,20 @@ export const customerSlice = createSlice({
   name: 'customer',
   initialState,
   reducers: {
-    doSomething: (state) => {
+    // PHONE RELATED 
+    setDefaultPhoneNumber: (state, {payload} : PayloadAction<string>) => {
+      state.phone = payload;
 
-    }
+      let index = state.phone_list.findIndex(phone  => phone === payload);
+      state.phone_list.splice(index, 1);
+      state.phone_list.unshift(payload);
+    },
   }
 })
 
 export default customerSlice.reducer
 
 export const {  
-  doSomething
+  setDefaultPhoneNumber,
 } = customerSlice.actions
 

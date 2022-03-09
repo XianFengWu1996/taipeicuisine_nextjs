@@ -1,8 +1,7 @@
-import { Button, Card, CardActions, CardContent, FormControl, FormControlLabel, Icon, TextField, TextFieldProps, Typography } from "@mui/material"
-import { Box } from "@mui/system"
-import { ChangeEvent, ChangeEventHandler, ReactElement, useEffect, useState } from "react"
-import { useAppSelector } from "../../../../store/store";
-import InputMask from 'react-input-mask';
+import { Button, Card, CardActions, CardContent,Icon, IconButton, Typography } from "@mui/material"
+import { ReactElement, useState } from "react"
+import {HiOutlineChevronUp} from 'react-icons/hi'
+import { CustomerCollapse } from "./customerCollapse";
 
 
 interface ICustomerCardProps {
@@ -11,17 +10,12 @@ interface ICustomerCardProps {
     content: ReactElement<any>
 }
 
-export const CustomerCard = ({ title, icon, content }: ICustomerCardProps) => {
-    const [ customer_name, setName ] = useState('');
-    const [ customer_phone, setPhone ] = useState('');
+export const CustomerCard = ({ title, icon,  content }: ICustomerCardProps) => {
+    const [ expand, setExpand ] = useState(false);
 
-    const { name, phone } = useAppSelector(state => state.customer);
-
-    useEffect(() => {
-        setName(name);
-        setPhone(phone);
-    }, [])
-    
+    const handleToggleExpand = () => {
+        setExpand(!expand);
+    }
 
     return <>
         <Typography variant="h4">{title}</Typography>
@@ -37,52 +31,19 @@ export const CustomerCard = ({ title, icon, content }: ICustomerCardProps) => {
 
             </CardContent>
 
-            <CardActions>
-                <Button>Edit</Button>
+            <CardActions sx={{ display: 'flex', justifyContent: 'end', paddingX: '30px'}}>
+                {
+                    expand 
+                        ? <IconButton onClick={handleToggleExpand} color="primary">
+                            <HiOutlineChevronUp /> 
+                        </IconButton> 
+                        : <Button onClick={handleToggleExpand}>Edit</Button>
+                }
             </CardActions>
+
+            <CustomerCollapse expand={expand} />
         </Card>
         
-        <Box
-            component="form"
-            sx={{
-                '& > :not(style)': {my: 2, width: '90%', display: 'block',  },
-            }}
-            noValidate
-            autoComplete="off"
-        >
-            <TextField 
-                id="customer_name"
-                label="Name" 
-                variant="outlined" 
-                fullWidth
-                value={customer_name}
-                onChange={(e) => {
-                    setName(e.target.value);
-                }}
-            />
-
-              
-        <InputMask
-            mask="(999) 999-9999"
-            value={customer_phone}
-            onChange={(e) => {
-                setPhone(e.target.value);
-            }}           
-            >
-            {(inputProps: TextFieldProps)=>
-              <TextField 
-                id="customer_phone" 
-                label="Phone"
-                variant="outlined"
-                fullWidth 
-                type={'tel'}
-                {...inputProps}
-             />
-            }
-            </InputMask>            
-           
-
-            <Button sx={{ backgroundColor: '#000'}} variant="contained">Edit</Button>
-        </Box>
+      
     </>
 }

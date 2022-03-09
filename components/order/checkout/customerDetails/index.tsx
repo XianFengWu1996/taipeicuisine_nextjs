@@ -1,21 +1,21 @@
-import { Button, Card, CardContent, Checkbox, FormControlLabel, Typography } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import { PickupOrDelivery } from "./pickupOrDelivery"
 import { BiBuildingHouse } from 'react-icons/bi'
 import { GrContactInfo } from 'react-icons/gr'
-import { GiThreeLeaves } from 'react-icons/gi'
 import { CustomerCard } from "./customerCard"
 import { PaymentSelection } from "./paymentSelection"
-import { useAppDispatch, useAppSelector } from "../../../../store/store"
-import { blue } from "@mui/material/colors"
+import {  useAppSelector } from "../../../../store/store"
 import { AddSpecialComment } from "./AddSpecialComment"
 import { ApplyDiscount } from "./ApplyDiscount"
 import { IncludeUtensils } from "./includeUtensils"
+import { phoneFormat } from "../../../../utils/functions/phone"
 
 
 
 export const CustomerDetails = () => {
     const cartState = useAppSelector(state => state.cart)
     const { name, phone, phone_list } = useAppSelector(state => state.customer)
+
 
     return <div style={{ margin: '40px'}}>
         <PickupOrDelivery />
@@ -25,7 +25,7 @@ export const CustomerDetails = () => {
             icon={<GrContactInfo />}
             content={<>
                 <Typography>Name: { name }</Typography>    
-                <Typography>Phone: {phone}</Typography>    
+                <Typography>Phone: {phoneFormat(phone)}</Typography>    
             </>}
         />
 
