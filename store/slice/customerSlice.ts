@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
+import { uniq } from 'lodash'
 
 // Define the initial state using that type
 const initialState: ICustomer = {
@@ -24,19 +24,30 @@ const initialState: ICustomer = {
     }
 }   
 
+const handleDuplicatePhoneNum = (state: ICustomer, list: string[]) => {
+  let hasDup = uniq(list).length !== list.length;
+
+  if(hasDup){
+    let newArr = Array.from(new Set(list));
+
+    state.phone_list = newArr;
+  }
+}
+
 export const customerSlice = createSlice({
   name: 'customer',
   initialState,
   reducers: {
     // PHONE RELATED 
     setDefaultPhoneNumber: (state, {payload} : PayloadAction<string>) => {
+      handleDuplicatePhoneNum(state, state.phone_list)
       state.phone = payload;
-
       let index = state.phone_list.findIndex(phone  => phone === payload);
       state.phone_list.splice(index, 1);
       state.phone_list.unshift(payload);
     },
     removePhoneNumber: (state, {payload} : PayloadAction<string>) => {
+      handleDuplicatePhoneNum(state, state.phone_list)
       let index = state.phone_list.findIndex(phone  => phone === payload);
       state.phone_list.splice(index, 1);
     },

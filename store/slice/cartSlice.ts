@@ -181,9 +181,7 @@ export const cartSlice = createSlice({
       } else {
         state.point_redemption = payload
       }
-
       calculateTotal(state);
-
     },
     // UTENSILS
     setToggleIncludeUtensils:(state, {payload} : PayloadAction<boolean>) => {
