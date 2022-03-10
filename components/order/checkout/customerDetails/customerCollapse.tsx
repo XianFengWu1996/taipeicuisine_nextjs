@@ -4,9 +4,10 @@ import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { v4} from 'uuid'
 import { BiTrash } from "react-icons/bi";
 import { phoneFormat } from "../../../../utils/functions/phone";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { AiFillPlusCircle, AiOutlineCheckCircle, AiOutlinePlus } from "react-icons/ai";
 import { removePhoneNumber, setDefaultPhoneNumber, updateCustomerName } from "../../../../store/slice/customerSlice";
+import snackbar from "../../../snackbar";
 
 interface ICustomerCollapseProps {
     expand: boolean,
@@ -17,48 +18,50 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
 
     const { name, phone, phone_list } = useAppSelector(state => state.customer);
     const [ customer_name, setName ] = useState('');
-    const [ customer_phone, setPhone ] = useState('');
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         setName(name);
-        setPhone(phone);
     }, [])
+
+    const handlePhoneSelect = (phone_num: string) => {
+        // todo update the backend
+        dispatch(setDefaultPhoneNumber(phone_num));
+        props.handleCloseCard();
+        snackbar.success('Phone has been select as default')
+    }
+
+    const handlePhoneRemove = (phone_num: string) => {
+        dispatch(removePhoneNumber(phone_num))
+        snackbar.warning('Phone removed')
+    }
+
+    const handleNameOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setName(e.target.value);
+    }
+
+    const handleNameOnSave = () => {
+        // todo update the backend
+        if(customer_name !== name){
+            dispatch(updateCustomerName(customer_name));
+            snackbar.success('Name updated');
+        }
+
+        props.handleCloseCard();
+    }
+
 
     const renderPhoneList = () => {
         let list = Array.from(new Set(phone_list));
         return  list.map((phone_num: string) => {
-            return <Grid 
-                item lg={6} sm={12} 
+            return <PhoneCard 
                 key={v4()} 
-            ><Card sx={{ padding: 1}}>
-                <CardContent>{phoneFormat(phone_num)}</CardContent>
-                <CardActions>
-                    <Button 
-                        disabled={phone_num === phone}
-                        onClick={() => {
-                            // todo update the backend
-                            dispatch(setDefaultPhoneNumber(phone_num));
-                            props.handleCloseCard();
-                        }}
-                    >Select</Button>
-
-                    {
-                        phone_num === phone ? <Icon sx={{ lineHeight: 0, color: 'green'}}>
-                            <AiOutlineCheckCircle />
-                        </Icon> : null
-                    }
-
-                    <IconButton  color="primary" onClick={() => {
-                        dispatch(removePhoneNumber(phone_num))
-                    }}>
-                        <BiTrash/>
-                    </IconButton>
-
-                    
-                </CardActions>
-            </Card></Grid>
+                phone_num={phone_num}
+                isSelected={phone_num === phone}
+                handlePhoneRemove={handlePhoneRemove}
+                handlePhoneSelect={handlePhoneSelect}
+            />
         })
     }
 
@@ -76,30 +79,21 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
             noValidate
             autoComplete="off"
         >
-        <div style={{ display: 'flex'}}>
-            <TextField
-                id="customer_name"
-                label="Name" 
-                variant="outlined" 
-                fullWidth
-                value={customer_name}
-                onChange={(e) => { setName(e.target.value); }}
-            />
+            <div style={{ display: 'flex'}}>
+                <TextField
+                    label="Name" 
+                    variant="outlined" 
+                    fullWidth
+                    value={customer_name}
+                    onChange={handleNameOnChange}
+                />
 
-            <Button 
-                variant="outlined" 
-                sx={{ paddingX: 5, marginLeft: '50px' }}
-                onClick={() => {
-                    // todo update the backend
-                    if(customer_name !== name){
-                        dispatch(updateCustomerName(customer_name));
-                    }
-
-                    props.handleCloseCard();
-
-                }}
-            >Save</Button>
-        </div>
+                <Button 
+                    variant="outlined" 
+                    sx={{ paddingX: 5, marginLeft: '50px' }}
+                    onClick={handleNameOnSave}
+                >Save</Button>
+            </div>
     
 
         <Grid container spacing={2}>
@@ -125,6 +119,34 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
     </Collapse>
 }
 
+
+interface IPhoneCardProps {
+    phone_num: string,
+    isSelected: boolean,
+    handlePhoneSelect: (arg: string) => void,
+    handlePhoneRemove: (arg: string) => void 
+}
+
+const PhoneCard = ({ phone_num, isSelected, handlePhoneRemove, handlePhoneSelect } : IPhoneCardProps) => {
+    return <Grid item lg={6} sm={12} >
+        <Card sx={{ padding: 1}}>
+        <CardContent>{phoneFormat(phone_num)}</CardContent>
+            <CardActions>
+                <Button disabled={isSelected} onClick={() => handlePhoneSelect(phone_num)}>Select</Button>
+
+                {
+                    isSelected ? <Icon sx={{ lineHeight: 0, color: 'green'}}>
+                        <AiOutlineCheckCircle />
+                    </Icon> : null
+                }
+
+                <IconButton  color="primary" onClick={() => handlePhoneRemove(phone_num)}>
+                    <BiTrash/>
+                </IconButton>
+            </CardActions>
+        </Card>
+        </Grid>
+}
 
 
   {/* <InputMask
