@@ -1,4 +1,4 @@
-import { Button, IconButton, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, useMediaQuery } from "@mui/material";
+import { Button, Dialog, DialogContent, IconButton, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, TextField, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 import Router from "next/router";
 import { AiOutlineShoppingCart, AiOutlineUser, AiOutlineSetting, AiOutlineHome, AiOutlineClose } from 'react-icons/ai'
@@ -99,9 +99,8 @@ export const MenuDrawer = (props: IMenuDrawerProps) => {
         
 
             <LogoutButton variant="contained">
-                Logout
+                Login
             </LogoutButton>
-        </div>
-        
+        </div>   
     </SwipeableDrawer>
 }

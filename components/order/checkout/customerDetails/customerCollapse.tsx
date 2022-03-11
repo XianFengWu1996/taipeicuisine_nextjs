@@ -135,14 +135,20 @@ const PhoneCard = ({ phone_num, isSelected, handlePhoneRemove, handlePhoneSelect
                 <Button disabled={isSelected} onClick={() => handlePhoneSelect(phone_num)}>Select</Button>
 
                 {
-                    isSelected ? <Icon sx={{ lineHeight: 0, color: 'green'}}>
-                        <AiOutlineCheckCircle />
-                    </Icon> : null
+                    isSelected ? 
+                        <Icon sx={{ lineHeight: 0, color: 'green'}}>
+                            <AiOutlineCheckCircle />
+                        </Icon> 
+                    : null
                 }
 
-                <IconButton  color="primary" onClick={() => handlePhoneRemove(phone_num)}>
-                    <BiTrash/>
-                </IconButton>
+                {
+                    !isSelected ? 
+                        <IconButton  color="primary" onClick={() => handlePhoneRemove(phone_num)}>
+                            <BiTrash/>
+                        </IconButton> 
+                    : null
+                }
             </CardActions>
         </Card>
         </Grid>

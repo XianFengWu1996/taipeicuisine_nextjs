@@ -13,6 +13,8 @@ const Home: NextPage = () => {
       <CustomerTestimony />
       <AdditionalInfo />
       <Footer />
+
+  
     </>
   )
 }
