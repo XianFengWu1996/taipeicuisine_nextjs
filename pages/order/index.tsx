@@ -3,6 +3,7 @@ import axios from "axios";
 import { motion, Variants } from "framer-motion";
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
+import { AuthDialog } from "../../components/auth/authDialog";
 import { MenuSelect } from "../../components/menu/menuSelect";
 import { MenuTab } from "../../components/menu/menuTab";
 import { PublicAppBar } from "../../components/order/appbar/appbar";
@@ -24,146 +25,14 @@ export default function OrderPage (props: IOrderPageProps){
         }
     })
 
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [confirmPass, setConfirmPass] = useState('');
-    const [state, setState] = useState({
-        email: '',
-        password: '',
-        confirmPassword: '',
-    })
-
-    const [isLogin, setIsLogin] = useState(true);
-
-    const variants : Variants  = {
-        hide: {
-            rotateY: 180,
-            // opacity: 0,
-            display: 'none',
-        },
-        show: {
-            rotateY: 0,
-            // opacity: 1,
-            display: 'flex',
-        }
-    }
-
-    const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        setState({
-            ...state,
-            [e.target.name]: e.target.value
-        })
-    }
 
     return <div style={{ width: '100%'}}>
         <PublicAppBar />
         <MenuSelect />
         <MenuTab />
 
-        <Dialog
-            open
-            fullWidth
-        >
-            <DialogContent sx={{ display: 'flex', flexDirection: 'column',}}>
-                <motion.div
-                    animate={isLogin ? 'show': 'hide'}
-                    transition={{ duration: 1, ease: 'easeOut' }}
-                    variants={variants}
-                    style={{ display: 'flex', flexDirection: 'column'}}
-                >
-                    <Typography>Login</Typography>
-                    <TextField
-                        type={'email'}
-                        variant="outlined"
-                        label="Email"
-                        name="email"
-                        required
-                        sx={{ marginY: 1.5}}
-                        value={state.email}
-                        onChange={handleOnChange}
-                    />
-
-                    <TextField
-                        type={'password'}
-                        variant="outlined"
-                        label="Password"
-                        name="password"
-                        required
-                        sx={{ marginY: 1.5}}
-                        value={state.password}
-                        onChange={handleOnChange}
-        
-                    />
-
-                    <Button variant="outlined" sx={{ my: 1}}>Login</Button>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                        <Button variant="text">Forgot Password?</Button>
-                        <Typography>Dont have an account? <Button variant="text" onClick={() => setIsLogin(!isLogin)}>Sign Up</Button></Typography>
-                    </div>
-                </motion.div>
-
-                <motion.div
-                    animate={isLogin ? 'hide': 'show'}
-                    transition={{ duration: 1, ease: 'easeOut' }}
-                    variants={variants}
-                    style={{ display: 'flex', flexDirection: 'column'}}
-                >
-                    <Typography>Sign Up</Typography>
-                    <TextField
-                        type={'email'}
-                        variant="outlined"
-                        label="Email"
-                        name="email"
-                        required
-                        sx={{ marginY: 1.5}}
-                        value={state.email}
-                        onChange={handleOnChange}
-                    />
-
-                    <TextField
-                        type={'password'}
-                        variant="outlined"
-                        label="Password"
-                        name="password"
-                        required
-                        sx={{ marginY: 1.5}}
-                        value={state.password}
-                        onChange={handleOnChange}
-                    />
-
-                    <TextField
-                        type={'password'}
-                        variant="outlined"
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        required
-                        sx={{ marginY: 1.5}}
-                        value={state.confirmPassword}
-                        onChange={handleOnChange}
-                    />
-
-                    <Button variant="outlined">Sign Up</Button>
-
-                    <div>
-                        Already have an account? <Button variant="text" onClick={() => setIsLogin(!isLogin)}>Log In</Button>
-                    </div>
-                </motion.div>
-
-
-            
-
-                <Divider style={{width:'100%'}} />
-
-                <Typography>Other Login</Typography>
-
-                <Button sx={{ backgroundColor: 'lightpink', color: '#fff', marginY: 1}}>GOOGLE</Button>
-                <Button  sx={{ backgroundColor: 'black',  color: '#fff', marginY: 1}}>APPLE</Button>
-                <Button  sx={{ backgroundColor: 'lightblue',  color: '#fff', marginY: 1}}>FACEBOOK</Button>
-
-
-            </DialogContent>
-        </Dialog>
+        <AuthDialog />
+      
     </div>
 }
 
