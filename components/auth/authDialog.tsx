@@ -11,18 +11,7 @@ export const AuthDialog = () => {
 
     const [isLogin, setIsLogin] = useState(true);
 
-    const variants : Variants  = {
-        hide: {
-            rotateY: 180,
-            // opacity: 0,
-            display: 'none',
-        },
-        show: {
-            rotateY: 0,
-            // opacity: 1,
-            display: 'flex',
-        }
-    }
+
 
  
 
@@ -31,23 +20,10 @@ export const AuthDialog = () => {
     fullWidth
 >
     <DialogContent sx={{ display: 'flex', flexDirection: 'column',}}>
-        <motion.div
-            animate={isLogin ? 'show': 'hide'}
-            transition={{ duration: 1, ease: 'easeOut' }}
-            variants={variants}
-            style={{ display: 'flex', flexDirection: 'column'}}
-        >
-            <AuthCard isLogin={isLogin} toggleType={() => setIsLogin(!isLogin)} />
-        </motion.div>
+   
+        <AuthCard isLogin={isLogin} toggleType={() => setIsLogin(!isLogin)} />
 
-        <motion.div
-            animate={isLogin ? 'hide': 'show'}
-            transition={{ duration: 1, ease: 'easeOut' }}
-            variants={variants}
-            style={{ display: 'flex', flexDirection: 'column'}}
-        >
-           <AuthCard isLogin={isLogin} toggleType={() => setIsLogin(!isLogin)} />
-        </motion.div>
+        <AuthCard isLogin={!isLogin} toggleType={() => setIsLogin(!isLogin)} />
 
 
     
@@ -72,6 +48,19 @@ interface IAuthCardProps {
 
 const AuthCard = (props: IAuthCardProps) => {
 
+    const variants : Variants  = {
+        hide: {
+            rotateY: 180,
+            // opacity: 0,
+            display: 'none',
+        },
+        show: {
+            rotateY: 0,
+            // opacity: 1,
+            display: 'flex',
+        }
+    }
+
     const [state, setState] = useState({
         email: '',
         password: '',
@@ -85,6 +74,12 @@ const AuthCard = (props: IAuthCardProps) => {
         })
     }
     return <>
+        <motion.div
+            animate={props.isLogin ? 'show': 'hide'}
+            transition={{ duration: 1, ease: 'easeOut' }}
+            variants={variants}
+            style={{ display: 'flex', flexDirection: 'column'}}
+        >
          <Typography>{ props.isLogin ? 'Login' : 'Sign Up'}</Typography>
             <AuthTextField 
                 type="email"
@@ -128,5 +123,6 @@ const AuthCard = (props: IAuthCardProps) => {
                 </div>
             }
             
+        </motion.div>
     </>
 }
