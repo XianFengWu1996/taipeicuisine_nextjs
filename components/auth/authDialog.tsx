@@ -7,43 +7,38 @@ import { BiLock, BiLockAlt } from "react-icons/bi"
 import { AuthTextField } from "./AuthTextfield";
 
 export const AuthDialog = () => {
- 
 
     const [isLogin, setIsLogin] = useState(true);
-
-
-
- 
-
-    return   <Dialog
-    open
-    fullWidth
->
-    <DialogContent sx={{ display: 'flex', flexDirection: 'column',}}>
-   
-        <AuthCard isLogin={isLogin} toggleType={() => setIsLogin(!isLogin)} />
-
-        <AuthCard isLogin={!isLogin} toggleType={() => setIsLogin(!isLogin)} />
-
-
+    return   <Dialog open fullWidth>
+         <DialogContent sx={{ display: 'flex', flexDirection: 'column',}}>
     
+            <AuthCard 
+                isLogin={isLogin}
+                animateVariant={isLogin ? 'show': 'hide'}
+                toggleType={() => setIsLogin(!isLogin)} />
 
-        <Divider style={{width:'100%'}} />
+            <AuthCard 
+                isLogin={isLogin} 
+                animateVariant={isLogin ? 'hide': 'show'}
+                toggleType={() => setIsLogin(!isLogin)} />
 
-        <Typography>Other Login</Typography>
+            <Divider style={{width:'100%'}} />
 
-        <Button sx={{ backgroundColor: 'lightpink', color: '#fff', marginY: 1}}>GOOGLE</Button>
-        <Button  sx={{ backgroundColor: 'black',  color: '#fff', marginY: 1}}>APPLE</Button>
-        <Button  sx={{ backgroundColor: 'lightblue',  color: '#fff', marginY: 1}}>FACEBOOK</Button>
+            <Typography>Other Login</Typography>
+
+            <Button sx={{ backgroundColor: 'lightpink', color: '#fff', marginY: 1}}>GOOGLE</Button>
+            <Button  sx={{ backgroundColor: 'black',  color: '#fff', marginY: 1}}>APPLE</Button>
+            <Button  sx={{ backgroundColor: 'lightblue',  color: '#fff', marginY: 1}}>FACEBOOK</Button>
 
 
-    </DialogContent>
+        </DialogContent>
 </Dialog>
 }
 
 interface IAuthCardProps {
     isLogin: boolean,
     toggleType: () => void,
+    animateVariant: string,
 }
 
 const AuthCard = (props: IAuthCardProps) => {
@@ -75,7 +70,7 @@ const AuthCard = (props: IAuthCardProps) => {
     }
     return <>
         <motion.div
-            animate={props.isLogin ? 'show': 'hide'}
+            animate={props.animateVariant}
             transition={{ duration: 1, ease: 'easeOut' }}
             variants={variants}
             style={{ display: 'flex', flexDirection: 'column'}}
