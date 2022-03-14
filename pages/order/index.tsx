@@ -29,10 +29,7 @@ export default function OrderPage (props: IOrderPageProps){
     return <div style={{ width: '100%'}}>
         <PublicAppBar />
         <MenuSelect />
-        <MenuTab />
-
-        <AuthDialog />
-      
+        <MenuTab />      
     </div>
 }
 

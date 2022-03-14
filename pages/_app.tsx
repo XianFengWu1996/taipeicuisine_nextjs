@@ -11,6 +11,7 @@ import "nprogress/nprogress.css";
 import { ThemeProvider } from '@emotion/react'
 import { muiCustomTheme } from '../components/theme'
 import { CssBaseline } from '@mui/material'
+import { AuthDialog } from '../components/auth/authDialog'
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -35,6 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <SnackbarProvider maxSnack={3}>
             <SnackbarUtilsConfigurator />
             <Component {...pageProps} />
+            <AuthDialog />
           </SnackbarProvider>
         </ThemeProvider>
     </Provider>

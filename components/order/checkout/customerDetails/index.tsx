@@ -1,4 +1,4 @@
-import { Button, Typography, useMediaQuery } from "@mui/material"
+import { Button, Skeleton, Typography, useMediaQuery } from "@mui/material"
 import { PickupOrDelivery } from "./pickupOrDelivery"
 import { BiBuildingHouse } from 'react-icons/bi'
 import { GrContactInfo } from 'react-icons/gr'
@@ -10,6 +10,9 @@ import { ApplyDiscount } from "./ApplyDiscount"
 import { IncludeUtensils } from "./includeUtensils"
 import { phoneFormat } from "../../../../utils/functions/phone"
 import { CartSummary } from "../cartSummary"
+import { app, fbAuth } from "../../../../utils/functions/auth"
+import { getAuth, onAuthStateChanged, User } from "firebase/auth"
+import { useState } from "react"
 
 
 
@@ -19,23 +22,37 @@ export const CustomerDetails = () => {
 
     const desktop = useMediaQuery('(min-width: 900px)');
 
+    const [ user, setUser ] = useState<User | null>();
+
+    onAuthStateChanged(fbAuth, fbUser => {
+        setUser(fbUser);
+    })
+
+
     return <div style={{ margin: '40px'}}>
 
-        <PickupOrDelivery />
-
         {
-            !desktop ? <CartSummary /> : null
+            user ? <PickupOrDelivery /> : <Skeleton style={{ height: '100px'}}/>
         }
 
-        <CustomerCard
-            title="Customer Information"
-            icon={<GrContactInfo />}
-            content={<>
-                <Typography>Name: { name }</Typography>    
-                <Typography>Phone: {phoneFormat(phone)}</Typography>    
-            </>}
-        />
+        {
+            !desktop ? 
+            // <CartSummary /> 
+                user ? <CartSummary />  : <Skeleton height={'325px'}  style={{ lineHeight: 0 }}/>
+            : null
+        }
 
+       {
+           user ? <CustomerCard
+                title="Customer Information"
+                icon={<GrContactInfo />}
+                content={<>
+                    <Typography>Name: { name }</Typography>    
+                    <Typography>Phone: {phoneFormat(phone)}</Typography>    
+                </>}
+            /> : <Skeleton height={'185px'}  style={{ lineHeight: 0 }}/>
+        }
+        
         {
             cartState.is_delivery ? <CustomerCard 
                 title="Delivery Address"
@@ -48,14 +65,20 @@ export const CustomerDetails = () => {
             /> : null
         }
 
-        <ApplyDiscount />
+        {
+            user ? <>
+                <ApplyDiscount />
 
-        <AddSpecialComment />
+                <AddSpecialComment />
 
-        <IncludeUtensils />
+                <IncludeUtensils />
 
-        <PaymentSelection />
+                <PaymentSelection />
 
+            </> : <Skeleton height={300}  style={{ lineHeight: 1 }}/>
+        }
+
+    
         <div>
             <Button 
                 variant="contained" 

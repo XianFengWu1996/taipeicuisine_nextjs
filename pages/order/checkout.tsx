@@ -1,4 +1,4 @@
-import { Grid, useMediaQuery } from "@mui/material";
+import { Grid, Skeleton, useMediaQuery } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { GetStaticPropsContext } from "next";
 import Router from "next/router";
@@ -20,8 +20,8 @@ export default function CheckoutPage() {
         if(user) {
 
         } else {
-            Router.push('/order?no_auth=true&redirect=checkout');
-            dispatch(setLoginDialog(true));
+            // Router.push('/order?no_auth=true&redirect=checkout');
+            // dispatch(setLoginDialog(true));
         }
     })
 
@@ -29,8 +29,8 @@ export default function CheckoutPage() {
         <PublicAppBar />
         <Grid container>
                 <Grid item lg={7} md={8} sm={12}>
-                    <CustomerDetails />
-                </Grid>
+                    <CustomerDetails /> 
+                </Grid> 
                 
                 {
                     desktop ? <Grid item lg={5} md={4}>
