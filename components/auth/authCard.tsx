@@ -3,11 +3,12 @@ import { motion, Variants } from "framer-motion"
 import { ChangeEvent, useState } from "react"
 import { AiOutlineMail } from "react-icons/ai"
 import { BiLockAlt } from "react-icons/bi"
-import { handleLogin } from "../../utils/functions/auth"
+import { handleEmailLogin } from "../../utils/functions/auth"
 import { AuthTextField } from "./AuthTextfield"
-import { CircleLoader, ClipLoader, PulseLoader, ScaleLoader, SyncLoader } from 'react-spinners'
+import { PulseLoader} from 'react-spinners'
 import { useAppDispatch } from "../../store/store"
 import { setLoginDialog } from "../../store/slice/customerSlice"
+import Router from "next/router"
 
 interface IAuthCardProps {
     isLogin: boolean,
@@ -47,14 +48,19 @@ export const AuthCard = (props: IAuthCardProps) => {
     }
 
     const handleOnLogin = async () => {
+        // to handle login on this component
         setLoading(true);
 
         if(!loading){
-           await handleLogin(state.email, state.password);
-           dispatch(setLoginDialog(false));
+            await handleEmailLogin({ 
+                email: state.email,
+                password: state.password,
+                handleSuccess: () => dispatch(setLoginDialog(false)),
+                query: Router.query,
+            }).finally(() => {
+                setLoading(false);
+            })
         }
-
-        setLoading(false)
     }
 
     const handleRenderLogInButton = () => {

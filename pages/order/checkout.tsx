@@ -1,40 +1,51 @@
 import { Grid, Skeleton, useMediaQuery } from "@mui/material";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { GetStaticPropsContext } from "next";
+import { onAuthStateChanged, User } from "firebase/auth";
 import Router from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PublicAppBar } from "../../components/order/appbar/appbar";
 import { CartSummary } from "../../components/order/checkout/cartSummary";
 import { CustomerDetails } from "../../components/order/checkout/customerDetails";
 import { setLoginDialog } from "../../store/slice/customerSlice";
 import { useAppDispatch } from "../../store/store";
-import { app, fbAuth } from "../../utils/functions/auth";
+import { fbAuth } from "../../utils/functions/auth";
 
 export default function CheckoutPage() {
     const desktop = useMediaQuery('(min-width: 900px)');
     const dispatch = useAppDispatch();
 
-    const user = getAuth(app).currentUser;
+    const [ user, setUser ] = useState<User | null>(null);
 
-    onAuthStateChanged(fbAuth, user => {
-        if(user) {
+    onAuthStateChanged(fbAuth, async fbUser => {
+        setUser(fbUser);
 
+        if(fbUser) {
+            
         } else {
-            // Router.push('/order?no_auth=true&redirect=checkout');
-            // dispatch(setLoginDialog(true));
+            await Router.push('/order?redirect=checkout');
+            dispatch(setLoginDialog(true));
         }
     })
 
+    useEffect(() => {
+        return () => {
+            setUser(null)
+        }
+    }, [])
+
     return <>
         <PublicAppBar />
-        <Grid container>
+        <Grid container >
                 <Grid item lg={7} md={8} sm={12}>
-                    <CustomerDetails /> 
+                    <CustomerDetails user={user} /> 
                 </Grid> 
                 
                 {
-                    desktop ? <Grid item lg={5} md={4}>
-                        <CartSummary />
+                    desktop ? <Grid item lg={5} md={4} >
+                        {
+                            user 
+                                ? <CartSummary /> 
+                                : <Skeleton variant="rectangular" width={'90%'} height={300} sx={{ marginTop: 5}}/>
+                        }    
                     </Grid> : null
                 } 
         </Grid>

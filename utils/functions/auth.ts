@@ -1,5 +1,8 @@
 import { FirebaseError, initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, signOut} from 'firebase/auth'
+import { isEmpty } from 'lodash';
+import Router from 'next/router';
+import { ParsedUrlQuery } from 'querystring';
 import snackbar from '../../components/snackbar';
 
 // place all varaibles into environment variables
@@ -16,9 +19,36 @@ export const app = initializeApp({
   
 export const fbAuth = getAuth(app);
 
-export const handleLogin = async (email: string, password: string) => {
+interface IHandleLogin {
+  email: string,
+  password: string,
+  handleSuccess: () => void,
+  query: ParsedUrlQuery,
+}
+
+export const checkAndRedirect = (query: ParsedUrlQuery) => {
+  console.log(query)
+  if(query.redirect){
+    switch(query.redirect){
+      case 'checkout':
+        Router.push('/order/checkout')
+        break;
+
+      default: 
+        break;
+
+        
+    }
+  }
+}
+
+export const handleEmailLogin = async ({ email, password, handleSuccess, query}: IHandleLogin) => {
     try{
       await signInWithEmailAndPassword(fbAuth, email, password);
+      handleSuccess();
+      checkAndRedirect(query);
+
+     
     } catch (e) {
       snackbar.error((e as FirebaseError).message ?? 'Fail to login')
     }

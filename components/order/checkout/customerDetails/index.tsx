@@ -10,35 +10,34 @@ import { ApplyDiscount } from "./ApplyDiscount"
 import { IncludeUtensils } from "./includeUtensils"
 import { phoneFormat } from "../../../../utils/functions/phone"
 import { CartSummary } from "../cartSummary"
-import { app, fbAuth } from "../../../../utils/functions/auth"
-import { getAuth, onAuthStateChanged, User } from "firebase/auth"
-import { useState } from "react"
+import { User } from "firebase/auth"
 
+interface ICustomerDetailsProp {
+    user: User | null
+}
 
-
-export const CustomerDetails = () => {
+export const CustomerDetails = ({ user } : ICustomerDetailsProp) => {
     const cartState = useAppSelector(state => state.cart)
     const { name, phone } = useAppSelector(state => state.customer)
 
     const desktop = useMediaQuery('(min-width: 900px)');
 
-    const [ user, setUser ] = useState<User | null>();
-
-    onAuthStateChanged(fbAuth, fbUser => {
-        setUser(fbUser);
-    })
-
-
     return <div style={{ margin: '40px'}}>
 
         {
-            user ? <PickupOrDelivery /> : <Skeleton style={{ height: '100px'}}/>
+            user ? <PickupOrDelivery /> 
+            : <Skeleton variant="rectangular" width={"50%"}>
+                <PickupOrDelivery /> 
+            </Skeleton>
         }
 
         {
             !desktop ? 
             // <CartSummary /> 
-                user ? <CartSummary />  : <Skeleton height={'325px'}  style={{ lineHeight: 0 }}/>
+                user ? <CartSummary />  
+                    : <Skeleton variant="rectangular" width={"100%"}>
+                        <CartSummary /> 
+                    </Skeleton>
             : null
         }
 
@@ -50,7 +49,7 @@ export const CustomerDetails = () => {
                     <Typography>Name: { name }</Typography>    
                     <Typography>Phone: {phoneFormat(phone)}</Typography>    
                 </>}
-            /> : <Skeleton height={'185px'}  style={{ lineHeight: 0 }}/>
+            /> : <Skeleton variant="rectangular" height={250} sx={{ my: 5}} />
         }
         
         {
@@ -75,16 +74,21 @@ export const CustomerDetails = () => {
 
                 <PaymentSelection />
 
-            </> : <Skeleton height={300}  style={{ lineHeight: 1 }}/>
+            </> : <Skeleton variant="rectangular" width={"100%"} height={300} sx={{ marginBottom: 3}}/>
+
         }
 
     
         <div>
-            <Button 
-                variant="contained" 
-                sx={{ backgroundColor: '#000', padding: '10px 50px'}}
-                disabled={cartState.payment_type !== 'cash' && cartState.payment_type !== 'instore'}
-            >Place Order</Button>
+        
+
+            {
+                user ?  <Button 
+                    variant="contained" 
+                    sx={{ backgroundColor: '#000', padding: '10px 50px'}}
+                    disabled={cartState.payment_type !== 'cash' && cartState.payment_type !== 'instore'}
+                >Place Order</Button> : <Skeleton variant="rectangular" width={'20%'} height={40}/>
+            }
         </div>
     </div>
 }
