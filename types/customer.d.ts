@@ -7,7 +7,8 @@ interface ICustomer {
     reward: {
         points: number,
         transactions: IRewardTransaction[]
-    }
+    },
+    loginDialogOpen: boolean,
 }
 
 interface IAddress {

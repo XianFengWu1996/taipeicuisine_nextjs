@@ -1,9 +1,16 @@
-import { Button, Dialog, DialogContent, IconButton, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, TextField, useMediaQuery } from "@mui/material";
+import { Button, IconButton, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, TextField, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 import Router from "next/router";
 import { AiOutlineShoppingCart, AiOutlineUser, AiOutlineSetting, AiOutlineHome, AiOutlineClose } from 'react-icons/ai'
 import { HiOutlineReceiptTax } from 'react-icons/hi'
 import {MdOutlineRestaurantMenu } from 'react-icons/md'
+import { setLoginDialog } from "../../../store/slice/customerSlice";
+import { useAppDispatch } from "../../../store/store";
+
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth'
+import { fbAuth } from "../../../utils/functions/auth";
+import { useState } from "react";
+import { userInfo } from "os";
 
 interface IMenuDrawerProps {
     open: boolean,
@@ -56,6 +63,13 @@ const navigation_list = [
 
 export const MenuDrawer = (props: IMenuDrawerProps) => {
     const isMobile = useMediaQuery('(max-width: 480px)');
+    const dispatch = useAppDispatch();
+
+    // const [user, setUser] = useState<User | null>();
+    
+    // onAuthStateChanged((user) => {
+
+    // })
 
     return <SwipeableDrawer
         anchor='left'
@@ -98,7 +112,10 @@ export const MenuDrawer = (props: IMenuDrawerProps) => {
             </div>
         
 
-            <LogoutButton variant="contained">
+            <LogoutButton variant="contained" onClick={() => {
+                props.handleClose()
+                dispatch(setLoginDialog(true))
+            }}>
                 Login
             </LogoutButton>
         </div>   

@@ -21,7 +21,8 @@ const initialState: ICustomer = {
     reward: {
         points: 1300,
         transactions: [],
-    }
+    },
+    loginDialogOpen: false,
 }   
 
 const handleDuplicatePhoneNum = (state: ICustomer, list: string[]) => {
@@ -54,7 +55,10 @@ export const customerSlice = createSlice({
     // NAME RELATED
     updateCustomerName: (state, {payload} : PayloadAction<string>) => {
       state.name = payload;
-    }
+    },
+    setLoginDialog: (state, {payload}:PayloadAction<boolean>) => {
+      state.loginDialogOpen = payload;
+    },
   }
 })
 
@@ -64,5 +68,6 @@ export const {
   setDefaultPhoneNumber,
   removePhoneNumber,
   updateCustomerName,
+  setLoginDialog
 } = customerSlice.actions
 

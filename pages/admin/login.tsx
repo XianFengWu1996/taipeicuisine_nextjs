@@ -1,6 +1,5 @@
 import { MouseEventHandler, useEffect, useState } from "react";
 import { signInWithEmailAndPassword, signOut} from 'firebase/auth'
-import { fbAuth } from "../_app";
 import axios from 'axios';
 import Router, { useRouter } from 'next/router'
 import { TextField } from "@mui/material";
@@ -10,6 +9,7 @@ import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { toggleLoginLoading } from "../../store/slice/adminSlice";
 import snackbar from "../../components/snackbar";
+import { fbAuth } from "../../utils/functions/auth";
 
 export default function Login () {
     const [email, setEmail] = useState('');
