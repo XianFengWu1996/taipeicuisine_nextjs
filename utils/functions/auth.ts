@@ -19,17 +19,13 @@ export const fbAuth = getAuth(app);
 export const handleLogin = async (email: string, password: string) => {
     try{
       let user = await signInWithEmailAndPassword(fbAuth, email, password);
-
-      setTimeout(() => {
-        signOut(fbAuth);
-      },10000)
     } catch (e) {
       snackbar.error((e as FirebaseError).message ?? 'Fail to login')
     }
 }
 
 export const handleLogout = () => {
-
+  signOut(fbAuth);
 }
 
 export const handleSignUp = () => {
