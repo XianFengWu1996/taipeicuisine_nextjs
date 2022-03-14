@@ -18,7 +18,7 @@ export const fbAuth = getAuth(app);
 
 export const handleLogin = async (email: string, password: string) => {
     try{
-      let user = await signInWithEmailAndPassword(fbAuth, email, password);
+      await signInWithEmailAndPassword(fbAuth, email, password);
     } catch (e) {
       snackbar.error((e as FirebaseError).message ?? 'Fail to login')
     }
