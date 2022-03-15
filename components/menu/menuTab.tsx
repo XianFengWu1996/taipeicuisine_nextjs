@@ -65,9 +65,8 @@ export const MenuTab = () => {
     const scrollBarStyle:React.CSSProperties | undefined = {
         position: scrollPosition > 170 ? 'sticky' : 'relative',
         top: scrollPosition > 170 ? -1 : 0, 
-        zIndex: 1000
+        zIndex: 1000,
     }
-
     useEffect(() => {
         window.addEventListener('scroll', handleScroll)
         

@@ -39,7 +39,7 @@ export default function OrderPage (props: IOrderPageProps){
     }, [])
 
 
-    return <div style={{ width: '100%'}}>
+    return <div style={{ width: '100%', contain: 'paint'}}>
         <PublicAppBar />
 
         {

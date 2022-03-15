@@ -14,6 +14,7 @@ import { CssBaseline } from '@mui/material'
 import { AuthDialog } from '../components/auth/authDialog'
 
 import { PersistGate } from 'redux-persist/integration/react'
+import Head from 'next/head'
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -30,8 +31,14 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
+
+
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
+    <Head>
+        <title>Taipei Cuisine</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    </Head>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider theme={muiCustomTheme}>
