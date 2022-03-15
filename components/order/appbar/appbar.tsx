@@ -19,9 +19,6 @@ const StyleAppbar = styled(AppBar)(({theme}) => ({
     [theme.breakpoints.down('md')]: {
         padding: '0 20px',
     },
-    [theme.breakpoints.down('sm')]: {
-        padding: '0 10px',
-    }
 }))
 
 const CartButton = styled(Button)(({theme}) => ({

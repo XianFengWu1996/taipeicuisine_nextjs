@@ -11,7 +11,7 @@ import { persistStore, persistReducer} from 'redux-persist'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['menus', 'cart']
+  whitelist: ['menus', 'cart'] // only persist certain reducers
 }
 
 const reducer = combineReducers({ 
@@ -42,14 +42,6 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export default store
 
-
-
-
-// export const store = () => {
-//   let store = createStore(persistedReducer);
-//   let persistor = persistStore(store)
-//   return { store, persistor}
-// }
 
 // const reducer = combineReducers({ 
 //   admin: adminSlice,
