@@ -23,6 +23,7 @@ interface IHandleLogin {
   email: string,
   password: string,
   handleSuccess: () => void,
+  handleFail: () => void,
   query: ParsedUrlQuery,
 }
 
@@ -42,14 +43,13 @@ export const checkAndRedirect = (query: ParsedUrlQuery) => {
   }
 }
 
-export const handleEmailLogin = async ({ email, password, handleSuccess, query}: IHandleLogin) => {
+export const handleEmailLogin = async ({ email, password, handleSuccess, handleFail,query}: IHandleLogin) => {
     try{
       await signInWithEmailAndPassword(fbAuth, email, password);
       handleSuccess();
       checkAndRedirect(query);
-
-     
     } catch (e) {
+      handleFail();
       snackbar.error((e as FirebaseError).message ?? 'Fail to login')
     }
 }

@@ -1,13 +1,13 @@
 import { Grid, Skeleton, useMediaQuery } from "@mui/material";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import Router from "next/router";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { PublicAppBar } from "../../components/order/appbar/appbar";
 import { CartSummary } from "../../components/order/checkout/cartSummary";
 import { CustomerDetails } from "../../components/order/checkout/customerDetails";
 import { setLoginDialog } from "../../store/slice/customerSlice";
 import { useAppDispatch } from "../../store/store";
-import { fbAuth } from "../../utils/functions/auth";
+import {  app, fbAuth } from "../../utils/functions/auth";
 
 export default function CheckoutPage() {
     const desktop = useMediaQuery('(min-width: 900px)');
@@ -15,22 +15,21 @@ export default function CheckoutPage() {
 
     const [ user, setUser ] = useState<User | null>(null);
 
-    onAuthStateChanged(fbAuth, async fbUser => {
-        setUser(fbUser);
-
-        if(fbUser) {
-            
-        } else {
-            await Router.push('/order?redirect=checkout');
-            dispatch(setLoginDialog(true));
-        }
-    })
-
     useEffect(() => {
+        const subscribe = onAuthStateChanged(fbAuth, async fbUser => {
+            setUser(fbUser);
+            if(fbUser){
+            } else {
+                dispatch(setLoginDialog(true));
+                Router.push('/order?redirect=checkout');
+            }
+        });
+
         return () => {
-            setUser(null)
+            subscribe();
         }
     }, [])
+
 
     return <>
         <PublicAppBar />

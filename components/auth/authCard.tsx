@@ -47,6 +47,15 @@ export const AuthCard = (props: IAuthCardProps) => {
         })
     }
 
+    const handleSuccess = () => {
+        setLoading(false);
+        dispatch(setLoginDialog(false));
+    } 
+
+    const handleFail = () => {
+        setLoading(false);
+    }
+
     const handleOnLogin = async () => {
         // to handle login on this component
         setLoading(true);
@@ -55,10 +64,9 @@ export const AuthCard = (props: IAuthCardProps) => {
             await handleEmailLogin({ 
                 email: state.email,
                 password: state.password,
-                handleSuccess: () => dispatch(setLoginDialog(false)),
-                query: Router.query,
-            }).finally(() => {
-                setLoading(false);
+                handleSuccess: handleSuccess,
+                handleFail: handleFail,
+                query: Router.query,  
             })
         }
     }

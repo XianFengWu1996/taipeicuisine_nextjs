@@ -7,10 +7,9 @@ import {MdOutlineRestaurantMenu } from 'react-icons/md'
 import { setLoginDialog } from "../../../store/slice/customerSlice";
 import { useAppDispatch } from "../../../store/store";
 
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth'
+import { onAuthStateChanged, User } from 'firebase/auth'
 import { fbAuth, handleLogout } from "../../../utils/functions/auth";
-import es from "date-fns/esm/locale/es/index.js";
-import { useState } from "react";
+import {  useEffect, useState } from "react";
 import snackbar from "../../snackbar";
 
 interface IMenuDrawerProps {
@@ -33,7 +32,23 @@ export const MenuDrawer = (props: IMenuDrawerProps) => {
     const isMobile = useMediaQuery('(max-width: 480px)');
     const dispatch = useAppDispatch();
 
-    const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>();
+  
+    useEffect(() => {
+        const subscribe = onAuthStateChanged(fbAuth, async fbUser => {
+            setUser(fbUser);
+            if(!fbUser){
+                setUser(null);
+           } else {
+               setUser(fbUser)
+           }
+        });
+
+        return () => {
+            subscribe();
+        }
+    }, [])
+
 
     const navigation_list = [
         {
@@ -67,23 +82,15 @@ export const MenuDrawer = (props: IMenuDrawerProps) => {
             path: '/setting'
         } : null,
     ]
-    
-    onAuthStateChanged(fbAuth, fbUser => {
-        if(fbUser) {
-            setUser(fbUser)
-        } else {
-            setUser(null);
-        }
-    })
 
     const handleSigninLogout = () => {
         if(user){
-            props.handleClose()
             handleLogout();
+            props.handleClose()
             snackbar.warning("You've logged out")
         } else {
-            props.handleClose()
             dispatch(setLoginDialog(true))
+            props.handleClose()
         }
     }
 
