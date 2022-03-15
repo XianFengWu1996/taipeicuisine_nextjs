@@ -4,7 +4,7 @@ import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfigurator } from '../components/snackbar'
 import axios from 'axios'
 import { Provider } from 'react-redux'
-import store from '../store/store'
+import {store, persistor} from '../store/store'
 import NProgress from 'nprogress'
 import Router from 'next/router'
 import "nprogress/nprogress.css";
@@ -12,6 +12,8 @@ import { ThemeProvider } from '@emotion/react'
 import { muiCustomTheme } from '../components/theme'
 import { CssBaseline } from '@mui/material'
 import { AuthDialog } from '../components/auth/authDialog'
+
+import { PersistGate } from 'redux-persist/integration/react'
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -31,14 +33,16 @@ Router.events.on('routeChangeError', () => NProgress.done());
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
     <Provider store={store}>
-        <ThemeProvider theme={muiCustomTheme}>
-        <CssBaseline />
-          <SnackbarProvider maxSnack={3}>
-            <SnackbarUtilsConfigurator />
-            <Component {...pageProps} />
-            <AuthDialog />
-          </SnackbarProvider>
-        </ThemeProvider>
+      <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider theme={muiCustomTheme}>
+          <CssBaseline />
+            <SnackbarProvider maxSnack={3}>
+              <SnackbarUtilsConfigurator />
+              <Component {...pageProps} />
+              <AuthDialog />
+            </SnackbarProvider>
+          </ThemeProvider>
+        </PersistGate>
     </Provider>
   </>
 }
