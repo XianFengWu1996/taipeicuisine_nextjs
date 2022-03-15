@@ -8,12 +8,6 @@ body {
   overflow-x: hidden;
 }
 
-@media (max-width: 600px) {
-   body {
-     position: absolute;
-   }
-}
-
 a {
   color: inherit;
   text-decoration: none;

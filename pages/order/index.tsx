@@ -1,12 +1,13 @@
 import axios from "axios";
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MenuSelect } from "../../components/menu/menuSelect";
 import { MenuTab } from "../../components/menu/menuTab";
 import { PublicAppBar } from "../../components/order/appbar/appbar";
 import snackbar from "../../components/snackbar";
 import { getInitialMenuData } from "../../store/slice/menuSlice";
 import { useAppDispatch } from "../../store/store";
+import MenuSkeleton from "./skeleton";
 
 
 interface IOrderPageProps {
@@ -18,11 +19,19 @@ interface IOrderPageProps {
 export default function OrderPage (props: IOrderPageProps){
     const dispatch = useAppDispatch();
 
+    const [ loading, setLoading ] = useState(false);
+
     useEffect(() => {
-        if(props.error){
-            snackbar.error(props.error);
-            return;
-        }
+
+        setLoading(true);
+
+        setTimeout(() => {
+            setLoading(false);
+        }, 5000)
+        // if(props.error){
+        //     snackbar.error(props.error);
+        //     return;
+        // }
 
         if(props.menus){
             dispatch(getInitialMenuData({ menus: props.menus, expiration: props.expiration }))
@@ -32,8 +41,16 @@ export default function OrderPage (props: IOrderPageProps){
 
     return <div style={{ width: '100%'}}>
         <PublicAppBar />
-        <MenuSelect />
-        <MenuTab />      
+
+        {
+            loading
+                ? <MenuSkeleton /> 
+                : <>
+                    <MenuSelect />
+                    <MenuTab />  
+                </>
+        }
+        
     </div>
 }
 

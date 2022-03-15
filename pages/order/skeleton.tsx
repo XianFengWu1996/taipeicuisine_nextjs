@@ -1,7 +1,6 @@
-import { Grid, Skeleton, useMediaQuery } from "@mui/material";
+import { Grid, Skeleton } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { MenuSelect } from "../../components/menu/menuSelect";
-import { PublicAppBar } from "../../components/order/appbar/appbar";
 
 export default function MenuSkeleton () {
     let list: number[] = [1,2,3,4,5,6];
@@ -34,8 +33,6 @@ export default function MenuSkeleton () {
     }))
     
     return <>
-        <PublicAppBar />
-
         <SelectContainer>
             <Skeleton width={'100%'}>
                 <MenuSelect />
