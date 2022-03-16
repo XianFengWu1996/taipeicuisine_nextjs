@@ -6,6 +6,7 @@ import { ImageWithFallback } from "../../../images";
 import { QuantityController } from "../../../quantityController";
 import { FiTrash2 } from 'react-icons/fi'
 import { styled } from "@mui/system";
+import { GoFlame } from "react-icons/go";
 
 interface ICartDrawerItemProps {
     item: ICartItem
@@ -28,7 +29,9 @@ export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
                     <div>
                         <Typography sx={{ fontSize: '13px'}}>{dish.label_id}. {dish.en_name} {dish.ch_name}</Typography>
                         {
-                            !isEmpty(item.option) ? <Typography sx={{ fontSize: '11px'}}>Option: {item.option.en_name} {item.option.ch_name}</Typography> : null
+                            !isEmpty(item.option) 
+                                ? <Typography sx={{ fontSize: '11px'}}>Option: {item.option.en_name} {item.option.ch_name} {item.option.spicy ? <GoFlame color="red"/>: null }</Typography> 
+                                : null
                         }
                         <PriceText>${dish.price.toFixed(2)}</PriceText>
                     </div>

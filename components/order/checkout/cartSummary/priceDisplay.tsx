@@ -6,10 +6,13 @@ interface IPriceDisplayProps {
     value: number,
 }
 
-const Text = styled(Typography)(() => ({
+const Text = styled(Typography)(({ theme }) => ({
     fontSize: '16px',
     fontWeight: 600,
     textTransform: 'capitalize',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '14px',   
+    }
 }))
 
 export const PriceDisplay = (props : IPriceDisplayProps) => {

@@ -34,7 +34,7 @@ interface IVarirant{
     id: string,
     en_name: string,
     ch_name:string,
-    options: IVarirantOption[]
+    options: IVarirantOption[],
 }
 
 interface IVarirantOption {
@@ -42,6 +42,7 @@ interface IVarirantOption {
     en_name: string,
     ch_name:string,
     price: number,
+    spicy: boolean,
 }
 
 interface ICheckbox {

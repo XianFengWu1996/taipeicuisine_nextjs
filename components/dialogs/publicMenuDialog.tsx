@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, FormControl, FormControlL
 import { styled } from "@mui/system";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ImageWithFallback } from "../images";
-import { AiOutlineShoppingCart} from 'react-icons/ai'
+import { AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai'
 import { GoFlame } from 'react-icons/go'
 import {  useEffect, useState } from "react";
 import { addToCart } from "../../store/slice/cartSlice";
@@ -15,15 +15,16 @@ const AddToCartButton = styled(Button)(({theme}) => ({
     color: '#fff',
     display: 'flex',
     justifyContent: 'space-around',
-    padding: '10px'
+    padding: '10px',
+    marginTop: 10,
 }))
 
-const DishText = styled(Typography)(({theme}) => ({
+const DishText = styled(Typography)(() => ({
     fontSize: 20, 
     fontWeight: 600
 }))
 
-const PriceText = styled(Typography)(({theme}) => ({
+const PriceText = styled(Typography)(() => ({
     fontSize: 15, 
     fontStyle: 'italic', 
     fontWeight: 500
@@ -131,7 +132,12 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
                                     key={option.id} 
                                     value={option.id} 
                                     control={<Radio required size="small" />} 
-                                    label={<Typography sx={{ fontSize: 14 }}>{option.en_name} {option.ch_name} +${option.price.toFixed(2)}</Typography>}
+                                    label={
+                                        <Typography sx={{ fontSize: 14 }}>
+                                            {option.en_name} {option.ch_name} 
+                                            +${option.price.toFixed(2)} 
+                                            {option.spicy ? <GoFlame color="red"/>: null}
+                                        </Typography>}
                                 /> 
                             })
                         }
@@ -148,11 +154,16 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
             fullScreen={isMobile}
         >
         <DialogContent>
-            <div style={{ display: 'flex'}}>
+            <IconButton onClick={handleDialogClose}>
+                <AiOutlineClose />
+            </IconButton>
+
+            <div style={{ display: isMobile ? 'block' : 'flex'}}>
                 <ImageWithFallback src={dish.pic_url} label={dish.en_name} width={300} height={250}/>
-                <div style={{ paddingLeft: 20}}>
+                <div style={{ paddingLeft: isMobile ? 0 : 20}}>
                     <DishText>
-                        {dish.label_id}. {dish.en_name} {dish.ch_name} {dish.is_spicy ? <GoFlame color="red"/>: null}
+                        {dish.label_id}. {dish.en_name} {dish.ch_name} 
+                        {isEmpty(dish.variant) && dish.is_spicy ? <GoFlame color="red"/>: null }
                     </DishText>
                     <PriceText>${dish.price}</PriceText>
                     <Typography>{dish.description}</Typography>
@@ -162,7 +173,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
             </div>  
         </DialogContent>
 
-        <DialogActions> 
+        <DialogActions sx={{ display: 'flex', flexDirection: 'column'}}> 
             <QuantityController
                 quantity={quantity}
                 handleIncrease={increaseQuantity}

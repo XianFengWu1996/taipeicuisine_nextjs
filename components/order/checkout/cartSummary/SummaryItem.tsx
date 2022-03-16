@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material"
 import { styled } from "@mui/system"
 import { isEmpty } from "lodash"
+import { GoFlame } from "react-icons/go"
 
 interface ISummaryItemProps {
     item: ICartItem
@@ -46,7 +47,7 @@ export const SummaryItem = ({ item } : ISummaryItemProps)  => {
         <NameText>{item.dish.label_id}. {item.dish.en_name} {item.dish.ch_name}</NameText>
         {
             !isEmpty(item.option) 
-                ? <OptionText>Option: {item.option.en_name} {item.option.ch_name}</OptionText> 
+                ? <OptionText>Option: {item.option.en_name} {item.option.ch_name} {item.option.spicy ? <GoFlame color="red"/>: null}</OptionText> 
                 : null
         }
 

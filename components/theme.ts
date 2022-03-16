@@ -41,7 +41,6 @@ export const muiCustomTheme = createTheme({
       [theme.breakpoints.down('md')]: {
         fontSize: '23px',
       },
-    
     }
   },
   
