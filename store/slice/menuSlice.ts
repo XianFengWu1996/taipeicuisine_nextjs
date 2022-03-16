@@ -63,6 +63,12 @@ export const menuSlice = createSlice({
           state.currentSelectedCategory.dishes.splice(index, 1, payload);
         }
       }
+    },
+    resetUponUnmount: (state) => {
+      state.currentSelectedMenu = state.menus[0];;
+      state.currentSelectedCategory = state.menus[0].category[0];
+      state.currentSelectedDish = {} as IDish;
+      state.currentSelectedTab = 0;
     }
   }
 })
@@ -74,7 +80,8 @@ export const {
     getCurrentDish,
     handleOnMenuChange,
     handleOnTabChange,
-    handleUpdateDish
+    handleUpdateDish,
+    resetUponUnmount
 } = menuSlice.actions
 
 export const menus = (state: MenuState) => state.menus;

@@ -13,6 +13,6 @@ export const convertMinuteToDate = (min: number) => {
     }
 }
 
-export const hasExpired = (timestamp: number | undefined) => {
-    return timestamp && timestamp <= Date.now()
+export const hasExpired = (timestamp: number) => {
+    return timestamp <= Date.now()
 }

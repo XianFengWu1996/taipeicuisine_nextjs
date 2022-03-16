@@ -1,42 +1,52 @@
 import axios from "axios";
-import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { useEffect, useState } from "react";
 import { MenuSelect } from "../../components/menu/menuSelect";
 import { MenuTab } from "../../components/menu/menuTab";
 import { PublicAppBar } from "../../components/order/appbar/appbar";
 import snackbar from "../../components/snackbar";
-import { getInitialMenuData } from "../../store/slice/menuSlice";
-import { useAppDispatch } from "../../store/store";
+import { getInitialMenuData, resetUponUnmount } from "../../store/slice/menuSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import MenuSkeleton from "./skeleton";
 
+import { hasExpired } from '../../utils/functions/time'
 
-interface IOrderPageProps {
-    menus: IMenu[],
-    expiration: number,
-    error?: string,
-}
-
-export default function OrderPage (props: IOrderPageProps){
+export default function OrderPage (){
+    const { expiration } = useAppSelector(state => state.menus)
     const dispatch = useAppDispatch();
 
     const [ loading, setLoading ] = useState(false);
 
-    useEffect(() => {
+    const fetchMenu = async () => {
+        try {
+            setLoading(true);
 
-        setLoading(true);
-
-        setTimeout(() => {
+            if(hasExpired(expiration)){
+                let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/store/menus');
+    
+                let menus: IMenu[] = [];
+                menus.push(response.data.special)
+                menus.push(response.data.fullday);
+                menus.push(response.data.lunch);
+                
+                dispatch(getInitialMenuData({ menus: menus, expiration: response.data.expiration }))
+            }
+        } catch (error) {
+            snackbar.error((error as Error).message ?? 'Failed to fetch menu');
+        } finally {
             setLoading(false);
-        }, 5000)
-        // if(props.error){
-        //     snackbar.error(props.error);
-        //     return;
-        // }
+        }
 
-        if(props.menus){
-            dispatch(getInitialMenuData({ menus: props.menus, expiration: props.expiration }))
+    }
+
+    useEffect(() => {
+        fetchMenu();
+
+        return () => {
+            dispatch(resetUponUnmount())
         }
     }, [])
+
+    
 
 
     return <div style={{ width: '100%', contain: 'paint'}}>
@@ -54,25 +64,6 @@ export default function OrderPage (props: IOrderPageProps){
     </div>
 }
 
-export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
-    try {
-
-        let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/store/menus');
-
-        let menus: IMenu[] = [];
-        menus.push(response.data.special)
-        menus.push(response.data.fullday);
-        menus.push(response.data.lunch);
-
-        return {
-            props: { menus, expiration: response.data.expiration }
-        }   
-
-    } catch (error) {
-        return {
-            props: {
-                error: 'Failed to get menu, please refresh the page'
-            }
-        }
-    }     
-}
+// export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
+   
+// }

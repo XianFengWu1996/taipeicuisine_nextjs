@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={true} persistor={persistor}>
           <ThemeProvider theme={muiCustomTheme}>
           <CssBaseline />
             <SnackbarProvider maxSnack={3}>
