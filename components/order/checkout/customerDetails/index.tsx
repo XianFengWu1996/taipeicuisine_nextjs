@@ -11,10 +11,22 @@ import { IncludeUtensils } from "./includeUtensils"
 import { phoneFormat } from "../../../../utils/functions/phone"
 import { CartSummary } from "../cartSummary"
 import { User } from "firebase/auth"
+import { styled } from "@mui/system"
 
 interface ICustomerDetailsProp {
     user: User | null
 }
+
+const CheckoutContainer = styled('div')(({ theme }) => ({
+    margin: '40px',
+
+    [theme.breakpoints.down('md')]: {
+        margin: '25px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '15px',
+    },
+}))
 
 export const CustomerDetails = ({ user } : ICustomerDetailsProp) => {
     const cartState = useAppSelector(state => state.cart)
@@ -22,7 +34,7 @@ export const CustomerDetails = ({ user } : ICustomerDetailsProp) => {
 
     const desktop = useMediaQuery('(min-width: 900px)');
 
-    return <div style={{ margin: '40px'}}>
+    return <CheckoutContainer>
 
         {
             user ? <PickupOrDelivery /> 
@@ -90,6 +102,6 @@ export const CustomerDetails = ({ user } : ICustomerDetailsProp) => {
                 >Place Order</Button> : <Skeleton variant="rectangular" width={'20%'} height={40}/>
             }
         </div>
-    </div>
+    </CheckoutContainer>
 }
 

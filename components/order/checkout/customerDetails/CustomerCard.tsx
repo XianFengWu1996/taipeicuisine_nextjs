@@ -19,7 +19,7 @@ export const CustomerCard = ({ title, icon,  content }: ICustomerCardProps) => {
 
     return <>
         <Typography variant="h4">{title}</Typography>
-        <Card sx={{ width: '90%'}}>
+        <Card>
             <CardContent style={{ display: 'flex'}}>
                 <Icon style={{ fontSize: '35px', marginRight: '30px', marginLeft: '10px', alignSelf: 'center'}}>
                     { icon }

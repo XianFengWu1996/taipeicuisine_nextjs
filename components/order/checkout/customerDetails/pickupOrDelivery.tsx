@@ -1,5 +1,4 @@
 import { Button, ButtonGroup } from "@mui/material"
-import { useState } from "react";
 import { deliveryToggle } from "../../../../store/slice/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 
@@ -11,7 +10,8 @@ export const PickupOrDelivery = () => {
         dispatch(deliveryToggle())
     }
 
-    return <ButtonGroup size="large">
+
+    return <ButtonGroup fullWidth size="large" >
         <Button 
             variant={cartState.is_delivery ? 'outlined' : 'contained'}
             onClick={toggleDelivery}

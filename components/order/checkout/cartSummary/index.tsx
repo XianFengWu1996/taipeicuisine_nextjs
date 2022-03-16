@@ -1,6 +1,5 @@
-import { Divider, List, Skeleton, Typography } from "@mui/material"
+import { Divider, List, Typography } from "@mui/material"
 import { styled } from "@mui/system"
-import { User } from "firebase/auth"
 import { isEmpty } from "lodash"
 import { useAppSelector } from "../../../../store/store"
 import { PriceDisplay } from "../cartSummary/priceDisplay"
@@ -21,6 +20,13 @@ const SpecialInstructionText = styled(List)(() => ({
     color: 'red'
 }))
 
+const SummaryContainer = styled('div')(({ theme }) => ({
+    marginTop: '30px',
+    [theme.breakpoints.down('md')]: {
+        marginTop: '20px',
+    },
+}))
+
 export const CartSummary = () => {
     const cartState = useAppSelector((state) => state.cart)
 
@@ -34,8 +40,8 @@ export const CartSummary = () => {
         
     }
 
-    return <>
-            <Typography variant="h4" sx={{ marginTop: 5}}>Cart Summary</Typography>
+    return <SummaryContainer>
+            <Typography variant="h4">Cart Summary</Typography>
             <ListContainer>
             {
                 cartState.cart.map((item) => {
@@ -62,5 +68,5 @@ export const CartSummary = () => {
                 }
                 <PriceDisplay title='Total' value={cartState.total} />
             </ListContainer>
-        </>
+        </SummaryContainer>
 }

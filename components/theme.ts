@@ -1,5 +1,8 @@
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
+import { breakpoints } from '@mui/system';
+
+const theme = createTheme()
 
 export const muiCustomTheme = createTheme({
   palette: {
@@ -34,7 +37,11 @@ export const muiCustomTheme = createTheme({
     h4: {
       fontSize: '30px',
       fontWeight: 700,
-      margin: '20px 0 5px 0'
+      margin: '20px 0 5px 0',
+      [theme.breakpoints.down('md')]: {
+        fontSize: '23px',
+      },
+    
     }
   },
   

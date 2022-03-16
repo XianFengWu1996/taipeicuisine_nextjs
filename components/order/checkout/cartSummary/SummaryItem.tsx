@@ -6,10 +6,13 @@ interface ISummaryItemProps {
     item: ICartItem
 }
 
-const NameText = styled(Typography)(() => ({
+const NameText = styled(Typography)(({ theme }) => ({
     fontSize: '13.5px',
     fontWeight: 500,
-    wordSpacing: 1
+    wordSpacing: 1,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '11.5px',
+    }
 }))
 
 const OptionText = styled(Typography)(() => ({
@@ -23,15 +26,23 @@ const CommentText = styled(Typography)(() => ({
     fontWeight: 600,
     fontStyle: 'italic',
     color: 'red'
-})) 
+}))
+
+const CountPriceText = styled(Typography)(({ theme }) => ({
+    fontSize: '15px',
+    fontWeight:600,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '11.5px',
+    }
+}))
 
 
 export const SummaryItem = ({ item } : ISummaryItemProps)  => {
     return  <div style={{ display: 'flex', marginBottom: '3px'}}>
-    <div style={{ width: '10%'}}>
-        <Typography variant="subtitle2">x {item.quantity}</Typography>
+    <div style={{ flex: 1}}>
+        <CountPriceText>x {item.quantity}</CountPriceText>
     </div>
-    <div style={{ width: '80%'}}>
+    <div style={{ flex: 6, marginRight: '5px'}}>
         <NameText>{item.dish.label_id}. {item.dish.en_name} {item.dish.ch_name}</NameText>
         {
             !isEmpty(item.option) 
@@ -45,8 +56,8 @@ export const SummaryItem = ({ item } : ISummaryItemProps)  => {
                 : null
         }
     </div>
-    <div style={{ width: '10%', display: 'flex', justifyContent: 'end'}}>
-        <Typography variant="subtitle2">${item.total.toFixed(2)}</Typography>
+    <div style={{ flex: 1, display: 'flex', justifyContent: 'end'}}>
+        <CountPriceText>${item.total.toFixed(2)}</CountPriceText>
     </div>
 
 </div>

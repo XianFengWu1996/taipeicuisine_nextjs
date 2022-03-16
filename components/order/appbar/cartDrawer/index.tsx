@@ -1,8 +1,10 @@
-import { Button, SwipeableDrawer, Typography } from "@mui/material"
-import { Box } from "@mui/system"
+import { Button, IconButton, SwipeableDrawer, Typography } from "@mui/material"
+import { Box, styled } from "@mui/system"
 import { useAppSelector } from "../../../../store/store"
 import { CartDrawerActions } from "./cartDrawerActions"
 import { CartDrawerList } from "./cartDrawerList"
+import { IoMdCloseCircleOutline } from 'react-icons/io'
+import { AiOutlineArrowRight, AiOutlineClose, AiOutlineCloseSquare } from "react-icons/ai"
 
 interface ICartDrawerProps {
     open:boolean, 
@@ -11,19 +13,30 @@ interface ICartDrawerProps {
 }
 
 
+
 export const CartDrawer = (props: ICartDrawerProps) => {
     const cartState = useAppSelector(state => state.cart)
+
+    const CartDrawerContainer = styled(Box)(({ theme }) => ({
+        width: '450px', 
+        height: cartState.cart.length < 4 ? '100%':'auto',
+        backgroundColor: '#ecf2ff',
+        [theme.breakpoints.down('sm')] : {
+            width: '100vw',
+        }
+    }))
+
     return <SwipeableDrawer
               anchor='right'
               open={props.open}
               onClose={props.handleClose}
               onOpen={props.handleOpen}
         >
-            <Box sx={{ 
-                width: '450px', 
-                height: cartState.cart.length < 4 ? '100%':'auto',
-                backgroundColor: '#ecf2ff',
-            }}>
+            <CartDrawerContainer>
+                <IconButton sx={{ position: 'absolute', top: 30, left: 10, }} onClick={props.handleClose}>
+                    <AiOutlineClose  />
+                </IconButton>
+                  
                 <Typography 
                     sx={{
                         textAlign: 'center',
@@ -36,7 +49,7 @@ export const CartDrawer = (props: ICartDrawerProps) => {
                 <CartDrawerList />
 
                 <CartDrawerActions />
-            </Box>
+            </CartDrawerContainer>
         </SwipeableDrawer>
 }
 

@@ -1,5 +1,5 @@
 import { Grid, Skeleton, useMediaQuery } from "@mui/material";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User } from "firebase/auth";
 import Router from "next/router";
 import {  useEffect, useState } from "react";
 import { PublicAppBar } from "../../components/order/appbar/appbar";
@@ -7,7 +7,7 @@ import { CartSummary } from "../../components/order/checkout/cartSummary";
 import { CustomerDetails } from "../../components/order/checkout/customerDetails";
 import { setLoginDialog } from "../../store/slice/customerSlice";
 import { useAppDispatch } from "../../store/store";
-import {  app, fbAuth } from "../../utils/functions/auth";
+import { fbAuth } from "../../utils/functions/auth";
 
 export default function CheckoutPage() {
     const desktop = useMediaQuery('(min-width: 900px)');
@@ -33,8 +33,8 @@ export default function CheckoutPage() {
 
     return <>
         <PublicAppBar />
-        <Grid container >
-                <Grid item lg={7} md={8} sm={12}>
+        <Grid container spacing={8}>
+                <Grid item lg={7} md={8} sm={12} xs={12}>
                     <CustomerDetails user={user} /> 
                 </Grid> 
                 
