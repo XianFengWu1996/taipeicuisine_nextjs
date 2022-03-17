@@ -3,6 +3,7 @@ import { getAuth, signInWithEmailAndPassword, signOut} from 'firebase/auth'
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import snackbar from '../../components/snackbar';
+import { handleFirebaseAuthError } from '../errors/firebaseError';
 
 export const app = initializeApp({
     apiKey: process.env.NEXT_PUBLIC_FB_APIKEY,
@@ -26,7 +27,6 @@ interface IHandleLogin {
 }
 
 export const checkAndRedirect = (query: ParsedUrlQuery) => {
-  console.log(query)
   if(query.redirect){
     switch(query.redirect){
       case 'checkout':
@@ -43,12 +43,16 @@ export const checkAndRedirect = (query: ParsedUrlQuery) => {
 
 export const handleEmailLogin = async ({ email, password, handleSuccess, handleFail,query}: IHandleLogin) => {
     try{
-      await signInWithEmailAndPassword(fbAuth, email, password);
-      handleSuccess();
-      checkAndRedirect(query);
+      await signInWithEmailAndPassword(fbAuth, email, password); // try to sign in
+      handleSuccess(); // handle if the request is successful
+      checkAndRedirect(query); // check if the page needs to be redirected
     } catch (e) {
       handleFail();
-      snackbar.error((e as FirebaseError).message ?? 'Fail to login')
+      if((e as Error).name === 'FirebaseError'){
+        handleFirebaseAuthError(e as Error);
+        return;
+      }
+      snackbar.error((e as Error).message ?? 'Fail to login')
     }
 }
 
