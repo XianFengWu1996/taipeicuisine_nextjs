@@ -49,7 +49,7 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
         setLoading(true);
         if(!loading){
             try {
-                await axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/status', {
+                await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/store/status`, {
                     server_is_on: !server_is_on
                 })
                 dispatch(toggleServer(!server_is_on))
@@ -155,7 +155,7 @@ export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePro
 
         let cookies: string | undefined = ctx.req.headers.cookie;
 
-        let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/admin/store', {
+        let response = await axios.get(`${process.env.NEXT_PUBLIC_CF_URL}/admin/store`, {
             headers: {  Cookie: cookies! }
         })     
 

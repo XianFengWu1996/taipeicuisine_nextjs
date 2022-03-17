@@ -51,7 +51,7 @@ export default function HourEditDialog({ open, handleClose }:dialogProps) {
 
     if(!loading){
       try {
-        await axios.post('http://localhost:5001/foodorder-43af7/us-central1/store/hours', { hours })
+        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/store/hours`, { hours })
         snackbar.success('Hours has been updated')
         dispatch(updateStoreHour(hours));
         handleClose();

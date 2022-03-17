@@ -83,7 +83,7 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
                     fd.append('files', file as File);
     
                     // store the image to the storage and form a url
-                    let imageResult = await axios.post(`http://localhost:5001/foodorder-43af7/us-central1/store/menus/image/upload`,
+                    let imageResult = await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/store/menus/image/upload`,
                         fd, 
                         { headers: {
                             'Content-Type': 'multipart/form-data'
@@ -102,7 +102,7 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
                 }
     
                 await axios.patch(
-                    `http://localhost:5001/foodorder-43af7/us-central1/store/menus/${dish.id}`,
+                    `${process.env.NEXT_PUBLIC_CF_URL}/store/menus/${dish.id}`,
                     {difference},
                     {
                         headers: { 'Content-Type': 'application/json'},

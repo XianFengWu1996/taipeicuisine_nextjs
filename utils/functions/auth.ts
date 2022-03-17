@@ -57,7 +57,7 @@ export const handleEmailLogin = async ({ email, password, handleSuccess, handleF
 }
 
 export const handleLogout = () => {
-  signOut(fbAuth);
+  signOut(fbAuth); // logout
 }
 
 export const handleSignUp = () => {

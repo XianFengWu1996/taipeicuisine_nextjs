@@ -55,7 +55,7 @@ export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePro
             }
         }
 
-        let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/store/menus');
+        let response = await axios.get(`${process.env.NEXT_PUBLIC_CF_URL}/store/menus`);
         if(response.status !== 200){
             throw new Error('Failed to get store data')
         }

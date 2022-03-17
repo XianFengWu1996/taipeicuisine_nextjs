@@ -2,6 +2,7 @@ declare global {
     namespace NodeJS {
       interface ProcessEnv {
         NEXT_PUBLIC_DEFAULT_TIMER: number,
+        NEXT_PUBLIC_CF_URL: string,
 
         // key for Firebase
         NEXT_PUBLIC_FB_APIKEY: string,
@@ -12,6 +13,7 @@ declare global {
         NEXT_PUBLIC_FB_MESSAGING_SENDER_ID: string,
         NEXT_PUBLIC_FB_APP_ID: string,
         NEXT_PUBLIC_FB_MEASUREMENT_ID: string,
+
       }
     }
 }

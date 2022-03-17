@@ -35,7 +35,7 @@ export default function Login () {
 
                 let token = await user.user.getIdToken();
 
-                await axios.post("http://localhost:5001/foodorder-43af7/us-central1/admin/login",{},{
+                await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/admin/login`,{},{
                     headers: { 'authorization': `Bearer ${token}`}
                 })
 

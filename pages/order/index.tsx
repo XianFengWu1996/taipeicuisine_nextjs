@@ -21,7 +21,7 @@ export default function OrderPage (){
             setLoading(true);
 
             if(hasExpired(expiration)){
-                let response = await axios.get('http://localhost:5001/foodorder-43af7/us-central1/store/menus');
+                let response = await axios.get(`${process.env.NEXT_PUBLIC_CF_URL}/store/menus`);
     
                 let menus: IMenu[] = [];
                 menus.push(response.data.special)
