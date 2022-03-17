@@ -1,13 +1,15 @@
-import { Button, Card, CardActions, CardContent, Collapse, Grid, Icon, IconButton, TextField } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Collapse, Dialog, DialogContent, Grid, Icon, IconButton, TextField, TextFieldProps, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { v4} from 'uuid'
 import { BiTrash } from "react-icons/bi";
 import { phoneFormat } from "../../../../utils/functions/phone";
 import { ChangeEvent, useEffect, useState } from "react";
-import { AiFillPlusCircle, AiOutlineCheckCircle, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineCheckCircle, AiOutlinePlus } from "react-icons/ai";
 import { removePhoneNumber, setDefaultPhoneNumber, updateCustomerName } from "../../../../store/slice/customerSlice";
 import snackbar from "../../../snackbar";
+import { SmsDialog } from "../../../dialogs/smsDialog";
+
 
 interface ICustomerCollapseProps {
     expand: boolean,
@@ -19,6 +21,8 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
     const { name, phone, phone_list } = useAppSelector(state => state.customer);
     const [ customer_name, setName ] = useState('');
 
+    const [smsOpen, setSmsOpen] = useState(false);
+  
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -51,7 +55,6 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
         props.handleCloseCard();
     }
 
-
     const renderPhoneList = () => {
         let list = Array.from(new Set(phone_list));
         return  list.map((phone_num: string) => {
@@ -73,7 +76,7 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                '& > :not(style)': {my: 1.5, width: '90%'},
+                '& > :not(style)': {my: 1.5, width: '95%'},
                 paddingBottom: '40px'
             }}
             noValidate
@@ -86,20 +89,22 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
                     fullWidth
                     value={customer_name}
                     onChange={handleNameOnChange}
+                    sx={{ flex: 8}}
                 />
 
                 <Button 
                     variant="outlined" 
-                    sx={{ paddingX: 5, marginLeft: '50px' }}
                     onClick={handleNameOnSave}
+                    sx={{flex: 1, marginLeft: '5%'}}
                 >Save</Button>
             </div>
     
 
         <Grid container spacing={2}>
             { renderPhoneList() }
-            <Grid item  lg={6} sm={12}>
+            <Grid item  md={6} sm={12} xs={12}>
                 <Card 
+                    onClick={() => setSmsOpen(true)}
                     sx={{ 
                         padding: 1, 
                         height: '100%', 
@@ -113,9 +118,9 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
                 </Card>
             </Grid>
         </Grid>
-
-        
         </Box>
+
+        <SmsDialog open={smsOpen} handleClose={() => setSmsOpen(false)}/>
     </Collapse>
 }
 
@@ -128,8 +133,8 @@ interface IPhoneCardProps {
 }
 
 const PhoneCard = ({ phone_num, isSelected, handlePhoneRemove, handlePhoneSelect } : IPhoneCardProps) => {
-    return <Grid item lg={6} sm={12} >
-        <Card sx={{ padding: 1}}>
+    return <Grid item sm={6} xs={12}>
+        <Card sx={{ padding: '1%'}}>
         <CardContent>{phoneFormat(phone_num)}</CardContent>
             <CardActions>
                 <Button disabled={isSelected} onClick={() => handlePhoneSelect(phone_num)}>Select</Button>
@@ -153,24 +158,3 @@ const PhoneCard = ({ phone_num, isSelected, handlePhoneRemove, handlePhoneSelect
         </Card>
         </Grid>
 }
-
-
-  {/* <InputMask
-        mask="(999) 999-9999"
-        value={customer_phone}
-        onChange={(e) => {
-            let phone = e.target.value.replace(/[^A-Z0-9]/ig, "");
-            setPhone(phone);
-        }}           
-        >
-        {(inputProps: TextFieldProps)=>
-        <TextField 
-            id="customer_phone" 
-            label="Phone"
-            variant="outlined"
-            fullWidth 
-            type={'tel'}
-            {...inputProps}
-        />
-        }
-    </InputMask>             */}
