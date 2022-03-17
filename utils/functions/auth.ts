@@ -1,20 +1,18 @@
 import { FirebaseError, initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, signOut} from 'firebase/auth'
-import { isEmpty } from 'lodash';
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import snackbar from '../../components/snackbar';
 
-// place all varaibles into environment variables
 export const app = initializeApp({
-    apiKey: "AIzaSyCzR4MZL_NzPEkk6yRPma7Mj4TA2CTvJyY",
-    authDomain: "foodorder-43af7.firebaseapp.com",
-    databaseURL: "https://foodorder-43af7.firebaseio.com",
-    projectId: "foodorder-43af7",
-    storageBucket: "foodorder-43af7.appspot.com",
-    messagingSenderId: "369761240989",
-    appId: "1:369761240989:web:ddda297893ae41b16fd174",
-    measurementId: "G-R59065JET5"
+    apiKey: process.env.NEXT_PUBLIC_FB_APIKEY,
+    authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
+    databaseURL: process.env.NEXT_PUBLIC_FB_DATABASE_URL,
+    projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FB_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FB_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FB_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FB_MEASUREMENT_ID,
   })
   
 export const fbAuth = getAuth(app);
