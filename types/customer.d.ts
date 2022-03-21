@@ -17,6 +17,8 @@ interface IAddress {
     city: string,
     state: string,
     zipcode: string,
+    business: string,
+    apt: string,
     delivery_fee: number,
 }
 

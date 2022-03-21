@@ -3,8 +3,8 @@ import snackbar from "../../components/snackbar"
 import validator from "validator"
 import axios from "axios"
 import { handleAxiosError } from "../errors/handleAxiosError"
-import { getAuth } from "firebase/auth"
 import { fbAuth } from "./auth"
+import Cookies from "js-cookie"
 
 export const phoneFormat = (phone: string) => {
     return `(${phone.substring(0, 3)}) ${phone.substring(3, 6)}-${phone.substring(6)}`
@@ -43,10 +43,27 @@ export const sentCode = async (phone: string, phone_list: string[], handleStartL
     }
 }
 
-// export const handleCodeVerified = async () => {
-//     try {
-        
-//     } catch (error) {
-        
-//     }
-// }
+export const handleCodeVerify = async (value: string) => {
+    if(!Cookies.get('c_id')){
+        return snackbar.warning('The code has expired, please request another code')
+    }
+
+    try {
+        let fb_token = await fbAuth.currentUser?.getIdToken();
+
+        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/message/verify`, {
+            code: value, 
+        }, {
+            headers: {
+                'Authorization': `Bearer ${fb_token}`
+            }
+        });
+
+        snackbar.success('Phone number has been verified');
+    } catch (error) {
+        if(axios.isAxiosError(error)){
+           return handleAxiosError(error);
+        }
+        snackbar.error('Something unexpected happen, try refresh the page')
+    }
+}

@@ -1,3 +1,7 @@
+import axios from "axios";
+import snackbar from "../../components/snackbar";
+import { handleFirebaseAuthError } from "./firebaseError";
+import { handleAxiosError } from "./handleAxiosError";
 
 // CUSTOM ERROR FOR NOT AUTHORIZE 
 export class NotAuthorizeError extends Error{
@@ -12,4 +16,17 @@ export class NotAuthorizeError extends Error{
 // CHECK IF THE ERROR IS AN UNAUTHORIZE ERROR
 export const isNotAuthError = (error: Error) => {
     return error.name === 'NotAuthorizeError'
+}
+
+export const handleCatchError = (err: Error) => {
+    if((err as Error).name === 'FirebaseError'){
+        handleFirebaseAuthError(err);
+        return;
+      }
+
+      if(axios.isAxiosError(err)){
+        handleAxiosError(err);
+        return;
+      }
+      snackbar.error(err.message ?? 'Fail to login')
 }
