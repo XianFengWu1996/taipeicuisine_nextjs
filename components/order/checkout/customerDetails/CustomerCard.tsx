@@ -1,6 +1,8 @@
 import { Button, Card, CardActions, CardContent,Icon, IconButton, Typography } from "@mui/material"
 import { ReactElement, useState } from "react"
 import {HiOutlineChevronUp} from 'react-icons/hi'
+import { setCustomerCollapse } from "../../../../store/slice/customerSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { CustomerCollapse } from "./customerCollapse";
 
 
@@ -11,10 +13,11 @@ interface ICustomerCardProps {
 }
 
 export const CustomerCard = ({ title, icon,  content }: ICustomerCardProps) => {
-    const [ expand, setExpand ] = useState(false);
+    const { customerCollapse } = useAppSelector(state => state.customer)
+    const dispatch = useAppDispatch();
 
-    const handleToggleExpand = () => {
-        setExpand(!expand);
+    const handleCollapseToogle = () => {
+        dispatch(setCustomerCollapse(!customerCollapse));
     }
 
     return <>
@@ -33,15 +36,15 @@ export const CustomerCard = ({ title, icon,  content }: ICustomerCardProps) => {
 
             <CardActions sx={{ display: 'flex', justifyContent: 'end', paddingX: '30px'}}>
                 {
-                    expand 
-                        ? <IconButton onClick={handleToggleExpand} color="primary">
+                    customerCollapse 
+                        ? <IconButton onClick={handleCollapseToogle} color="primary">
                             <HiOutlineChevronUp /> 
                         </IconButton> 
-                        : <Button onClick={handleToggleExpand}>Edit</Button>
+                        : <Button onClick={handleCollapseToogle}>Edit</Button>
                 }
             </CardActions>
 
-            <CustomerCollapse expand={expand} handleCloseCard={handleToggleExpand}/>
+            <CustomerCollapse />
         </Card>
         
       

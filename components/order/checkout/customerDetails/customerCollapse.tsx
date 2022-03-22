@@ -3,22 +3,17 @@ import { Box } from "@mui/system";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { v4} from 'uuid'
 import { BiTrash } from "react-icons/bi";
-import { phoneFormat, selectDefaultPhone } from "../../../../utils/functions/phone";
+import { phoneFormat, removePhoneNum, selectDefaultPhone, updateName } from "../../../../utils/functions/phone";
 import { ChangeEvent, useEffect, useState } from "react";
 import { AiOutlineCheckCircle, AiOutlinePlus } from "react-icons/ai";
-import { removePhoneNumber, setDefaultPhoneNumber, updateCustomerName } from "../../../../store/slice/customerSlice";
 import snackbar from "../../../snackbar";
 import { SmsDialog } from "../../../dialogs/smsDialog";
+import { setCustomerCollapse, updateCustomerName } from "../../../../store/slice/customerSlice";
 
 
-interface ICustomerCollapseProps {
-    expand: boolean,
-    handleCloseCard: () => void 
-}
+export const CustomerCollapse = () => {
 
-export const CustomerCollapse = (props: ICustomerCollapseProps) => {
-
-    const { name, phone, phone_list } = useAppSelector(state => state.customer);
+    const { name, phone, phone_list, customerCollapse } = useAppSelector(state => state.customer);
     const [ customer_name, setName ] = useState('');
 
     const [smsOpen, setSmsOpen] = useState(false);
@@ -29,35 +24,17 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
         setName(name);
     }, [])
 
-    const handlePhoneSelect = (phone_num: string) => {
-        selectDefaultPhone(phone_num, props.handleCloseCard);
-    }
-
-    const handlePhoneRemove = (phone_num: string) => {
-        dispatch(removePhoneNumber(phone_num))
-        snackbar.warning('Phone removed')
-    }
-
     const handleNameOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setName(e.target.value);
     }
 
-    const handleNameOnSave = () => {
-        // todo update the backend
-        if(customer_name !== name){
-            dispatch(updateCustomerName(customer_name));
-            snackbar.success('Name updated');
-        }
-
-        props.handleCloseCard();
-    }
-
     const handleSmsComplete = () => {
         setSmsOpen(false);
-        props.handleCloseCard();
+        dispatch(setCustomerCollapse(false));
         snackbar.success('New phone number has been added');
     }
 
+    // render and return the the phone list 
     const renderPhoneList = () => {
         let list = Array.from(new Set(phone_list));
         return  list.map((phone_num: string) => {
@@ -65,13 +42,13 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
                 key={v4()} 
                 phone_num={phone_num}
                 isSelected={phone_num === phone}
-                handlePhoneRemove={handlePhoneRemove}
-                handlePhoneSelect={handlePhoneSelect}
+                handlePhoneRemove={removePhoneNum}
+                handlePhoneSelect={selectDefaultPhone}
             />
         })
     }
 
-    return <Collapse in={props.expand} timeout="auto" unmountOnExit>
+    return <Collapse in={customerCollapse} timeout="auto" unmountOnExit>
         <Box
             component="form"
             sx={{
@@ -97,7 +74,7 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
 
                 <Button 
                     variant="outlined" 
-                    onClick={handleNameOnSave}
+                    onClick={() => updateName(customer_name)}
                     sx={{flex: 1, marginLeft: '5%'}}
                 >Save</Button>
             </div>

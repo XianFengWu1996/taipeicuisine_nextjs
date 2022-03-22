@@ -5,7 +5,7 @@ import axios from "axios"
 import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth } from "./auth"
 import Cookies from "js-cookie"
-import { addNewPhone, setDefaultPhoneNumber } from "../../store/slice/customerSlice"
+import { addNewPhone, removePhoneNumber, setCustomerCollapse, setDefaultPhoneNumber, updateCustomerName } from "../../store/slice/customerSlice"
 import { store } from '../../store/store'
 import { handleCatchError } from "../errors/custom"
 
@@ -36,9 +36,7 @@ export const sentCode = async ({ phone, phone_list, handleStartLoading} : ISentC
         const fb_token = await fbAuth.currentUser?.getIdToken();
             
         snackbar.info('The code will be sent momentarily')
-        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/message/send`, {
-            phone_number: phone
-        }, {
+        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/message/send`, {phone}, {
             headers: {
                 'Authorization': `Bearer ${fb_token}`
             }
@@ -88,19 +86,58 @@ export const handleCodeVerify = async ({ value, handleSmsComplete}: IHandleCodeV
     }
 }
 
-export const selectDefaultPhone = async (phone: string, handleComplete: () => void) => {
+export const selectDefaultPhone = async (phone: string) => {
     try {
-        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/phone`, {
-            phone,
-        }, {
+        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/phone`, { phone }, {
             headers: {
                 'authorization': `Bearer ${await fbAuth.currentUser?.getIdToken()}`
             }
         })
-        handleComplete();
         store.dispatch(setDefaultPhoneNumber(phone));
+        store.dispatch(setCustomerCollapse(false));
+
         snackbar.success('Phone has been select as default')
     } catch (error) {
         handleCatchError(error as Error, 'Unable to change phone number at the moment');
+    }
+}
+
+export const removePhoneNum =  async (phone: string) => {
+    try {
+        await axios.delete(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/phone`, {
+            data: { phone }, 
+            headers: {
+                'authorization': `Bearer ${await fbAuth.currentUser?.getIdToken()}`
+            }
+        })
+
+        store.dispatch(removePhoneNumber(phone))
+        snackbar.warning('Phone removed')
+    } catch (error) {
+        handleCatchError(error as Error, 'Failed to remove phone number');
+    }
+}
+
+export const updateName = async(name: string) => {
+    const { customer } = store.getState();
+
+    // if the no change was made, close the collapse card
+    if(customer.name === name){
+       return store.dispatch(setCustomerCollapse(false));
+    }
+
+    try {
+        await axios.patch(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/name`, { name }, {
+            headers: {
+                'Authorization': `Bearer ${await fbAuth.currentUser?.getIdToken()}` 
+            }
+        })
+
+        store.dispatch(updateCustomerName(name));
+        snackbar.success('Name has been updated');
+        store.dispatch(setCustomerCollapse(false));
+
+    } catch (error) {
+        handleCatchError(error as Error, 'Failed to update name');
     }
 }

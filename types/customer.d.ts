@@ -3,12 +3,10 @@ interface ICustomer {
     phone: string,
     phone_list: string[],
     address: IAddress,
-    billings: IBillings,
     reward: {
         points: number,
         transactions: IRewardTransaction[]
     },
-    loginDialogOpen: boolean,
 }
 
 interface IAddress {
@@ -22,27 +20,24 @@ interface IAddress {
     delivery_fee: number,
 }
 
-interface IBillings {
-    customer_id: string,
-    cards: ICard[]
-}
+// interface IBillings {
 
-interface ICard {
-    id: string, 
-    card_type: string,
-    card_brand: string,
-    cardholder_name: string,
-    exp_month: number,
-    exp_year: number,
-    last_4: string,
-    billing_address: {
-        address: string,
-        city: string,
-        state: string,
-        postal_code: string,
-        country: string,
-    }
-}
+// interface ICard {
+//     id: string, 
+//     card_type: string,
+//     card_brand: string,
+//     cardholder_name: string,
+//     exp_month: number,
+//     exp_year: number,
+//     last_4: string,
+//     billing_address: {
+//         address: string,
+//         city: string,
+//         state: string,
+//         postal_code: string,
+//         country: string,
+//     }
+// }
 
 interface IRewardTransaction {
     type: string,
