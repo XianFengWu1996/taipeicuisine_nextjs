@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { signOut } from "firebase/auth";
 import Router from "next/router";
-import { fbAuth } from "../../pages/_app";
 import snackbar from "../../components/snackbar";
 import { v4 } from 'uuid'
+import { fbAuth } from "./auth";
 
 
 export const handleAdminTryCatchError = (error: unknown, genericMsg?: string) => {

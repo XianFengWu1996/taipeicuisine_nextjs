@@ -5,8 +5,9 @@ import axios from "axios"
 import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth } from "./auth"
 import Cookies from "js-cookie"
-import { addNewPhone } from "../../store/slice/customerSlice"
+import { addNewPhone, setDefaultPhoneNumber } from "../../store/slice/customerSlice"
 import { store } from '../../store/store'
+import { handleCatchError } from "../errors/custom"
 
 export const phoneFormat = (phone: string) => {
     return `(${phone.substring(0, 3)}) ${phone.substring(3, 6)}-${phone.substring(6)}`
@@ -84,5 +85,22 @@ export const handleCodeVerify = async ({ value, handleSmsComplete}: IHandleCodeV
            return handleAxiosError(error);
         }
         snackbar.error('Something unexpected happen, try refresh the page')
+    }
+}
+
+export const selectDefaultPhone = async (phone: string, handleComplete: () => void) => {
+    try {
+        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/phone`, {
+            phone,
+        }, {
+            headers: {
+                'authorization': `Bearer ${await fbAuth.currentUser?.getIdToken()}`
+            }
+        })
+        handleComplete();
+        store.dispatch(setDefaultPhoneNumber(phone));
+        snackbar.success('Phone has been select as default')
+    } catch (error) {
+        handleCatchError(error as Error, 'Unable to change phone number at the moment');
     }
 }

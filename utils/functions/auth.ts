@@ -1,12 +1,9 @@
 import axios from 'axios';
-import { FirebaseError, initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, signOut} from 'firebase/auth'
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import snackbar from '../../components/snackbar';
 import { handleCatchError } from '../errors/custom';
-import { handleFirebaseAuthError } from '../errors/firebaseError';
-import { handleAxiosError } from '../errors/handleAxiosError';
 
 export const app = initializeApp({
     apiKey: process.env.NEXT_PUBLIC_FB_APIKEY,
@@ -57,7 +54,7 @@ export const handleEmailLogin = async ({ email, password, handleSuccess, handleF
       checkAndRedirect(query); // check if the page needs to be redirected
     } catch (e) {
       handleFail();
-      handleCatchError(e as Error);
+      handleCatchError(e as Error, 'Fail to login');
     }
 }
 

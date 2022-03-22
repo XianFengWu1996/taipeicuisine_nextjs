@@ -18,7 +18,7 @@ export const isNotAuthError = (error: Error) => {
     return error.name === 'NotAuthorizeError'
 }
 
-export const handleCatchError = (err: Error) => {
+export const handleCatchError = (err: Error, msg: string) => {
     if((err as Error).name === 'FirebaseError'){
         handleFirebaseAuthError(err);
         return;
@@ -28,5 +28,6 @@ export const handleCatchError = (err: Error) => {
         handleAxiosError(err);
         return;
       }
-      snackbar.error(err.message ?? 'Fail to login')
+
+      snackbar.error(err.message ?? msg)
 }

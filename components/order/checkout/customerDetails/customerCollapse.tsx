@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { v4} from 'uuid'
 import { BiTrash } from "react-icons/bi";
-import { phoneFormat } from "../../../../utils/functions/phone";
+import { phoneFormat, selectDefaultPhone } from "../../../../utils/functions/phone";
 import { ChangeEvent, useEffect, useState } from "react";
 import { AiOutlineCheckCircle, AiOutlinePlus } from "react-icons/ai";
 import { removePhoneNumber, setDefaultPhoneNumber, updateCustomerName } from "../../../../store/slice/customerSlice";
@@ -30,10 +30,7 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
     }, [])
 
     const handlePhoneSelect = (phone_num: string) => {
-        // todo update the backend
-        dispatch(setDefaultPhoneNumber(phone_num));
-        props.handleCloseCard();
-        snackbar.success('Phone has been select as default')
+        selectDefaultPhone(phone_num, props.handleCloseCard);
     }
 
     const handlePhoneRemove = (phone_num: string) => {
