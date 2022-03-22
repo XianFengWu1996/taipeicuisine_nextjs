@@ -55,6 +55,12 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
         props.handleCloseCard();
     }
 
+    const handleSmsComplete = () => {
+        setSmsOpen(false);
+        props.handleCloseCard();
+        snackbar.success('New phone number has been added');
+    }
+
     const renderPhoneList = () => {
         let list = Array.from(new Set(phone_list));
         return  list.map((phone_num: string) => {
@@ -120,7 +126,10 @@ export const CustomerCollapse = (props: ICustomerCollapseProps) => {
         </Grid>
         </Box>
 
-        <SmsDialog open={smsOpen} handleClose={() => setSmsOpen(false)}/>
+        <SmsDialog 
+            open={smsOpen} 
+            handleSmsComplete={handleSmsComplete}
+            handleClose={() => setSmsOpen(false)}/>
     </Collapse>
 }
 

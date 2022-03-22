@@ -13,6 +13,8 @@ const initialState: ICustomer = {
         state: '',
         zipcode: '',
         delivery_fee: 0,
+        business: '',
+        apt: '',
     }, 
     billings: {
         customer_id: '',
@@ -59,6 +61,10 @@ export const customerSlice = createSlice({
     setLoginDialog: (state, {payload}:PayloadAction<boolean>) => {
       state.loginDialogOpen = payload;
     },
+    addNewPhone: (state, { payload } : PayloadAction<{phone: string, phone_list: string[]}>) => {
+      state.phone = payload.phone
+      state.phone_list = payload.phone_list
+    },
   }
 })
 
@@ -68,6 +74,7 @@ export const {
   setDefaultPhoneNumber,
   removePhoneNumber,
   updateCustomerName,
-  setLoginDialog
+  setLoginDialog,
+  addNewPhone,
 } = customerSlice.actions
 

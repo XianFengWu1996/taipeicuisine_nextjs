@@ -2,16 +2,7 @@ import { Button, Dialog, DialogContent, TextField, Typography } from "@mui/mater
 import { ChangeEvent, useEffect, useState } from "react";
 import ReactCodeInput from 'react-verification-code-input';
 import { useAppSelector } from "../../store/store";
-
 import { sentCode, handleCodeVerify} from "../../utils/functions/phone";
-
-
-interface ISmsDialogProps {
-    open: boolean,
-    handleClose: () => void,
-}
-
-
 // logic (todo)
 
 // check the phone number 
@@ -20,7 +11,14 @@ interface ISmsDialogProps {
 // enable/disable the code input field base on the cookie
 // also, once the button is click, toggle to a button which sole job is to display the timer
 
-export const SmsDialog = ({ open, handleClose } : ISmsDialogProps) => {
+
+interface ISmsDialogProps {
+    open: boolean,
+    handleClose: () => void,
+    handleSmsComplete: () =>  void
+}
+
+export const SmsDialog = ({ open, handleClose, handleSmsComplete } : ISmsDialogProps) => {
     const [smsPhone, setSmsPhone] = useState('');
 
     const handlePhoneOnChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -58,7 +56,9 @@ export const SmsDialog = ({ open, handleClose } : ISmsDialogProps) => {
             </div>
 
             <Typography>Enter Verification Code</Typography>
-            <ReactCodeInput  onComplete={handleCodeVerify} />   
+            <ReactCodeInput  onComplete={(value) => {
+                handleCodeVerify({value, handleSmsComplete})
+            }} />   
         </DialogContent>
     </Dialog>
 }
@@ -93,7 +93,11 @@ export const SmsVerificationButton = ({phone} : {phone: string}) => {
                     sx={{ flex: 3, marginLeft: "5%"}} 
                     variant="outlined"
                     onClick={() => {
-                        sentCode(phone, phone_list, () => {setSent(true)})
+                        sentCode({
+                            phone: phone,
+                            phone_list: phone_list,
+                            handleStartLoading: () => setSent(true),
+                        })
                     }}
                 >Send</Button> 
                 : <Button

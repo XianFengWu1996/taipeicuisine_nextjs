@@ -5,12 +5,20 @@ import axios from "axios"
 import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth } from "./auth"
 import Cookies from "js-cookie"
+import { addNewPhone } from "../../store/slice/customerSlice"
+import { store } from '../../store/store'
 
 export const phoneFormat = (phone: string) => {
     return `(${phone.substring(0, 3)}) ${phone.substring(3, 6)}-${phone.substring(6)}`
 }
 
-export const sentCode = async (phone: string, phone_list: string[], handleStartLoading: () => void) => {
+interface ISentCode {
+    phone: string,
+    phone_list: string[],
+    handleStartLoading: () => void
+}
+
+export const sentCode = async ({ phone, phone_list, handleStartLoading} : ISentCode) => {
     if(isEmpty(phone)){
        return snackbar.error('Phone number is required.')
     }
@@ -26,6 +34,7 @@ export const sentCode = async (phone: string, phone_list: string[], handleStartL
     try {
         const fb_token = await fbAuth.currentUser?.getIdToken();
             
+        snackbar.info('The code will be sent momentarily')
         await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/message/send`, {
             phone_number: phone
         }, {
@@ -43,7 +52,11 @@ export const sentCode = async (phone: string, phone_list: string[], handleStartL
     }
 }
 
-export const handleCodeVerify = async (value: string) => {
+interface IHandleCodeVerify {
+    value: string, 
+    handleSmsComplete: () => void
+}
+export const handleCodeVerify = async ({ value, handleSmsComplete}: IHandleCodeVerify) => {
     if(!Cookies.get('c_id')){
         return snackbar.warning('The code has expired, please request another code')
     }
@@ -51,7 +64,7 @@ export const handleCodeVerify = async (value: string) => {
     try {
         let fb_token = await fbAuth.currentUser?.getIdToken();
 
-        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/message/verify`, {
+        let response = await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/message/verify`, {
             code: value, 
         }, {
             headers: {
@@ -59,7 +72,13 @@ export const handleCodeVerify = async (value: string) => {
             }
         });
 
-        snackbar.success('Phone number has been verified');
+        store.dispatch(addNewPhone({
+            phone: response.data.phone,
+            phone_list: response.data.phone_list
+        }))
+
+        handleSmsComplete();
+        
     } catch (error) {
         if(axios.isAxiosError(error)){
            return handleAxiosError(error);
