@@ -1,9 +1,9 @@
 import { Divider, List, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 import { isEmpty } from "lodash"
-import { useAppSelector } from "../../../../store/store"
-import { PriceDisplay } from "../cartSummary/priceDisplay"
-import { SummaryItem } from "../cartSummary/summaryItem"
+import { useAppSelector } from "../../../store/store"
+import { PriceDisplay } from "./priceDisplay"
+import { SummaryItem } from "./summaryItem"
 
 const ListContainer = styled(List)(({ theme }) => ({
     width: '90%', 

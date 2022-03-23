@@ -1,9 +1,9 @@
 import { Card, CardContent, IconButton, Typography } from "@mui/material";
 import { isEmpty } from "lodash";
-import { decreaseQty, increaseQty, removeItemFromCart } from "../../../../store/slice/cartSlice";
-import { useAppDispatch } from "../../../../store/store";
-import { ImageWithFallback } from "../../../images";
-import { QuantityController } from "../../../quantityController";
+import { decreaseQty, increaseQty, removeItemFromCart } from "../../../store/slice/cartSlice";
+import { useAppDispatch } from "../../../store/store";
+import { ImageWithFallback } from "../../images";
+import { QuantityController } from "../../quantityController";
 import { FiTrash2 } from 'react-icons/fi'
 import { styled } from "@mui/system";
 import { GoFlame } from "react-icons/go";

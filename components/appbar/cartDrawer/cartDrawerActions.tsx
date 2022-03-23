@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import Router from "next/router";
-import { clearCart } from "../../../../store/slice/cartSlice";
-import { useAppDispatch, useAppSelector } from "../../../../store/store";
+import { clearCart } from "../../../store/slice/cartSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 
 export const CartDrawerActions = () => {
     const cartState = useAppSelector(state => state.cart);

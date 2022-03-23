@@ -5,7 +5,7 @@ import { FocusEvent, useState } from "react";
 import { setPointRedemption } from "../../../../store/slice/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import snackbar from "../../../snackbar";
-import { sliding_variant } from "./AddSpecialComment";
+import { sliding_variant } from "../comment/addSpecialComment";
 import Tooltip from '@mui/material/Tooltip'
 
 import { BsQuestionCircle } from 'react-icons/bs'

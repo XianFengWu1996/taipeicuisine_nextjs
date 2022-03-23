@@ -1,14 +1,15 @@
 import { Button, Skeleton, useMediaQuery } from "@mui/material"
-import { PickupOrDelivery } from "./pickupOrDelivery"
-import { CustomerCard } from "./customerCard"
-import { PaymentSelection } from "./paymentSelection"
-import {  useAppSelector } from "../../../../store/store"
-import { AddSpecialComment } from "./AddSpecialComment"
-import { ApplyDiscount } from "./ApplyDiscount"
-import { IncludeUtensils } from "./includeUtensils"
+import { PickupOrDelivery } from "./pickupButton/pickupOrDelivery"
+import { CustomerCard } from "./customerInfo/customerCard"
+import { PaymentSelection } from "./payment/paymentSelection"
+import {  useAppSelector } from "../../../store/store"
+import { AddSpecialComment } from "./comment/addSpecialComment"
+import { ApplyDiscount } from "./discount/applyDiscount"
+import { IncludeUtensils } from "./utensil/includeUtensils"
 import { CartSummary } from "../cartSummary"
 import { User } from "firebase/auth"
 import { styled } from "@mui/system"
+import { AddressCard } from "./address/deliveryCard"
 
 interface ICustomerDetailsProp {
     user: User | null
@@ -53,17 +54,9 @@ export const CustomerDetails = ({ user } : ICustomerDetailsProp) => {
            user ? <CustomerCard /> : <Skeleton variant="rectangular" height={250} sx={{ my: 5}} />
         }
         
-        {/* {
-            cartState.is_delivery ? <CustomerCard 
-                title="Delivery Address"
-                icon={<BiBuildingHouse />}
-                content={<>
-                    <Typography>Address: 69 Harvard St, Quincy, MA 02171</Typography>
-                    <Typography>Apt: 1022</Typography>
-                    <Typography>Business: Taipei Cuisine</Typography>   
-                </>}
-            /> : null
-        } */}
+        {
+            cartState.is_delivery ? <AddressCard /> : null
+        }
 
         {
             user ? <>

@@ -8,6 +8,7 @@ interface ICustomerState extends ICustomer{
   smsDialogOpen: boolean, // handle status for the sms verification dialog
   customerSaveLoading: boolean, // handle loading for the save button in customer card
   customerCardLoading: boolean,
+  addressCollapse: boolean,
 }
 // Define the initial state using that type
 const initialState: ICustomerState  = {
@@ -33,6 +34,7 @@ const initialState: ICustomerState  = {
     smsDialogOpen: false,
     customerSaveLoading: false,
     customerCardLoading: false,
+    addressCollapse: false,
 }   
 
 const handleDuplicatePhoneNum = (state: ICustomer, list: string[]) => {
@@ -86,6 +88,9 @@ export const customerSlice = createSlice({
     },
     setCustomerCardLoading:(state, {payload}:PayloadAction<boolean>) => {
       state.customerCardLoading = payload;
+    },
+    setAddressCollapse: (state, {payload}:PayloadAction<boolean>) => {
+      state.addressCollapse = payload;
     }
     
   }
@@ -102,6 +107,7 @@ export const {
   setLoginDialog,
   setSmsDialog,
   setCustomerSaveLoading,
-  setCustomerCardLoading
+  setCustomerCardLoading,
+  setAddressCollapse,
 } = customerSlice.actions
 

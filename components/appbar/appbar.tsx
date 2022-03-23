@@ -1,11 +1,11 @@
-import { AppBar, Button, IconButton, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, Toolbar, Typography, useMediaQuery } from "@mui/material"
+import { AppBar, Button, IconButton, Toolbar, useMediaQuery } from "@mui/material"
 import { Box, styled } from "@mui/system"
 import MenuIcon from '@mui/icons-material/Menu';
-import { AiOutlineShoppingCart, AiOutlineUser, AiOutlineSetting, AiOutlineHome, AiOutlineClose } from 'react-icons/ai'
-import BlackLogo from '../../../assets/images/blacklogo.png'
+import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai'
+import BlackLogo from '../../assets/images/blacklogo.png'
 import Image from "next/image";
 import { useState } from "react";
-import { useAppSelector } from "../../../store/store";
+import { useAppSelector } from "../../store/store";
 import { MenuDrawer } from "./menuDrawer";
 import { CartDrawer } from "./cartDrawer";
 

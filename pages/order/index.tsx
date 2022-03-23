@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { MenuSelect } from "../../components/menu/menuSelect";
 import { MenuTab } from "../../components/menu/menuTab";
-import { PublicAppBar } from "../../components/order/appbar/appbar";
+import { PublicAppBar } from "../../components/appbar/appbar";
 import snackbar from "../../components/snackbar";
 import { getInitialMenuData, resetUponUnmount } from "../../store/slice/menuSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";

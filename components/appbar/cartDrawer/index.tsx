@@ -1,6 +1,6 @@
 import { Button, IconButton, SwipeableDrawer, Typography } from "@mui/material"
 import { Box, styled } from "@mui/system"
-import { useAppSelector } from "../../../../store/store"
+import { useAppSelector } from "../../../store/store"
 import { CartDrawerActions } from "./cartDrawerActions"
 import { CartDrawerList } from "./cartDrawerList"
 import { IoMdCloseCircleOutline } from 'react-icons/io'

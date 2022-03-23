@@ -1,5 +1,5 @@
 import { List } from "@mui/material";
-import { useAppSelector } from "../../../../store/store";
+import { useAppSelector } from "../../../store/store";
 import { CartDrawerItem } from "./cartDrawerItem";
 
 export const CartDrawerList = () => {
