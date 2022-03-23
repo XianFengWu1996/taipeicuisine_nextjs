@@ -5,7 +5,7 @@ import axios from "axios"
 import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth } from "./auth"
 import Cookies from "js-cookie"
-import { addNewPhone, removePhoneNumber, setCustomerCollapse, setDefaultPhoneNumber, updateCustomerName } from "../../store/slice/customerSlice"
+import { addNewPhone, removePhoneNumber, setCustomerCardLoading, setCustomerCollapse, setCustomerSaveLoading, setDefaultPhoneNumber, updateCustomerName } from "../../store/slice/customerSlice"
 import { store } from '../../store/store'
 import { handleCatchError } from "../errors/custom"
 
@@ -84,6 +84,7 @@ export const handleCodeVerify = async (code: string) => {
 
 export const selectDefaultPhone = async (phone: string) => {
     try {
+        store.dispatch(setCustomerCardLoading(true));
         await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/phone`, { phone }, {
             headers: {
                 'authorization': `Bearer ${await fbAuth.currentUser?.getIdToken()}`
@@ -95,11 +96,15 @@ export const selectDefaultPhone = async (phone: string) => {
         snackbar.success('Phone has been select as default')
     } catch (error) {
         handleCatchError(error as Error, 'Unable to change phone number at the moment');
+    } finally {
+        store.dispatch(setCustomerCardLoading(false))
     }
 }
 
 export const removePhoneNum =  async (phone: string) => {
     try {
+        store.dispatch(setCustomerCardLoading(true));
+
         await axios.delete(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/phone`, {
             data: { phone }, 
             headers: {
@@ -111,6 +116,8 @@ export const removePhoneNum =  async (phone: string) => {
         snackbar.warning('Phone removed')
     } catch (error) {
         handleCatchError(error as Error, 'Failed to remove phone number');
+    } finally {
+        store.dispatch(setCustomerCardLoading(false));
     }
 }
 
@@ -122,6 +129,7 @@ export const updateName = async(name: string) => {
        return store.dispatch(setCustomerCollapse(false));
     }
 
+    store.dispatch(setCustomerSaveLoading(true)); // start the loading 
     try {
         await axios.patch(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/name`, { name }, {
             headers: {
@@ -135,5 +143,7 @@ export const updateName = async(name: string) => {
 
     } catch (error) {
         handleCatchError(error as Error, 'Failed to update name');
+    } finally {
+        store.dispatch(setCustomerSaveLoading(false)); // end the loading
     }
 }

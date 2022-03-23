@@ -8,11 +8,13 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { AiOutlineCheckCircle, AiOutlinePlus } from "react-icons/ai";
 import { SmsDialog } from "../../../dialogs/smsDialog";
 import { setSmsDialog } from "../../../../store/slice/customerSlice";
+import { PulseLoader, ScaleLoader } from "react-spinners";
+import { red } from "@mui/material/colors";
 
 
 export const CustomerCollapse = () => {
 
-    const { name, phone, phone_list, customerCollapse } = useAppSelector(state => state.customer);
+    const { name, phone, phone_list, customerCollapse, customerSaveLoading, customerCardLoading } = useAppSelector(state => state.customer);
     const [ customer_name, setName ] = useState('');
     const dispatch = useAppDispatch();
 
@@ -54,9 +56,20 @@ export const CustomerCollapse = () => {
                     variant="outlined" 
                     onClick={() => updateName(customer_name)}
                     sx={{flex: 1, marginLeft: '5%'}}
-                >Save</Button>
+                >{
+                    customerSaveLoading ? 
+                         <PulseLoader size={5} color="red"/>
+                    : 'Save'
+                }</Button>
             </div>
     
+        {
+            customerCardLoading 
+            ? <div style={{ display: 'flex', justifyContent: 'center'}}>
+                <ScaleLoader height={25} color={red[400]} />
+              </div> 
+            : null
+        }
 
         <Grid container spacing={2}>
 

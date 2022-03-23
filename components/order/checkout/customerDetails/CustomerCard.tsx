@@ -1,19 +1,14 @@
 import { Button, Card, CardActions, CardContent,Icon, IconButton, Typography } from "@mui/material"
-import { ReactElement, useState } from "react"
+import { GrContactInfo } from "react-icons/gr";
 import {HiOutlineChevronUp} from 'react-icons/hi'
 import { setCustomerCollapse } from "../../../../store/slice/customerSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
+import { phoneFormat } from "../../../../utils/functions/phone";
 import { CustomerCollapse } from "./customerCollapse";
 
+export const CustomerCard = () => {
+    const { name, phone, customerCollapse } = useAppSelector(state => state.customer)
 
-interface ICustomerCardProps {
-    title: string,
-    icon: ReactElement<any>, 
-    content: ReactElement<any>
-}
-
-export const CustomerCard = ({ title, icon,  content }: ICustomerCardProps) => {
-    const { customerCollapse } = useAppSelector(state => state.customer)
     const dispatch = useAppDispatch();
 
     const handleCollapseToogle = () => {
@@ -21,15 +16,16 @@ export const CustomerCard = ({ title, icon,  content }: ICustomerCardProps) => {
     }
 
     return <>
-        <Typography variant="h4">{title}</Typography>
+        <Typography variant="h4">Customer Information</Typography>
         <Card>
             <CardContent style={{ display: 'flex'}}>
                 <Icon style={{ fontSize: '35px', marginRight: '30px', marginLeft: '10px', alignSelf: 'center'}}>
-                    { icon }
+                    <GrContactInfo />
                 </Icon>
 
                 <div style={{ flexGrow: 1}}>
-                    { content }
+                    <Typography>Name: { name }</Typography>    
+                    <Typography>Phone: {phoneFormat(phone)}</Typography>   
                 </div>
 
             </CardContent>
@@ -46,7 +42,5 @@ export const CustomerCard = ({ title, icon,  content }: ICustomerCardProps) => {
 
             <CustomerCollapse />
         </Card>
-        
-      
     </>
 }

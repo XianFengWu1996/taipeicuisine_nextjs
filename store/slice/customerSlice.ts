@@ -3,9 +3,11 @@ import { uniq } from 'lodash'
 
 
 interface ICustomerState extends ICustomer{
-  loginDialogOpen: boolean,
-  customerCollapse: boolean
-  smsDialogOpen: boolean,
+  loginDialogOpen: boolean, // handle status for the login dialog
+  customerCollapse: boolean // handle the status of showing hidden option of customer card
+  smsDialogOpen: boolean, // handle status for the sms verification dialog
+  customerSaveLoading: boolean, // handle loading for the save button in customer card
+  customerCardLoading: boolean,
 }
 // Define the initial state using that type
 const initialState: ICustomerState  = {
@@ -29,6 +31,8 @@ const initialState: ICustomerState  = {
     loginDialogOpen: false,
     customerCollapse: false,
     smsDialogOpen: false,
+    customerSaveLoading: false,
+    customerCardLoading: false,
 }   
 
 const handleDuplicatePhoneNum = (state: ICustomer, list: string[]) => {
@@ -77,6 +81,12 @@ export const customerSlice = createSlice({
     setSmsDialog: (state, {payload}:PayloadAction<boolean>) => {
       state.smsDialogOpen = payload;
     },
+    setCustomerSaveLoading: (state, {payload}:PayloadAction<boolean>) => {
+      state.customerSaveLoading = payload;
+    },
+    setCustomerCardLoading:(state, {payload}:PayloadAction<boolean>) => {
+      state.customerCardLoading = payload;
+    }
     
   }
 })
@@ -91,5 +101,7 @@ export const {
   setCustomerCollapse,
   setLoginDialog,
   setSmsDialog,
+  setCustomerSaveLoading,
+  setCustomerCardLoading
 } = customerSlice.actions
 

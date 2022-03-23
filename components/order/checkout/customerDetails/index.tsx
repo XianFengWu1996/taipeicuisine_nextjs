@@ -1,14 +1,11 @@
-import { Button, Skeleton, Typography, useMediaQuery } from "@mui/material"
+import { Button, Skeleton, useMediaQuery } from "@mui/material"
 import { PickupOrDelivery } from "./pickupOrDelivery"
-import { BiBuildingHouse } from 'react-icons/bi'
-import { GrContactInfo } from 'react-icons/gr'
 import { CustomerCard } from "./customerCard"
 import { PaymentSelection } from "./paymentSelection"
 import {  useAppSelector } from "../../../../store/store"
 import { AddSpecialComment } from "./AddSpecialComment"
 import { ApplyDiscount } from "./ApplyDiscount"
 import { IncludeUtensils } from "./includeUtensils"
-import { phoneFormat } from "../../../../utils/functions/phone"
 import { CartSummary } from "../cartSummary"
 import { User } from "firebase/auth"
 import { styled } from "@mui/system"
@@ -30,7 +27,6 @@ const CheckoutContainer = styled('div')(({ theme }) => ({
 
 export const CustomerDetails = ({ user } : ICustomerDetailsProp) => {
     const cartState = useAppSelector(state => state.cart)
-    const { name, phone } = useAppSelector(state => state.customer)
 
     const desktop = useMediaQuery('(min-width: 900px)');
 
@@ -54,17 +50,10 @@ export const CustomerDetails = ({ user } : ICustomerDetailsProp) => {
         }
 
        {
-           user ? <CustomerCard
-                title="Customer Information"
-                icon={<GrContactInfo />}
-                content={<>
-                    <Typography>Name: { name }</Typography>    
-                    <Typography>Phone: {phoneFormat(phone)}</Typography>    
-                </>}
-            /> : <Skeleton variant="rectangular" height={250} sx={{ my: 5}} />
+           user ? <CustomerCard /> : <Skeleton variant="rectangular" height={250} sx={{ my: 5}} />
         }
         
-        {
+        {/* {
             cartState.is_delivery ? <CustomerCard 
                 title="Delivery Address"
                 icon={<BiBuildingHouse />}
@@ -74,7 +63,7 @@ export const CustomerDetails = ({ user } : ICustomerDetailsProp) => {
                     <Typography>Business: Taipei Cuisine</Typography>   
                 </>}
             /> : null
-        }
+        } */}
 
         {
             user ? <>
