@@ -51,23 +51,19 @@ export const sentCode = async ({ phone, phone_list, handleStartLoading} : ISentC
     }
 }
 
-interface IHandleCodeVerify {
-    value: string, 
-    handleSmsComplete: () => void
-}
-export const handleCodeVerify = async ({ value, handleSmsComplete}: IHandleCodeVerify) => {
+export const handleCodeVerify = async (code: string) => {
     if(!Cookies.get('c_id')){
         return snackbar.warning('The code has expired, please request another code')
     }
 
     try {
-        let fb_token = await fbAuth.currentUser?.getIdToken();
-
+        snackbar.info("Verify in progress...")
+        
         let response = await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/message/verify`, {
-            code: value, 
+            code, 
         }, {
             headers: {
-                'Authorization': `Bearer ${fb_token}`
+                'Authorization': `Bearer ${await fbAuth.currentUser?.getIdToken()}`
             }
         });
 
@@ -76,8 +72,8 @@ export const handleCodeVerify = async ({ value, handleSmsComplete}: IHandleCodeV
             phone_list: response.data.phone_list
         }))
 
-        handleSmsComplete();
-        
+        store.dispatch(setCustomerCollapse(false));
+        snackbar.success('New phone number has been added');        
     } catch (error) {
         if(axios.isAxiosError(error)){
            return handleAxiosError(error);

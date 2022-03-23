@@ -6,19 +6,17 @@ import { BiTrash } from "react-icons/bi";
 import { phoneFormat, removePhoneNum, selectDefaultPhone, updateName } from "../../../../utils/functions/phone";
 import { ChangeEvent, useEffect, useState } from "react";
 import { AiOutlineCheckCircle, AiOutlinePlus } from "react-icons/ai";
-import snackbar from "../../../snackbar";
 import { SmsDialog } from "../../../dialogs/smsDialog";
-import { setCustomerCollapse, updateCustomerName } from "../../../../store/slice/customerSlice";
+import { setSmsDialog } from "../../../../store/slice/customerSlice";
 
 
 export const CustomerCollapse = () => {
 
     const { name, phone, phone_list, customerCollapse } = useAppSelector(state => state.customer);
     const [ customer_name, setName ] = useState('');
-
-    const [smsOpen, setSmsOpen] = useState(false);
-  
     const dispatch = useAppDispatch();
+
+    const unique_phone_list = Array.from(new Set(phone_list));
 
     useEffect(() => {
         setName(name);
@@ -26,26 +24,6 @@ export const CustomerCollapse = () => {
 
     const handleNameOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setName(e.target.value);
-    }
-
-    const handleSmsComplete = () => {
-        setSmsOpen(false);
-        dispatch(setCustomerCollapse(false));
-        snackbar.success('New phone number has been added');
-    }
-
-    // render and return the the phone list 
-    const renderPhoneList = () => {
-        let list = Array.from(new Set(phone_list));
-        return  list.map((phone_num: string) => {
-            return <PhoneCard 
-                key={v4()} 
-                phone_num={phone_num}
-                isSelected={phone_num === phone}
-                handlePhoneRemove={removePhoneNum}
-                handlePhoneSelect={selectDefaultPhone}
-            />
-        })
     }
 
     return <Collapse in={customerCollapse} timeout="auto" unmountOnExit>
@@ -81,10 +59,21 @@ export const CustomerCollapse = () => {
     
 
         <Grid container spacing={2}>
-            { renderPhoneList() }
+
+            { 
+                unique_phone_list.map((phone_num: string) => {
+                    return <PhoneCard 
+                        key={v4()} 
+                        phone_num={phone_num}
+                        isSelected={phone_num === phone}
+                        handlePhoneRemove={removePhoneNum}
+                        handlePhoneSelect={selectDefaultPhone}
+                    />
+                })
+            }
             <Grid item  md={6} sm={12} xs={12}>
                 <Card 
-                    onClick={() => setSmsOpen(true)}
+                    onClick={() => dispatch(setSmsDialog(true))}
                     sx={{ 
                         padding: 1, 
                         height: '100%', 
@@ -100,10 +89,7 @@ export const CustomerCollapse = () => {
         </Grid>
         </Box>
 
-        <SmsDialog 
-            open={smsOpen} 
-            handleSmsComplete={handleSmsComplete}
-            handleClose={() => setSmsOpen(false)}/>
+        <SmsDialog />
     </Collapse>
 }
 

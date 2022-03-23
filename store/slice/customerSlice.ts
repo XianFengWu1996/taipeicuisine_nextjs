@@ -5,7 +5,7 @@ import { uniq } from 'lodash'
 interface ICustomerState extends ICustomer{
   loginDialogOpen: boolean,
   customerCollapse: boolean
-
+  smsDialogOpen: boolean,
 }
 // Define the initial state using that type
 const initialState: ICustomerState  = {
@@ -28,6 +28,7 @@ const initialState: ICustomerState  = {
     },
     loginDialogOpen: false,
     customerCollapse: false,
+    smsDialogOpen: false,
 }   
 
 const handleDuplicatePhoneNum = (state: ICustomer, list: string[]) => {
@@ -73,6 +74,9 @@ export const customerSlice = createSlice({
     setCustomerCollapse: (state, {payload}:PayloadAction<boolean>) => {
       state.customerCollapse = payload;
     },
+    setSmsDialog: (state, {payload}:PayloadAction<boolean>) => {
+      state.smsDialogOpen = payload;
+    },
     
   }
 })
@@ -83,8 +87,9 @@ export const {
   setDefaultPhoneNumber,
   removePhoneNumber,
   updateCustomerName,
-  setLoginDialog,
   addNewPhone,
-  setCustomerCollapse
+  setCustomerCollapse,
+  setLoginDialog,
+  setSmsDialog,
 } = customerSlice.actions
 

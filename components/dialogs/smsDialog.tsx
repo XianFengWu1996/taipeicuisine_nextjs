@@ -1,7 +1,8 @@
 import { Button, Dialog, DialogContent, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import ReactCodeInput from 'react-verification-code-input';
-import { useAppSelector } from "../../store/store";
+import { setSmsDialog } from "../../store/slice/customerSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { sentCode, handleCodeVerify} from "../../utils/functions/phone";
 // logic (todo)
 
@@ -11,14 +12,10 @@ import { sentCode, handleCodeVerify} from "../../utils/functions/phone";
 // enable/disable the code input field base on the cookie
 // also, once the button is click, toggle to a button which sole job is to display the timer
 
+export const SmsDialog = () => {
+    const { smsDialogOpen} = useAppSelector(state => state.customer)
+    const dispatch = useAppDispatch();
 
-interface ISmsDialogProps {
-    open: boolean,
-    handleClose: () => void,
-    handleSmsComplete: () =>  void
-}
-
-export const SmsDialog = ({ open, handleClose, handleSmsComplete } : ISmsDialogProps) => {
     const [smsPhone, setSmsPhone] = useState('');
 
     const handlePhoneOnChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -30,8 +27,8 @@ export const SmsDialog = ({ open, handleClose, handleSmsComplete } : ISmsDialogP
     }
 
     return <Dialog
-        open={open}
-        onClose={handleClose}
+        open={smsDialogOpen}
+        onClose={() => dispatch(setSmsDialog(false))}
         maxWidth="sm"
         fullWidth
     >
@@ -56,9 +53,7 @@ export const SmsDialog = ({ open, handleClose, handleSmsComplete } : ISmsDialogP
             </div>
 
             <Typography>Enter Verification Code</Typography>
-            <ReactCodeInput  onComplete={(value) => {
-                handleCodeVerify({value, handleSmsComplete})
-            }} />   
+            <ReactCodeInput  onComplete={handleCodeVerify} />   
         </DialogContent>
     </Dialog>
 }
