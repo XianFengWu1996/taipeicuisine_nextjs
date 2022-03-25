@@ -8,31 +8,25 @@ import PlacesAutocomplete, {
 
 import { Collapse, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { PulseLoader } from "react-spinners";
+import { BounceLoader, DotLoader, PuffLoader, PulseLoader } from "react-spinners";
 import { calculateDeliveryFee, IGoogleAddress } from "../../../../utils/functions/phone";
+import { red } from "@mui/material/colors";
 
 export const DeliveryCollapse = () => {
     const { addressCollapse } = useAppSelector(state => state.customer);
 
     const [addressInput, setAddressInput] = useState('');
-    const [formatAddress, setFormatAddress] = useState('');
-
-    const [address, setAddress] = useState<IGoogleAddress>({
-        street_number: '',
-        route: '',
-        locality: '',
-        administrative_area_level_1: '',
-        postal_code: '',
-    })
+    const [loading, setLoading] = useState(false);
 
     const handleAddressOnChange = (value: string) => {
         setAddressInput(value); 
     }
 
+    // convert the data from the address component 
     const handleAddressOnSelect = async (value: string) => {
         let address_result = await geocodeByAddress(value);
 
-        setFormatAddress(address_result[0].formatted_address);  
+        let format_address = address_result[0].formatted_address;
 
         let data : {[key:string]: string}= {
             street_number: '',
@@ -50,16 +44,10 @@ export const DeliveryCollapse = () => {
             })
         });
 
-        setAddress({
-            ...address,
-            ...(data as unknown as IGoogleAddress) 
-        });
-
-        await calculateDeliveryFee({
-            format_address: formatAddress,
-            address,
-            place_id: address_result[0].place_id,
-        })
+        return {
+            format_address,
+            address: data as unknown as IGoogleAddress,
+        }
     }
 
     return <>
@@ -68,10 +56,9 @@ export const DeliveryCollapse = () => {
             component="form"
             sx={{
                 display: 'flex',
-                flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                '& > :not(style)': {my: 1.5, width: '95%'},
+                '& > :not(style)': {m: 1.5, width: '95%'},
                 paddingBottom: '40px'
             }}
             noValidate
@@ -81,7 +68,17 @@ export const DeliveryCollapse = () => {
                 <PlacesAutocomplete
                     value={addressInput}
                     onChange={handleAddressOnChange}
-                    onSelect={handleAddressOnSelect}
+                    onSelect={async (addr, place_id) => {
+                        setLoading(true);
+                        let data = await handleAddressOnSelect(addr);
+                        await calculateDeliveryFee({
+                            format_address: data.format_address,
+                            address: data.address,
+                            place_id,
+                        })
+                        setAddressInput('');
+                        setLoading(false);
+                    }}
                 >
                  {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                     <div>
@@ -114,15 +111,9 @@ export const DeliveryCollapse = () => {
                     </div>
                     )}
             </PlacesAutocomplete>
-
-            
             }
-        <div>{formatAddress}</div>
-        <div>{address.street_number}</div>
-        <div>{address.route}</div>
-        <div>{address.locality}</div>
-        <div>{address.administrative_area_level_1}</div>
-        <div>{address.postal_code}</div>
+
+            { loading && <PuffLoader size={40} color={red[400]} speedMultiplier={1.5}/>}
         </Box>
     </Collapse>
     </>

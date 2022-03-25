@@ -1,4 +1,5 @@
 import { Button, Card, CardActions, CardContent, Icon, IconButton, Typography } from "@mui/material";
+import { isEmpty } from "lodash";
 import { BiBuildingHouse } from "react-icons/bi";
 import { HiOutlineChevronUp } from "react-icons/hi";
 import { setAddressCollapse } from "../../../../store/slice/customerSlice";
@@ -6,9 +7,15 @@ import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { DeliveryCollapse } from "./deliveryCollapse";
 
 export const AddressCard = () => {
-    const { addressCollapse } = useAppSelector(state => state.customer)
+    const { addressCollapse, address } = useAppSelector(state => state.customer)
 
     const dispatch = useAppDispatch();
+
+    const handleCollapseOpen = () => {
+        if(!addressCollapse){
+            dispatch(setAddressCollapse(true));
+        }
+    }
 
     const handleCollapseToogle = () => {
         dispatch(setAddressCollapse(!addressCollapse));
@@ -23,11 +30,16 @@ export const AddressCard = () => {
                     <BiBuildingHouse />
                 </Icon>
 
-                <div style={{ flexGrow: 1}}>
-                    <Typography>Address: 69 Harvard St, Quincy, MA 02171</Typography>
-                    <Typography>Apt: 1022</Typography>
-                    <Typography>Business: Taipei Cuisine</Typography>  
-                </div>
+                {
+                    !isEmpty(address.address) && !isEmpty(address.street)
+                     ? <div style={{ flexGrow: 1}}>
+                        <Typography>Address: {address.street},</Typography>
+                        <Typography >{address.city}, {address.state}, {address.zipcode}</Typography>
+                        {address.apt && <Typography>Apt: {address.apt}</Typography>}
+                        {address.business &&  <Typography>Business: {address.business}</Typography>}  
+                    </div> : 
+                    <Button onClick={handleCollapseOpen}>Search For Address</Button>
+                }
 
             </CardContent>
 

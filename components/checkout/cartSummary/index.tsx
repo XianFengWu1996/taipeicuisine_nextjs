@@ -60,7 +60,7 @@ export const CartSummary = () => {
 
                 <PriceDisplay title='Subtotal' value={cartState.subtotal} />
                 {
-                    cartState.is_delivery ? <PriceDisplay title='Delivery' value={0} /> : null
+                    cartState.is_delivery ? <PriceDisplay title='Delivery' value={cartState.delivery_fee} /> : null
                 }
                 <PriceDisplay title='Tax' value={cartState.tax} />
                 {

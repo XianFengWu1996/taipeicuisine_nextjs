@@ -18,6 +18,10 @@ export const app = initializeApp({
   
 export const fbAuth = getAuth(app);
 
+export const token = async () => {
+  return fbAuth.currentUser?.getIdToken();
+}
+
 interface IHandleLogin {
   email: string,
   password: string,

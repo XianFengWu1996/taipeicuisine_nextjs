@@ -6,6 +6,7 @@ export interface CartState {
     cart_quantity: number,
     original_subtoal:number,
     subtotal: number,
+    delivery_fee: number,
     tip: number,
     tax: number,
     total: number,
@@ -24,6 +25,7 @@ const initialState: CartState = {
     cart_quantity: 1,
     original_subtoal: 13.95,
     subtotal: 13.95,
+    delivery_fee: 0,
     tip: 0,
     tax: 0.98,
     total: 14.93,
@@ -56,7 +58,7 @@ const calculateTotal = (state: CartState, value:number = 0, quantity: number = 0
   state.original_subtoal = Number((state.original_subtoal + value).toFixed(2));
   state.subtotal = Number((state.original_subtoal - discount).toFixed(2));
   state.tax = Number((state.subtotal * 0.07).toFixed(2))
-  state.total = Number((state.subtotal + state.tax).toFixed(2))
+  state.total = Number((state.subtotal + state.tax +( state.is_delivery ? state.delivery_fee : 0) ).toFixed(2))
 }
 
 
@@ -187,6 +189,10 @@ export const cartSlice = createSlice({
     setToggleIncludeUtensils:(state, {payload} : PayloadAction<boolean>) => {
       state.includeUtensils = payload;
     },
+    setDelivery: (state, {payload}: PayloadAction<number>) => {
+      state.delivery_fee = payload;
+      calculateTotal(state);
+    }
   }
 })
 
@@ -204,7 +210,8 @@ export const {
   setPayment,
   setComments,
   setPointRedemption,
-  setToggleIncludeUtensils
+  setToggleIncludeUtensils,
+  setDelivery
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;

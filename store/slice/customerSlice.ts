@@ -72,6 +72,12 @@ export const customerSlice = createSlice({
     updateCustomerName: (state, {payload} : PayloadAction<string>) => {
       state.name = payload;
     },
+    updateAddress:(state, {payload} : PayloadAction<IAddress>) => {
+      state.address = {
+        ...state.address,
+        ...payload
+      }
+    },
    
     // STATES RELATD
     setLoginDialog: (state, {payload}:PayloadAction<boolean>) => {
@@ -109,5 +115,6 @@ export const {
   setCustomerSaveLoading,
   setCustomerCardLoading,
   setAddressCollapse,
+  updateAddress,
 } = customerSlice.actions
 

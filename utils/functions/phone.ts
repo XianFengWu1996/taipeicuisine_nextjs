@@ -3,11 +3,12 @@ import snackbar from "../../components/snackbar"
 import validator from "validator"
 import axios from "axios"
 import { handleAxiosError } from "../errors/handleAxiosError"
-import { fbAuth } from "./auth"
+import { fbAuth, token } from "./auth"
 import Cookies from "js-cookie"
-import { addNewPhone, removePhoneNumber, setCustomerCardLoading, setCustomerCollapse, setCustomerSaveLoading, setDefaultPhoneNumber, updateCustomerName } from "../../store/slice/customerSlice"
+import { addNewPhone, removePhoneNumber, setAddressCollapse, setCustomerCardLoading, setCustomerCollapse, setCustomerSaveLoading, setDefaultPhoneNumber, updateAddress, updateCustomerName } from "../../store/slice/customerSlice"
 import { store } from '../../store/store'
 import { handleCatchError } from "../errors/custom"
+import { setDelivery } from "../../store/slice/cartSlice"
 
 export const phoneFormat = (phone: string) => {
     return `(${phone.substring(0, 3)}) ${phone.substring(3, 6)}-${phone.substring(6)}`
@@ -163,21 +164,29 @@ interface ICalcDelivFee {
 }
 export const calculateDeliveryFee = async(data: ICalcDelivFee) => {
     try {
-        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/address/delivery`,
-        {
-            format_address: data.format_address,
-            address: {
-                street: `${data.address.street_number} ${data.address.route}`,
-                city: data.address.locality,
-                state: data.address.administrative_area_level_1,
-                zipcode: data.address.postal_code
-            },
-            place_id: data.place_id
-        }, {
+        let result = await axios({
+            method: 'POST',
+            url:`${process.env.NEXT_PUBLIC_CF_URL}/auth/address/delivery`,
             headers: {
-                'Authorization': `Bearer ${await fbAuth.currentUser?.uid}`
+                'Authorization': `Bearer ${await token()}`
+            },
+            data: {
+                format_address: data.format_address,
+                address: {
+                    street: `${data.address.street_number} ${data.address.route}`,
+                    city: data.address.locality,
+                    state: data.address.administrative_area_level_1,
+                    zipcode: data.address.postal_code
+                },
+                place_id: data.place_id
             }
         })
+
+        // dispatch delivery fee 
+        store.dispatch(updateAddress(result.data.address))
+        store.dispatch(setDelivery(result.data.address.delivery_fee))
+        store.dispatch(setAddressCollapse(false));
+        snackbar.success('Address has been updated')
     } catch (error) {
         handleCatchError(error as Error, 'Failed to set addess at the moment')
     }
