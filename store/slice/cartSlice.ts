@@ -130,7 +130,9 @@ export const cartSlice = createSlice({
     },  
     // DELIVERY RELATED
     deliveryToggle: (state) => {
-      state.is_delivery = !state.is_delivery
+      state.is_delivery = !state.is_delivery;
+      state.payment_type = '';
+      calculateTotal(state);
     },
 
     //TIP RELATED
