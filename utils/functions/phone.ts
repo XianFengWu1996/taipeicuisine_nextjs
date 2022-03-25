@@ -147,3 +147,38 @@ export const updateName = async(name: string) => {
         store.dispatch(setCustomerSaveLoading(false)); // end the loading
     }
 }
+
+export interface IGoogleAddress {
+    street_number: string,
+    route: string,
+    locality: string,
+    administrative_area_level_1: string,
+    postal_code: string,
+}
+
+interface ICalcDelivFee {
+    address: IGoogleAddress,
+    format_address: string,
+    place_id: string,
+}
+export const calculateDeliveryFee = async(data: ICalcDelivFee) => {
+    try {
+        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/address/delivery`,
+        {
+            format_address: data.format_address,
+            address: {
+                street: `${data.address.street_number} ${data.address.route}`,
+                city: data.address.locality,
+                state: data.address.administrative_area_level_1,
+                zipcode: data.address.postal_code
+            },
+            place_id: data.place_id
+        }, {
+            headers: {
+                'Authorization': `Bearer ${await fbAuth.currentUser?.uid}`
+            }
+        })
+    } catch (error) {
+        handleCatchError(error as Error, 'Failed to set addess at the moment')
+    }
+}

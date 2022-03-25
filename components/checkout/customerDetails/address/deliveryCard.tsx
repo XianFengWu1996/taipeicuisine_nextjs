@@ -3,6 +3,7 @@ import { BiBuildingHouse } from "react-icons/bi";
 import { HiOutlineChevronUp } from "react-icons/hi";
 import { setAddressCollapse } from "../../../../store/slice/customerSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
+import { DeliveryCollapse } from "./deliveryCollapse";
 
 export const AddressCard = () => {
     const { addressCollapse } = useAppSelector(state => state.customer)
@@ -14,6 +15,7 @@ export const AddressCard = () => {
     }
 
     return <>
+    
         <Typography variant="h4">Delivery Address</Typography>
         <Card>
             <CardContent style={{ display: 'flex'}}>
@@ -39,7 +41,7 @@ export const AddressCard = () => {
                 }
             </CardActions>
 
-            {/* <CustomerCollapse /> */}
+            <DeliveryCollapse />
         </Card>
     </>
 }

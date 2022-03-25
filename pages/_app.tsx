@@ -15,6 +15,7 @@ import { AuthDialog } from '../components/auth/authDialog'
 
 import { PersistGate } from 'redux-persist/integration/react'
 import Head from 'next/head'
+import Script from 'next/script'
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -39,6 +40,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Taipei Cuisine</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
+
+    <Script strategy={'beforeInteractive'} src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVIhwZkhPJDZDdUiOtu2O9oSJpMpTjA5g&libraries=places" />
+
+
     <Provider store={store}>
       <PersistGate loading={true} persistor={persistor}>
           <ThemeProvider theme={muiCustomTheme}>

@@ -32,7 +32,6 @@ export const CustomerDetails = ({ user } : ICustomerDetailsProp) => {
     const desktop = useMediaQuery('(min-width: 900px)');
 
     return <CheckoutContainer>
-
         {
             user ? <PickupOrDelivery /> 
             : <Skeleton variant="rectangular" width={"50%"}>
