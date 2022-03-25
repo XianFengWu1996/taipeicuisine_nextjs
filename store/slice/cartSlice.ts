@@ -4,35 +4,38 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface CartState {
     cart: ICartItem[],
     cart_quantity: number,
-    original_subtoal:number,
+    original_subtotal:number,
     subtotal: number,
     delivery_fee: number,
     tip: number,
     tax: number,
     total: number,
 
+    point_redemption: number,
+    lunch_discount: number,
+
     is_delivery: boolean,
     tip_type: string,
     payment_type: string,
     comments: string, 
-    point_redemption: number,
     includeUtensils: boolean,
 }
 
 // Define the initial state using that type
 const initialState: CartState = {
     cart: [],
-    cart_quantity: 1,
-    original_subtoal: 13.95,
-    subtotal: 13.95,
+    cart_quantity: 0,
+    original_subtotal: 0,
+    subtotal: 0,
     delivery_fee: 0,
     tip: 0,
-    tax: 0.98,
-    total: 14.93,
+    tax: 0,
+    total: 0,
 
+    lunch_discount: 0,
     // cart: [],
     // cart_quantity: 0,
-    // original_subtoal: 0,
+    // original_subtotal: 0,
     // subtotal: 0,
     // tip: 0,
     // tax: 0,
@@ -52,13 +55,33 @@ const calculateTipTotal = (state: CartState, value: number) => {
 }
 
 const calculateTotal = (state: CartState, value:number = 0, quantity: number = 0) => {
-  let discount = Number((state.point_redemption / 100).toFixed(2));
+
+  // handle lunch count and discount
+
+  let lunchCount = 0;
+  let discount = 0;
+
+  state.cart.forEach((item) => {
+    if(item.dish.is_lunch){
+      lunchCount += item.quantity;
+    }
+  })
+
+  if(state.cart.length <= 0){
+    discount = 0;
+    state.point_redemption = 0;
+    state.payment_type = ''
+  } else {
+    discount = Number((state.point_redemption / 100).toFixed(2));
+  }
+
+  state.lunch_discount = Math.floor(lunchCount / 3) * 2.9
 
   state.cart_quantity = state.cart_quantity + quantity;
-  state.original_subtoal = Number((state.original_subtoal + value).toFixed(2));
-  state.subtotal = Number((state.original_subtoal - discount).toFixed(2));
+  state.original_subtotal = Number((state.original_subtotal + value).toFixed(2));
+  state.subtotal = Number((state.original_subtotal - discount - state.lunch_discount).toFixed(2));
   state.tax = Number((state.subtotal * 0.07).toFixed(2))
-  state.total = Number((state.subtotal + state.tax +( state.is_delivery ? state.delivery_fee : 0) ).toFixed(2))
+  state.total = Number((state.subtotal + state.tax +(state.is_delivery ? state.delivery_fee : 0) ).toFixed(2))
 }
 
 
@@ -117,16 +140,16 @@ export const cartSlice = createSlice({
     removeItemFromCart: (state, {payload} : PayloadAction<ICartItem>) => {
       let index = state.cart.findIndex(item => item.id === payload.id); 
       state.cart.splice(index, 1);
-
       calculateTotal(state, -payload.total, -payload.quantity);
     },
     clearCart: (state) => {
       state.cart = [];
       state.cart_quantity = 0
-      state.original_subtoal = 0,
+      state.original_subtotal = 0,
       state.subtotal = 0;
       state.tax = 0;
       state.total = 0;
+      calculateTotal(state);
     },  
     // DELIVERY RELATED
     deliveryToggle: (state) => {
@@ -178,7 +201,7 @@ export const cartSlice = createSlice({
     },
     // POINT REDEMPTION
     setPointRedemption: (state, {payload} : PayloadAction<number>) => {
-      let limit = Math.floor((state.original_subtoal / 2) * 100); // then the limit for the order will be half of the the subtotal will be 697.5 points
+      let limit = Math.floor((state.original_subtotal / 2) * 100); // then the limit for the order will be half of the the subtotal will be 697.5 points
 
       if(payload > limit){
         state.point_redemption = limit;

@@ -53,11 +53,17 @@ export const CartSummary = () => {
 
             <ListContainer>
                 { renderSpecialInstruction() }
-                <Divider />
+
                 <Typography>Number of Items: {cartState.cart_quantity}</Typography> 
-
-                <PriceDisplay title="Point Redemption" value={-Number((cartState.point_redemption / 100).toFixed(2))} />
-
+                <Divider />
+                {   (cartState.point_redemption > 0 || cartState.lunch_discount > 0) &&
+                    <div>
+                        <Typography>Discounts</Typography>
+                        { cartState.lunch_discount > 0 && <PriceDisplay title="Lunch Discount" value={-cartState.lunch_discount} />}
+                        { cartState.point_redemption > 0 && <PriceDisplay title="Point Redemption" value={-Number((cartState.point_redemption / 100).toFixed(2))} />}
+                    </div>
+                }
+                <Divider />
                 <PriceDisplay title='Subtotal' value={cartState.subtotal} />
                 {
                     cartState.is_delivery ? <PriceDisplay title='Delivery' value={cartState.delivery_fee} /> : null
