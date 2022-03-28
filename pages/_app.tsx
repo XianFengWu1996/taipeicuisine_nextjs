@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
 
-    <Script strategy={'beforeInteractive'} src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVIhwZkhPJDZDdUiOtu2O9oSJpMpTjA5g&libraries=places" />
+    <Script strategy={'beforeInteractive'} src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_MAP_KEY}&libraries=places`} />
 
 
     <Provider store={store}>

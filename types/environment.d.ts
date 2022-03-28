@@ -13,7 +13,7 @@ declare global {
         NEXT_PUBLIC_FB_MESSAGING_SENDER_ID: string,
         NEXT_PUBLIC_FB_APP_ID: string,
         NEXT_PUBLIC_FB_MEASUREMENT_ID: string,
-
+        NEXT_PUBLIC_MAP_KEY:string,
       }
     }
 }
