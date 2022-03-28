@@ -16,7 +16,10 @@ const AddToCartButton = styled(Button)(({theme}) => ({
     display: 'flex',
     justifyContent: 'space-around',
     padding: '10px',
-    marginTop: 10,
+
+    [theme.breakpoints.down('sm')]: {
+        marginTop: 10
+    }
 }))
 
 const DishText = styled(Typography)(() => ({
@@ -173,7 +176,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
             </div>  
         </DialogContent>
 
-        <DialogActions sx={{ display: 'flex', flexDirection: 'column'}}> 
+        <DialogActions sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignContent: 'center'}}> 
             <QuantityController
                 quantity={quantity}
                 handleIncrease={increaseQuantity}
