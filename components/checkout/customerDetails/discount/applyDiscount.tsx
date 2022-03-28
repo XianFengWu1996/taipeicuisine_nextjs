@@ -26,16 +26,19 @@ export const ApplyDiscount = () => {
     }
 
     const dispatch = useAppDispatch();
-    const { original_subtoal } = useAppSelector(state => state.cart)
+    const { original_subtotal, cart } = useAppSelector(state => state.cart)
     const { reward } = useAppSelector(state => state.customer)
 
     const handleDiscountOnBlur = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element> ) => {
         let point = Number(e.target.value);
 
         if(point > reward.points){
-            snackbar.error(`Not enough points (${reward.points} pts available)`)
-            return;
+            return snackbar.error(`Not enough points (${reward.points} pts available)`);
         } 
+
+        if(cart.length < 1){
+            return snackbar.error("Cart is empty, try adding something...");
+        }
 
         dispatch(setPointRedemption(point));
         setOpen(false); 
@@ -54,7 +57,7 @@ export const ApplyDiscount = () => {
             <DiscountTitle>
                 <Typography sx={{ marginRight: '5px'}}>POINT REDEMPTION</Typography>
                 
-                <Tooltip title={`Max Per Order: 50% of the Subtotal (${Math.floor((original_subtoal / 2) * 100)}) `} placement="top-start" arrow>
+                <Tooltip title={`Max Per Order: 50% of the Subtotal (${Math.floor((original_subtotal / 2) * 100)}) `} placement="top-start" arrow>
                     <Icon sx={{ fontSize: '18px'}}>
                         <BsQuestionCircle />
                     </Icon>
