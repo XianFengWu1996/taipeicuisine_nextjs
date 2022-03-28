@@ -1,63 +1,28 @@
-import { Grid, Skeleton } from "@mui/material";
-import { Box, styled } from "@mui/system";
-import { MenuSelect } from "../../components/menu/menuSelect";
+import { Grid, Skeleton, useMediaQuery } from "@mui/material";
 
-export default function MenuSkeleton () {
-    let list: number[] = [1,2,3,4,5,6];
+export default function CheckoutSkeleton  () {
+    const desktop = useMediaQuery('(min-width: 900px)');
 
-    const SelectContainer = styled(Box)(({theme}) => ({
-        padding: '0 80px',
-        width: '50vw',
-
-        [theme.breakpoints.down('md')]: {
-            padding: '0 50px',
-            width: '65vw',
-        },
-
-        [theme.breakpoints.down('sm')]: {
-            width: '100vw',
-            padding: '0 20px',
-        },
-    }))
-
-    const MenuItemContainer = styled(Grid)(({ theme }) => ({
-        padding: '15px 80px',
-
-        [theme.breakpoints.down('md')]: {
-            padding: '15px 50px',
-        },
-
-        [theme.breakpoints.down('sm')]: {
-            padding: '15px',
-        },
-    }))
-    
     return <>
-        <SelectContainer>
-            <Skeleton width={'100%'}>
-                <MenuSelect />
-            </Skeleton>
-        </SelectContainer>
+        <Grid container>
+            <Grid item lg={7} md={8} sm={12} xs={12}>
+                <Skeleton width={'90%'} height={50} variant="rectangular" sx={{ margin: '30px' }}/>
 
-        <Skeleton 
-            variant="rectangular"
-            height={50} 
-            width={'100%'}
-            sx={{ marginY: 1}}
-        />
+                <Skeleton width={'90%'} height={200} variant="rectangular" sx={{ margin: '30px' }}/>
 
-        <MenuItemContainer container spacing={2} >
+                <Skeleton width={'90%'} height={50} variant="rectangular" sx={{ margin: '30px' }}/>
+
+                <Skeleton width={'90%'} height={50} variant="rectangular" sx={{ margin: '30px' }}/>
+
+                <Skeleton width={'90%'} height={100} variant="rectangular" sx={{ margin: '30px' }}/>
+
+            </Grid> 
+
             {
-                list.map((_, index) => {
-                    return <Grid item xs={12} md={6} key={index}> 
-                        <Skeleton 
-                            variant="rectangular"
-                            height={120} 
-                        />
-                    </Grid>
-                })
+                desktop && <Grid item lg={5} md={4} >
+                    <Skeleton width={'90%'} height={'90%'} variant="rectangular" sx={{ margin: '30px' }}/>
+                </Grid> 
             }
-    
-        </MenuItemContainer>        
+        </Grid>
     </>
 }

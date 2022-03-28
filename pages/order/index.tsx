@@ -6,7 +6,7 @@ import { PublicAppBar } from "../../components/appbar/appbar";
 import snackbar from "../../components/snackbar";
 import { getInitialMenuData, resetUponUnmount } from "../../store/slice/menuSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import MenuSkeleton from "./skeleton";
+import MenuSkeleton from "../../components/menu/skeleton";
 
 import { hasExpired } from '../../utils/functions/time'
 

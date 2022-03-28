@@ -9,12 +9,13 @@ interface ICustomerState extends ICustomer{
   customerSaveLoading: boolean, // handle loading for the save button in customer card
   customerCardLoading: boolean,
   addressCollapse: boolean,
+  showSkeleton: boolean,
 }
 // Define the initial state using that type
 const initialState: ICustomerState  = {
-    name: 'Xian Feng Wu',
-    phone: '9175787352',
-    phone_list: ['9175787352', '7816669666', '1234567890', '9175787352', '7816669666', '1234567890'],
+    name: '',
+    phone: '',
+    phone_list: [],
     address:{
         address: '',
         street: '',
@@ -26,8 +27,7 @@ const initialState: ICustomerState  = {
         apt: '',
     }, 
     reward: {
-        points: 1300,
-        transactions: [],
+        points: 0,
     },
     loginDialogOpen: false,
     customerCollapse: false,
@@ -35,6 +35,7 @@ const initialState: ICustomerState  = {
     customerSaveLoading: false,
     customerCardLoading: false,
     addressCollapse: false,
+    showSkeleton: false,
 }   
 
 const handleDuplicatePhoneNum = (state: ICustomer, list: string[]) => {
@@ -69,6 +70,13 @@ export const customerSlice = createSlice({
       state.phone_list = payload.phone_list
     },
     // NAME RELATED
+    getCustomer: (state, {payload} : PayloadAction<ICustomer>) => {
+      state.address = { ... payload.address }
+      state.name = payload.name
+      state.phone = payload.phone
+      state.phone_list = payload.phone_list
+      state.reward = payload.reward
+    },
     updateCustomerName: (state, {payload} : PayloadAction<string>) => {
       state.name = payload;
     },
@@ -78,6 +86,7 @@ export const customerSlice = createSlice({
         ...payload
       }
     },
+
    
     // STATES RELATD
     setLoginDialog: (state, {payload}:PayloadAction<boolean>) => {
@@ -97,7 +106,10 @@ export const customerSlice = createSlice({
     },
     setAddressCollapse: (state, {payload}:PayloadAction<boolean>) => {
       state.addressCollapse = payload;
-    }
+    },
+    setCheckoutSkeleton: (state, {payload}:PayloadAction<boolean>) => {
+      state.showSkeleton = payload;
+    },
     
   }
 })
@@ -116,5 +128,7 @@ export const {
   setCustomerCardLoading,
   setAddressCollapse,
   updateAddress,
+  getCustomer,
+  setCheckoutSkeleton
 } = customerSlice.actions
 
