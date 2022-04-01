@@ -11,7 +11,8 @@ import { getCustomer, setCheckoutSkeleton, setLoginDialog } from "../../store/sl
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { handleCatchError } from "../../utils/errors/custom";
 import { fbAuth, token } from "../../utils/functions/auth";
-import CheckoutSkeleton from "./skeleton";
+import CheckoutSkeleton from "../../components/checkout/skeleton";
+
 
 export default function CheckoutPage() {
     const desktop = useMediaQuery('(min-width: 900px)');
@@ -69,6 +70,5 @@ export default function CheckoutPage() {
                 } 
             </Grid> : <CheckoutSkeleton />    
         }
-       
     </>
 }

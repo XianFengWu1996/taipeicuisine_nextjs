@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import '../styles/app.css'
 import type { AppProps } from 'next/app'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfigurator } from '../components/snackbar'
@@ -22,7 +23,6 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 NProgress.configure({
-  minimum: 0.3,
   easing: 'ease',
   speed: 800,
   showSpinner: false,
@@ -32,8 +32,6 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-
-
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
     <Head>
@@ -42,15 +40,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     </Head>
 
     <Script strategy={'beforeInteractive'} src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_MAP_KEY}&libraries=places`} />
-
-
     <Provider store={store}>
       <PersistGate loading={true} persistor={persistor}>
           <ThemeProvider theme={muiCustomTheme}>
           <CssBaseline />
             <SnackbarProvider maxSnack={3}>
               <SnackbarUtilsConfigurator />
-              <Component {...pageProps} />
+                  <Component {...pageProps} />
               <AuthDialog />
             </SnackbarProvider>
           </ThemeProvider>

@@ -1,5 +1,6 @@
 import { Button, ButtonGroup, Typography } from "@mui/material"
 import { setPayment } from "../../../../store/slice/cartSlice";
+import { setPaymentDialog } from "../../../../store/slice/customerSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store"
 
 export const PaymentSelection = () => {
@@ -11,6 +12,7 @@ export const PaymentSelection = () => {
             <Button
                 variant={cartState.payment_type === 'online' ? 'contained' : 'outlined'}
                 onClick={() => {
+                    dispatch(setPaymentDialog(true));
                     dispatch(setPayment('online'))
                 }}
             >Pay Online</Button>

@@ -33,13 +33,6 @@ const initialState: CartState = {
     total: 0,
 
     lunch_discount: 0,
-    // cart: [],
-    // cart_quantity: 0,
-    // original_subtotal: 0,
-    // subtotal: 0,
-    // tip: 0,
-    // tax: 0,
-    // total: 0,
 
     is_delivery: false,
     tip_type: '',
