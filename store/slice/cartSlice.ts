@@ -1,28 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-// Define a type for the slice state
-export interface CartState {
-    cart: ICartItem[],
-    cart_quantity: number,
-    original_subtotal:number,
-    subtotal: number,
-    delivery_fee: number,
-    tip: number,
-    tax: number,
-    total: number,
 
-    point_redemption: number,
-    lunch_discount: number,
-
-    is_delivery: boolean,
-    tip_type: string,
-    payment_type: string,
-    comments: string, 
-    includeUtensils: boolean,
-}
 
 // Define the initial state using that type
-const initialState: CartState = {
+const initialState: ICartState = {
     cart: [],
     cart_quantity: 0,
     original_subtotal: 0,
@@ -42,12 +23,12 @@ const initialState: CartState = {
     includeUtensils: false, 
 }
 
-const calculateTipTotal = (state: CartState, value: number) => {
+const calculateTipTotal = (state: ICartState, value: number) => {
   state.tip = Number((state.subtotal * value).toFixed(2));
   state.total = Number((state.subtotal + state.tip + state.tax).toFixed(2));
 }
 
-const calculateTotal = (state: CartState, value:number = 0, quantity: number = 0) => {
+const calculateTotal = (state: ICartState, value:number = 0, quantity: number = 0) => {
 
   // handle lunch count and discount
 
@@ -184,7 +165,7 @@ export const cartSlice = createSlice({
       state.total = Number((state.subtotal + state.tip + state.tax).toFixed(2));
     },
     // PAYMENT RELATED
-    setPayment: (state, {payload} : PayloadAction<string>) => {
+    setPayment: (state, {payload} : PayloadAction<IPaymentType>) => {
       // payment_type: online, cash, or instore
       state.payment_type = payload
     },
