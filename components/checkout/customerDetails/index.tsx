@@ -14,6 +14,7 @@ import Router from "next/router"
 import axios from "axios"
 import { token } from "../../../utils/functions/auth"
 import snackbar from "../../snackbar"
+import { isEmpty } from "lodash"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -38,6 +39,13 @@ export const CustomerDetails = () => {
     const handlePlaceOrder = async () => {
         // TWO MAIN THINGS TO CHECK BEFORE PROCEEDING
         // IF THE CART IS EMPTY OR NOT
+        // IF PICKUP, 
+        // - REQUIRE CUSTOMER INFO (NAME AND PHONE)
+
+        // IF DELIVERY
+        // - REQUIRE CUSTOMER INFO (NAME AND PHONE)
+        // - MINIMUM FOR DELIVERY
+        // - REQUIRED THE ADDRESS AND DELIVERY FEE
         if(cartState.cart.length === 0){
             return snackbar.error('Add item before proceeding')
         }
@@ -63,32 +71,34 @@ export const CustomerDetails = () => {
                 return snackbar.error('Please try to search the address again')
             }
         }
-        // IF PICKUP, 
-        // - REQUIRE CUSTOMER INFO (NAME AND PHONE)
 
-        // IF DELIVERY
-        // - REQUIRE CUSTOMER INFO (NAME AND PHONE)
-        // - MINIMUM FOR DELIVERY
-        // - REQUIRED THE ADDRESS AND DELIVERY FEE
+        if(isEmpty(cartState.payment_type)){
+            return snackbar.error('Please select a payment method')
+        }
+     
 
         try {
             // head to the payment page for online payments
             if(cartState.payment_type === 'online'){
-                return Router.push('/order/payment')
+                // return Router.push('/order/payment')
+                console.log('go to payment page')
+
             }
 
             // process the order
-            let response = await axios({
-                method: 'POST',
-                url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_order`,
-                headers: { 'authorization': `Bearer ${await token()}`},
-                data: {
-                    cart: cartState,
-                    customer: customerState,
-                }
-            })
+            // let response = await axios({
+            //     method: 'POST',
+            //     url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_order`,
+            //     headers: { 'authorization': `Bearer ${await token()}`},
+            //     data: {
+            //         cart: cartState,
+            //         customer: customerState,
+            //     }
+            // })
 
-            Router.push(`/order/confirm?order_id=${response.data.order_id}`)
+            // Router.push(`/order/confirmation?order_id=${response.data.order_id}`)
+            console.log('process')
+
 
         } catch (error) {
             handleCatchError(error as Error, 'Failed to place order');

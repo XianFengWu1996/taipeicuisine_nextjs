@@ -44,7 +44,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <PersistGate loading={true} persistor={persistor}>
           <ThemeProvider theme={muiCustomTheme}>
           <CssBaseline />
-            <SnackbarProvider maxSnack={3}>
+            <SnackbarProvider maxSnack={3} anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+            }}>
               <SnackbarUtilsConfigurator />
                   <Component {...pageProps} />
               <AuthDialog />

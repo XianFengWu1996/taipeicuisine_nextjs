@@ -56,6 +56,8 @@ const calculateTotal = (state: ICartState, value:number = 0, quantity: number = 
   state.subtotal = Number((state.original_subtotal - discount - state.lunch_discount).toFixed(2));
   state.tax = Number((state.subtotal * 0.07).toFixed(2))
   state.total = Number((state.subtotal + state.tax +(state.is_delivery ? state.delivery_fee : 0) ).toFixed(2))
+
+  state.payment_type = ''
 }
 
 
