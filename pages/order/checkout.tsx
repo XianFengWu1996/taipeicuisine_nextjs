@@ -14,6 +14,7 @@ import { fbAuth, token } from "../../utils/functions/auth";
 import CheckoutSkeleton from "../../components/checkout/skeleton";
 
 
+
 export default function CheckoutPage() {
     const desktop = useMediaQuery('(min-width: 900px)');
     const dispatch = useAppDispatch();
@@ -41,12 +42,12 @@ export default function CheckoutPage() {
     }
 
     useEffect(() => {
-        getCustomerInfo();
-
         const subscribe = onAuthStateChanged(fbAuth, async fbUser => {
             if(!fbUser){
                 dispatch(setLoginDialog(true));
                 Router.push('/order?redirect=checkout');
+            }  else {
+                getCustomerInfo();
             }
         });
 
@@ -58,17 +59,15 @@ export default function CheckoutPage() {
 
     return <>
         <PublicAppBar />
+            {
+                !showSkeleton ? <Grid container spacing={8}>
+                    <Grid item lg={7} md={8} sm={12} xs={12}>
+                        <CustomerDetails /> 
+                    </Grid> 
+            
+                    {  desktop && <Grid item lg={5} md={4} ><CartSummary /></Grid>  } 
+                </Grid> : <CheckoutSkeleton />    
+            }
 
-        {
-            !showSkeleton ? <Grid container spacing={8}>
-                <Grid item lg={7} md={8} sm={12} xs={12}>
-                    <CustomerDetails /> 
-                </Grid> 
-        
-                {
-                    desktop && <Grid item lg={5} md={4} ><CartSummary /></Grid>
-                } 
-            </Grid> : <CheckoutSkeleton />    
-        }
     </>
 }

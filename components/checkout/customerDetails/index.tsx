@@ -11,8 +11,6 @@ import { styled } from "@mui/system"
 import { AddressCard } from "./address/deliveryCard"
 import { handleCatchError } from "../../../utils/errors/custom"
 import Router from "next/router"
-import axios from "axios"
-import { token } from "../../../utils/functions/auth"
 import snackbar from "../../snackbar"
 import { isEmpty } from "lodash"
 
@@ -80,9 +78,7 @@ export const CustomerDetails = () => {
         try {
             // head to the payment page for online payments
             if(cartState.payment_type === 'online'){
-                // return Router.push('/order/payment')
-                console.log('go to payment page')
-
+                return Router.push('/order/payment')
             }
 
             // process the order

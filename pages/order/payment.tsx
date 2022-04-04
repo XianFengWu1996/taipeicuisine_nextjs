@@ -1,68 +1,18 @@
 import { PublicAppBar } from "../../components/appbar/appbar";
 
-import {loadStripe} from '@stripe/stripe-js';
-import {
-  PaymentElement,
-  Elements,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
+import { PaymentElement, useStripe, useElements,} from '@stripe/react-stripe-js';
 import axios from "axios";
-import { fbAuth, token } from "../../utils/functions/auth";
-import { FormEvent, useEffect, useState } from "react";
+import { token } from "../../utils/functions/auth";
+import { FormEvent, useState } from "react";
 import { useAppSelector } from "../../store/store";
-import { onAuthStateChanged,  } from "firebase/auth";
-import Cookie from 'js-cookie'
 import { handleCatchError } from "../../utils/errors/custom";
 import snackbar from "../../components/snackbar";
 
-const stripePromise = loadStripe('pk_test_MQq0KVxKkSLUx0neZbdLTheo00iB1Ru6a0');
 
 export default function PaymentPage () {
-    const { total } = useAppSelector(state => state.cart)
-
-    const s_id = Cookie.get('s_id');
-
-     const createPaymentIntent = async (token: string) =>  {
-            try {
-                await axios({
-                    method: 'POST',
-                    url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/create-payment-intent`,
-                    headers: {  "authorization": `Bearer ${token}`},
-                    data: { total }
-                })
-            } catch (error) {
-                handleCatchError(error as Error, 'Failed to create intent');
-            }
-        }
-
-    useEffect(() => {
-        
-        const listener = onAuthStateChanged(fbAuth, async (user) => {
-            if(user){
-                // only create a payment if s_id is undefine or null
-                if(!s_id){
-                    createPaymentIntent(await user.getIdToken())
-                }
-            }
-        });
-
-        return () => listener()
-    }, [])
-    
-    
-
     return <>
         <PublicAppBar />
-
-        {
-            s_id && <Elements stripe={stripePromise} options={{
-                clientSecret: s_id,
-                appearance: { theme: 'stripe'}
-            }}>
-                <CheckoutForm />
-            </Elements>
-        }
+        <CheckoutForm />
     </>
 }
 
@@ -120,7 +70,7 @@ export const CheckoutForm = () => {
             <PaymentElement id="payment-element" />
             <button disabled={isLoading || !stripe || !elements} id="stripe_button">
                 <span id="button-text">
-                {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+                {isLoading ? <div className="spinner" id="spinner"></div> : `Pay Now $${cartState.total}`}
                 </span>
             </button>
         </form>

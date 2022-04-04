@@ -17,6 +17,12 @@ import { AuthDialog } from '../components/auth/authDialog'
 import { PersistGate } from 'redux-persist/integration/react'
 import Head from 'next/head'
 import Script from 'next/script'
+import { Elements, } from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+import Cookie from 'js-cookie'
+import { useEffect, useState } from 'react'
+import { handleCatchError } from '../utils/errors/custom'
+
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -32,7 +38,32 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
+const stripePromise = loadStripe('pk_test_MQq0KVxKkSLUx0neZbdLTheo00iB1Ru6a0');
+
 function MyApp({ Component, pageProps }: AppProps) {
+  const [s_id, setSID] = useState<string | undefined>(Cookie.get('s_id'));
+
+  const createPaymentIntent = async () =>  {
+    try {
+        await axios({
+            method: 'POST',
+            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/create-payment-intent`,
+        })
+
+        setSID(Cookie.get('s_id'));
+    } catch (error) {
+      handleCatchError(error as Error, 'Failed to create intent');
+    }
+}
+
+  useEffect(() => {
+      // only create a payment if s_id is undefine or null
+      if(!s_id){
+       createPaymentIntent()
+      } 
+  }, [])
+  
+
   return <>
     <Head>
         <title>Taipei Cuisine</title>
@@ -49,7 +80,14 @@ function MyApp({ Component, pageProps }: AppProps) {
                   horizontal: 'right',
             }}>
               <SnackbarUtilsConfigurator />
-                  <Component {...pageProps} />
+                {
+                  s_id && <Elements stripe={stripePromise} options={{
+                          clientSecret: s_id,
+                          appearance: { theme: 'stripe'}
+                  }}>
+                    <Component {...pageProps} />
+                  </Elements>
+                }
               <AuthDialog />
             </SnackbarProvider>
           </ThemeProvider>
