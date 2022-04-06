@@ -18,3 +18,14 @@ interface IAddress {
     apt: string,
     delivery_fee: number,
 }
+
+
+interface IPublicPaymentMethod {
+    card: {
+        brand: string,
+        exp_month: number,
+        exp_year: number,
+        last_four: string
+    },
+    id: string
+}

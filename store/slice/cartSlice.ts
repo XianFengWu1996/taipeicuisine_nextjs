@@ -127,6 +127,7 @@ export const cartSlice = createSlice({
       state.total = 0;
       calculateTotal(state);
     },  
+    orderComplete: () => initialState,
     // DELIVERY RELATED
     deliveryToggle: (state) => {
       state.is_delivery = !state.is_delivery;
@@ -193,7 +194,7 @@ export const cartSlice = createSlice({
     setDelivery: (state, {payload}: PayloadAction<number>) => {
       state.delivery_fee = payload;
       calculateTotal(state);
-    }
+    },
   }
 })
 
@@ -212,7 +213,8 @@ export const {
   setComments,
   setPointRedemption,
   setToggleIncludeUtensils,
-  setDelivery
+  setDelivery,
+  orderComplete,
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;

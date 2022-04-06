@@ -1,78 +1,64 @@
 import { PublicAppBar } from "../../components/appbar/appbar";
-
-import { PaymentElement, useStripe, useElements,} from '@stripe/react-stripe-js';
+import Cookie from 'js-cookie'
+import { PaymentForm } from "../../components/payment/paymentForm";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { token } from "../../utils/functions/auth";
-import { FormEvent, useState } from "react";
-import { useAppSelector } from "../../store/store";
+import { onAuthStateChanged } from "firebase/auth";
+import { fbAuth } from "../../utils/functions/auth";
 import { handleCatchError } from "../../utils/errors/custom";
-import snackbar from "../../components/snackbar";
+import { Elements } from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 
+
+const stripePromise = loadStripe('pk_test_MQq0KVxKkSLUx0neZbdLTheo00iB1Ru6a0');
 
 export default function PaymentPage () {
+    const [showSkeleton, setShowSkeleton] = useState(true);
+
+    const [cards, setCards] = useState<IPublicPaymentMethod[]>([])
+
+    const s_id = Cookie.get('s_id')
+    
+    useEffect(() => {
+       onAuthStateChanged(fbAuth, async user => {
+           if(user){
+               try {
+                    const method = await axios({
+                        method: 'GET',
+                        url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/get_payment_method`,
+                        headers: {
+                            'authorization': `Bearer ${await user.getIdToken()}`
+                        }
+                    })
+
+                    if(method.data.cards){
+                        setCards(method.data.cards);
+                    }
+               } catch (error) {
+                    handleCatchError(error as Error, 'Failed to get payment methods')
+               } finally {
+                setShowSkeleton(false);
+               }
+           }
+       })
+    }, [])
     return <>
         <PublicAppBar />
-        <CheckoutForm />
+        {
+            showSkeleton ? 
+                <div>skeleton</div>
+            :  <div>
+                {
+                    s_id && <Elements stripe={stripePromise} options={{
+                            clientSecret: s_id,
+                            appearance: { theme: 'stripe'}
+                    }}>
+                    <PaymentForm cards={cards}/>
+                    </Elements>
+                }
+            </div>
+            
+        }
     </>
 }
 
-export const CheckoutForm = () => {
-    const stripe = useStripe();
-    const elements = useElements();
-
-    const cartState = useAppSelector(state => state.cart)
-    const customerState = useAppSelector(state => state.customer)
-
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-       try {
-        e.preventDefault();
-    
-        if (!stripe || !elements) return;
-    
-        setIsLoading(true);
-
-        // submit the order our backend
-        let result = await axios({
-            method: 'POST',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/confirm`,
-            headers: { 'Authorization': `Bearer ${await token()}`},
-            data: { 
-                cart: cartState,
-                customer: customerState,
-            }
-        })
-        
-        // confirm the payment with stripe
-        const { error } = await stripe.confirmPayment({
-          elements,
-          confirmParams: {
-            return_url: `http://localhost:3000/order/confirmation?order_id=${result.data.order_id} `,
-          },
-        });
-
-        if (error.type === "card_error" || error.type === "validation_error") {
-            snackbar.error(error.message ?? "An unexpected error occured.");
-        }
-    
-       } catch (error) {
-          handleCatchError(error as Error, 'Payment Failed') 
-       } finally {
-        setIsLoading(false);
-       }
-      };
-
-    return <div style={{ display: 'flex',  justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
-            
-        <form id="payment_form" onSubmit={handleSubmit}>
-            <PaymentElement id="payment-element" />
-            <button disabled={isLoading || !stripe || !elements} id="stripe_button">
-                <span id="button-text">
-                {isLoading ? <div className="spinner" id="spinner"></div> : `Pay Now $${cartState.total}`}
-                </span>
-            </button>
-        </form>
-    </div>
-}
