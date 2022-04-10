@@ -18,9 +18,6 @@ import { PersistGate } from 'redux-persist/integration/react'
 import Head from 'next/head'
 import Script from 'next/script'
 
-import { useEffect, useState } from 'react'
-import { createPaymentIntent } from '../utils/functions/stripe'
-
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = 'application/json';

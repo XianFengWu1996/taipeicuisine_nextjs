@@ -1,21 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { uniq } from 'lodash'
 
-
-interface ICustomerState extends ICustomer{
-  // handle dialog open / close status
-  loginDialogOpen: boolean,
-  smsDialogOpen: boolean, 
-
-  //  handle loading status 
-  customerSaveLoading: boolean, 
-  customerCardLoading: boolean,
-
-  // handle collapse open / close status
-  customerCollapse: boolean,
-  addressCollapse: boolean,
-  showSkeleton: boolean,
-}
 // Define the initial state using that type
 const initialState: ICustomerState  = {
     name: '',
