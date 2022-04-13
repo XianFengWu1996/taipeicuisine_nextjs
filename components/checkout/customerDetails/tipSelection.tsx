@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { BsCurrencyDollar } from 'react-icons/bs'
 
 const CustomTipTextfield = styled(TextField)(() => ({
+    height: '50px',
     '& fieldset': {
         borderTopLeftRadius: 0,
         borderBottomLeftRadius: 0,
@@ -42,10 +43,9 @@ export const TipSelection = () => {
         inputRef.current!.value = ''
     }
 
-    return <>
-        <Typography variant="h4">Tip</Typography>
-        <div style={{ display: 'flex'}}>
-            <ButtonGroup size="large">
+    return <div style={{ marginBottom: '30px', }}>
+        <Typography variant="h6">Tip</Typography>
+            <ButtonGroup size="large" fullWidth sx={{ mb: 2}}>
                 <TipButton 
                     value="10%"
                     tip_type={cartState.tip_type}
@@ -61,10 +61,15 @@ export const TipSelection = () => {
                     tip_type={cartState.tip_type}
                     handleOnClick={() => handleTipOnChange('18%')}
                 />
-                  <TipButton 
+                <TipButton 
                     value="20%"
                     tip_type={cartState.tip_type}
                     handleOnClick={() => handleTipOnChange('20%')}
+                />
+                <TipButton 
+                    value="cash"
+                    tip_type={cartState.tip_type}
+                    handleOnClick={() => handleTipOnChange('cash')}
                 />
             </ButtonGroup>
 
@@ -74,8 +79,7 @@ export const TipSelection = () => {
                 clearFocus={handleClearFocus}
                 inputRef={inputRef}
             />
-        </div>
-    </>
+    </div>
 }
 
 interface ITipButtonProps {
@@ -128,13 +132,14 @@ const CustomTipButton = (props: ICustomTipButtonProps) => {
         dispatch(setCustomTip(Number(e.target.value)));
     }
 
-    return  <div style={{ display: 'flex', alignItems: 'stretch', marginLeft: '50px'}}>
+    return  <div style={{ display: 'flex', alignItems: 'stretch'}}>
     <Button 
         sx={{ 
             borderTopRightRadius: 0,
             borderBottomRightRadius: 0,
             borderRight: 0,
         }}
+        size="small"
         variant={props.tip_type === 'custom' ? 'contained' : 'outlined'}
         onClick={handleOnClick}>Custom</Button>
 
@@ -150,6 +155,8 @@ const CustomTipButton = (props: ICustomTipButtonProps) => {
           }}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
+        fullWidth
+        sx={{ height: 'inherit'}}
      />
 </div>
 }

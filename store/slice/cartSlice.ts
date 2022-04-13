@@ -141,8 +141,6 @@ export const cartSlice = createSlice({
 
       switch (payload) {
         case '10%':
-          // state.tip = Number((state.subtotal * 0.10).toFixed(2));
-          // state.total = Number((state.subtotal + state.tip).toFixed(2));
           calculateTipTotal(state, .10);
         break;
 

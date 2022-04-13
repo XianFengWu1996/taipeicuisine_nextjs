@@ -51,7 +51,7 @@ export default function PaymentPage () {
                 {
                     s_id && <Elements stripe={stripePromise} options={{
                             clientSecret: s_id,
-                            appearance: { theme: 'stripe'}
+                            appearance: { theme: 'stripe', }
                     }}>
                     <PaymentForm cards={cards}/>
                     </Elements>
