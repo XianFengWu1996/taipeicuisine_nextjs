@@ -65,9 +65,9 @@ export const MenuDrawer = (props: IMenuDrawerProps) => {
         },
         {
             id: '8a7d5046-0247-43a3-b6d8-f4a295cfa05d',
-            text: 'Cart',
+            text: 'Checkout',
             icon: <AiOutlineShoppingCart />,
-            path: '/cart'
+            path: '/order/checkout'
         },
         user ? {
             id: 'beb85444-bccf-4f34-90ca-ac274b086950',

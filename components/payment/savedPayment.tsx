@@ -44,6 +44,12 @@ export const SavedPaymentForm = ({ cards, cart, customer, stripe, elements, togg
                throw new Error('Please select a card to proceed')
             }
 
+            if(cart.is_delivery){
+                if(isEmpty(cart.tip_type)){
+                    throw new Error('Please select tip for your driver')
+                }
+            }
+
             await handlePayWithMethodId({ 
                 card: selectCard, 
                 cart,
@@ -79,7 +85,7 @@ export const SavedPaymentForm = ({ cards, cart, customer, stripe, elements, togg
                 </span>
             </button>       
 
-            <Button variant="text" sx={{ color: blue[300], my: 1}} onClick={toggleForm}>Use a new card</Button>
+            <Button variant="text" sx={{ color: blue[300], my: 1}} onClick={toggleForm}>Use a new card</Button>            
         </form>
     </>
 }

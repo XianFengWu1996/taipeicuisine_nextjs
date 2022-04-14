@@ -72,7 +72,7 @@ export const MenuItemList = () => {
             if(!dish.in_stock) return null   
 
             return <Grid key={dish.id} item xs={12} md={6}>
-                <Card style={{ minHeight: 120}} onClick={() => {
+                <Card style={{ minHeight: 140}} onClick={() => {
                     dispatch(getCurrentDish(dish));
                     handleOpen();
                 }}>
