@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, Typography, useMediaQuery } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, TextField, Typography, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ImageWithFallback } from "../images";
@@ -48,6 +48,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     const [total, setTotal] = useState(0)
     const [option, setOption] = useState({} as IVarirantOption)
     const [radioError, setRadioError] = useState(false);
+    const [comments, setComments] = useState('');
 
     // QUANTITY HANDLER
     const increaseQuantity = () => {
@@ -162,17 +163,29 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
             </IconButton>
 
             <div style={{ display: isMobile ? 'block' : 'flex'}}>
-                <ImageWithFallback src={dish.pic_url} label={dish.en_name} width={300} height={250}/>
-                <div style={{ paddingLeft: isMobile ? 0 : 20}}>
-                    <DishText>
-                        {dish.label_id}. {dish.en_name} {dish.ch_name} 
-                        {isEmpty(dish.variant) && dish.is_spicy ? <GoFlame color="red"/>: null }
-                    </DishText>
-                    <PriceText>${dish.price}</PriceText>
-                    <Typography>{dish.description}</Typography>
+                    <ImageWithFallback src={dish.pic_url} label={dish.en_name} width={300} height={250}/>
+                    <div style={{ paddingLeft: isMobile ? 0 : 20, display: 'flex', flexDirection: 'column'}}>
+                        <DishText>
+                            {dish.label_id}. {dish.en_name} {dish.ch_name} 
+                            {isEmpty(dish.variant) && dish.is_spicy ? <GoFlame color="red"/>: null }
+                        </DishText>
+                        <PriceText>${dish.price}</PriceText>
+                        <Typography>{dish.description}</Typography>
 
-                    { renderVarirant() }
+
+                        { renderVarirant() }
+                    <TextField 
+                        multiline
+                        minRows={2} 
+                        sx={{ m: 0.5}}
+                        placeholder="Leave comment specific to this dish, such as spicy level, allergies, etc"
+                        onBlur={(e) => {
+                            setComments(e.target.value);
+                        }}
+                    />
                 </div>
+
+
             </div>  
         </DialogContent>
 
