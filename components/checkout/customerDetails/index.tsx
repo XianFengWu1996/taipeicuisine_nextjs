@@ -13,6 +13,7 @@ import { handleCatchError } from "../../../utils/errors/custom"
 import Router from "next/router"
 import snackbar from "../../snackbar"
 import { isEmpty } from "lodash"
+import { PickupTime } from "./pickupTime/pickupTime"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -114,7 +115,10 @@ export const CustomerDetails = () => {
 
         <AddSpecialComment />
 
+        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
         <IncludeUtensils />
+        <PickupTime />
+        </div>
 
         <PaymentSelection />
 

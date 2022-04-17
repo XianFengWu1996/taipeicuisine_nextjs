@@ -8,6 +8,7 @@ import {  useEffect, useState } from "react";
 import { addToCart } from "../../store/slice/cartSlice";
 import { QuantityController } from "../quantityController";
 import { isEmpty } from "lodash";
+import { v4 } from "uuid";
 
 const AddToCartButton = styled(Button)(({theme}) => ({
     backgroundColor: '#555',
@@ -67,6 +68,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
         setTotal(dish.price);
         setOption({} as IVarirantOption)
         setRadioError(false)
+        setComments('');
     }
 
     const handleOnRadioChange = (id: string, options: IVarirantOption[]) => {
@@ -81,22 +83,31 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
         if(!isEmpty(dish.variant)){
             if(isEmpty(option)){
                 // set error
-                setRadioError(true);
-                return;
+                return setRadioError(true);
             }
         }
 
+        let id = dish.id;
+        if(!isEmpty(option.id)){
+            id = `${dish.id}${option.id}`
+        }  
+
+        if(!isEmpty(comments)){
+            id = `${dish.id}${v4()}`
+        }
+
         dispatch(addToCart({
-            id: option.id ? `${dish.id}${option.id}` :dish.id,
+            id,
             dish: {
                 ...dish,
                 price: dish.price + (option.price ?? 0)
             },
             quantity: quantity,
             option: option,
-            comment: '',
+            comment: comments,
             total: total,
         }));
+        setComments('');
         handleDialogClose();
     }
 

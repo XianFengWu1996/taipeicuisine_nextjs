@@ -53,7 +53,7 @@ export const SummaryItem = ({ item } : ISummaryItemProps)  => {
 
         {
             !isEmpty(item.comment) 
-                ?  <CommentText>{item.comment}</CommentText>
+                ?  <CommentText>Comments: {item.comment}</CommentText>
                 : null
         }
     </div>
