@@ -18,6 +18,7 @@ interface ICartState {
     payment_type: IPaymentType,
     comments: string, 
     includeUtensils: boolean,
+    schedule_time: string,
 }
 
 interface ICartItem {

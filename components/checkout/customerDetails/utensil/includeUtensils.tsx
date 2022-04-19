@@ -16,7 +16,7 @@ export const IncludeUtensils = () => {
     return <Card sx={{ margin: '10px 0', width: '300px', height: '100px'}}>
             <CardContent>
                 <Typography sx={{ color: 'green', fontWeight: 700}}>
-                      <GiThreeLeaves />  Eco-Friendly
+                      <GiThreeLeaves />  Eco-Friendly  
                     </Typography>
 
                 <FormControlLabel control={

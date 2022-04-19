@@ -21,6 +21,7 @@ const initialState: ICartState = {
     comments: '',
     point_redemption: 0,
     includeUtensils: false, 
+    schedule_time: '',
 }
 
 const calculateTipTotal = (state: ICartState, value: number) => {
@@ -193,7 +194,10 @@ export const cartSlice = createSlice({
       state.delivery_fee = payload;
       calculateTotal(state);
     },
-  }
+    setScheduleTime: (state, { payload }: PayloadAction<string>) => {
+      state.schedule_time = payload
+    },
+  } 
 })
 
 export default cartSlice.reducer
@@ -213,6 +217,7 @@ export const {
   setToggleIncludeUtensils,
   setDelivery,
   orderComplete,
+  setScheduleTime
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;
