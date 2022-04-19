@@ -1,9 +1,11 @@
-import { Card, CardContent, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material"
+import { QuestionMarkOutlined, QuestionMarkRounded } from "@mui/icons-material"
+import { Card, CardContent, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Tooltip, Typography } from "@mui/material"
 import { blue } from "@mui/material/colors"
 import { Box } from "@mui/system"
 import { isEmpty, range } from "lodash"
 import React, { useState } from "react"
 import { GiAlarmClock } from "react-icons/gi"
+import { HiQuestionMarkCircle } from "react-icons/hi"
 import { IoIosClose } from "react-icons/io"
 import { setScheduleTime } from "../../../../store/slice/cartSlice"
 import { useAppDispatch } from "../../../../store/store"
@@ -15,7 +17,7 @@ export const PickupTime = () => {
     const date = new Date(); // initialize a date object
     let startTime = 660;
     let endTime = 1300;
-    let startHour =Math.floor(startTime / 60)
+    let startHour = Math.floor(startTime / 60)
     let endHour =  Math.floor(endTime / 60)
   
 
@@ -28,8 +30,7 @@ export const PickupTime = () => {
         setHour('');
         setMinute('');
 
-        // let temp = range(startHour, endHour + 1);
-        let temp = range(0, 24);
+        let temp = range(startHour, endHour + 1);
 
         let allow_hours = temp.filter((hour) => hour >= date.getHours())
 
@@ -42,16 +43,26 @@ export const PickupTime = () => {
     };
 
     const handleMinuteOnOpen = (e: React.SyntheticEvent) => {
-        let generate_minute_by_5 = range(0, 60, 5); // generate a array with minutes increment by 5 
 
-        // if(hour.toString() === date.getHours().toString()){
-        //     let temp = generate_minute_by_5.filter((min) => min >= date.getMinutes())
-        //     console.log(temp)
-        //     setAllowMinutes(temp)
-        // } else {
-        //     setAllowMinutes(generate_minute_by_5);
-        // }
-        setAllowMinutes(generate_minute_by_5);
+        let generate_minute_by_5 = []; // generate a array with minutes increment by 5 
+
+        // if the hour selected is the last hour of the operating hour
+        // we want to generate the list only up to 30 min which is the last call 
+        if(hour.toString() === allow_hours[allow_hours.length - 1].toString()){
+            generate_minute_by_5 = range(0, 31, 5); // generate a array with minutes up to 30, with increment by 5 
+        } else {
+            generate_minute_by_5 = range(0, 60, 5); // generate a array with minutes up to 55, with increment by 5 
+        }
+
+        // if it is the current hour
+        if(hour.toString() === date.getHours().toString()){
+            // only show the minutes that has not passed yet
+            let temp = generate_minute_by_5.filter((min) => min >= date.getMinutes())
+            
+            return setAllowMinutes(temp);
+        } else {
+            setAllowMinutes(generate_minute_by_5);
+        }
 
     }
 
@@ -64,9 +75,15 @@ export const PickupTime = () => {
      
     return <Card sx={{ margin: '10px 0', width: '400px', height: '100px'}}>
     <CardContent>
-        <Typography sx={{ color: blue[300], fontWeight: 700}}>
-              <GiAlarmClock size={18}/>  Schedule Time :  {hour && minute ? `${hour}:${minute}`: 'ASAP(NOW)'}
+        <Typography sx={{ color: blue[300], fontWeight: 700, mb: 0.6,display: 'flex', alignItems: 'center'}}>
+        <GiAlarmClock size={18} style={{ margin: '0 10px'}}/>
+        Schedule Time: {hour && minute ? `${hour}:${minute}`: 'ASAP(NOW)'}
 
+        <Tooltip title="The time indicate when to start preparing the food" arrow>
+            <IconButton sx={{ padding: 0}}>
+                <HiQuestionMarkCircle style={{ fontSize: 15, marginLeft: '5px'}}/>
+            </IconButton>
+        </Tooltip>
         </Typography>
 
        <div style={{ display: 'flex'}}>
