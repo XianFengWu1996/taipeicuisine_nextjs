@@ -6,7 +6,7 @@ import { getCurrentDish } from "../../store/slice/menuSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store"
 import { AdminMenuDialog } from "../dialogs/adminMenuDialog";
 import { GoFlame } from 'react-icons/go'
-import { ImageWithFallback } from "../images";
+import { MenuPreviewImage } from "../images";
 import { PublicMenuDialog } from "../dialogs/publicMenuDialog";
 
 
@@ -77,7 +77,7 @@ export const MenuItemList = () => {
                     handleOpen();
                 }}>
                     <CardContent sx={{ display: 'flex'}}>
-                            <ImageWithFallback src={dish.pic_url} label={dish.en_name} width={90} height={80}/>
+                            <MenuPreviewImage src={dish.pic_url} label={dish.en_name}/>
 
                             <div style={{ paddingLeft: 10}}>
                                 <DishText>{dish.label_id}. {dish.en_name} {dish.ch_name} {dish.is_spicy ? <GoFlame color="red"/> : null}</DishText>

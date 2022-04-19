@@ -9,7 +9,7 @@ interface IImageWithFallbackProps {
     width?: number,
 }
 
-export const ImageWithFallback = (props: IImageWithFallbackProps) => {
+export const DialogImage = (props: IImageWithFallbackProps) => {
     const [error, setError] = useState(false);
 
     const handleOnError = () => {
@@ -25,6 +25,26 @@ export const ImageWithFallback = (props: IImageWithFallbackProps) => {
                 height={props.height ?? 200}
                 onError={handleOnError}
             /> : null
+        }
+    </>
+}   
+export const MenuPreviewImage = (props: IImageWithFallbackProps) => {
+    const [error, setError] = useState(false);
+
+    const handleOnError = () => {
+        setError(true);
+    }
+
+    return <>
+        {
+            props.src && props.src.length > 0 && <Image
+                src={error ? fallbackImg.src : props.src}
+                alt={`Image for ${props.label}`}
+                width={150}
+                height={150}
+                layout="intrinsic"
+                onError={handleOnError}
+            /> 
         }
     </>
 }   

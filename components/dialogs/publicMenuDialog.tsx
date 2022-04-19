@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, TextField, Typography, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { ImageWithFallback } from "../images";
+import { DialogImage } from "../images";
 import { AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai'
 import { GoFlame } from 'react-icons/go'
 import {  useEffect, useState } from "react";
@@ -174,8 +174,10 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
             </IconButton>
 
             <div style={{ display: isMobile ? 'block' : 'flex'}}>
-                    <ImageWithFallback src={dish.pic_url} label={dish.en_name} width={300} height={250}/>
-                    <div style={{ paddingLeft: isMobile ? 0 : 20, display: 'flex', flexDirection: 'column'}}>
+                    <div style={{ display: 'flex', justifyContent: 'center'}}>
+                    <DialogImage src={dish.pic_url} label={dish.en_name} width={300} height={300}/>
+                    </div>
+                    <div style={{ paddingLeft: isMobile ? 0 : 20, display: 'flex', flexDirection: 'column', width: '100%'}}>
                         <DishText>
                             {dish.label_id}. {dish.en_name} {dish.ch_name} 
                             {isEmpty(dish.variant) && dish.is_spicy ? <GoFlame color="red"/>: null }
@@ -188,7 +190,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
                     <TextField 
                         multiline
                         minRows={2} 
-                        sx={{ m: 0.5}}
+                        sx={{ m: 0.5, width: '100%'}}
                         placeholder="Leave comment specific to this dish, such as spicy level, allergies, etc"
                         onBlur={(e) => {
                             setComments(e.target.value);
