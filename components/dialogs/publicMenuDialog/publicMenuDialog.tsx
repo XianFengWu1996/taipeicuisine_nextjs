@@ -11,6 +11,7 @@ import { isEmpty } from "lodash";
 import { v4 } from "uuid";
 import { ItemDetails } from "./ItemDetails";
 import { DishVariant } from "./DishVariant";
+import { Comments } from "./Comments";
 
 const AddToCartButton = styled(Button)(({theme}) => ({
     backgroundColor: '#555',
@@ -159,17 +160,13 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
                             handleOnRadioChange={handleOnRadioChange}
                         />
 
+                        <Comments handleOnBlur={(e) => {
+                            setComments(e.target.value)
+                        }}/>
 
 
-                    <TextField 
-                        multiline
-                        minRows={2} 
-                        sx={{ m: 0.5, width: '100%'}}
-                        placeholder="Leave comment specific to this dish, such as spicy level, allergies, etc"
-                        onBlur={(e) => {
-                            setComments(e.target.value);
-                        }}
-                    />
+
+                    
            
                     <FormGroup>
                         <FormControlLabel 
