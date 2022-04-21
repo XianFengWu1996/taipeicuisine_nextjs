@@ -10,6 +10,7 @@ import { QuantityController } from "../../quantityController";
 import { isEmpty } from "lodash";
 import { v4 } from "uuid";
 import { ItemDetails } from "./ItemDetails";
+import { DishVariant } from "./DishVariant";
 
 const AddToCartButton = styled(Button)(({theme}) => ({
     backgroundColor: '#555',
@@ -86,9 +87,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     const handleOnRadioChange = (id: string, options: IVarirantOption[]) => {
         let option = options.find(op => op.id === id);
 
-        if(option){
-            setOption(option);
-        }    
+        if(option){ setOption(option) }    
     }
 
     const handleAddToCart = () => {
@@ -135,12 +134,6 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
         setTotal(temp);
     }, [quantity, option.price])
 
-    const renderVarirant = () => {
-        if(!dish.variant) return null 
-        if(dish.variant.length === 0) return null
-    
-       
-    }
 
     return <Dialog
             open={props.open}
@@ -160,9 +153,14 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
                     </div>
                     <div style={{ paddingLeft: isMobile ? 0 : 20, display: 'flex', flexDirection: 'column', width: '100%'}}>
                         <ItemDetails dish={dish}/>
-                        
+                        <DishVariant 
+                            variant={dish.variant}
+                            radioError={radioError}
+                            handleOnRadioChange={handleOnRadioChange}
+                        />
 
-                        { renderVarirant() }
+
+
                     <TextField 
                         multiline
                         minRows={2} 
@@ -222,41 +220,4 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     </Dialog>
 }
 
-// export const DishVariant = ({variant}: {variant:IVarirant}) => {
-//     <>
-//         {
-//             !isEmpty(variant) && variant.map((variant) => {
-//                 return <FormControl key={variant.id}>
-//                     <FormLabel id="demo-radio-buttons-group-label" sx={{ 
-//                             fontSize: 13, 
-//                             marginTop: 2,
-//                             color: radioError ? 'red' : 'black'
-//                     }}>{variant.en_name} {variant.ch_name}* {radioError ? '(Please Select One)' : ''}</FormLabel>
-//                         <RadioGroup
-//                             aria-labelledby="demo-radio-buttons-group-label"
-//                             name="radio-buttons-group"
-//                             onChange={(_, value) => {
-//                                 handleOnRadioChange(value, variant.options);
-//                             }}
-//                         >
-//                             {
-//                                 variant.options.map((option) => {
-//                                    return <FormControlLabel
-//                                         key={option.id} 
-//                                         value={option.id} 
-//                                         control={<Radio required size="small" />} 
-//                                         label={
-//                                             <Typography sx={{ fontSize: 14 }}>
-//                                                 {option.en_name} {option.ch_name} 
-//                                                 +${option.price.toFixed(2)} 
-//                                                 {option.spicy ? <GoFlame color="red"/>: null}
-//                                             </Typography>}
-//                                     /> 
-//                                 })
-//                             }
-//                         </RadioGroup>
-//                     </FormControl>
-//             })
-//         }
-//     </>
-// }
+
