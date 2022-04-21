@@ -1,14 +1,15 @@
-import { Button, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, Radio, RadioGroup, TextField, Typography, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { DialogImage } from "../images";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { DialogImage } from "../../images";
 import { AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai'
 import { GoFlame } from 'react-icons/go'
-import {  useEffect, useState } from "react";
-import { addToCart } from "../../store/slice/cartSlice";
-import { QuantityController } from "../quantityController";
+import {  ChangeEvent, useEffect, useState } from "react";
+import { addToCart } from "../../../store/slice/cartSlice";
+import { QuantityController } from "../../quantityController";
 import { isEmpty } from "lodash";
 import { v4 } from "uuid";
+import { ItemDetails } from "./ItemDetails";
 
 const AddToCartButton = styled(Button)(({theme}) => ({
     backgroundColor: '#555',
@@ -23,16 +24,7 @@ const AddToCartButton = styled(Button)(({theme}) => ({
     }
 }))
 
-const DishText = styled(Typography)(() => ({
-    fontSize: 20, 
-    fontWeight: 600
-}))
 
-const PriceText = styled(Typography)(() => ({
-    fontSize: 15, 
-    fontStyle: 'italic', 
-    fontWeight: 500
-}))
 
 
 interface IPublicMenuDialogProps {
@@ -50,6 +42,26 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     const [option, setOption] = useState({} as IVarirantOption)
     const [radioError, setRadioError] = useState(false);
     const [comments, setComments] = useState('');
+
+    const [lunchOption, setLunchOption] = useState<{
+        sub: boolean, 
+        no_soup: boolean, 
+        no_rice: boolean
+    }>({
+        sub: false,
+        no_soup: false,
+        no_rice: false,
+    })
+
+    const handleOnLunchOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.name)
+        setLunchOption({
+            ...lunchOption,
+            [e.target.name]: e.target.checked 
+        })
+
+        console.log(lunchOption)
+    }
 
     // QUANTITY HANDLER
     const increaseQuantity = () => {
@@ -127,38 +139,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
         if(!dish.variant) return null 
         if(dish.variant.length === 0) return null
     
-        return dish.variant.map((variant) => {
-            return <FormControl key={variant.id}>
-                <FormLabel id="demo-radio-buttons-group-label" sx={{ 
-                        fontSize: 13, 
-                        marginTop: 2,
-                        color: radioError ? 'red' : 'black'
-                    }}>{variant.en_name} {variant.ch_name}* {radioError ? '(Please Select One)' : ''}</FormLabel>
-                    <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
-                        name="radio-buttons-group"
-                        onChange={(_, value) => {
-                            handleOnRadioChange(value, variant.options);
-                        }}
-                    >
-                        {
-                            variant.options.map((option) => {
-                               return <FormControlLabel
-                                    key={option.id} 
-                                    value={option.id} 
-                                    control={<Radio required size="small" />} 
-                                    label={
-                                        <Typography sx={{ fontSize: 14 }}>
-                                            {option.en_name} {option.ch_name} 
-                                            +${option.price.toFixed(2)} 
-                                            {option.spicy ? <GoFlame color="red"/>: null}
-                                        </Typography>}
-                                /> 
-                            })
-                        }
-                    </RadioGroup>
-                </FormControl>
-        })
+       
     }
 
     return <Dialog
@@ -178,13 +159,8 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
                     <DialogImage src={dish.pic_url} label={dish.en_name} width={300} height={300}/>
                     </div>
                     <div style={{ paddingLeft: isMobile ? 0 : 20, display: 'flex', flexDirection: 'column', width: '100%'}}>
-                        <DishText>
-                            {dish.label_id}. {dish.en_name} {dish.ch_name} 
-                            {isEmpty(dish.variant) && dish.is_spicy ? <GoFlame color="red"/>: null }
-                        </DishText>
-                        <PriceText>${dish.price}</PriceText>
-                        <Typography>{dish.description}</Typography>
-
+                        <ItemDetails dish={dish}/>
+                        
 
                         { renderVarirant() }
                     <TextField 
@@ -196,6 +172,35 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
                             setComments(e.target.value);
                         }}
                     />
+           
+                    <FormGroup>
+                        <FormControlLabel 
+                            control={<Checkbox 
+                                name="sub"
+                                checked={lunchOption.sub}
+                                onChange={(e) => {
+                                    setLunchOption({
+                                        ...lunchOption,
+                                        sub: e.target.checked,
+                                        no_soup: e.target.checked ? false : e.target.checked,
+                                    })
+                                }}
+                            />} label="Substitute Hot&Sour Soup" />
+                        <FormControlLabel  
+                            control={<Checkbox 
+                                name="no_soup"
+                                checked={lunchOption.no_soup}
+                                onChange={handleOnLunchOptionChange}
+                                disabled={lunchOption.sub}
+                            />} label="No Soup"/>
+                        <FormControlLabel  
+                            control={<Checkbox 
+                                name="no_rice"
+                                checked={lunchOption.no_rice}
+                                onChange={handleOnLunchOptionChange}
+                            />} label="No Rice"/>
+
+                    </FormGroup>
                 </div>
 
 
@@ -216,3 +221,42 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
         </DialogActions>
     </Dialog>
 }
+
+// export const DishVariant = ({variant}: {variant:IVarirant}) => {
+//     <>
+//         {
+//             !isEmpty(variant) && variant.map((variant) => {
+//                 return <FormControl key={variant.id}>
+//                     <FormLabel id="demo-radio-buttons-group-label" sx={{ 
+//                             fontSize: 13, 
+//                             marginTop: 2,
+//                             color: radioError ? 'red' : 'black'
+//                     }}>{variant.en_name} {variant.ch_name}* {radioError ? '(Please Select One)' : ''}</FormLabel>
+//                         <RadioGroup
+//                             aria-labelledby="demo-radio-buttons-group-label"
+//                             name="radio-buttons-group"
+//                             onChange={(_, value) => {
+//                                 handleOnRadioChange(value, variant.options);
+//                             }}
+//                         >
+//                             {
+//                                 variant.options.map((option) => {
+//                                    return <FormControlLabel
+//                                         key={option.id} 
+//                                         value={option.id} 
+//                                         control={<Radio required size="small" />} 
+//                                         label={
+//                                             <Typography sx={{ fontSize: 14 }}>
+//                                                 {option.en_name} {option.ch_name} 
+//                                                 +${option.price.toFixed(2)} 
+//                                                 {option.spicy ? <GoFlame color="red"/>: null}
+//                                             </Typography>}
+//                                     /> 
+//                                 })
+//                             }
+//                         </RadioGroup>
+//                     </FormControl>
+//             })
+//         }
+//     </>
+// }

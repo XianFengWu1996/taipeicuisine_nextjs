@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store"
 import { AdminMenuDialog } from "../dialogs/adminMenuDialog";
 import { GoFlame } from 'react-icons/go'
 import { MenuPreviewImage } from "../images";
-import { PublicMenuDialog } from "../dialogs/publicMenuDialog";
+import { PublicMenuDialog } from "../dialogs/publicMenuDialog/publicMenuDialog";
 
 
 const CardContainer = styled('div')(({theme}) => ({

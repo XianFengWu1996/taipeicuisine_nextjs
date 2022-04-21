@@ -24,6 +24,7 @@ export const DialogImage = (props: IImageWithFallbackProps) => {
                 width={props.width ?? 200}
                 height={props.height ?? 200}
                 onError={handleOnError}
+                layout="fixed"
             /> : null
         }
     </>
