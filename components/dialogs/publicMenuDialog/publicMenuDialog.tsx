@@ -1,9 +1,8 @@
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, Radio, RadioGroup, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent,IconButton, Typography, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { DialogImage } from "../../images";
 import { AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai'
-import { GoFlame } from 'react-icons/go'
 import {  ChangeEvent, useEffect, useState } from "react";
 import { addToCart } from "../../../store/slice/cartSlice";
 import { QuantityController } from "../../quantityController";
@@ -12,6 +11,7 @@ import { v4 } from "uuid";
 import { ItemDetails } from "./ItemDetails";
 import { DishVariant } from "./DishVariant";
 import { Comments } from "./Comments";
+import { LunchOption } from "./LunchOption";
 
 const AddToCartButton = styled(Button)(({theme}) => ({
     backgroundColor: '#555',
@@ -56,13 +56,10 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     })
 
     const handleOnLunchOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.name)
         setLunchOption({
             ...lunchOption,
             [e.target.name]: e.target.checked 
         })
-
-        console.log(lunchOption)
     }
 
     // QUANTITY HANDLER
@@ -164,21 +161,20 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
                             setComments(e.target.value)
                         }}/>
 
-                        <LunchOption 
-                            lunchOption={lunchOption}
-                            handleOnOptionChange={handleOnLunchOptionChange}
-                            handleOnSubChange={(e) => {
-                                setLunchOption({
-                                    ...lunchOption,
-                                    sub: e.target.checked,
-                                    no_soup: e.target.checked ? false : e.target.checked,
-                                })
-                            }}
-                        />
-
-                    
-           
-                    
+                       {
+                           dish.is_lunch &&  <LunchOption
+                                lunchOption={lunchOption}
+                                handleOnOptionChange={handleOnLunchOptionChange}
+                                handleOnSubChange={(e) => {
+                                    // when sub is true, no_soup will be false
+                                    setLunchOption({
+                                        ...lunchOption,
+                                        sub: e.target.checked,
+                                        no_soup: e.target.checked ? false : e.target.checked,
+                                    })
+                                }}
+                            />
+                       }
                 </div>
 
 
@@ -200,37 +196,4 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     </Dialog>
 }
 
-interface ILunchOptionProps {
-    lunchOption: {
-        sub: boolean,
-        no_soup:boolean,
-        no_rice:boolean,
-    },
-    handleOnOptionChange: (e: ChangeEvent<HTMLInputElement>) => void,
-    handleOnSubChange: (e: ChangeEvent<HTMLInputElement>) => void
-}
 
-export const LunchOption = (_: ILunchOptionProps) => {
-return <FormGroup>
-                        <FormControlLabel 
-                            control={<Checkbox 
-                                name="sub"
-                                checked={_.lunchOption.sub}
-                                onChange={_.handleOnSubChange}
-                            />} label="Substitute Hot&Sour Soup" />
-                        <FormControlLabel  
-                            control={<Checkbox 
-                                name="no_soup"
-                                checked={_.lunchOption.no_soup}
-                                onChange={_.handleOnOptionChange}
-                                disabled={_.lunchOption.sub}
-                            />} label="No Soup"/>
-                        <FormControlLabel  
-                            control={<Checkbox 
-                                name="no_rice"
-                                checked={_.lunchOption.no_rice}
-                                onChange={_.handleOnOptionChange}
-                            />} label="No Rice"/>
-
-                    </FormGroup>    
-}
