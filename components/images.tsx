@@ -41,8 +41,8 @@ export const MenuPreviewImage = (props: IImageWithFallbackProps) => {
             props.src && props.src.length > 0 && <Image
                 src={error ? fallbackImg.src : props.src}
                 alt={`Image for ${props.label}`}
-                width={150}
-                height={150}
+                width={100}
+                height={100}
                 layout="intrinsic"
                 onError={handleOnError}
             /> 

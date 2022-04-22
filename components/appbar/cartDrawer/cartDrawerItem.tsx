@@ -2,7 +2,7 @@ import { Card, CardContent, IconButton, Typography } from "@mui/material";
 import { isEmpty } from "lodash";
 import { decreaseQty, increaseQty, removeItemFromCart } from "../../../store/slice/cartSlice";
 import { useAppDispatch } from "../../../store/store";
-import { ImageWithFallback } from "../../images";
+import { MenuPreviewImage } from "../../images";
 import { QuantityController } from "../../quantityController";
 import { FiTrash2 } from 'react-icons/fi'
 import { styled } from "@mui/system";
@@ -39,11 +39,10 @@ export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
                     </div>
 
                     <div style={{ paddingLeft: '5px'}}>
-                        <ImageWithFallback
+                        <MenuPreviewImage
                             src={dish.pic_url} 
                             label={dish.en_name} 
-                            width={70}
-                            height={70}/>
+                        />
                     </div>
                 </div>
 

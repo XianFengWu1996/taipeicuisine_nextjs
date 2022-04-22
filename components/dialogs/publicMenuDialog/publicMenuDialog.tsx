@@ -45,15 +45,12 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     const [radioError, setRadioError] = useState(false);
     const [comments, setComments] = useState('');
 
-    const [lunchOption, setLunchOption] = useState<{
-        sub: boolean, 
-        no_soup: boolean, 
-        no_rice: boolean
-    }>({
+    const lunchOptionInitialState:ILunchOption = {
         sub: false,
         no_soup: false,
         no_rice: false,
-    })
+    }
+    const [lunchOption, setLunchOption] = useState<ILunchOption>(lunchOptionInitialState)
 
     const handleOnLunchOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
         setLunchOption({
@@ -97,14 +94,11 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
         }
 
         let id = dish.id;
-        if(!isEmpty(option.id)){
-            id = `${dish.id}${option.id}`
-        }  
 
-        if(!isEmpty(comments)){
+        if(!isEmpty(option.id) || !isEmpty(comments) || lunchOption.sub || lunchOption.no_soup || lunchOption.no_rice){
             id = `${dish.id}${v4()}`
         }
-
+        
         dispatch(addToCart({
             id,
             dish: {
@@ -115,8 +109,10 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
             option: option,
             comment: comments,
             total: total,
+            lunchOption: dish.is_lunch ? lunchOption : null
         }));
         setComments('');
+        setLunchOption(lunchOptionInitialState)
         handleDialogClose();
     }
 
@@ -176,8 +172,6 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
                             />
                        }
                 </div>
-
-
             </div>  
         </DialogContent>
 

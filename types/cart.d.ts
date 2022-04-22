@@ -28,6 +28,13 @@ interface ICartItem {
     comment: string,
     quantity: number,
     total: number,
+    lunchOption: ILunchOption | null
+}
+
+interface ILunchOption {
+    sub: boolean,
+    no_soup: boolean,
+    no_rice: boolean,
 }
 
 type IPaymentType = '' | 'online' | 'instore' | 'cash'
