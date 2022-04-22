@@ -87,8 +87,12 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
 
     const handleCartItemIdGeneration = () => {
         // lunch wont contain options but it might have comments, if it has comments, it will be it's own cart item
-        if(!isEmpty(comments)|| !isEmpty(option.id)){
+        if(!isEmpty(comments)){
             return `${dish.id}${v4()}`
+        }
+
+        if(!isEmpty(option.id)){
+            return `${dish.id}${option.id}`
         }
 
         // if sub and no_rice both true

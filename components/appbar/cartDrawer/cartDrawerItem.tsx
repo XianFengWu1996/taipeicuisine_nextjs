@@ -7,7 +7,7 @@ import { QuantityController } from "../../quantityController";
 import { FiTrash2 } from 'react-icons/fi'
 import { styled } from "@mui/system";
 import { GoFlame } from "react-icons/go";
-import { red } from "@mui/material/colors";
+import { blue, orange, red } from "@mui/material/colors";
 
 interface ICartDrawerItemProps {
     item: ICartItem
@@ -31,6 +31,14 @@ export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
                         <Typography sx={{ fontSize: '13px'}}>{dish.label_id}. {dish.en_name} {dish.ch_name}</Typography>
                         {
                             !isEmpty(item.option) &&  <Typography sx={{ fontSize: '11px'}}>Option: {item.option.en_name} {item.option.ch_name} {item.option.spicy ? <GoFlame color="red"/>: null }</Typography> 
+                        }
+                        {
+                            item.lunchOption && <Typography sx={{fontSize: '12px', fontWeight: 600, fontStyle: 'italic', color: blue[600] }}>
+                                 Lunch Option: 
+                                {item.lunchOption.sub && 'Hot&Sour soup, '}
+                                {item.lunchOption.no_rice && 'No Rice, '} 
+                                {item.lunchOption.no_soup && 'No Soup '}
+                            </Typography>
                         }
                         {
                             !isEmpty(item.comment) &&  <Typography sx={{ color: red[400],fontSize: '11px'}}>Comments: {item.comment}</Typography> 
