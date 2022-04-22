@@ -85,6 +85,39 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
         if(option){ setOption(option) }    
     }
 
+    const handleCartItemIdGeneration = () => {
+        // lunch wont contain options but it might have comments, if it has comments, it will be it's own cart item
+        if(!isEmpty(comments)|| !isEmpty(option.id)){
+            return `${dish.id}${v4()}`
+        }
+
+        // if sub and no_rice both true
+        if(lunchOption.sub && lunchOption.no_rice){
+            return `${dish.id}24e53f2a-ba72-4726-b1e2-063779de48db`
+        }
+
+        // if no_soup and no_rice both true
+        if(lunchOption.no_soup && lunchOption.no_rice){
+            return `${dish.id}cb0a70ca-5aa5-4a3d-8198-e4c49731d2a8`
+        }
+
+        // for individual case
+        if(lunchOption.sub){
+            return `${dish.id}baa60cee-c472-4f8b-979e-313c71cc9efe`
+        }
+
+        if(lunchOption.no_soup){
+            return `${dish.id}01cefbec-744b-4a52-90cf-acae76474e3c`
+        }
+
+        if(lunchOption.no_rice){
+            return `${dish.id}05b1938d-4db0-4135-ba59-8100a4ef1edc`
+        }
+
+        // if nothing match, we will just return the dish id 
+        return dish.id
+    }
+
     const handleAddToCart = () => {
         if(!isEmpty(dish.variant)){
             if(isEmpty(option)){
@@ -93,11 +126,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
             }
         }
 
-        let id = dish.id;
-
-        if(!isEmpty(option.id) || !isEmpty(comments) || lunchOption.sub || lunchOption.no_soup || lunchOption.no_rice){
-            id = `${dish.id}${v4()}`
-        }
+        let id = handleCartItemIdGeneration();
         
         dispatch(addToCart({
             id,
