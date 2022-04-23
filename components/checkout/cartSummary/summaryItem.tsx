@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material"
+import { blue } from "@mui/material/colors"
 import { styled } from "@mui/system"
 import { isEmpty } from "lodash"
 import { GoFlame } from "react-icons/go"
@@ -46,15 +47,20 @@ export const SummaryItem = ({ item } : ISummaryItemProps)  => {
     <div style={{ flex: 6, marginRight: '5px'}}>
         <NameText>{item.dish.label_id}. {item.dish.en_name} {item.dish.ch_name}</NameText>
         {
-            !isEmpty(item.option) 
-                ? <OptionText>Option: {item.option.en_name} {item.option.ch_name} {item.option.spicy ? <GoFlame color="red"/>: null}</OptionText> 
-                : null
+            !isEmpty(item.option) && <OptionText>Option: {item.option.en_name} {item.option.ch_name} {item.option.spicy ? <GoFlame color="red"/>: null}</OptionText> 
         }
 
         {
-            !isEmpty(item.comment) 
-                ?  <CommentText>Comments: {item.comment}</CommentText>
-                : null
+            item.lunchOption && <Typography sx={{fontSize: '12px', fontWeight: 600, fontStyle: 'italic', color: blue[600] }}>
+                    Lunch Option: 
+                {item.lunchOption.sub && 'Hot&Sour soup, '}
+                {item.lunchOption.no_rice && 'No Rice, '} 
+                {item.lunchOption.no_soup && 'No Soup '}
+            </Typography>
+        }
+
+        {
+            !isEmpty(item.comment) && <CommentText>Comments: {item.comment}</CommentText>
         }
     </div>
     <div style={{ flex: 1, display: 'flex', justifyContent: 'end'}}>
