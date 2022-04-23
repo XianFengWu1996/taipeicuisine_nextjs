@@ -27,6 +27,15 @@ const CheckoutContainer = styled('div')(({ theme }) => ({
     },
 }))
 
+const UtensilPickUpTimeContainer = styled('div')(({ theme }) => ({
+    display: 'flex', 
+    justifyContent: 'space-between',
+
+    [theme.breakpoints.down('lg')]: {
+        flexDirection: 'column'
+    },
+}))
+
 export const CustomerDetails = () => {
 
     const cartState = useAppSelector(state => state.cart)
@@ -115,10 +124,10 @@ export const CustomerDetails = () => {
 
         <AddSpecialComment />
 
-        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-        <IncludeUtensils />
-        <PickupTime />
-        </div>
+        <UtensilPickUpTimeContainer>
+            <IncludeUtensils />
+            <PickupTime />
+        </UtensilPickUpTimeContainer>
 
         <PaymentSelection />
 
