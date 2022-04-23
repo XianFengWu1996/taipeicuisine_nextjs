@@ -8,6 +8,7 @@ import { fbAuth } from "../../utils/functions/auth";
 import { handleCatchError } from "../../utils/errors/custom";
 import { Elements } from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
+import { Skeleton } from "@mui/material";
 
 
 const stripePromise = loadStripe('pk_test_MQq0KVxKkSLUx0neZbdLTheo00iB1Ru6a0');
@@ -46,7 +47,14 @@ export default function PaymentPage () {
         <PublicAppBar />
         {
             showSkeleton ? 
-                <div>skeleton</div>
+                <div style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <Skeleton   
+                    variant="rectangular"
+                    height={600} 
+                    width={'40%'}
+                    sx={{ marginY: 1}} />
+                </div>
+             
             :  <div>
                 {
                     s_id && <Elements stripe={stripePromise} options={{
