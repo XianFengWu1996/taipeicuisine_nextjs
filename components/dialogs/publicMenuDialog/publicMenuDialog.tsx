@@ -168,6 +168,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
             fullWidth
             maxWidth={'md'}
             fullScreen={isMobile}
+            keepMounted={false}
         >
         <DialogContent>
             <IconButton onClick={handleDialogClose}>

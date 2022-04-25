@@ -36,6 +36,7 @@ export const menuSlice = createSlice({
   
       // // initialize the default menu
       state.selectedMenu = state.menus[0];
+      state.selectedCategory = state.menus[0].category[0];
     }, 
     getCurrentDish: (state, {payload} : PayloadAction<IDish>) => {
       state.selectedDish = payload
