@@ -39,13 +39,13 @@ export const MenuSelect = () => {
     }
     return <>
         {
-            !isEmpty(menuState.currentSelectedMenu) ? 
+            !isEmpty(menuState.selectedMenu) && 
             <MenuSelectFormControl size="medium">
                 <InputLabel id="menu-select">Menu 菜单</InputLabel>
                 <MenuSelectComponent
                     labelId="menu-select-label"
                     id="menu-select"
-                    value={menuState.currentSelectedMenu.id}
+                    value={menuState.selectedMenu.id}
                     label="Menu 菜单"
                     onChange={handleOnSelectChange}
                 >
@@ -55,7 +55,7 @@ export const MenuSelect = () => {
                         })
                     }
                 </MenuSelectComponent>
-            </MenuSelectFormControl> : null
+            </MenuSelectFormControl>
         }
     </>
 }

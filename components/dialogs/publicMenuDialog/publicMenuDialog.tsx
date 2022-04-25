@@ -36,7 +36,7 @@ interface IPublicMenuDialogProps {
 
 export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     const isMobile = useMediaQuery('(max-width: 480px)'); // check if it' mobile 
-    const { currentSelectedDish: dish } = useAppSelector(state => state.menus)
+    const { selectedDish: dish } = useAppSelector(state => state.menus)
     const dispatch = useAppDispatch();
 
     const [quantity, setQuantity] = useState(1);

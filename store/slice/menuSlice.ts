@@ -6,20 +6,20 @@ import { isEmpty } from 'lodash';
 export interface MenuState {
   menus: IMenu[],
   expiration: number,
-  currentSelectedDish: IDish,
-  currentSelectedMenu: IMenu,
-  currentSelectedCategory: ICategory,
-  currentSelectedTab: number,
+  selectedDish: IDish,
+  selectedMenu: IMenu,
+  selectedCategory: ICategory,
+  selectedTab: number,
 }
 
 // Define the initial state using that type
 const initialState: MenuState = {
   menus: [],
   expiration: 0,
-  currentSelectedMenu: {} as IMenu,
-  currentSelectedCategory: {} as ICategory,
-  currentSelectedDish: {} as IDish,
-  currentSelectedTab: 0,
+  selectedMenu: {} as IMenu,
+  selectedCategory: {} as ICategory,
+  selectedDish: {} as IDish,
+  selectedTab: 0,
 }
 
 export const menuSlice = createSlice({
@@ -34,41 +34,40 @@ export const menuSlice = createSlice({
         state.expiration = payload.expiration
       }
   
-      // initialize the default menu
-      state.currentSelectedMenu = state.menus[0];
-      state.currentSelectedCategory = state.menus[0].category[0];
+      // // initialize the default menu
+      state.selectedMenu = state.menus[0];
     }, 
     getCurrentDish: (state, {payload} : PayloadAction<IDish>) => {
-      state.currentSelectedDish = payload
+      state.selectedDish = payload
     },
     handleOnMenuChange: (state, {payload} : PayloadAction<IMenu>) => {
-      state.currentSelectedMenu = payload
-      state.currentSelectedCategory = payload.category[0]; // set the category to the first one in the menu
-      state.currentSelectedTab = 0; // set to the first tab
+      state.selectedMenu = payload
+      state.selectedCategory = payload.category[0]; // set the category to the first one in the menu
+      state.selectedTab = 0; // set to the first tab
     },
     handleOnTabChange: (state, {payload} : PayloadAction<{ tabIndex: number, category?: ICategory | undefined}>) => {
-      state.currentSelectedTab = payload.tabIndex
+      state.selectedTab = payload.tabIndex
       if(payload.category && !isEmpty(payload.category)){
-        state.currentSelectedCategory = payload.category
+        state.selectedCategory = payload.category
       }
     },
     handleUpdateDish: (state, { payload } : PayloadAction<IDish>) => {
-      let menus = state.menus.find((menu) => menu.id === state.currentSelectedMenu.id);
+      let menus = state.menus.find((menu) => menu.id === state.selectedMenu.id);
 
       if(menus){
-        let category = menus.category.find((category) => category.id === state.currentSelectedCategory.id);
+        let category = menus.category.find((category) => category.id === state.selectedCategory.id);
         if(category){
           let index = category.dishes.findIndex((dish) =>  dish.id === payload.id);
           category.dishes.splice(index, 1, payload);
-          state.currentSelectedCategory.dishes.splice(index, 1, payload);
+          state.selectedCategory.dishes.splice(index, 1, payload);
         }
       }
     },
     resetUponUnmount: (state) => {
-      state.currentSelectedMenu = state.menus[0];;
-      state.currentSelectedCategory = state.menus[0].category[0];
-      state.currentSelectedDish = {} as IDish;
-      state.currentSelectedTab = 0;
+      state.selectedMenu = state.menus[0];;
+      state.selectedCategory = state.menus[0].category[0];
+      state.selectedDish = {} as IDish;
+      state.selectedTab = 0;
     }
   }
 })

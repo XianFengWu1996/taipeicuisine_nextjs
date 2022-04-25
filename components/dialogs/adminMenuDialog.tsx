@@ -21,7 +21,7 @@ interface IAdminMenuDialogProps{
 }
 
 export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
-    const { currentSelectedDish, currentSelectedCategory, currentSelectedMenu, menus} = useAppSelector(state => state.menus)
+    const { selectedDish, selectedCategory, selectedMenu, menus} = useAppSelector(state => state.menus)
     const dispatch = useAppDispatch();
     const [file, setFile] = useState<IFile>();
     const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
         pic_url:'',
     });
 
-    // const [dish , setDish] = useState<IDish>(currentSelectedDish);
+    // const [dish , setDish] = useState<IDish>(selectedDish);
     const [label, setLabel] = useState<string>();
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -76,7 +76,7 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
             try {
                 // will check the difference between the original dish and the updated dish
                 // return the difference object
-                let difference = checkForDifference(currentSelectedDish, dish);
+                let difference = checkForDifference(selectedDish, dish);
     
                 if(file){
                     const fd = new FormData()
@@ -107,8 +107,8 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
                     {
                         headers: { 'Content-Type': 'application/json'},
                         params: {
-                            category_name: currentSelectedCategory.document_name,
-                            menuId:  currentSelectedMenu.id
+                            category_name: selectedCategory.document_name,
+                            menuId:  selectedMenu.id
                         }
                 })
                 
@@ -128,11 +128,11 @@ export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
     }
 
     useEffect(() => {
-        let deepCopyDish = deepCopy(currentSelectedDish);
+        let deepCopyDish = deepCopy(selectedDish);
 
         setDish(deepCopyDish)
         setLabel(`${deepCopyDish.label_id}. ${deepCopyDish.en_name} ${deepCopyDish.ch_name}`);
-    }, [currentSelectedDish])
+    }, [selectedDish])
 
     return <Dialog open={props.open} onClose={props.handleClose} maxWidth='lg' >
         <DialogContent sx={{ padding: '5%'}}>

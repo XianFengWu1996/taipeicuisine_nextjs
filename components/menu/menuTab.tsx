@@ -26,41 +26,37 @@ const StyledMenuTab = styled(Tab)(({ theme }) => ({
 
 export const MenuTab = () => {
 
-    const { currentSelectedMenu, currentSelectedTab} = useAppSelector(state => state.menus);
-    const dispatch = useAppDispatch();
+    const { selectedMenu, selectedTab} = useAppSelector(state => state.menus);
+    // const dispatch = useAppDispatch();
     const [scrollPosition, setScrollPosition] = useState(0);
 
-    // handles getting the scroll position
+    // // handles getting the scroll position
     const handleScroll = () => {
         const position = window.pageYOffset;
         setScrollPosition(position);
     };
     
-    // rendering correct tab base on the menu 
+    // // rendering correct tab base on the menu 
     const handleTabView = () => {
-        if(currentSelectedMenu) {
-            if(currentSelectedMenu.category){
-                return currentSelectedMenu.category.map((category) => {
-                    return <StyledMenuTab
-                        key={category.id} 
-                        label={`${category.en_name} ${category.ch_name}`} 
-                        id={`tab-${category.id}`} 
-                    />
-                })
-            }
-        }
+        return selectedMenu.category.map((category) => {
+            return <StyledMenuTab
+                key={category.id} 
+                label={`${category.en_name} ${category.ch_name}`} 
+                id={`tab-${category.id}`} 
+            />
+        })
     }
     
-    // rendering the tab children base on the selected menu and selected tab
-    const handleTabChildren = () => {
-        if(currentSelectedMenu){
-            return <MenuItemList />   
-        }   
-    }
+    // // rendering the tab children base on the selected menu and selected tab
+    // const handleTabChildren = () => {
+    //     if(selectedMenu){
+    //         return <MenuItemList />   
+    //     }   
+    // }
 
-    const handleTabChange = (_: SyntheticEvent<Element, Event>, newValue: number) => {
-        dispatch(handleOnTabChange({ tabIndex: newValue, category: currentSelectedMenu.category[newValue] }));
-    }
+    // const handleTabChange = (_: SyntheticEvent<Element, Event>, newValue: number) => {
+    //     dispatch(handleOnTabChange({ tabIndex: newValue, category: selectedMenu.category[newValue] }));
+    // }
     
     const scrollBarStyle:React.CSSProperties | undefined = {
         position: scrollPosition > 170 ? 'sticky' : 'relative',
@@ -75,14 +71,19 @@ export const MenuTab = () => {
         };
     }, []);
 
-    return  <Box sx={{ bgcolor: 'background.paper' }}>  
+    return <>
+    
+        {
+            selectedMenu.id !== 'ca9fe450-064c-4f9c-b3b0-8ead68d88822' ??  <Box sx={{ bgcolor: 'background.paper' }}>  
             <Paper style={ scrollBarStyle}>
                 <StyledMenuTabContainer
                     variant="scrollable"
                     scrollButtons="auto"
                     allowScrollButtonsMobile
-                    value={currentSelectedTab ?? 0  }
-                    onChange={handleTabChange}
+                    value={0}
+                    onChange={() => {
+
+                    }}
                     aria-label="Menu Display"
                 >
                 
@@ -90,6 +91,8 @@ export const MenuTab = () => {
                 </StyledMenuTabContainer>
             </Paper>
 
-            {handleTabChildren()}
+            {/* {handleTabChildren()} */}
         </Box>
+        }
+    </>
 }

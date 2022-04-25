@@ -39,9 +39,8 @@ export const PriceText = styled(Typography)(({theme}) => ({
 
 export const MenuItemList = () => {
     const dispatch = useAppDispatch();
-    const { currentSelectedCategory } = useAppSelector(state => state.menus)
+    const { selectedCategory } = useAppSelector(state => state.menus)
     const [open, setOpen] = useState<boolean>(false);
-    const router = useRouter();
 
     const handleOnClose = () => {
         setOpen(false);
@@ -51,24 +50,11 @@ export const MenuItemList = () => {
         setOpen(true);
     }
 
-    const renderDialog = () => {
-        if(router.asPath === '/admin/menu'){
-            return <AdminMenuDialog 
-                open={open}
-                handleClose={handleOnClose}
-            />
-        }
-        return <PublicMenuDialog
-            open={open}
-            handleClose={handleOnClose}
-        /> 
-    }
-
     const renderDishCard = () => {
-        if(!currentSelectedCategory) return null    
-        if(!currentSelectedCategory.dishes) return null;
+        if(!selectedCategory) return null    
+        if(!selectedCategory.dishes) return null;
 
-        return currentSelectedCategory.dishes.map((dish: IDish) => {  
+        return selectedCategory.dishes.map((dish: IDish) => {  
             if(!dish.in_stock) return null   
 
             return <Grid key={dish.id} item xs={12} md={6}>
@@ -94,7 +80,10 @@ export const MenuItemList = () => {
             { renderDishCard()}
         </Grid>
 
-        {renderDialog()}
+        <PublicMenuDialog
+            open={open}
+            handleClose={handleOnClose}
+        /> 
      
     </CardContainer>
 }
