@@ -3,7 +3,7 @@ import { styled } from "@mui/system"
 import { isEmpty } from "lodash"
 import { useState } from "react"
 import { useAppSelector } from "../../../store/store"
-import { PublicMenuDialog } from "../../dialogs/publicMenuDialog/publicMenuDialog"
+import { PublicMenuDialog } from "../../dialogs/publicMenuDialog"
 import { DishCard } from "./DishCard"
 
 const CardContainer = styled('div')(({theme}) => ({

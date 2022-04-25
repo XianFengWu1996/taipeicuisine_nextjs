@@ -22,6 +22,7 @@ const PriceText = styled(Typography)(({ theme }) => ({
 export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
     let { dish } = item;
     const dispatch = useAppDispatch();
+    const opt = item.lunchOption
 
     return <Card sx={{ margin: '15px'}}>
         <CardContent sx={{ display: 'flex', width: '100%'}}>
@@ -33,11 +34,11 @@ export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
                             !isEmpty(item.option) &&  <Typography sx={{ fontSize: '11px'}}>Option: {item.option.en_name} {item.option.ch_name} {item.option.spicy ? <GoFlame color="red"/>: null }</Typography> 
                         }
                         {
-                            item.lunchOption && <Typography sx={{fontSize: '12px', fontWeight: 600, fontStyle: 'italic', color: blue[600] }}>
+                            (opt && (opt.sub || opt.no_rice || opt.no_soup) ) && <Typography sx={{fontSize: '12px', fontWeight: 600, fontStyle: 'italic', color: blue[600] }}>
                                  Lunch Option: 
-                                {item.lunchOption.sub && 'Hot&Sour soup, '}
-                                {item.lunchOption.no_rice && 'No Rice, '} 
-                                {item.lunchOption.no_soup && 'No Soup '}
+                                {opt.sub && 'Hot&Sour soup, '}
+                                {opt.no_rice && 'No Rice, '} 
+                                {opt.no_soup && 'No Soup '}
                             </Typography>
                         }
                         {

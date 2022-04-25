@@ -40,6 +40,8 @@ const CountPriceText = styled(Typography)(({ theme }) => ({
 
 
 export const SummaryItem = ({ item } : ISummaryItemProps)  => {
+    const opt = item.lunchOption;
+
     return  <div style={{ display: 'flex', marginBottom: '3px'}}>
     <div style={{ flex: 1}}>
         <CountPriceText>x {item.quantity}</CountPriceText>
@@ -51,11 +53,11 @@ export const SummaryItem = ({ item } : ISummaryItemProps)  => {
         }
 
         {
-            item.lunchOption && <Typography sx={{fontSize: '12px', fontWeight: 600, fontStyle: 'italic', color: blue[600] }}>
+            (opt && (opt.sub || opt.no_rice || opt.no_soup) ) && <Typography sx={{fontSize: '12px', fontWeight: 600, fontStyle: 'italic', color: blue[600] }}>
                     Lunch Option: 
-                {item.lunchOption.sub && 'Hot&Sour soup, '}
-                {item.lunchOption.no_rice && 'No Rice, '} 
-                {item.lunchOption.no_soup && 'No Soup '}
+                {opt.sub && 'Hot&Sour soup, '}
+                {opt.no_rice && 'No Rice, '} 
+                {opt.no_soup && 'No Soup '}
             </Typography>
         }
 
