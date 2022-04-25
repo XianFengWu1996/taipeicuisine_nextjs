@@ -49,10 +49,11 @@ export default function PaymentPage () {
             showSkeleton ? 
                 <div style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <Skeleton   
-                    variant="rectangular"
-                    height={600} 
-                    width={'40%'}
-                    sx={{ marginY: 1}} />
+                        variant="rectangular"
+                        height={600} 
+                        width={350}
+                        sx={{ marginY: 1}} 
+                    />
                 </div>
              
             :  <div>
