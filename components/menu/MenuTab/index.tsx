@@ -68,7 +68,7 @@ export const MenuTab = () => {
                 >
                 {
                     selectedMenu.category.map((category) => {
-                        return  <Tab
+                        return  <StyledMenuTab
                                 key={category.id}
                                 label={`${category.en_name} ${category.ch_name}`} 
                                 id={`tab-${category.id}`} 

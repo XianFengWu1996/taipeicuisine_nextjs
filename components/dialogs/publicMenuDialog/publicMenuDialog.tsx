@@ -31,14 +31,14 @@ const AddToCartButton = styled(Button)(({theme}) => ({
 
 interface IPublicMenuDialogProps {
     open: boolean,
-    handleClose: () => void
+    handleClose: () => void,
+    dish: IDish,
 }
 
-export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
+export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogProps) => {
     const isMobile = useMediaQuery('(max-width: 480px)'); // check if it' mobile 
-    const { selectedDish: dish } = useAppSelector(state => state.menus)
     const dispatch = useAppDispatch();
-
+    
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(0)
     const [option, setOption] = useState({} as IVarirantOption)
@@ -71,7 +71,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
     }
 
     const handleDialogClose = () => {
-        props.handleClose();
+        handleClose();
         setQuantity(1);
         setTotal(dish.price);
         setOption({} as IVarirantOption)
@@ -163,7 +163,7 @@ export const PublicMenuDialog = (props: IPublicMenuDialogProps) => {
 
 
     return <Dialog
-            open={props.open}
+            open={open}
             onClose={handleDialogClose}
             fullWidth
             maxWidth={'md'}

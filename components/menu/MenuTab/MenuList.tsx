@@ -2,8 +2,7 @@ import { Grid, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 import { isEmpty } from "lodash"
 import { useState } from "react"
-import { getCurrentDish } from "../../../store/slice/menuSlice"
-import { useAppDispatch, useAppSelector } from "../../../store/store"
+import { useAppSelector } from "../../../store/store"
 import { PublicMenuDialog } from "../../dialogs/publicMenuDialog/publicMenuDialog"
 import { DishCard } from "./DishCard"
 
@@ -37,15 +36,30 @@ export const PriceText = styled(Typography)(({theme}) => ({
 export const MenuItemList = () => {
     const [open, setOpen] = useState<boolean>(false);
     const { selectedCategory } = useAppSelector(state => state.menus)
-    const dispatch = useAppDispatch();
+
+    const [dish, setDish] = useState<IDish>({
+        id: '',
+        en_name: '',
+        ch_name: '',
+        is_spicy:false,
+        is_popular: false,
+        is_lunch: false,
+        in_stock: false,
+        price: 0,
+        variant: [],
+        description: '',
+        label_id: '',
+        order: 0,
+        pic_url:'',
+    });
 
     const handleOnClose = () => {
         setOpen(false);
     }
 
-    const handleOpen = (dish: IDish) => {
+    const handleOpen = (val: IDish) => {
         setOpen(true);
-        dispatch(getCurrentDish(dish))
+        setDish(val);
     }
 
     return <CardContainer>
@@ -60,7 +74,8 @@ export const MenuItemList = () => {
         <PublicMenuDialog
             open={open}
             handleClose={handleOnClose}
-        /> 
+            dish={dish}
+        />
  
 </CardContainer>
 }
