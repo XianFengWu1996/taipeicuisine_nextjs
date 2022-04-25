@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent,IconButton, Typography, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { useAppDispatch } from "../../../store/store";
 import { DialogImage } from "../../images";
 import { AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai'
 import {  ChangeEvent, useEffect, useState } from "react";
@@ -26,9 +26,6 @@ const AddToCartButton = styled(Button)(({theme}) => ({
     }
 }))
 
-
-
-
 interface IPublicMenuDialogProps {
     open: boolean,
     handleClose: () => void,
@@ -40,7 +37,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
     const dispatch = useAppDispatch();
     
     const [quantity, setQuantity] = useState(1);
-    const [total, setTotal] = useState(0)
+    const [total, setTotal] = useState(dish.price)
     const [option, setOption] = useState({} as IVarirantOption)
     const [radioError, setRadioError] = useState(false);
     const [comments, setComments] = useState('');
@@ -77,6 +74,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         setOption({} as IVarirantOption)
         setRadioError(false)
         setComments('');
+        setLunchOption(lunchOptionInitialState)
     }
 
     const handleOnRadioChange = (id: string, options: IVarirantOption[]) => {
@@ -144,9 +142,16 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
             total: total,
             lunchOption: dish.is_lunch ? lunchOption : null
         }));
-        setComments('');
-        setLunchOption(lunchOptionInitialState)
         handleDialogClose();
+    }
+
+    const handleOnSubChange = (e: ChangeEvent<HTMLInputElement>) => {
+        // when sub is true, no_soup will be false
+        setLunchOption({
+            ...lunchOption,
+            sub: e.target.checked,
+            no_soup: e.target.checked ? false : e.target.checked,
+        })
     }
 
     // set the total as the select dish price for one, will only change when the dish change
@@ -155,7 +160,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         setTotal(dish.price) 
     }, [dish])
 
-    // will calculate the total, if quantity, the option price, or dish changes
+    // // will calculate the total, if quantity, the option price, or dish changes
     useEffect(() => {
         let temp = quantity * (dish.price + (option.price ?? 0));
         setTotal(temp);
@@ -168,7 +173,6 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
             fullWidth
             maxWidth={'md'}
             fullScreen={isMobile}
-            keepMounted={false}
         >
         <DialogContent>
             <IconButton onClick={handleDialogClose}>
@@ -195,14 +199,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
                            dish.is_lunch &&  <LunchOption
                                 lunchOption={lunchOption}
                                 handleOnOptionChange={handleOnLunchOptionChange}
-                                handleOnSubChange={(e) => {
-                                    // when sub is true, no_soup will be false
-                                    setLunchOption({
-                                        ...lunchOption,
-                                        sub: e.target.checked,
-                                        no_soup: e.target.checked ? false : e.target.checked,
-                                    })
-                                }}
+                                handleOnSubChange={handleOnSubChange}
                             />
                        }
                 </div>
