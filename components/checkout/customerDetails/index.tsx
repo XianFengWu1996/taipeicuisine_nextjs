@@ -14,6 +14,8 @@ import Router from "next/router"
 import snackbar from "../../snackbar"
 import { isEmpty } from "lodash"
 import { PickupTime } from "./pickupTime/pickupTime"
+import axios from "axios"
+import { token } from "../../../utils/functions/auth"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -35,6 +37,14 @@ const UtensilPickUpTimeContainer = styled('div')(({ theme }) => ({
         flexDirection: 'column'
     },
 }))
+
+export interface IOrderResult {
+    order_id: string,
+    order_time: string,
+    item_count: number,
+    estimate: number,
+    total: number,
+}
 
 export const CustomerDetails = () => {
 
@@ -92,18 +102,22 @@ export const CustomerDetails = () => {
             }
 
             // process the order
-            // let response = await axios({
-            //     method: 'POST',
-            //     url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_order`,
-            //     headers: { 'authorization': `Bearer ${await token()}`},
-            //     data: {
-            //         cart: cartState,
-            //         customer: customerState,
-            //     }
-            // })
+            let order_response = await axios({
+                method: 'POST',
+                url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_cash_order`,
+                headers: { 'authorization': `Bearer ${await token()}`},
+                data: {
+                    cart: cartState,
+                    customer: customerState,
+                }
+            })
 
-            // Router.push(`/order/confirmation?order_id=${response.data.order_id}`)
-            console.log('process')
+            console.log(order_response.data);
+
+            let order_data: IOrderResult = order_response.data;
+
+            Router.push(`/order/confirmation?order_id=${order_data.order_id}&order_time=${order_data.order_time}&estimate=${order_data.estimate}&item_count=${order_data.item_count}&total=${order_data.total}`
+            )
 
 
         } catch (error) {
