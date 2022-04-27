@@ -136,7 +136,7 @@ export const CustomerDetails = () => {
             sx={{ backgroundColor: '#000', padding: '10px 50px'}}
             onClick={handlePlaceOrder}
 
-        >Place Order</Button>
+        >{cartState.payment_type === 'online' ? 'Proceed to Payment' : 'Place Order'}</Button>
     </CheckoutContainer>
 }
 
