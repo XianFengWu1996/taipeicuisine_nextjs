@@ -58,7 +58,7 @@ export const handlePayWithMethodId = async (val: IPayWithMethodId) => {
             }
         })
 
-        await axios({
+        let order_result = await axios({
             method: 'POST',
             url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_online_order`,
             headers: { 'Authorization': `Bearer ${await token()}`},
@@ -74,8 +74,7 @@ export const handlePayWithMethodId = async (val: IPayWithMethodId) => {
             }
         })
 
-        Router.push('/order/confirmation')
-        store.dispatch(orderComplete());
+        handleOrderCompletion(order_result.data)
 
     } catch (error) {
         handleCatchError((error as Error), 'Failed to confirm payment')
@@ -95,7 +94,6 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
     try {
         // process the payment as a one time payment
         // update the intent before submit the order
-        console.log('ran')
         let update_result = await axios({
             method: 'POST',
             url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/update_payment_intent`,
@@ -122,7 +120,7 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
         }
         
 
-        await axios({
+        let order_result = await axios({
             method: 'POST',
             url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_online_order`,
             headers: { 'Authorization': `Bearer ${await token()}`},
@@ -138,9 +136,7 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
             }
         })
 
-        // if the order is placed, route to confirmation page
-        Router.push('/order/confirmation');
-        store.dispatch(orderComplete());
+        handleOrderCompletion(order_result.data)
     } catch (error) {
         handleCatchError((error as Error), 'Failed to confirm payment')
     }
@@ -157,11 +153,14 @@ export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICust
         data: { cart, customer }
      })
 
-    let order_data: IOrderResult = order_response.data;
-    Router.push(`/order/confirmation?order_id=${order_data.order_id}&order_time=${order_data.order_time}&estimate=${order_data.estimate}&item_count=${order_data.item_count}&total=${order_data.total}`)
-    store.dispatch(orderComplete())
-
+    handleOrderCompletion(order_response.data);
+ 
     } catch (error) {
         handleCatchError(error as Error, 'Failed to place order');
     }
+}
+
+const handleOrderCompletion = (order: IOrderResult) => {
+    Router.push(`/order/confirmation?order_id=${order.order_id}&order_time=${order.order_time}&estimate=${order.estimate}&item_count=${order.item_count}&total=${order.total}`)
+    store.dispatch(orderComplete())
 }
