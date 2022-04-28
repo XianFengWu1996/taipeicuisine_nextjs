@@ -18,13 +18,13 @@ export default function Confirmation () {
 
             <Card sx={{ my: 3}}>
                 <CardContent style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start'}}>
-                    <Typography sx={{ fontWeight: 800}}>Order Details</Typography>
-                    <Typography sx={{ fontWeight: 600}}>Name: {name}</Typography>
-                    <Typography sx={{ fontWeight: 600}}>Order #: {query.order_id}</Typography>
-                    <Typography sx={{ fontWeight: 600}}>Number Of Item(s): {query.item_count}</Typography>
-                    <Typography sx={{ fontWeight: 600}}>Total: ${query.total}</Typography>
-                    <Typography sx={{ fontWeight: 600}}>Place At: {query.order_time}</Typography>
-                    <Typography sx={{ fontWeight: 600}}>Estimate Time: {query.estimate} minutes</Typography>
+                    <Typography sx={{ fontWeight: 800}}>Order Summary</Typography>
+                    <Typography>Name: {name}</Typography>
+                    <Typography>Order #: {query.order_id}</Typography>
+                    <Typography>Number of Item(s): {query.item_count}</Typography>
+                    <Typography>Total: ${query.total}</Typography>
+                    <Typography>Place At: {query.order_time}</Typography>
+                    <Typography>Estimate Time: {query.estimate} minutes</Typography>
                 </CardContent>
             </Card>
             <Typography>Your order has been placed. You will receive a email confirmation in a few minutes. </Typography>
