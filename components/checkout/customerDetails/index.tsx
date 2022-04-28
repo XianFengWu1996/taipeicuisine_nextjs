@@ -16,6 +16,7 @@ import { isEmpty } from "lodash"
 import { PickupTime } from "./pickupTime/pickupTime"
 import axios from "axios"
 import { token } from "../../../utils/functions/auth"
+import { handleInStoreOrCashOrder, validateToPlaceOrder } from "../../../utils/functions/payment"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -64,62 +65,15 @@ export const CustomerDetails = () => {
         // - REQUIRE CUSTOMER INFO (NAME AND PHONE)
         // - MINIMUM FOR DELIVERY
         // - REQUIRED THE ADDRESS AND DELIVERY FEE
-        if(cartState.cart.length === 0){
-            return snackbar.error('Add item before proceeding')
-        }
-
-        if(!customerState.name){
-            return snackbar.error('Add name before proceeding')
-        }
-
-        if(!customerState.phone){
-            return snackbar.error('Add phone before proceeding')
-        }
-
-        if(cartState.is_delivery){
-            if(cartState.subtotal < 15){
-                return snackbar.error('Minimum for delivery is $15 (subtotal)')
-            }
-
-            if(!customerState.address.address){
-                return snackbar.error('Make sure to have an valid address')
-            }
-
-            if(!cartState.delivery_fee || cartState.delivery_fee === 0){
-                return snackbar.error('Please try to search the address again')
-            }
-        }
-
-        if(isEmpty(cartState.payment_type)){
-            return snackbar.error('Please select a payment method')
-        }
-     
-
+       
         try {
+            validateToPlaceOrder(cartState, customerState);
             // head to the payment page for online payments
             if(cartState.payment_type === 'online'){
                 return Router.push('/order/payment')
             }
 
-            // process the order
-            let order_response = await axios({
-                method: 'POST',
-                url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_cash_order`,
-                headers: { 'authorization': `Bearer ${await token()}`},
-                data: {
-                    cart: cartState,
-                    customer: customerState,
-                }
-            })
-
-            console.log(order_response.data);
-
-            let order_data: IOrderResult = order_response.data;
-
-            Router.push(`/order/confirmation?order_id=${order_data.order_id}&order_time=${order_data.order_time}&estimate=${order_data.estimate}&item_count=${order_data.item_count}&total=${order_data.total}`
-            )
-
-
+            await handleInStoreOrCashOrder(cartState, customerState)
         } catch (error) {
             handleCatchError(error as Error, 'Failed to place order');
         }
