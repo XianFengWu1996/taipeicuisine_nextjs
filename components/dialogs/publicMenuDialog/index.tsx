@@ -13,6 +13,18 @@ import { DishVariant } from "./DishVariant";
 import { Comments } from "./Comments";
 import { LunchOption } from "./LunchOption";
 
+interface ICustomizeItem {
+    id: string,
+    en_name: string,
+    ch_name: string,
+    price: number,
+}
+
+interface ICustomizeListItem extends ICustomizeItem {
+    count: number,
+    total: number,
+}
+
 const AddToCartButton = styled(Button)(({theme}) => ({
     backgroundColor: '#555',
     minWidth: '250px',
@@ -300,17 +312,7 @@ export const Customize = () => {
         }
     ]
 
-    interface ICustomizeItem {
-        id: string,
-        en_name: string,
-        ch_name: string,
-        price: number,
-    }
-
-    interface ICustomizeListItem extends ICustomizeItem {
-        count: number,
-        total: number,
-    }
+   
 
     const [protein, setProtein] = useState<ICustomizeListItem[]>([])
     const [veggie, setVeggie] = useState<ICustomizeListItem[]>([]);
@@ -362,103 +364,46 @@ export const Customize = () => {
     }
     
     return <>
-        <div>
-            <Typography>Extra Protein</Typography>
+        <CustomizeSelect 
+            title="Protein"
+            original_list={extra_protein_list}
+            onChange={(event) => {
+                handleItemOnSelect({
+                    event,
+                    original_list: extra_protein_list,
+                    added_list: protein,
+                    setItem: setProtein
+                });
+            }}
+        />
 
-            <FormControl sx={{ my: 1}}>
-            <InputLabel id="select-label-protein">Protein</InputLabel>
-            <Select
-                labelId="select-label-protein"
-                id="select-protein"
-                label="Protein"
-                value={''}
-                sx={{ width: '200px'}}
-                onChange={(event) => {
-                    handleItemOnSelect({
-                        event,
-                        original_list: extra_protein_list,
-                        added_list: protein,
-                        setItem: setProtein
-                    });
-                }}
-            >
-                {
-                    extra_protein_list.map((protein) => {
-                        return <MenuItem 
-                            key={v4()} 
-                            value={protein.id}>
-                            {protein.en_name} {protein.ch_name}  + ${protein.price}</MenuItem>
-                    })
-                }
+        <CustomizeSelect 
+            title="Vegetable"
+            original_list={extra_veggie_list}
+            onChange={(event) => {
+                handleItemOnSelect({
+                    event,
+                    original_list: extra_veggie_list,
+                    added_list: veggie,
+                    setItem: setVeggie
+                });
+            }}
+        />
 
-            </Select>
-            </FormControl>
-        </div>
+        <CustomizeSelect 
+            title="Condiment"
+            original_list={extra_condiment_list}
+            onChange={(event) => {
+                handleItemOnSelect({
+                    event,
+                    original_list: extra_condiment_list,
+                    added_list: condiment,
+                    setItem: setCondiment
+                });
+            }}
+        />
 
-        <div>
-            <Typography>Extra Veggie</Typography>
-
-            <FormControl sx={{ my: 1}}>
-            <InputLabel id="select-label-veggie">Veggie</InputLabel>
-            <Select
-                labelId="select-label-veggie"
-                id="select-veggie"
-                label="Veggie"
-                value={''}
-                sx={{ width: '200px'}}
-                onChange={(event) => {
-                    handleItemOnSelect({
-                        event,
-                        original_list: extra_veggie_list,
-                        added_list: veggie,
-                        setItem: setVeggie
-                    });
-                }}
-            >
-                {
-                    extra_veggie_list.map((veggie) => {
-                        return <MenuItem 
-                            key={v4()} 
-                            value={veggie.id}>{veggie.en_name} {veggie.ch_name}  + ${veggie.price}</MenuItem>
-                    })
-                }
-
-            </Select>
-            </FormControl>
-        </div>
-
-        <div>
-            <Typography>Extra Condiment</Typography>
-
-            <FormControl sx={{ my: 1}}>
-            <InputLabel id="select-label-condiment">Condiment</InputLabel>
-            <Select
-                labelId="select-label-condiment"
-                id="select-condiment"
-                label="Condiment"
-                value={''}
-                sx={{ width: '200px'}}
-                onChange={(event) => {
-                    handleItemOnSelect({
-                        event,
-                        original_list: extra_condiment_list,
-                        added_list: condiment,
-                        setItem: setCondiment
-                    });
-                }}
-            >
-                {
-                    extra_condiment_list.map((condiment) => {
-                        return <MenuItem 
-                            key={v4()} 
-                            value={condiment.id}>{condiment.en_name} {condiment.ch_name}</MenuItem>
-                    })
-                }
-
-            </Select>
-            </FormControl>  
-            
-            <div>
+<div>
                 {
                     protein.map((p) => {
                         return <Typography key={p.id}>x{p.count}  {p.en_name} {p.ch_name}  ${p.price}  =  ${p.total}</Typography>
@@ -477,7 +422,39 @@ export const Customize = () => {
                     })
                 }
             </div>
-
-        </div>
     </>
+}
+
+interface ICustomizeSelect {
+    title: string,
+    original_list: ICustomizeItem[],
+    onChange: (arg1: SelectChangeEvent<string>) => void,
+}
+
+export const CustomizeSelect = ({ title, original_list, onChange } : ICustomizeSelect) => {
+    return  <div>
+        <Typography>Extra {title}</Typography>
+
+        <FormControl sx={{ my: 1}}>
+        <InputLabel id={`select-label-${title.toLowerCase()}`}>{title}</InputLabel>
+        <Select
+            labelId={`select-label-${title.toLowerCase()}`}
+            id={`select-${title.toLowerCase()}`}
+            label={title}
+            value={''}
+            sx={{ width: '200px'}}
+            onChange={onChange}
+        >
+            {
+                original_list.map((item) => {
+                    return <MenuItem 
+                        key={v4()} 
+                        value={item.id}>
+                        {item.en_name} {item.ch_name}  + ${item.price}</MenuItem>
+                })
+            }
+
+        </Select>
+        </FormControl>
+    </div>
 }
