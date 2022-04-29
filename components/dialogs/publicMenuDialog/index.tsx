@@ -42,7 +42,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
     const [radioError, setRadioError] = useState(false);
     const [comments, setComments] = useState('');
 
-    const extra_protein_list = [
+    const extra_protein_list: ICustomizeItem[] = [
         {
             id: 'f9a2f119-c4bc-4a18-b346-9b7b8ce0ff05',
             en_name: 'Chicken',
@@ -63,7 +63,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         }
     ]
 
-    const extra_veggie_list = [
+    const extra_veggie_list: ICustomizeItem[] = [
         {
             id: '735b7c15-2596-41f7-ae37-3970e94846fc',
             en_name: 'Mixed Vegetable',
@@ -90,7 +90,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         }
     ]
 
-    const extra_condiment_list = [
+    const extra_condiment_list: ICustomizeItem[] = [
         {
             id: '86ce6468-1eb5-4694-b610-07ba86455a8e',
             en_name: 'Basil',
@@ -117,9 +117,14 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         ch_name: string,
         price: number,
     }
-    const [protein, setProtein] = useState<ICustomizeItem[]>([])
-    const [veggie, setVeggie] = useState<ICustomizeItem[]>([]);
-    const [condiment, setCondiment] = useState<ICustomizeItem[]>([]);
+
+    interface ICustomizeListItem extends ICustomizeItem {
+        count: number
+    }
+
+    const [protein, setProtein] = useState<ICustomizeListItem[]>([])
+    const [veggie, setVeggie] = useState<ICustomizeListItem[]>([]);
+    const [condiment, setCondiment] = useState<ICustomizeListItem[]>([]);
 
     const lunchOptionInitialState:ILunchOption = {
         sub: false,
@@ -298,20 +303,32 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
                                 value={''}
                                 sx={{ width: '200px'}}
                                 onChange={(e) => {
-                                    // console.log(e.target.value)
 
-                                    // let found_protein = extra_protein_list.find((protein) => {
-                                    //     return protein.id === e.target.value
-                                    // })
+                                    // FIRST: FIND THE ITEM WITH THE ID RETURN BY THE SELECT
+                                    let found_protein = extra_protein_list.find((protein) => {
+                                        return protein.id === e.target.value
+                                    })
 
-                                    // if(found_protein){
-                                    //     setProtein(prev => 
-                                    //         [...prev, {
-                                    //             ...found_protein,
-                                    //             id: v4(),
-                                    //         }]
-                                    //     )
-                                    // }
+                                    // SECOND: CHECK IF THE ITEM IS ALREADY IN THE LIST
+                                    let index = protein.findIndex((val) => {
+                                        return val.id === e.target.value
+                                    });
+
+                                    if(!found_protein) return;
+
+                                    if(index !== -1){
+                                        // do something 
+                                        let temp = protein;
+
+                                        temp[index].count++;
+
+                                        setProtein([...temp]);
+                                        return;
+                                    }
+                                  
+                                    // add it to the protein list
+                                    setProtein([...protein, {...found_protein, count: 1}])
+
                                 }}
                             >
                                 {
@@ -375,6 +392,15 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
 
                             </Select>
                             </FormControl>  
+                            
+                            <div>
+                                {
+                                    protein.map((p) => {
+                                        return <Typography key={p.id}>x{p.count}  {p.en_name} {p.ch_name}  ${p.price}  =  ${p.price * p.count}</Typography>
+                                    })
+                                }
+                            </div>
+
                        </div>
                 </div>
             </div>  
