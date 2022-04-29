@@ -119,7 +119,8 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
     }
 
     interface ICustomizeListItem extends ICustomizeItem {
-        count: number
+        count: number,
+        total: number,
     }
 
     const [protein, setProtein] = useState<ICustomizeListItem[]>([])
@@ -322,12 +323,20 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
 
                                         temp[index].count++;
 
+                                        temp[index].total = temp[index].price * temp[index].count
+
                                         setProtein([...temp]);
                                         return;
                                     }
                                   
                                     // add it to the protein list
-                                    setProtein([...protein, {...found_protein, count: 1}])
+                                    setProtein([
+                                        ...protein, 
+                                        {
+                                            ...found_protein, 
+                                            count: 1, 
+                                            total: found_protein.price
+                                        }])
 
                                 }}
                             >
@@ -396,7 +405,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
                             <div>
                                 {
                                     protein.map((p) => {
-                                        return <Typography key={p.id}>x{p.count}  {p.en_name} {p.ch_name}  ${p.price}  =  ${p.price * p.count}</Typography>
+                                        return <Typography key={p.id}>x{p.count}  {p.en_name} {p.ch_name}  ${p.price}  =  ${p.total}</Typography>
                                     })
                                 }
                             </div>
