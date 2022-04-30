@@ -21,11 +21,6 @@ export interface ICustomizeItem {
     price: number,
 }
 
-export interface ICustomizeListItem extends ICustomizeItem {
-    count: number,
-    total: number,
-}
-
 const AddToCartButton = styled(Button)(({theme}) => ({
     backgroundColor: '#555',
     minWidth: '250px',

@@ -1,6 +1,6 @@
-import { SelectChangeEvent, Typography } from "@mui/material"
+import { Button, SelectChangeEvent, Typography } from "@mui/material"
 import { SetStateAction, useState } from "react"
-import { ICustomizeItem, ICustomizeListItem } from "."
+import { ICustomizeItem } from "."
 import { CustomizeSelect } from "./CustomizeSelect"
 
 export const Customize = () => {
@@ -75,15 +75,15 @@ export const Customize = () => {
 
    
 
-    const [protein, setProtein] = useState<ICustomizeListItem[]>([])
-    const [veggie, setVeggie] = useState<ICustomizeListItem[]>([]);
-    const [condiment, setCondiment] = useState<ICustomizeListItem[]>([]);
+    const [protein, setProtein] = useState<ICustomizeItem[]>([])
+    const [veggie, setVeggie] = useState<ICustomizeItem[]>([]);
+    const [condiment, setCondiment] = useState<ICustomizeItem[]>([]);
 
     interface IHandleItemOnSelect {
         event: SelectChangeEvent<string>, 
         original_list: ICustomizeItem[],
-        added_list: ICustomizeListItem[],
-        setItem: (value: SetStateAction<ICustomizeListItem[]>) => void
+        added_list: ICustomizeItem[],
+        setItem: (value: SetStateAction<ICustomizeItem[]>) => void
     }
     const handleItemOnSelect = ({event, original_list, added_list, setItem}:IHandleItemOnSelect) => {
         // FIRST: FIND THE ITEM WITH THE ID RETURN BY THE SELECT
@@ -91,37 +91,16 @@ export const Customize = () => {
             return item.id === event.target.value
         })
 
-        // SECOND: CHECK IF THE ITEM IS ALREADY IN THE LIST
-        let index = added_list.findIndex((val) => {
-            return val.id === event.target.value
-        });
-
         if(!found_item) return;
 
-        if(index !== -1){
-            // assign the array to a new array
-            let temp = added_list;
+        let duplicate = added_list.find((item) => {
+            return item.id === event.target.value
+        })
 
-            // get the item with the index
-            let item = temp[index];
+        if(duplicate) return;
 
-            item.count++; // increase the count
+        setItem([...added_list, found_item]);
 
-            // calculate the total
-            item.total = item.price * item.count
-
-            setItem([...temp]);
-            return;
-        }
-
-        // add it to the protein list
-        setItem([
-            ...added_list, 
-            {
-                ...found_item, 
-                count: 1, 
-                total: found_item.price
-            }])
     }
     
     return <>
@@ -164,20 +143,22 @@ export const Customize = () => {
             }}
         />
 
-<div>
+            <div>
                 {
                     protein.map((p) => {
-                        return <Typography key={p.id}>x{p.count}  {p.en_name} {p.ch_name}  ${p.price}  =  ${p.total}</Typography>
+                        return <div key={p.id}>
+                             <Typography > {p.en_name} {p.ch_name}  ${p.price}</Typography>
+                        </div>
                     })
                 }
 
-{
+                {
                     veggie.map((p) => {
-                        return <Typography key={p.id}>x{p.count}  {p.en_name} {p.ch_name}  ${p.price}  =  ${p.total}</Typography>
+                        return <Typography key={p.id}> {p.en_name} {p.ch_name}  ${p.price}</Typography>
                     })
                 }
 
-{
+                {
                     condiment.map((p) => {
                         return <Typography key={p.id}> Extra {p.en_name} 加{p.ch_name} </Typography>
                     })
