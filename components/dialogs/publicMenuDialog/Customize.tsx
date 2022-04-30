@@ -86,19 +86,20 @@ export const Customize = () => {
         setItem: (value: SetStateAction<ICustomizeItem[]>) => void
     }
     const handleItemOnSelect = ({event, original_list, added_list, setItem}:IHandleItemOnSelect) => {
-        // FIRST: FIND THE ITEM WITH THE ID RETURN BY THE SELECT
+        // find the item that was selected
         let found_item = original_list.find((item) => {
             return item.id === event.target.value
         })
 
         if(!found_item) return;
 
+        // check if it is already selected
         let duplicate = added_list.find((item) => {
             return item.id === event.target.value
         })
-
         if(duplicate) return;
 
+        // add to the list if not duplicated
         setItem([...added_list, found_item]);
 
     }
