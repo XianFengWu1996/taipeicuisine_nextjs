@@ -145,26 +145,28 @@ export const Customize = () => {
         />
 
             <div>
+                <Typography variant="h5" style={{ textDecoration: 'underline'}}>Protein</Typography>    
                 {
                     protein.map((p) => {
                         return <div key={p.id}>
-                             <Typography > {p.en_name} {p.ch_name}  ${p.price}</Typography>
+                             <Typography >Extra {p.en_name} 加{p.ch_name}  ${p.price}</Typography>
                         </div>
                     })
                 }
-
+                <Typography variant="h5" sx={{ textDecoration: 'underline', mt: 1}}>Veggie</Typography>    
                 {
                     veggie.map((p) => {
                         return <div key={p.id}>
-                            <Typography > {p.en_name} {p.ch_name}  ${p.price}</Typography>
+                            <Typography >Extra {p.en_name} 加{p.ch_name}  ${p.price}</Typography>
                         </div>                    
                     })
                 }
 
+                <Typography variant="h5" sx={{ textDecoration: 'underline', mt: 1}}>Condiment</Typography>    
                 {
                     condiment.map((p) => {
                         return <div key={p.id}>
-                             <Typography > {p.en_name} {p.ch_name}  ${p.price}</Typography>
+                             <Typography > Extra {p.en_name} 加{p.ch_name}</Typography>
                         </div>
                     })
                 }
