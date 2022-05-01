@@ -155,13 +155,17 @@ export const Customize = () => {
 
                 {
                     veggie.map((p) => {
-                        return <Typography key={p.id}> {p.en_name} {p.ch_name}  ${p.price}</Typography>
+                        return <div key={p.id}>
+                            <Typography > {p.en_name} {p.ch_name}  ${p.price}</Typography>
+                        </div>                    
                     })
                 }
 
                 {
                     condiment.map((p) => {
-                        return <Typography key={p.id}> Extra {p.en_name} 加{p.ch_name} </Typography>
+                        return <div key={p.id}>
+                             <Typography > {p.en_name} {p.ch_name}  ${p.price}</Typography>
+                        </div>
                     })
                 }
             </div>
