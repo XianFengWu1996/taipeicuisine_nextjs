@@ -1,4 +1,5 @@
 import { Button, SelectChangeEvent, Typography } from "@mui/material"
+import { isEmpty } from "lodash"
 import { SetStateAction, useState } from "react"
 import { ICustomizeItem } from "."
 import { CustomizeSelect } from "./CustomizeSelect"
@@ -105,71 +106,85 @@ export const Customize = () => {
     }
     
     return <>
-        <CustomizeSelect 
-            title="Protein"
-            original_list={extra_protein_list}
-            onChange={(event) => {
-                handleItemOnSelect({
-                    event,
-                    original_list: extra_protein_list,
-                    added_list: protein,
-                    setItem: setProtein
-                });
-            }}
-        />
-
-        <CustomizeSelect 
-            title="Vegetable"
-            original_list={extra_veggie_list}
-            onChange={(event) => {
-                handleItemOnSelect({
-                    event,
-                    original_list: extra_veggie_list,
-                    added_list: veggie,
-                    setItem: setVeggie
-                });
-            }}
-        />
-
-        <CustomizeSelect
-            title="Condiment"
-            original_list={extra_condiment_list}
-            onChange={(event) => {
-                handleItemOnSelect({
-                    event,
-                    original_list: extra_condiment_list,
-                    added_list: condiment,
-                    setItem: setCondiment
-                });
-            }}
-        />
-
+            <div style={{ display: 'flex'}}>
             <div>
-                <Typography variant="h5" style={{ textDecoration: 'underline'}}>Protein</Typography>    
-                {
-                    protein.map((p) => {
-                        return <div key={p.id}>
-                             <Typography >Extra {p.en_name} 加{p.ch_name}  ${p.price}</Typography>
-                        </div>
-                    })
-                }
-                <Typography variant="h5" sx={{ textDecoration: 'underline', mt: 1}}>Veggie</Typography>    
-                {
-                    veggie.map((p) => {
-                        return <div key={p.id}>
-                            <Typography >Extra {p.en_name} 加{p.ch_name}  ${p.price}</Typography>
-                        </div>                    
-                    })
-                }
+                <CustomizeSelect 
+                    title="Protein"
+                    original_list={extra_protein_list}
+                    onChange={(event) => {
+                        handleItemOnSelect({
+                            event,
+                            original_list: extra_protein_list,
+                            added_list: protein,
+                            setItem: setProtein
+                        });
+                    }}
+                />
 
-                <Typography variant="h5" sx={{ textDecoration: 'underline', mt: 1}}>Condiment</Typography>    
-                {
-                    condiment.map((p) => {
-                        return <div key={p.id}>
-                             <Typography > Extra {p.en_name} 加{p.ch_name}</Typography>
-                        </div>
-                    })
-                }
+                <CustomizeSelect 
+                    title="Vegetable"
+                    original_list={extra_veggie_list}
+                    onChange={(event) => {
+                        handleItemOnSelect({
+                            event,
+                            original_list: extra_veggie_list,
+                            added_list: veggie,
+                            setItem: setVeggie
+                        });
+                    }}
+                />
+
+                <CustomizeSelect
+                    title="Condiment"
+                    original_list={extra_condiment_list}
+                    onChange={(event) => {
+                        handleItemOnSelect({
+                            event,
+                            original_list: extra_condiment_list,
+                            added_list: condiment,
+                            setItem: setCondiment
+                        });
+                    }}
+                />
+            </div>
+
+            <div style={{ marginLeft: '50px'}}>
+                <CustomizeListDisplay 
+                    list={protein}
+                    title={'protein'}
+                />
+
+                <CustomizeListDisplay 
+                    list={veggie}
+                    title={'veggie'}
+                />
+
+                <CustomizeListDisplay       
+                    list={condiment}
+                    title={'condiment'}
+                />
+            </div>
             </div>
     </>
 }
+
+interface ICustomizeListDisplayProps {
+    list: ICustomizeItem[],
+    title: string
+}
+
+export const CustomizeListDisplay = ({list, title} : ICustomizeListDisplayProps) => {
+    return <>
+        {
+            !isEmpty(list) && <Typography variant="h6" sx={{ textDecoration: 'underline', mt: 1, textTransform:'capitalize'}}>Extra {title}</Typography>    
+        } 
+        {
+            !isEmpty(list) && list.map((val) => {
+                return <div key={val.id}>
+                        <Typography > Extra {val.en_name} 加{val.ch_name}</Typography>
+                </div>
+            })
+        }
+    </>
+}
+    
