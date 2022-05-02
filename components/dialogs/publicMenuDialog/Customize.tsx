@@ -59,30 +59,8 @@ export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem } 
         }
     ]
 
-    const extra_condiment_list: ICustomizeItem[] = [
-        {
-            id: '86ce6468-1eb5-4694-b610-07ba86455a8e',
-            en_name: 'Basil',
-            ch_name: '九层塔',
-            price: 0,
-        },
-        {
-            id: 'c93e4ec4-9d59-45d1-b125-6ccdb14b49c7',
-            en_name: 'Scallion',
-            ch_name: '葱花',
-            price: 0,
-        },
-        {
-            id: '95228f25-1186-48f8-af3a-d9910c3f7225',
-            en_name: 'Garlic',
-            ch_name: '大蒜',
-            price: 0,
-        }
-    ]
-
     const [protein, setProtein] = useState<ICustomizeItem[]>([])
     const [veggie, setVeggie] = useState<ICustomizeItem[]>([]);
-    const [condiment, setCondiment] = useState<ICustomizeItem[]>([]);
 
     interface IHandleItemOnSelect {
         event: SelectChangeEvent<string>, 
@@ -120,8 +98,6 @@ export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem } 
             setProtein(temp)
         } else if(title === 'veggie'){
             setVeggie(temp)
-        } else if(title === 'condiment'){
-            setCondiment(temp)
         }
 
         handleRemoveCustomizeItem(val.price)
@@ -158,18 +134,6 @@ export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem } 
                     }}
                 />
 
-                <CustomizeSelect
-                    title="Condiment"
-                    original_list={extra_condiment_list}
-                    onChange={(event) => {
-                        handleItemOnSelect({
-                            event,
-                            original_list: extra_condiment_list,
-                            added_list: condiment,
-                            setItem: setCondiment
-                        });
-                    }}
-                />
             </div>
 
             <div style={{ marginLeft: '20px'}}>
@@ -185,11 +149,6 @@ export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem } 
                     handleOnDelete={handleOnDelete}
                 />
 
-                <CustomizeListDisplay       
-                    list={condiment}
-                    title={'condiment'}
-                    handleOnDelete={handleOnDelete}
-                />
             </div>
             </div>
     </>
