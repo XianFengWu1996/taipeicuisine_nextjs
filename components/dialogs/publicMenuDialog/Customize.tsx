@@ -1,4 +1,5 @@
 import { IconButton, SelectChangeEvent, Typography } from "@mui/material"
+import { red } from "@mui/material/colors"
 import { isEmpty } from "lodash"
 import { SetStateAction, useState } from "react"
 import { AiOutlineCloseCircle } from "react-icons/ai"
@@ -104,10 +105,9 @@ export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem } 
     }
     
     return <>
-            <Typography>We will contact you if we are unable to fulfil any of the request**</Typography>
 
             <div style={{ display: 'flex'}}>
-            <div>
+            <div style={{ flex: 1}}>
                 <CustomizeSelect 
                     title="Protein"
                     original_list={extra_protein_list}
@@ -134,9 +134,12 @@ export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem } 
                     }}
                 />
 
+                <Typography sx={{ textTransform: 'uppercase', color: red[300], fontWeight: 600, fontSize: 9}}>We will contact you if we are unable to fulfill any of the request**</Typography>
+
+
             </div>
 
-            <div style={{ marginLeft: '20px'}}>
+            <div style={{ marginLeft: '20px', flex: 2}}>
                 <CustomizeListDisplay 
                     list={protein}
                     title={'protein'}
@@ -163,12 +166,12 @@ interface ICustomizeListDisplayProps {
 export const CustomizeListDisplay = ({list, title, handleOnDelete} : ICustomizeListDisplayProps) => {
     return <>
         {
-            !isEmpty(list) && <Typography variant="h6" sx={{ textDecoration: 'underline', mt: 1, textTransform:'capitalize'}}>Extra {title}</Typography>    
+            !isEmpty(list) && <Typography sx={{ textDecoration: 'underline', mt: 1, textTransform:'capitalize', fontSize: 15, fontWeight: 600}}>Extra {title}</Typography>    
         } 
         {
             !isEmpty(list) && list.map((val) => {
                 return <div key={val.id} style={{ display: 'flex', alignItems: 'center'}}>
-                        <Typography sx={{ fontSize: '14px', fontWeight: 500}}> Extra {val.en_name} 加{val.ch_name} +${val.price}</Typography>
+                        <Typography sx={{ fontSize: '12px', fontWeight: 500}}> Extra {val.en_name} 加{val.ch_name} +${val.price}</Typography>
                         <IconButton color="error" size="small" onClick={() => {
                             handleOnDelete(val, list, title)
                         }}><AiOutlineCloseCircle /></IconButton>
