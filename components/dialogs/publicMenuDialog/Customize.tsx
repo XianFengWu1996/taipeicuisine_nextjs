@@ -1,6 +1,7 @@
-import { Button, SelectChangeEvent, Typography } from "@mui/material"
+import { IconButton, SelectChangeEvent, Typography } from "@mui/material"
 import { isEmpty } from "lodash"
 import { SetStateAction, useState } from "react"
+import { AiOutlineCloseCircle } from "react-icons/ai"
 import { ICustomizeItem } from "."
 import { CustomizeSelect } from "./CustomizeSelect"
 
@@ -104,6 +105,21 @@ export const Customize = () => {
         setItem([...added_list, found_item]);
 
     }
+
+    const handleOnDelete = (id: string, list: ICustomizeItem[], title:string) => {
+        let temp = list.filter((item) => {
+            return item.id !== id
+        })
+
+        console.log(temp)
+        if(title === 'protein'){
+            setProtein(temp)
+        } else if(title === 'veggie'){
+            setVeggie(temp)
+        } else if(title === 'condiment'){
+            setCondiment(temp)
+        }
+    }
     
     return <>
             <div style={{ display: 'flex'}}>
@@ -148,20 +164,23 @@ export const Customize = () => {
                 />
             </div>
 
-            <div style={{ marginLeft: '50px'}}>
+            <div style={{ marginLeft: '20px'}}>
                 <CustomizeListDisplay 
                     list={protein}
                     title={'protein'}
+                    handleOnDelete={handleOnDelete}
                 />
 
                 <CustomizeListDisplay 
                     list={veggie}
                     title={'veggie'}
+                    handleOnDelete={handleOnDelete}
                 />
 
                 <CustomizeListDisplay       
                     list={condiment}
                     title={'condiment'}
+                    handleOnDelete={handleOnDelete}
                 />
             </div>
             </div>
@@ -170,18 +189,22 @@ export const Customize = () => {
 
 interface ICustomizeListDisplayProps {
     list: ICustomizeItem[],
-    title: string
+    title: string,
+    handleOnDelete: (arg: string, arg2: ICustomizeItem[], arg3: string) => void
 }
 
-export const CustomizeListDisplay = ({list, title} : ICustomizeListDisplayProps) => {
+export const CustomizeListDisplay = ({list, title, handleOnDelete} : ICustomizeListDisplayProps) => {
     return <>
         {
             !isEmpty(list) && <Typography variant="h6" sx={{ textDecoration: 'underline', mt: 1, textTransform:'capitalize'}}>Extra {title}</Typography>    
         } 
         {
             !isEmpty(list) && list.map((val) => {
-                return <div key={val.id}>
-                        <Typography > Extra {val.en_name} 加{val.ch_name}</Typography>
+                return <div key={val.id} style={{ display: 'flex', alignItems: 'center'}}>
+                        <Typography sx={{ fontSize: '14px', fontWeight: 500}}> Extra {val.en_name} 加{val.ch_name} +${val.price}</Typography>
+                        <IconButton color="error" size="small" onClick={() => {
+                            handleOnDelete(val.id, list, title)
+                        }}><AiOutlineCloseCircle /></IconButton>
                 </div>
             })
         }
