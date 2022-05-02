@@ -5,7 +5,11 @@ import { AiOutlineCloseCircle } from "react-icons/ai"
 import { ICustomizeItem } from "."
 import { CustomizeSelect } from "./CustomizeSelect"
 
-export const Customize = () => {
+interface ICustomizeProp {
+    handleAddCustomizeItem: (arg: number) => void,
+}
+
+export const Customize = ({ handleAddCustomizeItem } : ICustomizeProp) => {
     const extra_protein_list: ICustomizeItem[] = [
         {
             id: 'f9a2f119-c4bc-4a18-b346-9b7b8ce0ff05',
@@ -75,8 +79,6 @@ export const Customize = () => {
         }
     ]
 
-   
-
     const [protein, setProtein] = useState<ICustomizeItem[]>([])
     const [veggie, setVeggie] = useState<ICustomizeItem[]>([]);
     const [condiment, setCondiment] = useState<ICustomizeItem[]>([]);
@@ -103,6 +105,7 @@ export const Customize = () => {
 
         // add to the list if not duplicated
         setItem([...added_list, found_item]);
+        handleAddCustomizeItem(found_item.price);
 
     }
 
