@@ -67,7 +67,7 @@ export const MenuTab = () => {
                     aria-label="Menu Display"
                 >
                 {
-                    selectedMenu.category.map((category) => {
+                    selectedMenu.category && selectedMenu.category.map((category) => {
                         return  <StyledMenuTab
                                 key={category.id}
                                 label={`${category.en_name} ${category.ch_name}`} 

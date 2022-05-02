@@ -7,9 +7,10 @@ import { CustomizeSelect } from "./CustomizeSelect"
 
 interface ICustomizeProp {
     handleAddCustomizeItem: (arg: number) => void,
+    handleRemoveCustomizeItem: (arg: number) => void,
 }
 
-export const Customize = ({ handleAddCustomizeItem } : ICustomizeProp) => {
+export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem } : ICustomizeProp) => {
     const extra_protein_list: ICustomizeItem[] = [
         {
             id: 'f9a2f119-c4bc-4a18-b346-9b7b8ce0ff05',
@@ -109,9 +110,9 @@ export const Customize = ({ handleAddCustomizeItem } : ICustomizeProp) => {
 
     }
 
-    const handleOnDelete = (id: string, list: ICustomizeItem[], title:string) => {
+    const handleOnDelete = (val: ICustomizeItem, list: ICustomizeItem[], title:string) => {
         let temp = list.filter((item) => {
-            return item.id !== id
+            return item.id !== val.id
         })
 
         console.log(temp)
@@ -122,9 +123,13 @@ export const Customize = ({ handleAddCustomizeItem } : ICustomizeProp) => {
         } else if(title === 'condiment'){
             setCondiment(temp)
         }
+
+        handleRemoveCustomizeItem(val.price)
     }
     
     return <>
+            <Typography>We will contact you if we are unable to fulfil any of the request**</Typography>
+
             <div style={{ display: 'flex'}}>
             <div>
                 <CustomizeSelect 
@@ -193,7 +198,7 @@ export const Customize = ({ handleAddCustomizeItem } : ICustomizeProp) => {
 interface ICustomizeListDisplayProps {
     list: ICustomizeItem[],
     title: string,
-    handleOnDelete: (arg: string, arg2: ICustomizeItem[], arg3: string) => void
+    handleOnDelete: (arg: ICustomizeItem, arg2: ICustomizeItem[], arg3: string) => void
 }
 
 export const CustomizeListDisplay = ({list, title, handleOnDelete} : ICustomizeListDisplayProps) => {
@@ -206,7 +211,7 @@ export const CustomizeListDisplay = ({list, title, handleOnDelete} : ICustomizeL
                 return <div key={val.id} style={{ display: 'flex', alignItems: 'center'}}>
                         <Typography sx={{ fontSize: '14px', fontWeight: 500}}> Extra {val.en_name} 加{val.ch_name} +${val.price}</Typography>
                         <IconButton color="error" size="small" onClick={() => {
-                            handleOnDelete(val.id, list, title)
+                            handleOnDelete(val, list, title)
                         }}><AiOutlineCloseCircle /></IconButton>
                 </div>
             })

@@ -20,6 +20,7 @@ interface IDish {
     ch_name: string,
     is_spicy:boolean,
     is_popular: boolean,
+    is_customizable: boolean,
     is_lunch: boolean,
     in_stock: boolean,
     price: number,

@@ -168,6 +168,12 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         setTotal(new_total);
     }
 
+    const handleOnRemoveCustomizeItem = (amount: number) => {
+        let new_total = total - amount;
+        
+        setTotal(new_total);
+    }
+
     // set the total as the select dish price for one, will only change when the dish change
     useEffect(() => {
         // dish price will only change when the user select a different dish
@@ -217,11 +223,19 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
                             />
                        }
                     
-                       <div>
-                            <Button variant="text">Customize</Button>
-                       </div>
+                       
 
-                       <Customize handleAddCustomizeItem={handleOnAddCustomizeItem}/>
+                       {
+                           dish.is_customizable && <>
+                            <div>
+                                <Button variant="text">Customize</Button>
+                            </div>
+                            <Customize 
+                                handleAddCustomizeItem={handleOnAddCustomizeItem}
+                                handleRemoveCustomizeItem={handleOnRemoveCustomizeItem}
+                            />
+                           </>
+                       }
 
              
                 </div>
