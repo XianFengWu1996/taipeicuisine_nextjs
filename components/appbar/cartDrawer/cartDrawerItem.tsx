@@ -33,6 +33,12 @@ export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
                         {
                             !isEmpty(item.option) &&  <Typography sx={{ fontSize: '11px'}}>Option: {item.option.en_name} {item.option.ch_name} {item.option.spicy ? <GoFlame color="red"/>: null }</Typography> 
                         }
+                       
+                        {
+                            !isEmpty(item.comment) &&  <Typography sx={{ color: red[400],fontSize: '11px'}}>Comments: {item.comment}</Typography> 
+                        }
+                        <PriceText>${dish.price.toFixed(2)}</PriceText>
+
                         {
                             (opt && (opt.sub || opt.no_rice || opt.no_soup) ) && <Typography sx={{fontSize: '12px', fontWeight: 600, fontStyle: 'italic', color: blue[600] }}>
                                  Lunch Option: 
@@ -41,10 +47,22 @@ export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
                                 {opt.no_soup && 'No Soup '}
                             </Typography>
                         }
+
                         {
-                            !isEmpty(item.comment) &&  <Typography sx={{ color: red[400],fontSize: '11px'}}>Comments: {item.comment}</Typography> 
+                            item.customize && <>
+                                {
+                                    item.customize.protein.map((protein) => {
+                                        return <Typography key={protein.id} sx={{ fontSize: 11, fontWeight:600}}> · Extra {protein.en_name} 加{protein.ch_name} +${protein.price}</Typography>
+                                    })
+                                }
+
+                                {
+                                    item.customize.veggie.map((veggie) => {
+                                        return <Typography key={veggie.id} sx={{ fontSize: 11, fontWeight:600}}> · Extra {veggie.en_name} 加{veggie.ch_name} +${veggie.price}</Typography>
+                                    })
+                                }
+                            </>
                         }
-                        <PriceText>${dish.price.toFixed(2)}</PriceText>
                     </div>
 
                     <div style={{ paddingLeft: '5px'}}>

@@ -85,6 +85,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         setLunchOption(lunchOptionInitialState)
         setProtein([])
         setVeggie([]);
+        setShowCustomize(false)
     }
 
     const handleOnRadioChange = (id: string, options: IVarirantOption[]) => {
