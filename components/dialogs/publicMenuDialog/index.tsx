@@ -47,6 +47,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
     // customize 
     const [protein, setProtein] = useState<ICustomizeItem[]>([])
     const [veggie, setVeggie] = useState<ICustomizeItem[]>([]);
+    const [showCustomize, setShowCustomize] = useState<boolean>(false);
 
     //  lunch option
     const lunchOptionInitialState:ILunchOption = {
@@ -187,6 +188,13 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         setTotal(new_total);
     }
 
+    const handleResetCustomizeOnClick = () => {
+        setShowCustomize(!showCustomize)
+        setProtein([])
+        setVeggie([])
+        setTotal(quantity * (dish.price + (option.price ?? 0)))
+    }
+
     // set the total as the select dish price for one, will only change when the dish change
     useEffect(() => {
         // dish price will only change when the user select a different dish
@@ -236,21 +244,21 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
                             />
                        }
                     
-                       
-
                        {
                            dish.is_customizable && <>
-                            <div>
-                                <Button variant="text">Customize</Button>
-                            </div>
-                            <Customize 
-                                handleAddCustomizeItem={handleOnAddCustomizeItem}
-                                handleRemoveCustomizeItem={handleOnRemoveCustomizeItem}
-                                protein={protein}
-                                veggie={veggie}
-                                setProtein={setProtein}
-                                setVeggie={setVeggie}
-                            />
+                                <div>
+                                    <Button variant="text" onClick={handleResetCustomizeOnClick}>{showCustomize ? 'Hide Customize' : 'Customize'}</Button>
+                                </div>
+                                {
+                                    showCustomize && <Customize 
+                                        handleAddCustomizeItem={handleOnAddCustomizeItem}
+                                        handleRemoveCustomizeItem={handleOnRemoveCustomizeItem}
+                                        protein={protein}
+                                        veggie={veggie}
+                                        setProtein={setProtein}
+                                        setVeggie={setVeggie}
+                                    />
+                                }
                            </>
                        }
 
