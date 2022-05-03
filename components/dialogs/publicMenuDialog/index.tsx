@@ -35,7 +35,7 @@ interface IPublicMenuDialogProps {
 }
 
 export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogProps) => {
-    const isMobile = useMediaQuery('(max-width: 480px)'); // check if it' mobile 
+    const isMobile = useMediaQuery('(max-width: 720px)'); // check if it' mobile 
     const dispatch = useAppDispatch();
     
     const [quantity, setQuantity] = useState(1);
@@ -221,7 +221,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
                 <AiOutlineClose />
             </IconButton>
 
-            <div style={{ display: isMobile ? 'block' : 'flex'}}>
+            <div style={{ display:'flex', flexDirection: isMobile ? 'column' : 'row'}}>
                     <div style={{ display: 'flex', justifyContent: 'center'}}>
                     <DialogImage src={dish.pic_url} label={dish.en_name} width={300} height={300}/>
                     </div>

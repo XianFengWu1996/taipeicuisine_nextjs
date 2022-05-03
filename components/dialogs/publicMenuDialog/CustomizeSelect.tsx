@@ -1,12 +1,20 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material"
+import { styled } from "@mui/system"
+import { ReactNode } from "react"
 import { v4 } from "uuid"
-import { ICustomizeItem } from "."
 
 interface ICustomizeSelect {
     title: string,
     original_list: ICustomizeItem[],
-    onChange: (arg1: SelectChangeEvent<string>) => void,
+    onChange: (event: SelectChangeEvent<unknown>, child: ReactNode) => void,
 }
+
+const CustomizeSelectComp = styled(Select)(({theme}) => ({
+    width: '200px',
+    [theme.breakpoints.down('sm')]: {
+        width: '125px'
+    }
+}))
 
 export const CustomizeSelect = ({ title, original_list, onChange } : ICustomizeSelect) => {
     return  <div>
@@ -14,12 +22,11 @@ export const CustomizeSelect = ({ title, original_list, onChange } : ICustomizeS
 
         <FormControl sx={{ my: 1}}>
         <InputLabel id={`select-label-${title.toLowerCase()}`}>{title}</InputLabel>
-        <Select
+        <CustomizeSelectComp
             labelId={`select-label-${title.toLowerCase()}`}
             id={`select-${title.toLowerCase()}`}
             label={title}
             value={''}
-            sx={{ width: '200px'}}
             onChange={onChange}
         >
             {
@@ -31,7 +38,7 @@ export const CustomizeSelect = ({ title, original_list, onChange } : ICustomizeS
                 })
             }
 
-        </Select>
+        </CustomizeSelectComp>
         </FormControl>
     </div>
 }

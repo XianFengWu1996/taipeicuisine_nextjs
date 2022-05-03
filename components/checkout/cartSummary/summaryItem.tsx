@@ -65,6 +65,22 @@ export const SummaryItem = ({ item } : ISummaryItemProps)  => {
                 {
                     !isEmpty(item.comment) && <CommentText>Comments: {item.comment}</CommentText>
                 }
+
+                {
+                    item.customize && <>
+                        {
+                            item.customize.protein.map((protein) => {
+                                return <Typography key={protein.id} sx={{ fontSize: 11, fontWeight:600}}> · Extra {protein.en_name} 加{protein.ch_name} +${protein.price}</Typography>
+                            })
+                        }
+
+                        {
+                            item.customize.veggie.map((veggie) => {
+                                return <Typography key={veggie.id} sx={{ fontSize: 11, fontWeight:600}}> · Extra {veggie.en_name} 加{veggie.ch_name} +${veggie.price}</Typography>
+                            })
+                        }
+                    </>
+                }
             </div>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'end'}}>
                 <CountPriceText>${item.total.toFixed(2)}</CountPriceText>

@@ -65,7 +65,7 @@ export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem, p
   
 
     interface IHandleItemOnSelect {
-        event: SelectChangeEvent<string>, 
+        event: SelectChangeEvent<unknown>, 
         original_list: ICustomizeItem[],
         added_list: ICustomizeItem[],
         setItem: (value: SetStateAction<ICustomizeItem[]>) => void
