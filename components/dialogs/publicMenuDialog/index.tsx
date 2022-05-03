@@ -98,9 +98,15 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
             return `${dish.id}${v4()}`
         }
 
+        if(!isEmpty(protein) || !isEmpty(veggie)){
+            return `${dish.id}${v4()}`
+        }
+
         if(!isEmpty(option.id)){
             return `${dish.id}${option.id}`
         }
+
+        if(!isEmpty())
 
         // if sub and no_rice both true
         if(lunchOption.sub && lunchOption.no_rice){
