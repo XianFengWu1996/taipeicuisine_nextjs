@@ -1,16 +1,19 @@
 import {  SelectChangeEvent, Typography } from "@mui/material"
 import { red } from "@mui/material/colors"
 import { SetStateAction, useState } from "react"
-import { ICustomizeItem } from "."
 import { CustomizeListDisplay } from "./CustomizeListDisplay"
 import { CustomizeSelect } from "./CustomizeSelect"
 
 interface ICustomizeProp {
     handleAddCustomizeItem: (arg: number) => void,
     handleRemoveCustomizeItem: (arg: number) => void,
+    protein: ICustomizeItem[],
+    veggie: ICustomizeItem[],
+    setProtein: (value: SetStateAction<ICustomizeItem[]>) => void,
+    setVeggie: (value: SetStateAction<ICustomizeItem[]>) => void
 }
 
-export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem } : ICustomizeProp) => {
+export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem, protein, veggie, setProtein, setVeggie } : ICustomizeProp) => {
     const extra_protein_list: ICustomizeItem[] = [
         {
             id: 'f9a2f119-c4bc-4a18-b346-9b7b8ce0ff05',
@@ -59,8 +62,7 @@ export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem } 
         }
     ]
 
-    const [protein, setProtein] = useState<ICustomizeItem[]>([])
-    const [veggie, setVeggie] = useState<ICustomizeItem[]>([]);
+  
 
     interface IHandleItemOnSelect {
         event: SelectChangeEvent<string>, 

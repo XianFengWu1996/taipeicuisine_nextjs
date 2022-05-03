@@ -14,12 +14,6 @@ import { Comments } from "./Comments";
 import { LunchOption } from "./LunchOption";
 import { Customize } from "./Customize";
 
-export interface ICustomizeItem {
-    id: string,
-    en_name: string,
-    ch_name: string,
-    price: number,
-}
 
 const AddToCartButton = styled(Button)(({theme}) => ({
     backgroundColor: '#555',
@@ -50,6 +44,11 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
     const [radioError, setRadioError] = useState(false);
     const [comments, setComments] = useState('');
 
+    // customize 
+    const [protein, setProtein] = useState<ICustomizeItem[]>([])
+    const [veggie, setVeggie] = useState<ICustomizeItem[]>([]);
+
+    //  lunch option
     const lunchOptionInitialState:ILunchOption = {
         sub: false,
         no_soup: false,
@@ -83,6 +82,8 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         setRadioError(false)
         setComments('');
         setLunchOption(lunchOptionInitialState)
+        setProtein([])
+        setVeggie([]);
     }
 
     const handleOnRadioChange = (id: string, options: IVarirantOption[]) => {
@@ -148,7 +149,13 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
             option: option,
             comment: comments,
             total: total,
-            lunchOption: dish.is_lunch ? lunchOption : null
+            lunchOption: dish.is_lunch ? lunchOption : null,
+            customize: dish.is_customizable ? (
+                (!isEmpty(protein) || !isEmpty(veggie)) ? {
+                    protein,
+                    veggie
+                } : null
+            ) : null
         }));
         handleDialogClose();
     }
@@ -233,6 +240,10 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
                             <Customize 
                                 handleAddCustomizeItem={handleOnAddCustomizeItem}
                                 handleRemoveCustomizeItem={handleOnRemoveCustomizeItem}
+                                protein={protein}
+                                veggie={veggie}
+                                setProtein={setProtein}
+                                setVeggie={setVeggie}
                             />
                            </>
                        }

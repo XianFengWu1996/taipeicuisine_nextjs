@@ -28,7 +28,20 @@ interface ICartItem {
     comment: string,
     quantity: number,
     total: number,
-    lunchOption: ILunchOption | null
+    lunchOption: ILunchOption | null,
+    customize: ICustomize | null
+}
+
+interface ICustomizeItem {
+    id: string,
+    en_name: string,
+    ch_name: string,
+    price: number,
+}
+
+interface ICustomize {
+    protein: ICustomizeItem[],
+    veggie: ICustomizeItem[],
 }
 
 interface ILunchOption {
