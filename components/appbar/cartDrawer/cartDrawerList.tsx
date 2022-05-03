@@ -4,7 +4,7 @@ import { CartDrawerItem } from "./cartDrawerItem";
 
 export const CartDrawerList = () => {
     const cartState = useAppSelector(state => state.cart);
-    return <List sx={{ marginBottom: '100px'}}>
+    return <List sx={{ pb: 10}}>
         {
             cartState.cart.map((item) => {
                 return <CartDrawerItem
