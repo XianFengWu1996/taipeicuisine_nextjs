@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
-import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut} from 'firebase/auth'
+import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut, FacebookAuthProvider} from 'firebase/auth'
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { setLoginDialog } from '../../store/slice/customerSlice';
@@ -42,15 +42,8 @@ export const checkAndRedirect = (query: ParsedUrlQuery) => {
   }
 }
 
-interface IHandleLogin {
-  email: string,
-  password: string,
-  handleSuccess: () => void,
-  handleFail: () => void,
-  query: ParsedUrlQuery,
-}
 
-export const handleEmailLogin = async ({ email, password, handleSuccess, handleFail,query}: IHandleLogin) => {
+export const handleEmailLogin = async ({ email, password, handleSuccess, handleFail,query}: IEmailLogin) => {
     try{
       let user = await signInWithEmailAndPassword(fbAuth, email, password); // try to sign in
 
@@ -67,11 +60,7 @@ export const handleEmailLogin = async ({ email, password, handleSuccess, handleF
     }
 }
 
-interface IGoogleLogin {
-  query: ParsedUrlQuery,
-}
-
-export const handleGoogleLogin = async (_:IGoogleLogin) => {
+export const handleGoogleLogin = async (_:ISocialLogin) => {
   try {
     const google_provider = new GoogleAuthProvider();
 
@@ -86,7 +75,26 @@ export const handleGoogleLogin = async (_:IGoogleLogin) => {
     store.dispatch(setLoginDialog(false));
     checkAndRedirect(_.query); // check if the page needs to be redirected
   } catch (error) {
-    handleCatchError(error as Error, 'Fail to login');  }
+    handleCatchError(error as Error, 'Fail to login with Google');  
+  }
+  }
+
+export const handleFacebookLogin = async(_:ISocialLogin) => {
+  try {
+    let facebook_provider = new FacebookAuthProvider();
+
+    let user =  (await signInWithPopup(fbAuth, facebook_provider)).user;
+
+    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/login`, null, {
+      headers: {
+        'authorization': `Bearer ${await user.getIdToken()}`
+      }
+    })
+    store.dispatch(setLoginDialog(false));
+    checkAndRedirect(_.query); // check if the page needs to be redirected
+  } catch (error) {
+    handleCatchError(error as Error, 'Fail to login with Facebook');  
+  }
 }
 
 export const handleLogout = () => {

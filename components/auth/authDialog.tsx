@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setLoginDialog } from "../../store/slice/customerSlice";
 
 import { FacebookLoginButton, GoogleLoginButton, AppleLoginButton } from 'react-social-login-buttons'
-import { handleGoogleLogin } from "../../utils/functions/auth";
+import { handleFacebookLogin, handleGoogleLogin } from "../../utils/functions/auth";
 import { useRouter } from "next/router";
 
 export const AuthDialog = () => {
@@ -43,7 +43,7 @@ export const AuthDialog = () => {
                 <GoogleLoginButton style={{ marginBottom: '10px'}} onClick={() => handleGoogleLogin({ query: router.query})}>
                     <Typography>Log In With Google</Typography>
                 </GoogleLoginButton>
-                <FacebookLoginButton style={{ marginBottom: '10px'}}>
+                <FacebookLoginButton style={{ marginBottom: '10px'}} onClick={() => handleFacebookLogin({ query: router.query})}>
                     <Typography>Log In With Facebook</Typography>
                 </FacebookLoginButton>
                 <AppleLoginButton>
