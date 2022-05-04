@@ -6,12 +6,14 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setLoginDialog } from "../../store/slice/customerSlice";
 
 import { FacebookLoginButton, GoogleLoginButton, AppleLoginButton } from 'react-social-login-buttons'
-
+import { handleGoogleLogin } from "../../utils/functions/auth";
+import { useRouter } from "next/router";
 
 export const AuthDialog = () => {
     const [isLogin, setIsLogin] = useState(true);
     const { loginDialogOpen } = useAppSelector(state => state.customer)
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const handleDialogClose = () => {
         dispatch(setLoginDialog(false));
@@ -38,9 +40,7 @@ export const AuthDialog = () => {
             <Typography sx={{ my: 1}}>Social Login</Typography>
 
             <div>
-                <GoogleLoginButton style={{ marginBottom: '10px'}} onClick={() => {
-                    
-                }}>
+                <GoogleLoginButton style={{ marginBottom: '10px'}} onClick={() => handleGoogleLogin({ query: router.query})}>
                     <Typography>Log In With Google</Typography>
                 </GoogleLoginButton>
                 <FacebookLoginButton style={{ marginBottom: '10px'}}>

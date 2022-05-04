@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, signOut} from 'firebase/auth'
+import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut} from 'firebase/auth'
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
+import { setLoginDialog } from '../../store/slice/customerSlice';
+import store from '../../store/store';
 import { handleCatchError } from '../errors/custom';
+
 
 export const app = initializeApp({
     apiKey: process.env.NEXT_PUBLIC_FB_APIKEY,
@@ -22,13 +25,7 @@ export const token = async () => {
   return fbAuth.currentUser?.getIdToken();
 }
 
-interface IHandleLogin {
-  email: string,
-  password: string,
-  handleSuccess: () => void,
-  handleFail: () => void,
-  query: ParsedUrlQuery,
-}
+
 
 export const checkAndRedirect = (query: ParsedUrlQuery) => {
   if(query.redirect){
@@ -43,6 +40,14 @@ export const checkAndRedirect = (query: ParsedUrlQuery) => {
         
     }
   }
+}
+
+interface IHandleLogin {
+  email: string,
+  password: string,
+  handleSuccess: () => void,
+  handleFail: () => void,
+  query: ParsedUrlQuery,
 }
 
 export const handleEmailLogin = async ({ email, password, handleSuccess, handleFail,query}: IHandleLogin) => {
@@ -60,6 +65,28 @@ export const handleEmailLogin = async ({ email, password, handleSuccess, handleF
       handleFail();
       handleCatchError(e as Error, 'Fail to login');
     }
+}
+
+interface IGoogleLogin {
+  query: ParsedUrlQuery,
+}
+
+export const handleGoogleLogin = async (_:IGoogleLogin) => {
+  try {
+    const google_provider = new GoogleAuthProvider();
+
+    let user = (await signInWithPopup(fbAuth, google_provider)).user;
+
+    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/login`, null, {
+      headers: {
+        'authorization': `Bearer ${await user.getIdToken()}`
+      }
+    })
+
+    store.dispatch(setLoginDialog(false));
+    checkAndRedirect(_.query); // check if the page needs to be redirected
+  } catch (error) {
+    handleCatchError(error as Error, 'Fail to login');  }
 }
 
 export const handleLogout = () => {
