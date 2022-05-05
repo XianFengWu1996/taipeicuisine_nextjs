@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
-import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut, FacebookAuthProvider} from 'firebase/auth'
+import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut, FacebookAuthProvider, OAuthProvider} from 'firebase/auth'
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { setLoginDialog } from '../../store/slice/customerSlice';
@@ -77,7 +77,27 @@ export const handleGoogleLogin = async (_:ISocialLogin) => {
   } catch (error) {
     handleCatchError(error as Error, 'Fail to login with Google');  
   }
-  }
+}
+
+export const handleAppleLogin = async (_:ISocialLogin) => {
+ try {
+    const apple_provider = new OAuthProvider('apple.com');
+
+    const user = (await signInWithPopup(fbAuth, apple_provider)).user
+
+    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/login`, null, {
+      headers: {
+        'authorization': `Bearer ${await user.getIdToken()}`
+      }
+    })
+
+    store.dispatch(setLoginDialog(false));
+    checkAndRedirect(_.query); 
+ } catch (error) {
+   console.log(error);
+    handleCatchError(error as Error, 'Fail to login with Google');  
+ }
+}
 
 export const handleFacebookLogin = async(_:ISocialLogin) => {
   try {
