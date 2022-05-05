@@ -25,7 +25,7 @@ export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
     const opt = item.lunchOption
 
     return <Card sx={{ margin: '15px'}}>
-        <CardContent sx={{ display: 'flex', width: '100%'}}>
+        <CardContent sx={{ display: 'flex', width: '100%', paddingBottom: '7px!important'}}>
             <div style={{ display: 'flex', flexDirection: 'column', width: 'inherit' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                     <div>
