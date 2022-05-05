@@ -1,11 +1,6 @@
 import { Typography } from "@mui/material"
 import { styled } from "@mui/system"
 
-interface IPriceDisplayProps {
-    title: string,
-    value: number,
-}
-
 const Text = styled(Typography)(({ theme }) => ({
     fontSize: '16px',
     fontWeight: 600,

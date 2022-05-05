@@ -11,11 +11,7 @@ import { styled } from "@mui/system"
 import { AddressCard } from "./address/deliveryCard"
 import { handleCatchError } from "../../../utils/errors/custom"
 import Router from "next/router"
-import snackbar from "../../snackbar"
-import { isEmpty } from "lodash"
 import { PickupTime } from "./pickupTime/pickupTime"
-import axios from "axios"
-import { token } from "../../../utils/functions/auth"
 import { handleInStoreOrCashOrder, validateToPlaceOrder } from "../../../utils/functions/payment"
 
 
@@ -38,14 +34,6 @@ const UtensilPickUpTimeContainer = styled('div')(({ theme }) => ({
         flexDirection: 'column'
     },
 }))
-
-export interface IOrderResult {
-    order_id: string,
-    order_time: string,
-    item_count: number,
-    estimate: number,
-    total: number,
-}
 
 export const CustomerDetails = () => {
 

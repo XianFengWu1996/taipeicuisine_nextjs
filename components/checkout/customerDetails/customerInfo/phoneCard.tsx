@@ -3,14 +3,6 @@ import { AiOutlineCheckCircle } from "react-icons/ai"
 import { BiTrash } from "react-icons/bi"
 import { phoneFormat } from "../../../../utils/functions/phone"
 
-
-interface IPhoneCardProps {
-    phone_num: string,
-    isSelected: boolean,
-    handlePhoneSelect: (arg: string) => void,
-    handlePhoneRemove: (arg: string) => void 
-}
-
 export const PhoneCard = ({ phone_num, isSelected, handlePhoneRemove, handlePhoneSelect } : IPhoneCardProps) => {
     return <Grid item sm={6} xs={12}>
         <Card sx={{ padding: '1%'}}>

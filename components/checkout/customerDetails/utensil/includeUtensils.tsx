@@ -3,7 +3,6 @@ import { ChangeEvent } from "react"
 import { GiThreeLeaves } from "react-icons/gi"
 import { setToggleIncludeUtensils } from "../../../../store/slice/cartSlice"
 import { useAppDispatch, useAppSelector } from "../../../../store/store"
-import snackbar from "../../../snackbar"
 
 export const IncludeUtensils = () => {
     const { includeUtensils } = useAppSelector(state => state.cart)

@@ -1,15 +1,11 @@
-
 import { useState } from "react";
 import { useAppSelector } from "../../../../store/store";
-import PlacesAutocomplete, {
-    geocodeByAddress,
-  } from 'react-places-autocomplete';
-  import { v4 } from "uuid"; 
-
+import PlacesAutocomplete, {geocodeByAddress} from 'react-places-autocomplete';
+import { v4 } from "uuid"; 
 import { Collapse, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { BounceLoader, DotLoader, PuffLoader, PulseLoader } from "react-spinners";
-import { calculateDeliveryFee, IGoogleAddress } from "../../../../utils/functions/phone";
+import { PuffLoader, PulseLoader } from "react-spinners";
+import { calculateDeliveryFee } from "../../../../utils/functions/phone";
 import { red } from "@mui/material/colors";
 
 export const DeliveryCollapse = () => {

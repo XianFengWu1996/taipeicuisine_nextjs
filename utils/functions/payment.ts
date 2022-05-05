@@ -2,7 +2,6 @@ import { handleCatchError } from "../errors/custom"
 import Router from 'next/router'
 import { token } from "./auth"
 import axios from "axios"
-import { Stripe, StripeElements } from '@stripe/stripe-js'
 import store from "../../store/store"
 import { orderComplete } from "../../store/slice/cartSlice"
 import { isEmpty } from "lodash"
@@ -40,12 +39,6 @@ export const validateToPlaceOrder = (cart: ICartState, customer: ICustomerState)
     }
 }
 
-interface IPayWithMethodId {
-    card: IPublicPaymentMethod,
-    cart: ICartState, 
-    customer: ICustomerState,
-}
-
 export const handlePayWithMethodId = async (val: IPayWithMethodId) => {
     try {
         let stripe_result = await axios({
@@ -79,15 +72,6 @@ export const handlePayWithMethodId = async (val: IPayWithMethodId) => {
     } catch (error) {
         handleCatchError((error as Error), 'Failed to confirm payment')
     }
-}
-
-interface IPayWithIntent {
-    future_use: boolean,
-    stripe: Stripe,
-    elements: StripeElements,
-    cart: ICartState, 
-    customer: ICustomerState,
-    is_new: boolean,
 }
 
 export const handlePayWithIntent = async (val: IPayWithIntent) => {

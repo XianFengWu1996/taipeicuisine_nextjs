@@ -14,12 +14,6 @@ export const phoneFormat = (phone: string) => {
     return `(${phone.substring(0, 3)}) ${phone.substring(3, 6)}-${phone.substring(6)}`
 }
 
-interface ISentCode {
-    phone: string,
-    phone_list: string[],
-    handleStartLoading: () => void
-}
-
 export const sentCode = async ({ phone, phone_list, handleStartLoading} : ISentCode) => {
     if(isEmpty(phone)){
        return snackbar.error('Phone number is required.')
@@ -149,19 +143,6 @@ export const updateName = async(name: string) => {
     }
 }
 
-export interface IGoogleAddress {
-    street_number: string,
-    route: string,
-    locality: string,
-    administrative_area_level_1: string,
-    postal_code: string,
-}
-
-interface ICalcDelivFee {
-    address: IGoogleAddress,
-    format_address: string,
-    place_id: string,
-}
 export const calculateDeliveryFee = async(data: ICalcDelivFee) => {
     try {
         let result = await axios({

@@ -35,8 +35,8 @@ export const TipSelection = () => {
 
     const handleTipOnChange = (value: string) => {
         if(value === cartState.tip_type){
-            dispatch(setTip('')) 
-            return;
+            return dispatch(setTip(''));
+            
         }
 
         dispatch(setTip(value)) 
@@ -82,12 +82,6 @@ export const TipSelection = () => {
     </div>
 }
 
-interface ITipButtonProps {
-    value: string,
-    tip_type: string,
-    handleOnClick: () => void,
-}
-
 const TipButton = ({ value, tip_type, handleOnClick}: ITipButtonProps) => {
     return <>
         <Button 
@@ -96,13 +90,6 @@ const TipButton = ({ value, tip_type, handleOnClick}: ITipButtonProps) => {
         >
         {value}</Button>
     </> 
-}
-
-interface ICustomTipButtonProps {
-    tip_type: string,
-    clearValue: () => void,
-    clearFocus: () =>  void,
-    inputRef: Ref<any> | undefined
 }
 
 const CustomTipButton = (props: ICustomTipButtonProps) => {
