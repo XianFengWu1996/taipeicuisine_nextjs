@@ -20,7 +20,7 @@ const initialState: ICartState = {
     payment_type: '',
     comments: '',
     point_redemption: 0,
-    includeUtensils: false, 
+    dont_include_utensils: false, 
     schedule_time: '',
 }
 
@@ -188,7 +188,7 @@ export const cartSlice = createSlice({
     },
     // UTENSILS
     setToggleIncludeUtensils:(state, {payload} : PayloadAction<boolean>) => {
-      state.includeUtensils = payload;
+      state.dont_include_utensils = payload;
     },
     setDelivery: (state, {payload}: PayloadAction<number>) => {
       state.delivery_fee = payload;

@@ -5,7 +5,7 @@ import { setToggleIncludeUtensils } from "../../../../store/slice/cartSlice"
 import { useAppDispatch, useAppSelector } from "../../../../store/store"
 
 export const IncludeUtensils = () => {
-    const { includeUtensils } = useAppSelector(state => state.cart)
+    const { dont_include_utensils } = useAppSelector(state => state.cart)
     const dispatch = useAppDispatch();
 
     const handleCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +20,7 @@ export const IncludeUtensils = () => {
 
                 <FormControlLabel control={
                     <Checkbox 
-                        value={includeUtensils} 
+                        value={dont_include_utensils} 
                         onChange={handleCheckbox} 
                     />
                     } label="Don&apos;t Include Utensils" />

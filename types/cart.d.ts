@@ -17,7 +17,7 @@ interface ICartState {
     tip_type: string,
     payment_type: IPaymentType,
     comments: string, 
-    includeUtensils: boolean,
+    dont_include_utensils: boolean,
     schedule_time: string,
 }
 

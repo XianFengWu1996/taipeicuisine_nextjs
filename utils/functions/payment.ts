@@ -5,7 +5,7 @@ import axios from "axios"
 import store from "../../store/store"
 import { orderComplete } from "../../store/slice/cartSlice"
 import { isEmpty } from "lodash"
-import { IOrderResult } from "../../components/checkout/customerDetails"
+import { Stripe } from "@stripe/stripe-js"
 
 export const validateToPlaceOrder = (cart: ICartState, customer: ICustomerState) => {
     if(cart.cart.length === 0){
@@ -89,11 +89,16 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
         })
 
         // confirm the payment with stripe
-        const { error } = await val.stripe.confirmPayment({
+        const { error } = await (val.stripe as Stripe).confirmPayment({
             elements: val.elements,
             redirect: 'if_required',
             confirmParams: {
                 return_url: 'http://localhost:3000/order/payment',
+                payment_method_data: {
+                    billing_details: {
+                    
+                    }
+                }
             }
         });
     
