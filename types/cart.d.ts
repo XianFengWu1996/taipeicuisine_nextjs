@@ -1,6 +1,7 @@
 
 // Define a type for the slice state
 interface ICartState {
+    order_id: string
     cart: ICartItem[],
     cart_quantity: number,
     original_subtotal:number,
@@ -51,3 +52,4 @@ interface ILunchOption {
 }
 
 type IPaymentType = '' | 'online' | 'instore' | 'cash'
+

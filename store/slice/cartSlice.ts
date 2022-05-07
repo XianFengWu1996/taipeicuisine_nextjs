@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { v4 } from 'uuid';
 
 
 
 // Define the initial state using that type
 const initialState: ICartState = {
+    order_id: v4(),
     cart: [],
     cart_quantity: 0,
     original_subtotal: 0,

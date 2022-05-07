@@ -51,23 +51,23 @@ export const handlePayWithMethodId = async (val: IPayWithMethodId) => {
             }
         })
 
-        let order_result = await axios({
-            method: 'POST',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_online_order`,
-            headers: { 'Authorization': `Bearer ${await token()}`},
-            data: { 
-                cart: val.cart,
-                customer: {
-                    name: val.customer.name,
-                    phone: val.customer.phone,
-                    address: val.customer.address
-                },
-                payment_intent: stripe_result.data.payment_intent,
-                is_new: false
-            }
-        })
+        // let order_result = await axios({
+        //     method: 'POST',
+        //     url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_online_order`,
+        //     headers: { 'Authorization': `Bearer ${await token()}`},
+        //     data: { 
+        //         cart: val.cart,
+        //         customer: {
+        //             name: val.customer.name,
+        //             phone: val.customer.phone,
+        //             address: val.customer.address
+        //         },
+        //         payment_intent: stripe_result.data.payment_intent,
+        //         is_new: false
+        //     }
+        // })
 
-        handleOrderCompletion(order_result.data)
+        // handleOrderCompletion(order_result.data)
 
     } catch (error) {
         handleCatchError((error as Error), 'Failed to confirm payment')
@@ -76,38 +76,35 @@ export const handlePayWithMethodId = async (val: IPayWithMethodId) => {
 
 export const handlePayWithIntent = async (val: IPayWithIntent) => {
     try {
-        // process the payment as a one time payment
-        // update the intent before submit the order
-        let update_result = await axios({
-            method: 'POST',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/update_payment_intent`,
-            headers: { 'Authorization': `Bearer ${await token()}`},
-            data: {
-                total: val.cart.total,
-                future_use: val.future_use
-            }
-        })
+        let intent = await (val.stripe as Stripe).retrievePaymentIntent(val.s_id);
 
-        // confirm the payment with stripe
-        const { error } = await (val.stripe as Stripe).confirmPayment({
-            elements: val.elements,
-            redirect: 'if_required',
-            confirmParams: {
-                return_url: 'http://localhost:3000/order/payment',
-                payment_method_data: {
-                    billing_details: {
-                    
-                    }
+        if(intent.paymentIntent?.status !== 'succeeded'){
+            // process the payment as a one time payment
+            // update the intent before submit the order
+            let update_result = await axios({
+                method: 'POST',
+                url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/update_payment_intent`,
+                headers: { 'Authorization': `Bearer ${await token()}`},
+                data: {
+                    total: val.cart.total,
+                    future_use: val.future_use
+                }
+            })
+
+            // confirm the payment with stripe
+            const { error } = await (val.stripe as Stripe).confirmPayment({
+                elements: val.elements,
+                confirmParams: {
+                    return_url: 'http://localhost:3000/order/payment',
+                }
+            });
+            
+            if(error){
+                if (error.type === "card_error" || error.type === "validation_error") {
+                    throw new Error(error.message ?? "An unexpected error occured.")
                 }
             }
-        });
-    
-        if(error){
-            if (error.type === "card_error" || error.type === "validation_error") {
-                throw new Error(error.message ?? "An unexpected error occured.")
-            }
         }
-        
 
         let order_result = await axios({
             method: 'POST',
@@ -120,12 +117,19 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
                     phone: val.customer.phone,
                     address: val.customer.address
                 },
-                payment_intent: update_result.data.payment_intent,
+                payment_intent: val.s_id,
                 is_new: val.is_new, 
             }
         })
 
         handleOrderCompletion(order_result.data)
+
+     
+    
+       
+        
+
+     
     } catch (error) {
         handleCatchError((error as Error), 'Failed to confirm payment')
     }

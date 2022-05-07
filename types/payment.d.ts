@@ -11,4 +11,5 @@ interface IPayWithIntent {
     cart: ICartState, 
     customer: ICustomerState,
     is_new: boolean,
+    s_id
 }

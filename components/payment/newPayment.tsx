@@ -7,8 +7,7 @@ import { handleCatchError } from '../../utils/errors/custom';
 import { handlePayWithIntent } from '../../utils/functions/payment';
 import { TipSelection } from '../checkout/customerDetails/tipSelection';
 import { PaymentElement } from '@stripe/react-stripe-js';
-
-
+import { useRouter } from 'next/router';
 
 interface INewPaymentFormProps {
     cards: IPublicPaymentMethod [],
@@ -23,6 +22,8 @@ export const NewPaymentForm = ({cards, cart, customer, stripe, elements, toggleF
       const [isLoading, setIsLoading] = useState(false);
       const [futureUse, setFutureUse] = useState(false);
       const [allowSave, setAllowSave] = useState(false);
+
+      const s_id = useRouter().query.s_id as string;
 
       const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         try {
@@ -45,6 +46,7 @@ export const NewPaymentForm = ({cards, cart, customer, stripe, elements, toggleF
                 customer, 
                 future_use: futureUse,
                 is_new: true,
+                s_id,
             }) 
         } catch (error) {
          handleCatchError(error as Error, 'Payment Failed') 
