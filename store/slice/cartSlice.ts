@@ -130,7 +130,12 @@ export const cartSlice = createSlice({
       state.total = 0;
       calculateTotal(state);
     },  
-    orderComplete: () => initialState,
+    orderComplete: () => {
+      return {
+        ...initialState,
+        order_id: v4(),
+      }
+    },
     // DELIVERY RELATED
     deliveryToggle: (state) => {
       state.is_delivery = !state.is_delivery;
