@@ -1,7 +1,6 @@
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import Router, { useRouter } from "next/router";
 import { BsPatchCheck } from "react-icons/bs";
-import { IOrderResult } from "../../components/checkout/customerDetails";
 import { useAppSelector } from "../../store/store";
 
 

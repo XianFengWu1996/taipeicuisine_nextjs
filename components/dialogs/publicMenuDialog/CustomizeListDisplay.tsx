@@ -1,7 +1,6 @@
 import { IconButton, Typography } from "@mui/material"
 import { isEmpty } from "lodash"
 import { AiOutlineCloseCircle } from "react-icons/ai"
-import { ICustomizeItem } from "."
 
 interface ICustomizeListDisplayProps {
     list: ICustomizeItem[],

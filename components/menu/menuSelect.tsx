@@ -34,7 +34,7 @@ export const MenuSelect = () => {
         // only when the menu is found, dispatch to the store
         if(selectedMenu){
             dispatch(handleOnMenuChange(selectedMenu));
-            dispatch(handleOnTabChange({ tabIndex: 0 }));
+            dispatch(handleOnTabChange({ tabIndex: 0, category: selectedMenu.category[0] }));
         }
     }
     return <>

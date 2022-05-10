@@ -6,7 +6,7 @@ import { AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai'
 import {  ChangeEvent, useEffect, useState } from "react";
 import { addToCart } from "../../../store/slice/cartSlice";
 import { QuantityController } from "../../quantityController";
-import { isEmpty } from "lodash";
+import { isEmpty, isNull } from "lodash";
 import { v4 } from "uuid";
 import { ItemDetails } from "./ItemDetails";
 import { DishVariant } from "./DishVariant";
@@ -40,7 +40,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
     
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(dish.price)
-    const [option, setOption] = useState({} as IVarirantOption)
+    const [option, setOption] = useState<IVarirantOption | null>(null)
     const [radioError, setRadioError] = useState(false);
     const [comments, setComments] = useState('');
 
@@ -64,6 +64,8 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         })
     }
 
+    let option_price = (!isNull(option) ? option.price : 0);
+
     // QUANTITY HANDLER
     const increaseQuantity = () => {
         setQuantity(prev => prev + 1);   
@@ -79,7 +81,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         handleClose();
         setQuantity(1);
         setTotal(dish.price);
-        setOption({} as IVarirantOption)
+        setOption(null)
         setRadioError(false)
         setComments('');
         setLunchOption(lunchOptionInitialState)
@@ -104,7 +106,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
             return `${dish.id}${v4()}`
         }
 
-        if(!isEmpty(option.id)){
+        if(option && !isEmpty(option.id)){
             return `${dish.id}${option.id}`
         }
 
@@ -139,23 +141,23 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
 
     const handleAddToCart = () => {
         if(!isEmpty(dish.variant)){
-            if(isEmpty(option)){
+            if(isNull(option)){
                 // set error
                 return setRadioError(true);
             }
         }
 
         let id = handleCartItemIdGeneration();
-        
+
         dispatch(addToCart({
             id,
             dish: {
                 ...dish,
-                price: dish.price + (option.price ?? 0)
+                price: dish.price + option_price
             },
             quantity: quantity,
             option: option,
-            comment: comments,
+            comment: !isEmpty(comments) ? comments : null,
             total: total,
             lunchOption: dish.is_lunch ? lunchOption : null,
             customize: dish.is_customizable ? (
@@ -193,7 +195,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         setShowCustomize(!showCustomize)
         setProtein([])
         setVeggie([])
-        setTotal(quantity * (dish.price + (option.price ?? 0)))
+        setTotal(quantity * (dish.price + option_price))
     }
 
     // set the total as the select dish price for one, will only change when the dish change
@@ -204,9 +206,9 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
 
     // // will calculate the total, if quantity, the option price, or dish changes
     useEffect(() => {
-        let temp = quantity * (dish.price + (option.price ?? 0));
+        let temp = quantity * (dish.price + option_price);
         setTotal(temp);
-    }, [quantity, option.price])
+    }, [quantity, option?.price])
 
 
     return <Dialog

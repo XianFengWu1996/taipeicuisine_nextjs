@@ -25,8 +25,8 @@ interface ICartState {
 interface ICartItem {
     id: string,
     dish: IDish,
-    option: IVarirantOption,
-    comment: string,
+    option: IVarirantOption | null,
+    comment: string | null,
     quantity: number,
     total: number,
     lunchOption: ILunchOption | null,

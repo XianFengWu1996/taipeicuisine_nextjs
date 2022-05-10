@@ -50,7 +50,7 @@ export const SummaryItem = ({ item } : ISummaryItemProps)  => {
             <div style={{ flex: 6, marginRight: '5px'}}>
                 <NameText> {item.dish.label_id}. {item.dish.en_name} {item.dish.ch_name} {isEmpty(item.option) && (item.dish.is_spicy &&  <GoFlame color="red"/>) }</NameText>
                 {
-                    !isEmpty(item.option) && <OptionText>Option: {item.option.en_name} {item.option.ch_name} {item.option.spicy ? <GoFlame color="red"/>: null}</OptionText> 
+                    item.option && <OptionText>Option: {item.option.en_name} {item.option.ch_name} {item.option.spicy ? <GoFlame color="red"/>: null}</OptionText> 
                 }
 
                 {
@@ -63,7 +63,7 @@ export const SummaryItem = ({ item } : ISummaryItemProps)  => {
                 }
 
                 {
-                    !isEmpty(item.comment) && <CommentText>Comments: {item.comment}</CommentText>
+                    item.comment && <CommentText>Comments: {item.comment}</CommentText>
                 }
 
                 {

@@ -51,6 +51,7 @@ export const MenuItemList = () => {
         label_id: '',
         order: 0,
         pic_url:'',
+        is_customizable: false,
     });
 
     const handleOnClose = () => {
