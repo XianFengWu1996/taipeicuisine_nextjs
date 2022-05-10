@@ -23,8 +23,6 @@ export const NewPaymentForm = ({cards, cart, customer, stripe, elements, toggleF
       const [futureUse, setFutureUse] = useState(false);
       const [allowSave, setAllowSave] = useState(false);
 
-      const s_id = useRouter().query.s_id as string;
-
       const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         try {
              if (!stripe || !elements) return;
@@ -46,7 +44,6 @@ export const NewPaymentForm = ({cards, cart, customer, stripe, elements, toggleF
                 customer, 
                 future_use: futureUse,
                 is_new: true,
-                s_id,
             }) 
         } catch (error) {
          handleCatchError(error as Error, 'Payment Failed') 

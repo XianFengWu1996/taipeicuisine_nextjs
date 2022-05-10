@@ -38,7 +38,7 @@ export default function PaymentPage () {
                } catch (error) {
                     handleCatchError(error as Error, 'Failed to get payment methods')
                } finally {
-                setShowSkeleton(false);
+                    setShowSkeleton(false);
                }
            }
        })

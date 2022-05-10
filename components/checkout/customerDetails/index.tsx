@@ -12,7 +12,7 @@ import { AddressCard } from "./address/deliveryCard"
 import { handleCatchError } from "../../../utils/errors/custom"
 import Router from "next/router"
 import { PickupTime } from "./pickupTime/pickupTime"
-import { handleInStoreOrCashOrder, validateToPlaceOrder } from "../../../utils/functions/payment"
+import { handleInStoreOrCashOrder, handleOnlineOrder, validateToPlaceOrder } from "../../../utils/functions/payment"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -44,24 +44,15 @@ export const CustomerDetails = () => {
     const desktop = useMediaQuery('(min-width: 900px)');
 
     const handlePlaceOrder = async () => {
-        // TWO MAIN THINGS TO CHECK BEFORE PROCEEDING
-        // IF THE CART IS EMPTY OR NOT
-        // IF PICKUP, 
-        // - REQUIRE CUSTOMER INFO (NAME AND PHONE)
-
-        // IF DELIVERY
-        // - REQUIRE CUSTOMER INFO (NAME AND PHONE)
-        // - MINIMUM FOR DELIVERY
-        // - REQUIRED THE ADDRESS AND DELIVERY FEE
-       
         try {
             validateToPlaceOrder(cartState, customerState);
             // head to the payment page for online payments
             if(cartState.payment_type === 'online'){
-                return Router.push('/order/payment')
+                await handleOnlineOrder(cartState, customerState);
+            } else {
+                await handleInStoreOrCashOrder(cartState, customerState)
             }
 
-            await handleInStoreOrCashOrder(cartState, customerState)
         } catch (error) {
             handleCatchError(error as Error, 'Failed to place order');
         }

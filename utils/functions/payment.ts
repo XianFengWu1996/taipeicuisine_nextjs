@@ -6,6 +6,7 @@ import store from "../../store/store"
 import { orderComplete } from "../../store/slice/cartSlice"
 import { isEmpty } from "lodash"
 import { Stripe } from "@stripe/stripe-js"
+import Cookies from "js-cookie"
 
 export const validateToPlaceOrder = (cart: ICartState, customer: ICustomerState) => {
     if(cart.cart.length === 0){
@@ -76,12 +77,14 @@ export const handlePayWithMethodId = async (val: IPayWithMethodId) => {
 
 export const handlePayWithIntent = async (val: IPayWithIntent) => {
     try {
-        let intent = await (val.stripe as Stripe).retrievePaymentIntent(val.s_id);
+        let s_id = Cookies.get('s_id') as string
+
+        let intent = await (val.stripe as Stripe).retrievePaymentIntent(s_id);
 
         if(intent.paymentIntent?.status !== 'succeeded'){
             // process the payment as a one time payment
             // update the intent before submit the order
-            let update_result = await axios({
+            await axios({
                 method: 'POST',
                 url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/update_payment_intent`,
                 headers: { 'Authorization': `Bearer ${await token()}`},
@@ -94,6 +97,7 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
             // confirm the payment with stripe
             const { error } = await (val.stripe as Stripe).confirmPayment({
                 elements: val.elements,
+                redirect: 'if_required',
                 confirmParams: {
                     return_url: 'http://localhost:3000/order/payment',
                 }
@@ -108,35 +112,20 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
 
         let order_result = await axios({
             method: 'POST',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_online_order`,
+            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/confirm_online_order`,
             headers: { 'Authorization': `Bearer ${await token()}`},
-            data: { 
+            data: {
                 cart: val.cart,
-                customer: {
-                    name: val.customer.name,
-                    phone: val.customer.phone,
-                    address: val.customer.address
-                },
-                payment_intent: val.s_id,
-                is_new: val.is_new, 
             }
         })
 
         handleOrderCompletion(order_result.data)
-
-     
-    
-       
-        
-
-     
     } catch (error) {
         handleCatchError((error as Error), 'Failed to confirm payment')
     }
 }
 
 export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICustomerState) => {
-    
     try {
       // process the order
     let order_response = await axios({
@@ -151,6 +140,22 @@ export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICust
     } catch (error) {
         handleCatchError(error as Error, 'Failed to place order');
     }
+}
+
+export const handleOnlineOrder = async(cart: ICartState, customer: ICustomerState) => {
+    try {
+        // process the order
+        await axios({
+          method: 'POST',
+          url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_online_order`,
+          headers: { 'authorization': `Bearer ${await token()}`},
+          data: { cart, customer }
+       })
+
+        Router.push('/order/payment');
+      } catch (error) {
+          handleCatchError(error as Error, 'Unexpected error has occurred');
+      }
 }
 
 const handleOrderCompletion = (order: IOrderResult) => {
