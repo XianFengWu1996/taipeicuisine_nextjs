@@ -6,7 +6,7 @@ import { useAppSelector } from "../../store/store";
 
 export default function Confirmation () {
     const query = useRouter().query as unknown as IOrderResult;
-    const { name }= useAppSelector(state => state.customer)
+    const { name } = useAppSelector(state => state.customer)
 
 
 
@@ -18,7 +18,7 @@ export default function Confirmation () {
             <Card sx={{ my: 3}}>
                 <CardContent style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start'}}>
                     <Typography sx={{ fontWeight: 800}}>Order Summary</Typography>
-                    <Typography>Name: {name}</Typography>
+                    <Typography>Name: {query.name}</Typography>
                     <Typography>Order #: {query.order_id}</Typography>
                     <Typography>Number of Item(s): {query.item_count}</Typography>
                     <Typography>Total: ${query.total}</Typography>

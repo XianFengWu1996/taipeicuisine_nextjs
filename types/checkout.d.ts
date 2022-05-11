@@ -35,4 +35,5 @@ interface IOrderResult {
     item_count: number,
     estimate: number,
     total: number,
+    name: string,
 }

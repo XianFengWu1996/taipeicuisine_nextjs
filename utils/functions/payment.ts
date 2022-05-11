@@ -116,10 +116,11 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
             headers: { 'Authorization': `Bearer ${await token()}`},
             data: {
                 cart: val.cart,
+                customer_name: val.customer.name
             }
         })
 
-        handleOrderCompletion(order_result.data)
+        handleCompleteOrder(order_result.data.redirect_url);
     } catch (error) {
         handleCatchError((error as Error), 'Failed to confirm payment')
     }
@@ -161,4 +162,9 @@ export const handleOnlineOrder = async(cart: ICartState, customer: ICustomerStat
 const handleOrderCompletion = (order: IOrderResult) => {
     Router.push(`/order/confirmation?order_id=${order.order_id}&order_time=${order.order_time}&estimate=${order.estimate}&item_count=${order.item_count}&total=${order.total}`)
     store.dispatch(orderComplete())
+}
+
+const handleCompleteOrder = (redirect_url: string) => {
+    Router.push(redirect_url);
+    store.dispatch(orderComplete());
 }
