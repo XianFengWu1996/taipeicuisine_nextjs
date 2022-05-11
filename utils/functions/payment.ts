@@ -8,67 +8,21 @@ import { isEmpty } from "lodash"
 import { Stripe } from "@stripe/stripe-js"
 import Cookies from "js-cookie"
 
-export const validateToPlaceOrder = (cart: ICartState, customer: ICustomerState) => {
-    if(cart.cart.length === 0){
-        throw new Error('Add item before proceeding')
-    }
 
-    if(!customer.name){
-        throw new Error('Add name before proceeding')
-    }
-
-    if(!customer.phone){
-        throw new Error('Add phone before proceeding')
-    }
-
-    if(cart.is_delivery){
-        if(cart.subtotal < 15){
-            throw new Error('Minimum for delivery is $15 (subtotal)')
-        }
-
-        if(!customer.address.address){
-            throw new Error('Make sure to have an valid address')
-        }
-
-        if(!cart.delivery_fee || cart.delivery_fee === 0){
-            throw new Error('Please try to search the address again')
-        }
-    }
-
-    if(isEmpty(cart.payment_type)){
-        throw new Error('Please select a payment method')
-    }
-}
-
+// handle payments 
 export const handlePayWithMethodId = async (val: IPayWithMethodId) => {
     try {
-        let stripe_result = await axios({
+        const order_result = await axios({
             method: 'POST',
             url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/payment_method_id`,
             headers: { 'Authorization': `Bearer ${await token()}`},
             data: { 
                 card: val.card,
-                total: val.cart.total
+                cart: val.cart
             }
         })
 
-        // let order_result = await axios({
-        //     method: 'POST',
-        //     url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_online_order`,
-        //     headers: { 'Authorization': `Bearer ${await token()}`},
-        //     data: { 
-        //         cart: val.cart,
-        //         customer: {
-        //             name: val.customer.name,
-        //             phone: val.customer.phone,
-        //             address: val.customer.address
-        //         },
-        //         payment_intent: stripe_result.data.payment_intent,
-        //         is_new: false
-        //     }
-        // })
-
-        // handleOrderCompletion(order_result.data)
+        handleCompleteOrder(order_result.data.redirect_url);
 
     } catch (error) {
         handleCatchError((error as Error), 'Failed to confirm payment')
@@ -112,7 +66,7 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
 
         let order_result = await axios({
             method: 'POST',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/confirm_online_order`,
+            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/pay_with_intent`,
             headers: { 'Authorization': `Bearer ${await token()}`},
             data: {
                 cart: val.cart,
@@ -126,6 +80,7 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
     }
 }
 
+// handle placing orders before payment or cash / instore payment
 export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICustomerState) => {
     try {
       // process the order
@@ -136,7 +91,7 @@ export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICust
         data: { cart, customer }
      })
 
-    handleOrderCompletion(order_response.data);
+    // handleOrderCompletion(order_response.data);
  
     } catch (error) {
         handleCatchError(error as Error, 'Failed to place order');
@@ -159,12 +114,40 @@ export const handleOnlineOrder = async(cart: ICartState, customer: ICustomerStat
       }
 }
 
-const handleOrderCompletion = (order: IOrderResult) => {
-    Router.push(`/order/confirmation?order_id=${order.order_id}&order_time=${order.order_time}&estimate=${order.estimate}&item_count=${order.item_count}&total=${order.total}`)
-    store.dispatch(orderComplete())
-}
-
+// helper functions 
 const handleCompleteOrder = (redirect_url: string) => {
     Router.push(redirect_url);
     store.dispatch(orderComplete());
+}
+
+export const validateToPlaceOrder = (cart: ICartState, customer: ICustomerState) => {
+    if(cart.cart.length === 0){
+        throw new Error('Add item before proceeding')
+    }
+
+    if(!customer.name){
+        throw new Error('Add name before proceeding')
+    }
+
+    if(!customer.phone){
+        throw new Error('Add phone before proceeding')
+    }
+
+    if(cart.is_delivery){
+        if(cart.subtotal < 15){
+            throw new Error('Minimum for delivery is $15 (subtotal)')
+        }
+
+        if(!customer.address.address){
+            throw new Error('Make sure to have an valid address')
+        }
+
+        if(!cart.delivery_fee || cart.delivery_fee === 0){
+            throw new Error('Please try to search the address again')
+        }
+    }
+
+    if(isEmpty(cart.payment_type)){
+        throw new Error('Please select a payment method')
+    }
 }
