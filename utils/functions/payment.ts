@@ -91,8 +91,7 @@ export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICust
         data: { cart, customer }
      })
 
-    // handleOrderCompletion(order_response.data);
- 
+     handleCompleteOrder(order_response.data.redirect_url); 
     } catch (error) {
         handleCatchError(error as Error, 'Failed to place order');
     }

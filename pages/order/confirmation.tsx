@@ -6,9 +6,6 @@ import { useAppSelector } from "../../store/store";
 
 export default function Confirmation () {
     const query = useRouter().query as unknown as IOrderResult;
-    const { name } = useAppSelector(state => state.customer)
-
-
 
     return <div style={{ height: '100vh'}}>
         <div style={{ display: 'flex', flexDirection: 'column',justifyContent: 'center', alignItems:'center', height: 'inherit'}}>
