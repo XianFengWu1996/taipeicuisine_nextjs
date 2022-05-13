@@ -63,7 +63,3 @@ export default function OrderPage (){
         
     </div>
 }
-
-// export const getServerSideProps:GetServerSideProps = async(ctx: GetServerSidePropsContext) => {
-   
-// }

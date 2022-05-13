@@ -123,7 +123,7 @@ export const MenuDrawer = (props: IMenuDrawerProps) => {
                         if(item){
                             return <DrawerItem key={item.id}>
                                 <ListItem button onClick={() => {
-                                    Router.push(item.path);
+                                    Router.push(item.path)
                                 }}>
                                     <ListItemIcon>
                                         {item.icon}

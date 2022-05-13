@@ -7,6 +7,7 @@ import { orderComplete } from "../../store/slice/cartSlice"
 import { isEmpty } from "lodash"
 import { Stripe } from "@stripe/stripe-js"
 import Cookies from "js-cookie"
+import { SetStateAction } from "react"
 
 
 // handle payments 
@@ -107,15 +108,30 @@ export const handleOnlineOrder = async(cart: ICartState, customer: ICustomerStat
           data: { cart, customer }
        })
 
-        Router.push('/order/payment');
+        Router.replace('/order/payment');
       } catch (error) {
           handleCatchError(error as Error, 'Unexpected error has occurred');
       }
 }
 
+// get payment method list 
+export const handleGetPaymentList = async (user_token: string, setCards: (value: SetStateAction<IPublicPaymentMethod[]>) => void) => {
+    const method = await axios({
+        method: 'GET',
+        url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/get_payment_method`,
+        headers: {
+            'authorization': `Bearer ${user_token}`
+        }
+    })
+
+    if(method.data.cards){
+        setCards(method.data.cards);
+    }
+}
+
 // helper functions 
 const handleCompleteOrder = (redirect_url: string) => {
-    Router.push(redirect_url);
+    Router.replace(redirect_url);
     store.dispatch(orderComplete());
 }
 

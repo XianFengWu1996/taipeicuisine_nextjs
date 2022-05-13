@@ -9,6 +9,9 @@ import { handleCatchError } from "../../utils/errors/custom";
 import { Elements } from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import { Skeleton } from "@mui/material";
+import { handleGetPaymentList } from "../../utils/functions/payment";
+import Router from "next/router";
+import snackbar from "../../components/snackbar";
 
 
 const stripePromise = loadStripe('pk_test_MQq0KVxKkSLUx0neZbdLTheo00iB1Ru6a0');
@@ -21,26 +24,19 @@ export default function PaymentPage () {
     const s_id = Cookie.get('s_id')
     
     useEffect(() => {
-       onAuthStateChanged(fbAuth, async user => {
-           if(user){
-               try {
-                    const method = await axios({
-                        method: 'GET',
-                        url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/get_payment_method`,
-                        headers: {
-                            'authorization': `Bearer ${await user.getIdToken()}`
-                        }
-                    })
+       onAuthStateChanged(fbAuth, async user => {   
+        if(!user){
+            Router.replace('/order')
+            return snackbar.error('Not authorized, please login first')
+        }
 
-                    if(method.data.cards){
-                        setCards(method.data.cards);
-                    }
-               } catch (error) {
-                    handleCatchError(error as Error, 'Failed to get payment methods')
-               } finally {
-                    setShowSkeleton(false);
-               }
-           }
+        try {
+            await handleGetPaymentList(await user.getIdToken(), setCards)
+        } catch (error) {
+            handleCatchError(error as Error, 'Failed to get payment methods')
+        } finally {
+            setShowSkeleton(false);
+        }
        })
     }, [])
     return <>

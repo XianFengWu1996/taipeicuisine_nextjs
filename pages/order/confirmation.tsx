@@ -1,7 +1,6 @@
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import Router, { useRouter } from "next/router";
 import { BsPatchCheck } from "react-icons/bs";
-import { useAppSelector } from "../../store/store";
 
 
 export default function Confirmation () {
@@ -25,7 +24,7 @@ export default function Confirmation () {
             </Card>
             <Typography>Your order has been placed. You will receive a email confirmation in a few minutes. </Typography>
             <Button onClick={() => {
-                Router.push('/order')
+                Router.replace('/order')
             }}>Return to Home</Button>
         </div>
      
