@@ -6,7 +6,7 @@ import { removePhoneNum, selectDefaultPhone, updateName } from "../../../../util
 import { ChangeEvent, useEffect, useState } from "react";
 import {  AiOutlinePlus } from "react-icons/ai";
 import { SmsDialog } from "../../../dialogs/smsDialog";
-import { setSmsDialog } from "../../../../store/slice/customerSlice";
+import { setSmsDialog } from "../../../../store/slice/settingSlice";
 import { PulseLoader, ScaleLoader } from "react-spinners";
 import { red } from "@mui/material/colors";
 import { PhoneCard } from "./phoneCard";
@@ -14,7 +14,8 @@ import { PhoneCard } from "./phoneCard";
 
 export const CustomerCollapse = () => {
 
-    const { name, phone, phone_list, customerCollapse, customerSaveLoading, customerCardLoading } = useAppSelector(state => state.customer);
+    const { name, phone, phone_list, } = useAppSelector(state => state.customer);
+    const { customerCollapse, customerSaveLoading, customerCardLoading} = useAppSelector(state => state.setting)
     const [ customer_name, setName ] = useState('');
     const dispatch = useAppDispatch();
 

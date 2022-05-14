@@ -7,18 +7,19 @@ import { PublicAppBar } from "../../components/appbar/appbar";
 import { CartSummary } from "../../components/checkout/cartSummary";
 import { CustomerDetails } from "../../components/checkout/customerDetails";
 import { setDelivery } from "../../store/slice/cartSlice";
-import { getCustomer, setCheckoutSkeleton, setLoginDialog } from "../../store/slice/customerSlice";
+import { getCustomer } from "../../store/slice/customerSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { handleCatchError } from "../../utils/errors/custom";
 import { fbAuth, token } from "../../utils/functions/auth";
 import CheckoutSkeleton from "../../components/checkout/skeleton";
+import { setCheckoutSkeleton, setLoginDialog } from "../../store/slice/settingSlice";
 
 
 
 export default function CheckoutPage() {
     const desktop = useMediaQuery('(min-width: 900px)');
     const dispatch = useAppDispatch();
-    const { showSkeleton } = useAppSelector(state => state.customer)
+    const { showSkeleton } = useAppSelector(state => state.setting)
 
     // get the customer information back from the backend
     const getCustomerInfo = async () => {

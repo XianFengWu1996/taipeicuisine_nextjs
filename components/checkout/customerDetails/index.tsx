@@ -10,7 +10,6 @@ import { CartSummary } from "../cartSummary"
 import { styled } from "@mui/system"
 import { AddressCard } from "./address/deliveryCard"
 import { handleCatchError } from "../../../utils/errors/custom"
-import Router from "next/router"
 import { PickupTime } from "./pickupTime/pickupTime"
 import { handleInStoreOrCashOrder, handleOnlineOrder, validateToPlaceOrder } from "../../../utils/functions/payment"
 

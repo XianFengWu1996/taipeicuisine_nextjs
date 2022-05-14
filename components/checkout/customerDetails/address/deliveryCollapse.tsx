@@ -9,7 +9,7 @@ import { calculateDeliveryFee } from "../../../../utils/functions/phone";
 import { red } from "@mui/material/colors";
 
 export const DeliveryCollapse = () => {
-    const { addressCollapse } = useAppSelector(state => state.customer);
+    const { addressCollapse } = useAppSelector(state => state.setting);
 
     const [addressInput, setAddressInput] = useState('');
     const [loading, setLoading] = useState(false);

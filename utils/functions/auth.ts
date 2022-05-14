@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut, FacebookAuthProvider, OAuthProvider} from 'firebase/auth'
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import { setLoginDialog } from '../../store/slice/customerSlice';
+import { setLoginDialog } from '../../store/slice/settingSlice';
 import store from '../../store/store';
 import { handleCatchError } from '../errors/custom';
 

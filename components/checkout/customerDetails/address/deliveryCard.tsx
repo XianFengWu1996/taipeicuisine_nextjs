@@ -2,12 +2,13 @@ import { Button, Card, CardActions, CardContent, Icon, IconButton, Typography } 
 import { isEmpty } from "lodash";
 import { BiBuildingHouse } from "react-icons/bi";
 import { HiOutlineChevronUp } from "react-icons/hi";
-import { setAddressCollapse } from "../../../../store/slice/customerSlice";
+import { setAddressCollapse } from "../../../../store/slice/settingSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { DeliveryCollapse } from "./deliveryCollapse";
 
 export const AddressCard = () => {
-    const { addressCollapse, address } = useAppSelector(state => state.customer)
+    const { address } = useAppSelector(state => state.customer)
+    const { addressCollapse } = useAppSelector(state => state.setting)
 
     const dispatch = useAppDispatch();
 

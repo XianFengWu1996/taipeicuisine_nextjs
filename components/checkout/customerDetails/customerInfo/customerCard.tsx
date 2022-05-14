@@ -1,13 +1,14 @@
 import { Button, Card, CardActions, CardContent,Icon, IconButton, Typography } from "@mui/material"
 import { GrContactInfo } from "react-icons/gr";
 import {HiOutlineChevronUp} from 'react-icons/hi'
-import { setCustomerCollapse } from "../../../../store/slice/customerSlice";
+import { setCustomerCollapse } from "../../../../store/slice/settingSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { phoneFormat } from "../../../../utils/functions/phone";
 import { CustomerCollapse } from "./customerCollapse";
 
 export const CustomerCard = () => {
-    const { name, phone, customerCollapse } = useAppSelector(state => state.customer)
+    const { name, phone } = useAppSelector(state => state.customer)
+    const { customerCollapse } = useAppSelector(state => state.setting)
 
     const dispatch = useAppDispatch();
 

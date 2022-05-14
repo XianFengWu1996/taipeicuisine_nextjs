@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { uniq } from 'lodash'
 
 // Define the initial state using that type
-const initialState: ICustomerState  = {
+const initialState: ICustomer  = {
     name: '',
     phone: '',
     phone_list: [],
@@ -18,17 +18,7 @@ const initialState: ICustomerState  = {
     }, 
     reward: {
         points: 0,
-    },
-    loginDialogOpen: false,
-    smsDialogOpen: false,
-
-    customerSaveLoading: false,
-    customerCardLoading: false,
-
-    customerCollapse: false,
-    addressCollapse: false,
-
-    showSkeleton: false,
+    }
 }   
 
 const handleDuplicatePhoneNum = (state: ICustomer, list: string[]) => {
@@ -78,35 +68,7 @@ export const customerSlice = createSlice({
         ...state.address,
         ...payload
       }
-    },
-
-   
-    // STATES RELATD
-    setLoginDialog: (state, {payload}:PayloadAction<boolean>) => {
-      state.loginDialogOpen = payload;
-    },
-    setSmsDialog: (state, {payload}:PayloadAction<boolean>) => {
-      state.smsDialogOpen = payload;
-    },
- 
-    setCustomerSaveLoading: (state, {payload}:PayloadAction<boolean>) => {
-      state.customerSaveLoading = payload;
-    },
-    setCustomerCardLoading:(state, {payload}:PayloadAction<boolean>) => {
-      state.customerCardLoading = payload;
-    },
-
-    setAddressCollapse: (state, {payload}:PayloadAction<boolean>) => {
-      state.addressCollapse = payload;
-    },
-    setCustomerCollapse: (state, {payload}:PayloadAction<boolean>) => {
-      state.customerCollapse = payload;
-    },
-    setCheckoutSkeleton: (state, {payload}:PayloadAction<boolean>) => {
-      state.showSkeleton = payload;
-    },
-   
-    
+    },    
   }
 })
 
@@ -117,14 +79,7 @@ export const {
   removePhoneNumber,
   updateCustomerName,
   addNewPhone,
-  setCustomerCollapse,
-  setLoginDialog,
-  setSmsDialog,
-  setCustomerSaveLoading,
-  setCustomerCardLoading,
-  setAddressCollapse,
   updateAddress,
   getCustomer,
-  setCheckoutSkeleton,
 } = customerSlice.actions
 

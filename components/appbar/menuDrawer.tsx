@@ -4,7 +4,7 @@ import Router from "next/router";
 import { AiOutlineShoppingCart, AiOutlineUser, AiOutlineSetting, AiOutlineHome, AiOutlineClose } from 'react-icons/ai'
 import { HiOutlineReceiptTax } from 'react-icons/hi'
 import {MdOutlineRestaurantMenu } from 'react-icons/md'
-import { setLoginDialog } from "../../store/slice/customerSlice";
+import { setLoginDialog } from "../../store/slice/settingSlice";
 import { useAppDispatch } from "../../store/store";
 
 import { onAuthStateChanged, User } from 'firebase/auth'

@@ -8,21 +8,6 @@ interface ICustomer {
     },
 }
 
-interface ICustomerState extends ICustomer{
-    // handle dialog open / close status
-    loginDialogOpen: boolean,
-    smsDialogOpen: boolean, 
-  
-    //  handle loading status 
-    customerSaveLoading: boolean, 
-    customerCardLoading: boolean,
-  
-    // handle collapse open / close status
-    customerCollapse: boolean,
-    addressCollapse: boolean,
-    showSkeleton: boolean,
-  }
-
 interface IAddress {
     address: string,
     street: string,
