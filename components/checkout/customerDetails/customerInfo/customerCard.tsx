@@ -1,19 +1,19 @@
 import { Button, Card, CardActions, CardContent,Icon, IconButton, Typography } from "@mui/material"
 import { GrContactInfo } from "react-icons/gr";
 import {HiOutlineChevronUp} from 'react-icons/hi'
-import { setCustomerCollapse } from "../../../../store/slice/settingSlice";
+import { setShowCustomerCard } from "../../../../store/slice/settingSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { phoneFormat } from "../../../../utils/functions/phone";
-import { CustomerCollapse } from "./customerCollapse";
+import { show_customer_card } from "./show_customer_card";
 
 export const CustomerCard = () => {
     const { name, phone } = useAppSelector(state => state.customer)
-    const { customerCollapse } = useAppSelector(state => state.setting)
+    const { show_customer_card } = useAppSelector(state => state.setting)
 
     const dispatch = useAppDispatch();
 
     const handleCollapseToogle = () => {
-        dispatch(setCustomerCollapse(!customerCollapse));
+        dispatch(setShowCustomerCard(!show_customer_card));
     }
 
     return <>
@@ -33,7 +33,7 @@ export const CustomerCard = () => {
 
             <CardActions sx={{ display: 'flex', justifyContent: 'end', paddingX: '30px'}}>
                 {
-                    customerCollapse 
+                    show_customer_card 
                         ? <IconButton onClick={handleCollapseToogle} color="primary">
                             <HiOutlineChevronUp /> 
                         </IconButton> 
@@ -41,7 +41,7 @@ export const CustomerCard = () => {
                 }
             </CardActions>
 
-            <CustomerCollapse />
+            <show_customer_card />
         </Card>
     </>
 }

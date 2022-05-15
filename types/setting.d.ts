@@ -5,7 +5,7 @@ interface ISettingState {
     customerSaveLoading: boolean,
     customerCardLoading: boolean,
 
-    customerCollapse: boolean,
+    show_customer_card: boolean,
     show_address_card: boolean,
 
     showSkeleton: boolean,

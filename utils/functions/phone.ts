@@ -6,7 +6,7 @@ import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth, token } from "./auth"
 import Cookies from "js-cookie"
 import { addNewPhone, removePhoneNumber, setDefaultPhoneNumber, updateAddress, updateCustomerName } from "../../store/slice/customerSlice"
-import { setShowAddressCard, setCustomerCardLoading, setCustomerCollapse, setCustomerSaveLoading } from '../../store/slice/settingSlice'
+import { setShowAddressCard, setCustomerCardLoading, setShowCustomerCard, setCustomerSaveLoading } from '../../store/slice/settingSlice'
 import { store } from '../../store/store'
 import { handleCatchError } from "../errors/custom"
 import { setDelivery } from "../../store/slice/cartSlice"
@@ -68,7 +68,7 @@ export const handleCodeVerify = async (code: string) => {
             phone_list: response.data.phone_list
         }))
 
-        store.dispatch(setCustomerCollapse(false));
+        store.dispatch(setShowCustomerCard(false));
         snackbar.success('New phone number has been added');        
     } catch (error) {
         if(axios.isAxiosError(error)){
@@ -87,7 +87,7 @@ export const selectDefaultPhone = async (phone: string) => {
             }
         })
         store.dispatch(setDefaultPhoneNumber(phone));
-        store.dispatch(setCustomerCollapse(false));
+        store.dispatch(setShowCustomerCard(false));
 
         snackbar.success('Phone has been select as default')
     } catch (error) {
@@ -122,7 +122,7 @@ export const updateName = async(name: string) => {
 
     // if the no change was made, close the collapse card
     if(customer.name === name){
-       return store.dispatch(setCustomerCollapse(false));
+       return store.dispatch(setShowCustomerCard(false));
     }
 
     store.dispatch(setCustomerSaveLoading(true)); // start the loading 
@@ -135,7 +135,7 @@ export const updateName = async(name: string) => {
 
         store.dispatch(updateCustomerName(name));
         snackbar.success('Name has been updated');
-        store.dispatch(setCustomerCollapse(false));
+        store.dispatch(setShowCustomerCard(false));
 
     } catch (error) {
         handleCatchError(error as Error, 'Failed to update name');

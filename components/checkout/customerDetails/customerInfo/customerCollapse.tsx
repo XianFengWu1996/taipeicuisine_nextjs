@@ -12,10 +12,10 @@ import { red } from "@mui/material/colors";
 import { PhoneCard } from "./phoneCard";
 
 
-export const CustomerCollapse = () => {
+export const show_customer_card = () => {
 
     const { name, phone, phone_list, } = useAppSelector(state => state.customer);
-    const { customerCollapse, customerSaveLoading, customerCardLoading} = useAppSelector(state => state.setting)
+    const { show_customer_card, customerSaveLoading, customerCardLoading} = useAppSelector(state => state.setting)
     const [ customer_name, setName ] = useState('');
     const dispatch = useAppDispatch();
 
@@ -29,7 +29,7 @@ export const CustomerCollapse = () => {
         setName(e.target.value);
     }
 
-    return <Collapse in={customerCollapse} timeout="auto" unmountOnExit>
+    return <Collapse in={show_customer_card} timeout="auto" unmountOnExit>
         <Box
             component="form"
             sx={{
