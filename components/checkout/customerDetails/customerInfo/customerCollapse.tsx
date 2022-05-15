@@ -6,7 +6,7 @@ import { removePhoneNum, selectDefaultPhone, updateName } from "../../../../util
 import { ChangeEvent, useEffect, useState } from "react";
 import {  AiOutlinePlus } from "react-icons/ai";
 import { SmsDialog } from "../../../dialogs/smsDialog";
-import { setSmsDialog } from "../../../../store/slice/settingSlice";
+import { setShowSmsDialog } from "../../../../store/slice/settingSlice";
 import { PulseLoader, ScaleLoader } from "react-spinners";
 import { red } from "@mui/material/colors";
 import { PhoneCard } from "./phoneCard";
@@ -87,7 +87,7 @@ export const CustomerCollapse = () => {
             }
             <Grid item  md={6} sm={12} xs={12}>
                 <Card 
-                    onClick={() => dispatch(setSmsDialog(true))}
+                    onClick={() => dispatch(setShowSmsDialog(true))}
                     sx={{ 
                         padding: 1, 
                         height: '100%', 

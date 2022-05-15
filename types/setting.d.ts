@@ -1,6 +1,6 @@
 interface ISettingState {
     show_login_dialog: boolean,
-    smsDialogOpen: boolean,
+    show_sms_dialog: boolean,
 
     customerSaveLoading: boolean,
     customerCardLoading: boolean,

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // Define the initial state using that type
 const initialState: ISettingState  = {
     show_login_dialog: false,
-    smsDialogOpen: false,
+    show_sms_dialog: false,
 
     customerSaveLoading: false,
     customerCardLoading: false,
@@ -26,8 +26,8 @@ export const settingSlice = createSlice({
     setShowLoginDialog: (state, {payload}:PayloadAction<boolean>) => {
       state.show_login_dialog = payload;
     },
-    setSmsDialog: (state, {payload}:PayloadAction<boolean>) => {
-      state.smsDialogOpen = payload;
+    setShowSmsDialog: (state, {payload}:PayloadAction<boolean>) => {
+      state.show_sms_dialog = payload;
     },
  
     setCustomerSaveLoading: (state, {payload}:PayloadAction<boolean>) => {
@@ -56,7 +56,7 @@ export default settingSlice.reducer
 export const {  
   setCustomerCollapse,
   setShowLoginDialog,
-  setSmsDialog,
+  setShowSmsDialog,
   setCustomerSaveLoading,
   setCustomerCardLoading,
   setAddressCollapse,

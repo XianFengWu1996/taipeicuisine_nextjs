@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogContent, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import ReactCodeInput from 'react-verification-code-input';
-import { setSmsDialog } from "../../store/slice/settingSlice";
+import { setShowSmsDialog } from "../../store/slice/settingSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { sentCode, handleCodeVerify} from "../../utils/functions/phone";
 // logic (todo)
@@ -13,7 +13,7 @@ import { sentCode, handleCodeVerify} from "../../utils/functions/phone";
 // also, once the button is click, toggle to a button which sole job is to display the timer
 
 export const SmsDialog = () => {
-    const { smsDialogOpen} = useAppSelector(state => state.setting)
+    const { show_sms_dialog} = useAppSelector(state => state.setting)
     const dispatch = useAppDispatch();
 
     const [smsPhone, setSmsPhone] = useState('');
@@ -27,8 +27,8 @@ export const SmsDialog = () => {
     }
 
     return <Dialog
-        open={smsDialogOpen}
-        onClose={() => dispatch(setSmsDialog(false))}
+        open={show_sms_dialog}
+        onClose={() => dispatch(setShowSmsDialog(false))}
         maxWidth="sm"
         fullWidth
     >
