@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut, FacebookAuthProvider, OAuthProvider} from 'firebase/auth'
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import { setLoginDialog } from '../../store/slice/settingSlice';
+import { setShowLoginDialog } from '../../store/slice/settingSlice';
 import store from '../../store/store';
 import { handleCatchError } from '../errors/custom';
 
@@ -72,7 +72,7 @@ export const handleGoogleLogin = async (_:ISocialLogin) => {
       }
     })
 
-    store.dispatch(setLoginDialog(false));
+    store.dispatch(setShowLoginDialog(false));
     checkAndRedirect(_.query); // check if the page needs to be redirected
   } catch (error) {
     handleCatchError(error as Error, 'Fail to login with Google');  
@@ -91,7 +91,7 @@ export const handleAppleLogin = async (_:ISocialLogin) => {
       }
     })
 
-    store.dispatch(setLoginDialog(false));
+    store.dispatch(setShowLoginDialog(false));
     checkAndRedirect(_.query); 
  } catch (error) {
    console.log(error);
@@ -110,7 +110,7 @@ export const handleFacebookLogin = async(_:ISocialLogin) => {
         'authorization': `Bearer ${await user.getIdToken()}`
       }
     })
-    store.dispatch(setLoginDialog(false));
+    store.dispatch(setShowLoginDialog(false));
     checkAndRedirect(_.query); // check if the page needs to be redirected
   } catch (error) {
     handleCatchError(error as Error, 'Fail to login with Facebook');  

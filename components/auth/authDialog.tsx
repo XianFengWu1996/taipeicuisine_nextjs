@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, Divider, Typography } from "@mui/material";
 import { AuthCard } from '../auth/authCard'
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setLoginDialog } from "../../store/slice/settingSlice";
+import { setShowLoginDialog } from "../../store/slice/settingSlice";
 
 import { FacebookLoginButton, GoogleLoginButton, AppleLoginButton } from 'react-social-login-buttons'
 import { handleAppleLogin, handleFacebookLogin, handleGoogleLogin } from "../../utils/functions/auth";
@@ -11,16 +11,16 @@ import { useRouter } from "next/router";
 
 export const AuthDialog = () => {
     const [isLogin, setIsLogin] = useState(true);
-    const { loginDialogOpen } = useAppSelector(state => state.setting)
+    const { show_login_dialog } = useAppSelector(state => state.setting)
     const dispatch = useAppDispatch();
     const router = useRouter();
 
     const handleDialogClose = () => {
-        dispatch(setLoginDialog(false));
+        dispatch(setShowLoginDialog(false));
     }
 
     return   <Dialog 
-                open={loginDialogOpen} 
+                open={show_login_dialog} 
                 onClose={handleDialogClose}
                 fullWidth
             >

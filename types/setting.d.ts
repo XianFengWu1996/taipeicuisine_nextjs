@@ -1,5 +1,5 @@
 interface ISettingState {
-    loginDialogOpen: boolean,
+    show_login_dialog: boolean,
     smsDialogOpen: boolean,
 
     customerSaveLoading: boolean,
@@ -9,4 +9,5 @@ interface ISettingState {
     addressCollapse: boolean,
 
     showSkeleton: boolean,
+    allow_payment_page: boolean,
 }  

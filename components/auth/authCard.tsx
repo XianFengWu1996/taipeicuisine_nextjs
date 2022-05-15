@@ -7,7 +7,7 @@ import { handleEmailLogin } from "../../utils/functions/auth"
 import { AuthTextField } from "./AuthTextfield"
 import { PulseLoader} from 'react-spinners'
 import { useAppDispatch } from "../../store/store"
-import { setLoginDialog } from "../../store/slice/settingSlice"
+import { setShowLoginDialog } from "../../store/slice/settingSlice"
 import Router from "next/router"
 
 interface IAuthCardProps {
@@ -49,7 +49,7 @@ export const AuthCard = (props: IAuthCardProps) => {
 
     const handleSuccess = () => {
         setLoading(false);
-        dispatch(setLoginDialog(false));
+        dispatch(setShowLoginDialog(false));
     } 
 
     const handleFail = () => {

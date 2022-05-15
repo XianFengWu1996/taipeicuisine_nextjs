@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { handleCatchError } from "../../utils/errors/custom";
 import { fbAuth, token } from "../../utils/functions/auth";
 import CheckoutSkeleton from "../../components/checkout/skeleton";
-import { setCheckoutSkeleton, setLoginDialog } from "../../store/slice/settingSlice";
+import { setCheckoutSkeleton, setShowLoginDialog } from "../../store/slice/settingSlice";
 
 
 
@@ -45,7 +45,7 @@ export default function CheckoutPage() {
     useEffect(() => {
         const subscribe = onAuthStateChanged(fbAuth, async fbUser => {
             if(!fbUser){
-                dispatch(setLoginDialog(true));
+                dispatch(setShowLoginDialog(true));
                 Router.push('/order?redirect=checkout');
             }  else {
                 getCustomerInfo();
