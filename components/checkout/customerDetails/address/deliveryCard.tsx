@@ -2,24 +2,24 @@ import { Button, Card, CardActions, CardContent, Icon, IconButton, Typography } 
 import { isEmpty } from "lodash";
 import { BiBuildingHouse } from "react-icons/bi";
 import { HiOutlineChevronUp } from "react-icons/hi";
-import { setAddressCollapse } from "../../../../store/slice/settingSlice";
+import { setShowAddressCard } from "../../../../store/slice/settingSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { DeliveryCollapse } from "./deliveryCollapse";
 
 export const AddressCard = () => {
     const { address } = useAppSelector(state => state.customer)
-    const { addressCollapse } = useAppSelector(state => state.setting)
+    const { show_address_card } = useAppSelector(state => state.setting)
 
     const dispatch = useAppDispatch();
 
     const handleCollapseOpen = () => {
-        if(!addressCollapse){
-            dispatch(setAddressCollapse(true));
+        if(!show_address_card){
+            dispatch(setShowAddressCard(true));
         }
     }
 
     const handleCollapseToogle = () => {
-        dispatch(setAddressCollapse(!addressCollapse));
+        dispatch(setShowAddressCard(!show_address_card));
     }
 
     return <>
@@ -46,7 +46,7 @@ export const AddressCard = () => {
 
             <CardActions sx={{ display: 'flex', justifyContent: 'end', paddingX: '30px'}}>
                 {
-                    addressCollapse 
+                    show_address_card 
                         ? <IconButton onClick={handleCollapseToogle} color="primary">
                             <HiOutlineChevronUp /> 
                         </IconButton> 

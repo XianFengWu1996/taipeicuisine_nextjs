@@ -9,7 +9,7 @@ import { calculateDeliveryFee } from "../../../../utils/functions/phone";
 import { red } from "@mui/material/colors";
 
 export const DeliveryCollapse = () => {
-    const { addressCollapse } = useAppSelector(state => state.setting);
+    const { show_address_card } = useAppSelector(state => state.setting);
 
     const [addressInput, setAddressInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -47,7 +47,7 @@ export const DeliveryCollapse = () => {
     }
 
     return <>
-        <Collapse in={addressCollapse} timeout="auto" unmountOnExit>
+        <Collapse in={show_address_card} timeout="auto" unmountOnExit>
         <Box
             component="form"
             sx={{

@@ -6,7 +6,7 @@ import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth, token } from "./auth"
 import Cookies from "js-cookie"
 import { addNewPhone, removePhoneNumber, setDefaultPhoneNumber, updateAddress, updateCustomerName } from "../../store/slice/customerSlice"
-import { setAddressCollapse, setCustomerCardLoading, setCustomerCollapse, setCustomerSaveLoading } from '../../store/slice/settingSlice'
+import { setShowAddressCard, setCustomerCardLoading, setCustomerCollapse, setCustomerSaveLoading } from '../../store/slice/settingSlice'
 import { store } from '../../store/store'
 import { handleCatchError } from "../errors/custom"
 import { setDelivery } from "../../store/slice/cartSlice"
@@ -167,7 +167,7 @@ export const calculateDeliveryFee = async(data: ICalcDelivFee) => {
         // dispatch delivery fee 
         store.dispatch(updateAddress(result.data.address))
         store.dispatch(setDelivery(result.data.address.delivery_fee))
-        store.dispatch(setAddressCollapse(false));
+        store.dispatch(setShowAddressCard(false));
         snackbar.success('Address has been updated')
     } catch (error) {
         handleCatchError(error as Error, 'Failed to set addess at the moment')

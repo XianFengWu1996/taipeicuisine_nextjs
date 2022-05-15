@@ -9,7 +9,7 @@ const initialState: ISettingState  = {
     customerCardLoading: false,
 
     customerCollapse: false,
-    addressCollapse: false,
+    show_address_card: false,
 
     showSkeleton: false,
 
@@ -37,8 +37,8 @@ export const settingSlice = createSlice({
       state.customerCardLoading = payload;
     },
 
-    setAddressCollapse: (state, {payload}:PayloadAction<boolean>) => {
-      state.addressCollapse = payload;
+    setShowAddressCard: (state, {payload}:PayloadAction<boolean>) => {
+      state.show_address_card = payload;
     },
     setCustomerCollapse: (state, {payload}:PayloadAction<boolean>) => {
       state.customerCollapse = payload;
@@ -59,7 +59,7 @@ export const {
   setShowSmsDialog,
   setCustomerSaveLoading,
   setCustomerCardLoading,
-  setAddressCollapse,
+  setShowAddressCard,
   setCheckoutSkeleton,
 } = settingSlice.actions
 

@@ -6,7 +6,7 @@ interface ISettingState {
     customerCardLoading: boolean,
 
     customerCollapse: boolean,
-    addressCollapse: boolean,
+    show_address_card: boolean,
 
     showSkeleton: boolean,
     allow_payment_page: boolean,
