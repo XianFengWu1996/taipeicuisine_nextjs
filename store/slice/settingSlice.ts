@@ -5,7 +5,7 @@ const initialState: ISettingState  = {
     show_login_dialog: false,
     show_sms_dialog: false,
 
-    customerSaveLoading: false,
+    save_name_loading: false,
     customerCardLoading: false,
 
     show_customer_card: false,
@@ -30,8 +30,8 @@ export const settingSlice = createSlice({
       state.show_sms_dialog = payload;
     },
  
-    setCustomerSaveLoading: (state, {payload}:PayloadAction<boolean>) => {
-      state.customerSaveLoading = payload;
+    setSaveNameLoading: (state, {payload}:PayloadAction<boolean>) => {
+      state.save_name_loading = payload;
     },
     setCustomerCardLoading:(state, {payload}:PayloadAction<boolean>) => {
       state.customerCardLoading = payload;
@@ -57,7 +57,7 @@ export const {
   setShowCustomerCard,
   setShowLoginDialog,
   setShowSmsDialog,
-  setCustomerSaveLoading,
+  setSaveNameLoading,
   setCustomerCardLoading,
   setShowAddressCard,
   setCheckoutSkeleton,

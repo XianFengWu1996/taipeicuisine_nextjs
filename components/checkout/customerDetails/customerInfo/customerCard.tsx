@@ -4,7 +4,7 @@ import {HiOutlineChevronUp} from 'react-icons/hi'
 import { setShowCustomerCard } from "../../../../store/slice/settingSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { phoneFormat } from "../../../../utils/functions/phone";
-import { show_customer_card } from "./show_customer_card";
+import { CustomerCardCollaspe } from "./customerCollapse";
 
 export const CustomerCard = () => {
     const { name, phone } = useAppSelector(state => state.customer)
@@ -41,7 +41,7 @@ export const CustomerCard = () => {
                 }
             </CardActions>
 
-            <show_customer_card />
+            <CustomerCardCollaspe />
         </Card>
     </>
 }

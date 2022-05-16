@@ -12,10 +12,10 @@ import { red } from "@mui/material/colors";
 import { PhoneCard } from "./phoneCard";
 
 
-export const show_customer_card = () => {
+export const CustomerCardCollaspe = () => {
 
     const { name, phone, phone_list, } = useAppSelector(state => state.customer);
-    const { show_customer_card, customerSaveLoading, customerCardLoading} = useAppSelector(state => state.setting)
+    const { show_customer_card, save_name_loading, customerCardLoading} = useAppSelector(state => state.setting)
     const [ customer_name, setName ] = useState('');
     const dispatch = useAppDispatch();
 
@@ -58,7 +58,7 @@ export const show_customer_card = () => {
                     onClick={() => updateName(customer_name)}
                     sx={{flex: 1, marginLeft: '5%'}}
                 >{
-                    customerSaveLoading ? 
+                    save_name_loading ? 
                          <PulseLoader size={5} color="red"/>
                     : 'Save'
                 }</Button>

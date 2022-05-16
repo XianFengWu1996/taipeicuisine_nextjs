@@ -2,7 +2,7 @@ interface ISettingState {
     show_login_dialog: boolean,
     show_sms_dialog: boolean,
 
-    customerSaveLoading: boolean,
+    save_name_loading: boolean,
     customerCardLoading: boolean,
 
     show_customer_card: boolean,

@@ -6,7 +6,7 @@ import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth, token } from "./auth"
 import Cookies from "js-cookie"
 import { addNewPhone, removePhoneNumber, setDefaultPhoneNumber, updateAddress, updateCustomerName } from "../../store/slice/customerSlice"
-import { setShowAddressCard, setCustomerCardLoading, setShowCustomerCard, setCustomerSaveLoading } from '../../store/slice/settingSlice'
+import { setShowAddressCard, setCustomerCardLoading, setShowCustomerCard, setSaveNameLoading } from '../../store/slice/settingSlice'
 import { store } from '../../store/store'
 import { handleCatchError } from "../errors/custom"
 import { setDelivery } from "../../store/slice/cartSlice"
@@ -125,7 +125,7 @@ export const updateName = async(name: string) => {
        return store.dispatch(setShowCustomerCard(false));
     }
 
-    store.dispatch(setCustomerSaveLoading(true)); // start the loading 
+    store.dispatch(setSaveNameLoading(true)); // start the loading 
     try {
         await axios.patch(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/name`, { name }, {
             headers: {
@@ -140,7 +140,7 @@ export const updateName = async(name: string) => {
     } catch (error) {
         handleCatchError(error as Error, 'Failed to update name');
     } finally {
-        store.dispatch(setCustomerSaveLoading(false)); // end the loading
+        store.dispatch(setSaveNameLoading(false)); // end the loading
     }
 }
 
