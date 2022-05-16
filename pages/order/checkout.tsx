@@ -19,7 +19,7 @@ import { setCheckoutSkeleton, setShowLoginDialog } from "../../store/slice/setti
 export default function CheckoutPage() {
     const desktop = useMediaQuery('(min-width: 900px)');
     const dispatch = useAppDispatch();
-    const { showSkeleton } = useAppSelector(state => state.setting)
+    const { show_checkout_skeleton } = useAppSelector(state => state.setting)
 
     // get the customer information back from the backend
     const getCustomerInfo = async () => {
@@ -61,7 +61,7 @@ export default function CheckoutPage() {
     return <>
         <PublicAppBar />
             {
-                !showSkeleton ? <Grid container spacing={8}>
+                !show_checkout_skeleton ? <Grid container spacing={8}>
                     <Grid item lg={7} md={8} sm={12} xs={12}>
                         <CustomerDetails /> 
                     </Grid> 

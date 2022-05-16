@@ -6,12 +6,12 @@ const initialState: ISettingState  = {
     show_sms_dialog: false,
 
     save_name_loading: false,
-    customerCardLoading: false,
+    customer_card_loading: false,
 
     show_customer_card: false,
     show_address_card: false,
 
-    showSkeleton: false,
+    show_checkout_skeleton: false,
 
     // payment 
     allow_payment_page: false
@@ -34,7 +34,7 @@ export const settingSlice = createSlice({
       state.save_name_loading = payload;
     },
     setCustomerCardLoading:(state, {payload}:PayloadAction<boolean>) => {
-      state.customerCardLoading = payload;
+      state.customer_card_loading = payload;
     },
 
     setShowAddressCard: (state, {payload}:PayloadAction<boolean>) => {
@@ -44,7 +44,7 @@ export const settingSlice = createSlice({
       state.show_customer_card = payload;
     },
     setCheckoutSkeleton: (state, {payload}:PayloadAction<boolean>) => {
-      state.showSkeleton = payload;
+      state.show_checkout_skeleton = payload;
     },
    
     

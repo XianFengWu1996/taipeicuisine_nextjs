@@ -15,7 +15,7 @@ import { PhoneCard } from "./phoneCard";
 export const CustomerCardCollaspe = () => {
 
     const { name, phone, phone_list, } = useAppSelector(state => state.customer);
-    const { show_customer_card, save_name_loading, customerCardLoading} = useAppSelector(state => state.setting)
+    const { show_customer_card, save_name_loading, customer_card_loading} = useAppSelector(state => state.setting)
     const [ customer_name, setName ] = useState('');
     const dispatch = useAppDispatch();
 
@@ -65,7 +65,7 @@ export const CustomerCardCollaspe = () => {
             </div>
     
         {
-            customerCardLoading 
+            customer_card_loading 
             ? <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <ScaleLoader height={25} color={red[400]} />
               </div> 

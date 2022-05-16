@@ -3,11 +3,11 @@ interface ISettingState {
     show_sms_dialog: boolean,
 
     save_name_loading: boolean,
-    customerCardLoading: boolean,
+    customer_card_loading: boolean,
 
     show_customer_card: boolean,
     show_address_card: boolean,
 
-    showSkeleton: boolean,
+    show_checkout_skeleton: boolean,
     allow_payment_page: boolean,
 }  
