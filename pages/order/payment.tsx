@@ -12,22 +12,35 @@ import { Skeleton } from "@mui/material";
 import { handleGetPaymentList } from "../../utils/functions/payment";
 import Router from "next/router";
 import snackbar from "../../components/snackbar";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { setAllowPayment } from "../../store/slice/settingSlice";
 
 
 const stripePromise = loadStripe('pk_test_MQq0KVxKkSLUx0neZbdLTheo00iB1Ru6a0');
 
 export default function PaymentPage () {
     const [showSkeleton, setShowSkeleton] = useState(true);
+    const { allow_payment_page } = useAppSelector(state => state.setting)
+    const dispatch = useAppDispatch();
 
     const [cards, setCards] = useState<IPublicPaymentMethod[]>([])
 
     const s_id = Cookie.get('s_id')
     
     useEffect(() => {
-       onAuthStateChanged(fbAuth, async user => {   
+       
+
+       onAuthStateChanged(fbAuth, async user => {  
+       
+
         if(!user){
             Router.replace('/order')
             return snackbar.error('Not authorized, please login first')
+        }
+
+         // only allow the payment if it is from checkout page route 
+         if(!allow_payment_page){
+            return Router.replace('/order/checkout')
         }
 
         try {
@@ -38,6 +51,10 @@ export default function PaymentPage () {
             setShowSkeleton(false);
         }
        })
+
+       return () => {
+            dispatch(setAllowPayment(false))
+       }
     }, [])
     return <>
         <PublicAppBar />

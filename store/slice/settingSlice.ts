@@ -2,15 +2,19 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define the initial state using that type
 const initialState: ISettingState  = {
+    // dialog 
     show_login_dialog: false,
     show_sms_dialog: false,
 
+    // loading
     save_name_loading: false,
     customer_card_loading: false,
 
+    // card
     show_customer_card: false,
     show_address_card: false,
 
+    // skeleton
     show_checkout_skeleton: false,
 
     // payment 
@@ -46,7 +50,10 @@ export const settingSlice = createSlice({
     setCheckoutSkeleton: (state, {payload}:PayloadAction<boolean>) => {
       state.show_checkout_skeleton = payload;
     },
-   
+    setAllowPayment: (state, {payload}:PayloadAction<boolean>) => {
+      state.allow_payment_page = payload;
+    }
+    
     
   }
 })
@@ -61,5 +68,6 @@ export const {
   setCustomerCardLoading,
   setShowAddressCard,
   setCheckoutSkeleton,
+  setAllowPayment
 } = settingSlice.actions
 

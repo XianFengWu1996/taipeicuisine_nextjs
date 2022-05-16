@@ -2,7 +2,7 @@ import { Button, useMediaQuery } from "@mui/material"
 import { PickupOrDelivery } from "./pickupButton/pickupOrDelivery"
 import { CustomerCard } from "./customerInfo/customerCard"
 import { PaymentSelection } from "./payment/paymentSelection"
-import {  useAppSelector } from "../../../store/store"
+import {  useAppDispatch, useAppSelector } from "../../../store/store"
 import { AddSpecialComment } from "./comment/addSpecialComment"
 import { ApplyDiscount } from "./discount/applyDiscount"
 import { IncludeUtensils } from "./utensil/includeUtensils"
@@ -12,6 +12,7 @@ import { AddressCard } from "./address/deliveryCard"
 import { handleCatchError } from "../../../utils/errors/custom"
 import { PickupTime } from "./pickupTime/pickupTime"
 import { handleInStoreOrCashOrder, handleOnlineOrder, validateToPlaceOrder } from "../../../utils/functions/payment"
+import { setAllowPayment } from "../../../store/slice/settingSlice"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -38,6 +39,7 @@ export const CustomerDetails = () => {
 
     const cartState = useAppSelector(state => state.cart)
     const customerState = useAppSelector(state => state.customer)
+    const dispatch = useAppDispatch();
 
 
     const desktop = useMediaQuery('(min-width: 900px)');
@@ -51,7 +53,7 @@ export const CustomerDetails = () => {
             } else {
                 await handleInStoreOrCashOrder(cartState, customerState)
             }
-
+            dispatch(setAllowPayment(true))
         } catch (error) {
             handleCatchError(error as Error, 'Failed to place order');
         }
