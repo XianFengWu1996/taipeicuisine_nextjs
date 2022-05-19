@@ -35,13 +35,7 @@ interface IPublicOrder {
     payment: {
         payment_type: IPaymentType,
         stripe: {
-            card: {
-                brand: string, 
-                exp_month: number,
-                exp_year: number,
-                last_4: string,
-                country: string,
-            } | null
+            card: StripeCard | null
         }
     },
     date: {
@@ -54,4 +48,12 @@ interface IPublicOrder {
         point_redemption: number,
     },
     created_at: number
+}
+
+interface StripeCard {
+    brand: string, 
+    exp_month: number,
+    exp_year: number,
+    last_4: string,
+    country: string,
 }

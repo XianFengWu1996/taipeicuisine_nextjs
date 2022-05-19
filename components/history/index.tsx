@@ -5,6 +5,7 @@ import {  useState } from "react"
 import { GoFlame } from "react-icons/go"
 import { OrderChipGroup } from "../../components/history/orderChipGroup"
 import { OrderContact } from "./orderContact"
+import { OrderPayment } from "./orderPayment"
 
 export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
     console.log(order);
@@ -40,12 +41,16 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
                     address={order.delivery.address}
                 />
 
+                <OrderPayment
+                    payment_type={order.payment.payment_type}
+                    card={order.payment.stripe.card}
+                />
+
                 
 
-                <Typography>{order.payment.payment_type}</Typography>
-                {
-                    order.payment.stripe.card && <Typography>{order.payment.stripe.card.brand}  xx-{order.payment.stripe.card.last_4} exp: {order.payment.stripe.card.exp_month}/{order.payment.stripe.card.exp_year}</Typography>
-                }
+                
+
+               
 
                 {
                     order.items.map((item) => {
@@ -143,4 +148,5 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
         </Card>
     </>
 }
+
 
