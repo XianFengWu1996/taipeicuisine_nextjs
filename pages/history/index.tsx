@@ -6,6 +6,7 @@ import { isEmpty } from "lodash"
 import { useEffect, useState } from "react"
 import { GoFlame } from "react-icons/go"
 import { PublicAppBar } from "../../components/appbar/appbar"
+import { OrderChipGroup } from "../../components/history/orderChipGroup"
 import { handleCatchError } from "../../utils/errors/custom"
 import { fbAuth } from "../../utils/functions/auth"
 import { phoneFormat } from "../../utils/functions/phone"
@@ -67,7 +68,6 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
         }}>
             <CardContent sx={{ display: 'flex', justifyContent: 'space-between'}}>
                 <div>
-                <Typography>{order.delivery.is_delivery ? 'Delivery' : 'Pick Up'}</Typography>
                     <Typography>{format(order.created_at, 'MM/dd/yyyy HH:mm')}</Typography>
                     <Typography>Order #: {order.order_id}</Typography>
                 </div>
@@ -80,6 +80,14 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
             <Divider />
             <Collapse in={expand} timeout="auto" unmountOnExit>
                 <CardContent>
+
+                <OrderChipGroup
+                    is_delivery={order.delivery.is_delivery}
+                    schedule_time={order.additional_request.schedule_time}
+                    dont_include_utensils={order.additional_request.dont_include_utensils}
+                />
+
+
 
                 <Typography>Name: {order.user.name}</Typography>
                 <Typography>Phone: {phoneFormat(order.user.phone)}</Typography>
@@ -142,8 +150,6 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
                 {
                     <>
                         <Divider />
-                        <Typography>{order.additional_request.dont_include_utensils ? "Don't include utensil" : "Include Utensil"}</Typography>
-                        {!isEmpty(order.additional_request.schedule_time) && <Typography>Pickup At: {order.additional_request.schedule_time}</Typography> }
                         {!isEmpty(order.additional_request.comments) && <Typography>Special Instruction: {order.additional_request.comments}</Typography>}
                     </>
                 }
@@ -195,3 +201,4 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
         </Card>
     </>
 }
+
