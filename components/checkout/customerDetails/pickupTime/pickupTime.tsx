@@ -77,7 +77,7 @@ export const PickupTime = () => {
         <GiAlarmClock size={18} style={{ margin: '0 10px'}}/>
         Schedule Time: {hour && minute ? `${hour}:${minute}`: 'ASAP(NOW)'}
 
-        <Tooltip title="The time indicate when to start preparing the food" arrow>
+        <Tooltip title="The time indicate when to pick up the food" arrow>
             <IconButton sx={{ padding: 0}}>
                 <HiQuestionMarkCircle style={{ fontSize: 15, marginLeft: '5px'}}/>
             </IconButton>

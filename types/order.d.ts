@@ -10,6 +10,7 @@ interface IPublicOrder {
             lunch_discount: number,
             point_discount: number,
         },
+        cart_quantity: number,
         subtotal: number,
         original_subtotal: number, // need to use this to recalculate the total if we remove lunch discount
         tax: number,
@@ -20,7 +21,7 @@ interface IPublicOrder {
         refund: {
             amount: number,
             refund_reason: string,
-        }
+        } | null
     },
     delivery: {
         is_delivery: boolean,
@@ -32,13 +33,15 @@ interface IPublicOrder {
         schedule_time: string,
     }
     payment: {
-        payment_type: string,
-        card: {
-            brand: string, 
-            exp_month: number,
-            exp_year: number,
-            last_4: string,
-            country: string,
+        payment_type: IPaymentType,
+        stripe: {
+            card: {
+                brand: string, 
+                exp_month: number,
+                exp_year: number,
+                last_4: string,
+                country: string,
+            } | null
         }
     },
     date: {
