@@ -1,11 +1,11 @@
 import { Card, CardContent, Collapse, Divider, Typography } from "@mui/material"
 import { format } from "date-fns"
-import { isEmpty } from "lodash"
 import {  useState } from "react"
-import { GoFlame } from "react-icons/go"
 import { OrderChipGroup } from "../../components/history/orderChipGroup"
+import { OrderCartItem } from "./orderCartItem"
 import { OrderContact } from "./orderContact"
 import { OrderPayment } from "./orderPayment"
+import { OrderSpecialInstruction } from "./orderSpecialInstruction"
 
 export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
     console.log(order);
@@ -46,62 +46,18 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
                     card={order.payment.stripe.card}
                 />
 
-                
-
-                
-
-               
-
                 {
                     order.items.map((item) => {
-                        return <div key={item.id} style={{ display: 'flex'}}>
-                            <Typography>{item.quantity}</Typography>
-                            <Typography>{item.dish.label_id}.{item.dish.en_name}</Typography>
-                            <Typography>${item.dish.price}</Typography>
-
-                            <Typography color='red'>{item.comment}</Typography>
-
-                            {
-                                item.option && <Typography>{item.option.en_name} {item.option.ch_name} {item.option.spicy && <GoFlame />}</Typography>
-                            }
-
-                            {
-                                item.customize && <>
-                                    {
-                                        item.customize.protein.map((protein) => {
-                                            return <Typography key={protein.id}>{protein.en_name} {protein.ch_name} +{protein.price}</Typography>
-                                        })
-                                    }
-
-                                    {
-                                        item.customize.veggie.map((veggie) => {
-                                            return <Typography key={veggie.id}>{veggie.en_name} {veggie.ch_name} +{veggie.price}</Typography>
-                                        })
-                                    }
-                                </>
-                            }
-
-                            {
-                                item.lunchOption && <>
-                                    {item.lunchOption.no_rice && <Typography>{item.lunchOption.no_rice && 'No Rice'}</Typography>}
-                                    {item.lunchOption.no_soup && <Typography>{item.lunchOption.no_soup && 'No Soup'}</Typography>}
-                                    {item.lunchOption.sub && <Typography>{item.lunchOption.sub && 'Subtitute Hot&Sour Soup'}</Typography>}
-                                </>
-                            }
-
-                         
-                        </div>
+                        return <OrderCartItem key={item.id} item={item}/>
                     })
                 }
 
-                {
-                    <>
-                        <Divider />
-                        {!isEmpty(order.additional_request.comments) && <Typography>Special Instruction: {order.additional_request.comments}</Typography>}
-                    </>
-                }
+                <OrderSpecialInstruction
+                    comments={order.additional_request.comments}
+                /> 
 
                 <>
+                    <Divider />
                     {
                         order.summary.discount.lunch_discount !== 0 || order.summary.discount.point_discount !== 0 && <>
                             <Divider />
