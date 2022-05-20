@@ -1,4 +1,5 @@
 import { Card, CardContent, Collapse, Divider, Typography } from "@mui/material"
+import { styled } from "@mui/system"
 import { format } from "date-fns"
 import {  useState } from "react"
 import { OrderChipGroup } from "../../components/history/orderChipGroup"
@@ -6,6 +7,7 @@ import { OrderCartItem } from "./orderCartItem"
 import { OrderContact } from "./orderContact"
 import { OrderPayment } from "./orderPayment"
 import { OrderSpecialInstruction } from "./orderSpecialInstruction"
+import { OrderSummaryList } from "./orderSummaryList"
 
 export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
     console.log(order);
@@ -56,33 +58,10 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
                     comments={order.additional_request.comments}
                 /> 
 
-                <>
-                    <Divider />
-                    {
-                        order.summary.discount.lunch_discount !== 0 || order.summary.discount.point_discount !== 0 && <>
-                            <Divider />
-                            <Typography>Discount</Typography>
-                            <Typography>Original Subtotal: {order.summary.original_subtotal}</Typography>
-                            {
-                                order.summary.discount.lunch_discount !== 0 && <Typography>Lunch Discount: -${order.summary.discount.lunch_discount}</Typography>
-                            }
-
-                            {
-                                order.summary.discount.point_discount !== 0 && <Typography>Point Discount: -${order.summary.discount.point_discount}</Typography>
-                            }
-
-                            <Divider />
-                        </>
-                    }
-                    <Typography>Subtotal: ${order.summary.subtotal}</Typography>
-                    {
-                        order.delivery.is_delivery && <Typography>Delivery Fee: {order.summary.delivery_fee.toFixed(2)}</Typography>
-                    }
-                    <Typography>Tax: ${order.summary.tax.toFixed(2)}</Typography>
-                    <Typography>Tip: ${order.summary.tip.toFixed(2)}</Typography>
-                    <Typography>Total: ${order.summary.total.toFixed(2)}</Typography>
-                    <Divider />
-                </>
+                <OrderSummaryList
+                    is_delivery={order.delivery.is_delivery}
+                    summary={order.summary}
+                />
 
                 <>
                 <Typography>Point Rewarded: {order.points.reward}</Typography>
@@ -104,5 +83,4 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
         </Card>
     </>
 }
-
 
