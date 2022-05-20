@@ -2,10 +2,12 @@ import { Card, CardContent, Collapse, Divider, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 import { format } from "date-fns"
 import {  useState } from "react"
+import { BiCoinStack } from "react-icons/bi"
 import { OrderChipGroup } from "../../components/history/orderChipGroup"
 import { OrderCartItem } from "./orderCartItem"
-import { OrderContact } from "./orderContact"
+import { OrderContact, TitleText } from "./orderContact"
 import { OrderPayment } from "./orderPayment"
+import { OrderReward } from "./orderReward"
 import { OrderSpecialInstruction } from "./orderSpecialInstruction"
 import { OrderSummaryList } from "./orderSummaryList"
 
@@ -63,11 +65,10 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
                     summary={order.summary}
                 />
 
-                <>
-                <Typography>Point Rewarded: {order.points.reward}</Typography>
-                <Typography>Point Used: {order.points.point_redemption}</Typography>
-                <Divider />
-                </>
+                <OrderReward 
+                    points={order.points.reward}
+                />
+               
 
                 {
                     order.summary.refund && <>
@@ -83,4 +84,5 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
         </Card>
     </>
 }
+
 
