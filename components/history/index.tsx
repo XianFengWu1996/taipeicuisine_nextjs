@@ -1,11 +1,10 @@
 import { Card, CardContent, Collapse, Divider, Typography } from "@mui/material"
-import { styled } from "@mui/system"
+import { Box } from "@mui/system"
 import { format } from "date-fns"
 import {  useState } from "react"
-import { BiCoinStack } from "react-icons/bi"
 import { OrderChipGroup } from "../../components/history/orderChipGroup"
 import { OrderCartItem } from "./orderCartItem"
-import { OrderContact, TitleText } from "./orderContact"
+import { OrderContact } from "./orderContact"
 import { OrderPayment } from "./orderPayment"
 import { OrderReward } from "./orderReward"
 import { OrderSpecialInstruction } from "./orderSpecialInstruction"
@@ -39,17 +38,21 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
                     dont_include_utensils={order.additional_request.dont_include_utensils}
                 />
 
-                <OrderContact
-                    name={order.user.name}
-                    phone={order.user.phone}
-                    address={order.delivery.address}
-                />
+                <Box sx={{ display: 'flex'}}>
+                    <OrderContact
+                        name={order.user.name}
+                        phone={order.user.phone}
+                        address={order.delivery.address}
+                    />
 
-                <OrderPayment
-                    payment_type={order.payment.payment_type}
-                    card={order.payment.stripe.card}
-                />
+                    <OrderPayment
+                        payment_type={order.payment.payment_type}
+                        card={order.payment.stripe.card}
+                    />
 
+                </Box>
+
+                <Divider sx={{ my: 2}}/>
                 {
                     order.items.map((item) => {
                         return <OrderCartItem key={item.id} item={item}/>

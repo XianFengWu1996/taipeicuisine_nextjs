@@ -21,7 +21,7 @@ export const FieldText = styled(Typography)(() => ({
 
 
 export const OrderContact = ({ name, phone, address} : IOrderContact) => {
-    return <>
+    return <div>
         <TitleText>Contact</TitleText>
         <FieldText>Name: {name}</FieldText>
         <FieldText>Phone: {phoneFormat(phone)}</FieldText>
@@ -34,6 +34,5 @@ export const OrderContact = ({ name, phone, address} : IOrderContact) => {
             </>
         }
 
-        <Divider sx={{ my: 2}}/>
-    </>
+    </div>
 }

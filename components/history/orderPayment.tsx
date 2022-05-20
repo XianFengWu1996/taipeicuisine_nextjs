@@ -1,4 +1,5 @@
-import { Divider, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
+import { Box } from "@mui/system"
 import { BsCashCoin, BsCreditCard2Front } from "react-icons/bs"
 import { FaCcAmex, FaCcDiscover, FaCcMastercard, FaCcVisa, FaCreditCard } from "react-icons/fa"
 import { RiStore2Line } from "react-icons/ri"
@@ -24,7 +25,7 @@ export const OrderPayment = ({ payment_type, card } : IOrderPayment) => {
                 return <FaCreditCard />
         }
     }
-    return <>
+    return <Box sx={{ ml: 10}}>
         <TitleText>Payment</TitleText>
         <div style={{ display: 'flex'}}> 
             <div style={{ display: 'flex', alignItems: 'center', fontSize: 23}}>
@@ -46,6 +47,6 @@ export const OrderPayment = ({ payment_type, card } : IOrderPayment) => {
             }
         </div>
 
-        <Divider sx={{ my: 2}} />
-    </>
+        {/* <Divider sx={{ my: 2}} /> */}
+    </Box>
 }
