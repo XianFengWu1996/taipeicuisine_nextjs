@@ -17,20 +17,20 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
         <Card  sx={{ mt: 3, margin: 3, width: '85%'}} onClick={() => {
             setExpand(!expand);
         }}>
-            <CardContent sx={{ display: 'flex', justifyContent: 'space-between'}}>
+            <CardContent sx={{ display: 'flex', justifyContent: 'space-between', padding: 5}}>
                 <div>
-                    <Typography>{format(order.created_at, 'MM/dd/yyyy HH:mm')}</Typography>
-                    <Typography>Order #: {order.order_id}</Typography>
+                    <Typography sx={{ fontWeight: 500}}>{format(order.created_at, 'MM/dd/yyyy HH:mm')}</Typography>
+                    <Typography sx={{ fontWeight: 500}}>Order #: {order.order_id}</Typography>
                 </div>
 
                 <div>
-                    <Typography>Total: ${order.summary.total}</Typography>
-                    <Typography>Number of Items: {order.summary.cart_quantity}</Typography>
+                    <Typography sx={{ fontWeight: 500}}>Total: ${order.summary.total.toFixed(2)}</Typography>
+                    <Typography sx={{ fontWeight: 500}}>Number of Items: {order.summary.cart_quantity}</Typography>
                 </div>
             </CardContent>
             <Divider />
             <Collapse in={expand} timeout="auto" unmountOnExit>
-                <CardContent>
+                <CardContent sx={{ padding: 5}}>
 
                 <OrderChipGroup
                     is_delivery={order.delivery.is_delivery}
@@ -71,17 +71,6 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
                 <OrderReward 
                     points={order.points.reward}
                 />
-               
-
-                {
-                    order.summary.refund && <>
-                        <Typography>REFUND</Typography>
-                        <Typography>Amount: ${order.summary.refund.amount}</Typography>
-                        <Typography>Reason: {order.summary.refund.refund_reason}</Typography>
-                    </>
-                }
-            
-
                 </CardContent>
             </Collapse>
         </Card>

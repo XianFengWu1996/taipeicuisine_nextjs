@@ -1,4 +1,5 @@
 import { Divider, Typography } from "@mui/material"
+import { TitleText } from "./orderContact"
 
 interface IOrderSummaryList {
     is_delivery: boolean, 
@@ -10,18 +11,30 @@ export const OrderSummaryList = ({is_delivery, summary}:IOrderSummaryList) => {
         
         <div style={{ width: '350px'}}>
 
-        <SummaryPrice label="Subtotal" amount={summary.original_subtotal}/>
+            <SummaryPrice label="Subtotal" amount={summary.original_subtotal}/>
 
-        {summary.discount.lunch_discount !== 0 && <SummaryDiscountPrice label="Lunch Discount" amount={summary.discount.lunch_discount}/>}
-        {summary.discount.point_discount !== 0 && <SummaryDiscountPrice label="Point Redemption" amount={summary.discount.point_discount}/>}
+            {summary.discount.lunch_discount !== 0 && <SummaryDiscountPrice label="Lunch Discount" amount={summary.discount.lunch_discount}/>}
+            {summary.discount.point_discount !== 0 && <SummaryDiscountPrice label="Point Redemption" amount={summary.discount.point_discount}/>}
 
-    
-        { is_delivery && <SummaryPrice label="Delivery Fee" amount={summary.delivery_fee}/> }
+        
+            { is_delivery && <SummaryPrice label="Delivery Fee" amount={summary.delivery_fee}/> }
 
-        <SummaryPrice label="Tax" amount={summary.tax}/>
+            <SummaryPrice label="Tax" amount={summary.tax}/>
 
-        <SummaryPrice label="Tip" amount={summary.tip}/>
-        <SummaryPrice label="Total" amount={summary.total}/>
+            <SummaryPrice label="Tip" amount={summary.tip}/>
+            <SummaryPrice label="Total" amount={summary.total}/>
+
+
+            {
+                    summary.refund && <>
+                        <Divider sx={{ my: 2}}/>
+                        <TitleText sx={{ color: 'red'}}>Refund</TitleText>
+                        <SummaryDiscountPrice label="Refund Amount" amount={summary.refund.amount}/>
+                        <Typography>Reason: {summary.refund.refund_reason}</Typography>
+
+                        <SummaryPrice label='New Total' amount={Number((summary.total - summary.refund.amount).toFixed(2))}/>
+                    </>
+                }
         </div>
      
      
