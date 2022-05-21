@@ -1,4 +1,4 @@
-import { Card, CardContent, Collapse, Divider, Typography } from "@mui/material"
+import { Card, CardContent, Collapse, Divider, Pagination, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import axios from "axios"
 import { format } from "date-fns"
@@ -16,8 +16,13 @@ import { OrderSummaryList } from "./orderSummaryList"
 
 export const OrderHistory = () => {
     const [order_list, setOrderList] = useState<IPublicOrder[]>([]);
+    const [orderToDisplay, setOrderToDisplay] = useState<IPublicOrder[]>([]);
+
+    const item_per_page = 4;
+    const pageCount = Math.ceil(order_list.length / item_per_page);
 
     useEffect(() => {
+        console.log('ran to get order')
         onAuthStateChanged(fbAuth, async user => {
             if(!user){
                 return console.log('do something here')
@@ -32,6 +37,8 @@ export const OrderHistory = () => {
                     }
                 })
                 setOrderList(history_result.data.order_list);
+
+                setOrderToDisplay(history_result.data.order_list.slice(0, item_per_page))
             } catch (error) {
 
                 console.log(error);
@@ -44,10 +51,20 @@ export const OrderHistory = () => {
     return <>
         <div style={{ flex :3}}>
             <Typography variant="h4" sx={{ mx: 5}}>Order History</Typography>
+
+            
             {
-                order_list.map((order) => {
+                orderToDisplay.map((order) => {
                     return <OrderHistoryCard key={order.order_id} order={order}/>
                 })
+            }
+
+            {
+                order_list.length > item_per_page && <Pagination sx={{ mb: 5, mx: 2.5 }}count={pageCount} variant="outlined" onChange={(event, value) => {
+                    let new_arr = order_list.slice((value * item_per_page) - item_per_page, (value * item_per_page));
+    
+                    setOrderToDisplay(new_arr)
+                }}/>
             }
         </div>
     </>
@@ -59,7 +76,7 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
         <Card  sx={{ mt: 3, margin: 3, width: '85%'}} onClick={() => {
             setExpand(!expand);
         }}>
-            <CardContent sx={{ display: 'flex', justifyContent: 'space-between', padding: 4}}>
+            <CardContent sx={{ display: 'flex', justifyContent: 'space-between', padding: 3}}>
                 <div>
                     <Typography sx={{ fontWeight: 500}}>{format(order.created_at, 'MM/dd/yyyy HH:mm')}</Typography>
                     <Typography sx={{ fontWeight: 500}}>Order #: {order.order_id}</Typography>
@@ -72,7 +89,7 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
             </CardContent>
             <Divider />
             <Collapse in={expand} timeout="auto" unmountOnExit>
-                <CardContent sx={{ padding: 4}}>
+                <CardContent sx={{ padding: 3}}>
 
                 <OrderChipGroup
                     is_delivery={order.delivery.is_delivery}

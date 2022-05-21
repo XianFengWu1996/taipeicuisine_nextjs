@@ -11,6 +11,7 @@ import { onAuthStateChanged, User } from 'firebase/auth'
 import { fbAuth, handleLogout } from "../../utils/functions/auth";
 import {  useEffect, useState } from "react";
 import snackbar from "../snackbar";
+import { v4 } from "uuid";
 
 interface IMenuDrawerProps {
     open: boolean,
@@ -73,13 +74,13 @@ export const MenuDrawer = (props: IMenuDrawerProps) => {
             id: 'beb85444-bccf-4f34-90ca-ac274b086950',
             text: 'Order',
             icon: <HiOutlineReceiptTax />,
-            path: '/history'
+            path: `/account?redirect=order`
         } : null,
         user ? {
             id: '38d4df12-3c06-4c9b-90de-c1d79152fe3d',
             text: 'Setting',
             icon: <AiOutlineSetting />,
-            path: '/setting'
+            path: `/account?redirect=setting`
         } : null,
     ]
 
