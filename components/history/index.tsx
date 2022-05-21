@@ -3,10 +3,14 @@ import { Box } from "@mui/system"
 import axios from "axios"
 import { format } from "date-fns"
 import { onAuthStateChanged } from "firebase/auth"
+import { isEmpty } from "lodash"
+import Router from "next/router"
 import {  useEffect, useState } from "react"
 import { OrderChipGroup } from "../../components/history/orderChipGroup"
 import { handleCatchError } from "../../utils/errors/custom"
+import { getOrderHistory } from "../../utils/functions/account"
 import { fbAuth } from "../../utils/functions/auth"
+import snackbar from "../snackbar"
 import { OrderCartItem } from "./orderCartItem"
 import { OrderContact } from "./orderContact"
 import { OrderPayment } from "./orderPayment"
@@ -22,30 +26,18 @@ export const OrderHistory = () => {
     const pageCount = Math.ceil(order_list.length / item_per_page);
 
     useEffect(() => {
-        console.log('ran to get order')
         onAuthStateChanged(fbAuth, async user => {
             if(!user){
-                return console.log('do something here')
+                Router.replace('/order');
+                return snackbar.error('Not authorized')
             }
 
-            try {
-                const history_result = await axios({
-                    method: 'get',
-                    url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/order_history`,
-                    headers: {
-                        'Authorization':  `Bearer ${await user.getIdToken()}`,
-                    }
-                })
-                setOrderList(history_result.data.order_list);
+            const order_result = await getOrderHistory(await user.getIdToken());
 
-                setOrderToDisplay(history_result.data.order_list.slice(0, item_per_page))
-            } catch (error) {
-
-                console.log(error);
-                handleCatchError(error as Error, 'Failed to retrieve order history')
+            if(order_result && !isEmpty(order_result)){
+                setOrderList(order_result);
+                setOrderToDisplay(order_result.slice(0, item_per_page))
             }
-
-
         })
     }, [])
     return <>
