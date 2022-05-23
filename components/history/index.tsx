@@ -42,7 +42,7 @@ export const OrderHistory = () => {
     }, [])
     return <>
         <div style={{ flex :3}}>
-            <Typography variant="h4" sx={{ mx: 5}}>Order History</Typography>
+            <Typography variant="h4">Order History</Typography>
 
             
             {

@@ -1,8 +1,10 @@
-import { Card, CardContent, Typography } from "@mui/material"
+import { Card, CardContent, Pagination, Typography } from "@mui/material"
 import axios from "axios"
+import { format } from "date-fns"
 import { onAuthStateChanged } from "firebase/auth"
 import Router from "next/router"
 import { useEffect, useState } from "react"
+import { BiCoinStack } from "react-icons/bi"
 import { v4 } from "uuid"
 import { fbAuth } from "../../utils/functions/auth"
 import snackbar from "../snackbar"
@@ -11,6 +13,11 @@ export const RewardPage = () => {
 
     const [transactions, setTransactions] = useState<IRewardTransaction[]>([]);
     const [point, setPoints] = useState<number>(0);
+
+    // pagination
+    const [transactionToDisplay, setTransactionToDisplay] =  useState<IRewardTransaction[]>([]);
+    const item_per_page = 6;
+    const total_page = Math.ceil(transactions.length / item_per_page);
 
     useEffect(() => {
         onAuthStateChanged(fbAuth, async(user) => {
@@ -27,27 +34,45 @@ export const RewardPage = () => {
                 }
             })
             setTransactions(reward_result.data.rewards.transactions)
+            setTransactionToDisplay(reward_result.data.rewards.transactions.slice(0, item_per_page));
             setPoints(reward_result.data.rewards.points)
         })
     }, [])
     return <>
-        <Typography variant="h4" sx={{ mx: 5}}>Rewards</Typography>
+        <Typography variant="h4">Rewards</Typography>
 
-        <Typography>{point}</Typography>
+       <div style={{ display: 'flex', alignItems: 'center'}}>
+            <BiCoinStack color="#FFD700" size={25}/>
+            <Typography sx={{ fontSize: 17, fontWeight: 600}}>Available Point: {point} = ${Number((point / 100).toFixed(2))}</Typography>
+       </div>
 
         {
-            transactions.map((transaction) => {
-                return <Card key={v4()}>
+            transactionToDisplay.map((transaction) => {
+                return <Card key={v4()} sx={{ my: 2, width: '90%'}}>
 
-                        <CardContent>
-                            <Typography>{transaction.type}</Typography>
-                            <Typography>{transaction.order_id}</Typography>
-                            <Typography>{transaction.amount}</Typography>
-                            <Typography>{transaction.created_at}</Typography>
-
+                        <CardContent sx={{ display: 'flex', justifyContent: 'space-between'}}>
+                            <RewardTextWithLabel label="type" text={transaction.type}/>
+                            <RewardTextWithLabel label="order number" text={transaction.order_id}/>
+                            <RewardTextWithLabel label="amount" text={transaction.amount} negative={transaction.type !== 'reward'}/>
+                            <RewardTextWithLabel label="order place on" text={format(transaction.created_at, 'MM/dd/yy')}/>
                         </CardContent>
                     </Card>
             })
         }
+
+        <Pagination variant="outlined" count={total_page} sx={{ my: 3}} onChange={(_, value) => {
+            setTransactionToDisplay(transactions.slice((value * item_per_page) - item_per_page, (value * item_per_page) ))
+        }}/>
     </>
+}
+interface IRewardTextWithLabel {
+    label: string, 
+    text: string |  number,
+    negative?: boolean,
+}
+export const RewardTextWithLabel = (_: IRewardTextWithLabel) => {
+    return <div>
+        <Typography sx={{ fontSize: 10, textTransform: 'capitalize'}}>{_.label}</Typography>
+        <Typography sx={{ fontSize: 13, fontWeight: 500,textTransform: 'capitalize'}}>{_.negative ? `(-${_.text})`: _.text}</Typography>
+    </div>
 }
