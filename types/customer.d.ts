@@ -3,9 +3,19 @@ interface ICustomer {
     phone: string,
     phone_list: string[],
     address: IAddress,
-    reward: {
-        points: number,
-    },
+    reward: IReward,
+}
+
+interface IReward {
+    points: number,
+    transactions: IRewardTransaction[]
+}
+
+interface IRewardTransaction {
+    type: 'reward' | 'redeem' | 'refund' | 'cancel',  // 'reward', 
+    amount: number,
+    order_id: string, 
+    created_at: number,
 }
 
 interface IAddress {
