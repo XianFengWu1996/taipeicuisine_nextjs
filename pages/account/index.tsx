@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material"
 import Link from "next/link"
 import Router from "next/router"
+import { AccountRelatedPage } from "../../components/account"
 import { PublicAppBar } from "../../components/appbar/appbar"
 import { OrderHistory } from "../../components/history"
 import { RewardPage } from "../../components/reward"
@@ -21,8 +22,12 @@ export default function AccountPage() {
                 Router.query.redirect === 'order' && <OrderHistory />
             }
 
-{
+            {
                 Router.query.redirect === 'reward' && <RewardPage />
+            }
+
+            {
+                Router.query.redirect === 'account' && <AccountRelatedPage />
             }
         </div>
         </div>
