@@ -3,8 +3,9 @@ import axios from "axios"
 import { format } from "date-fns"
 import { onAuthStateChanged } from "firebase/auth"
 import Router from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { v4 } from "uuid"
+import { getRewardHistory } from "../../utils/functions/account"
 import { fbAuth } from "../../utils/functions/auth"
 import snackbar from "../snackbar"
 import { PointDisplay } from "./pointDisplay"
@@ -20,24 +21,28 @@ export const RewardPage = () => {
     const item_per_page = 6;
     const total_page = Math.ceil(transactions.length / item_per_page);
 
+
     useEffect(() => {
+        let isMounted = true;
+
         onAuthStateChanged(fbAuth, async(user) => {
             if(!user){
                 Router.replace('/order')
                 return snackbar.error('No Authorized')
             }
 
-            const reward_result = await axios({
-                method: 'get',
-                url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/reward_history`,
-                headers: {
-                    'Authorization':  `Bearer ${await user.getIdToken()}`,
-                }
-            })
-            setTransactions(reward_result.data.rewards.transactions)
-            setTransactionToDisplay(reward_result.data.rewards.transactions.slice(0, item_per_page));
-            setPoints(reward_result.data.rewards.points)
+            const reward_result = await getRewardHistory(await user.getIdToken());
+            
+            if(isMounted && reward_result){
+                setTransactions(reward_result.transactions)
+                setTransactionToDisplay(reward_result.transactions.slice(0, item_per_page));
+                setPoints(reward_result.points)
+            }
         })
+
+        return () => {
+            isMounted = false;
+        }
     }, [])
     return <>
         <Typography variant="h4">Rewards</Typography>
