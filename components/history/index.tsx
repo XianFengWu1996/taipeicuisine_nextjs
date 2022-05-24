@@ -16,7 +16,7 @@ export const OrderHistory = () => {
     const item_per_page = 4;
     const pageCount = Math.ceil(order_list.length / item_per_page);
 
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true); // handle skeleton 
 
     useEffect(() => {          
         let isMounted = true;
