@@ -1,4 +1,4 @@
-import { Card, CardContent, Collapse, Divider, Pagination, Typography } from "@mui/material"
+import { Card, CardContent, Collapse, Divider, Pagination, Skeleton, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { format } from "date-fns"
 import { onAuthStateChanged } from "firebase/auth"
@@ -9,6 +9,7 @@ import { OrderChipGroup } from "../../components/history/orderChipGroup"
 import { getOrderHistory } from "../../utils/functions/account"
 import { fbAuth } from "../../utils/functions/auth"
 import snackbar from "../snackbar"
+import { OrderHistorySkeleton } from "./historySkeleton"
 import { OrderCartItem } from "./orderCartItem"
 import { OrderContact } from "./orderContact"
 import { OrderPayment } from "./orderPayment"
@@ -23,6 +24,7 @@ export const OrderHistory = () => {
     const item_per_page = 4;
     const pageCount = Math.ceil(order_list.length / item_per_page);
 
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {          
         let isMounted = true;
@@ -37,6 +39,7 @@ export const OrderHistory = () => {
             if(isMounted && order_result){
                 setOrderList(order_result)
                 setOrderToDisplay(order_result.slice(0, item_per_page));
+                setLoading(false)
             }
             
         })
@@ -46,7 +49,8 @@ export const OrderHistory = () => {
         }
     }, [])
     return <>
-        <div style={{ flex :3}}>
+        {
+            loading ? <OrderHistorySkeleton /> : <div style={{ flex :3}}>
             <Typography variant="h4">Order History</Typography>
 
             
@@ -67,6 +71,8 @@ export const OrderHistory = () => {
                 }}/>
             }
         </div>
+        }
+        
     </>
 }
 
