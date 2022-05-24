@@ -4,10 +4,11 @@ import { format } from "date-fns"
 import { onAuthStateChanged } from "firebase/auth"
 import Router from "next/router"
 import { useEffect, useState } from "react"
-import { BiCoinStack } from "react-icons/bi"
 import { v4 } from "uuid"
 import { fbAuth } from "../../utils/functions/auth"
 import snackbar from "../snackbar"
+import { PointDisplay } from "./pointDisplay"
+import { RewardTextWithLabel } from "./rewardLabel"
 
 export const RewardPage = () => {
 
@@ -41,10 +42,7 @@ export const RewardPage = () => {
     return <>
         <Typography variant="h4">Rewards</Typography>
 
-       <div style={{ display: 'flex', alignItems: 'center'}}>
-            <BiCoinStack color="#FFD700" size={25}/>
-            <Typography sx={{ fontSize: 17, fontWeight: 600}}>Available Point: {point} = ${Number((point / 100).toFixed(2))}</Typography>
-       </div>
+        <PointDisplay point={point}/>
 
         {
             transactionToDisplay.map((transaction) => {
@@ -60,19 +58,10 @@ export const RewardPage = () => {
             })
         }
 
-        <Pagination variant="outlined" count={total_page} sx={{ my: 3}} onChange={(_, value) => {
-            setTransactionToDisplay(transactions.slice((value * item_per_page) - item_per_page, (value * item_per_page) ))
-        }}/>
+        {
+            transactions.length > item_per_page && <Pagination variant="outlined" count={total_page} sx={{ my: 3}} onChange={(_, value) => {
+                setTransactionToDisplay(transactions.slice((value * item_per_page) - item_per_page, (value * item_per_page) ))
+            }}/>
+        }
     </>
-}
-interface IRewardTextWithLabel {
-    label: string, 
-    text: string |  number,
-    negative?: boolean,
-}
-export const RewardTextWithLabel = (_: IRewardTextWithLabel) => {
-    return <div>
-        <Typography sx={{ fontSize: 10, textTransform: 'capitalize'}}>{_.label}</Typography>
-        <Typography sx={{ fontSize: 13, fontWeight: 500,textTransform: 'capitalize'}}>{_.negative ? `(-${_.text})`: _.text}</Typography>
-    </div>
 }
