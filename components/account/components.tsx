@@ -22,3 +22,18 @@ export const AccountLink = ({ href, label, LinkIcon} : IAccountLink) => {
         </Link>
     </>
 }
+
+
+interface ISectionTitle {
+    label: string
+}
+
+export const TitleForSection = (_: ISectionTitle) => {
+    return <Typography 
+        sx={{ 
+            fontSize: 16,
+            fontWeight: 600, 
+            mr: 2, 
+            textTransform: 'uppercase',
+        }}>{_.label} </Typography>
+}

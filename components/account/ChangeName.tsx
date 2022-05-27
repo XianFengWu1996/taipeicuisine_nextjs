@@ -15,7 +15,9 @@ export const AccountChangeName = (_: IAccountChangeName) => {
             size='small'
             onChange={(e) => setName(e.target.value)}
         />
-        <Button variant='outlined' sx={{ mx: 3, padding: 0.8}}>Change Name</Button>
+        <Button variant='outlined' sx={{ mx: 3, padding: 0.8}} onChange={() => {
+            
+        }}>Change Name</Button>
 
     </div>
 }

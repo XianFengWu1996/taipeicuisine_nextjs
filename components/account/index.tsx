@@ -1,16 +1,18 @@
 import { Button, Card, CardContent, TextField, Typography } from "@mui/material"
 import { phoneFormat } from "../../utils/functions/phone"
+import { SectionTitle } from "../home/section_title"
 import { AccountChangeName } from "./ChangeName"
+import { TitleForSection } from "./components"
 
 export const AccountRelatedPage = () => {
     return <>
-        <div>
+        <div>x
             <Typography variant="h4">Account</Typography>
 
-            <AccountChangeName name="Shawn" />
+            <AccountChangeName name="Shawn  " />
 
             <div style={{  marginTop: '20px'}}>
-                <Typography sx={{ fontSize: 16, fontWeight: 600, mr: 2}}>PHONE </Typography>
+                <TitleForSection label={'phone'} />
                 <TextField 
                     value={'9175787352'}
                     variant='outlined'
