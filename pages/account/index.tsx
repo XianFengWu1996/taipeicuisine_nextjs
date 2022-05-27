@@ -1,5 +1,3 @@
-import { Box, Typography } from "@mui/material"
-import Link from "next/link"
 import Router from "next/router"
 import { AiOutlineUser, AiOutlineWallet } from "react-icons/ai"
 import { BsCoin } from "react-icons/bs"

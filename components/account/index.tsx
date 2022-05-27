@@ -1,21 +1,13 @@
 import { Button, Card, CardContent, TextField, Typography } from "@mui/material"
 import { phoneFormat } from "../../utils/functions/phone"
+import { AccountChangeName } from "./ChangeName"
 
 export const AccountRelatedPage = () => {
     return <>
         <div>
             <Typography variant="h4">Account</Typography>
 
-            <div style={{  marginTop: '20px'}}>
-                <Typography sx={{ fontSize: 16, fontWeight: 600, mr: 2}}>NAME </Typography>
-                <TextField 
-                    value={'Xian Feng Wu'}
-                    variant='outlined'
-                    size='small'
-                />
-                <Button variant='outlined' sx={{ mx: 3, padding: 0.8}}>Change Name</Button>
-
-            </div>
+            <AccountChangeName name="Shawn" />
 
             <div style={{  marginTop: '20px'}}>
                 <Typography sx={{ fontSize: 16, fontWeight: 600, mr: 2}}>PHONE </Typography>

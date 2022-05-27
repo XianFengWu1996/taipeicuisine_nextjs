@@ -12,7 +12,10 @@ interface IAccountLink {
 export const AccountLink = ({ href, label, LinkIcon} : IAccountLink) => {
     return <>
         <Link href={href} passHref>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb:2, justifyContent: 'space-between', width: '160px', cursor: 'pointer'}}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb:2, justifyContent: 'space-between', width: '160px', cursor: 'pointer', 
+            ':hover': {
+                borderBottom: '2px solid #000',
+            }}}>
                 <LinkIcon size={25}/>
                 <Typography sx={{ fontSize: 25, ml:2}}>{label}</Typography>
             </Box> 
