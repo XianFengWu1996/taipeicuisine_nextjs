@@ -2,6 +2,7 @@ import { Button, Card, CardContent, TextField, Typography } from "@mui/material"
 import { phoneFormat } from "../../utils/functions/phone"
 import { SectionTitle } from "../home/section_title"
 import { AccountChangeName } from "./ChangeName"
+import { AccountChangePhone } from "./ChangePhone"
 import { TitleForSection } from "./components"
 
 export const AccountRelatedPage = () => {
@@ -11,16 +12,7 @@ export const AccountRelatedPage = () => {
 
             <AccountChangeName name="Shawn  " />
 
-            <div style={{  marginTop: '20px'}}>
-                <TitleForSection label={'phone'} />
-                <TextField 
-                    value={'9175787352'}
-                    variant='outlined'
-                    size='small'
-                />
-
-                <Button variant='outlined' sx={{ mx: 3, padding: 0.8}}>Change Phone</Button>
-            </div>
+            <AccountChangePhone phone="9175787352"/>
 
             <div style={{  marginTop: '20px'}}>
                 <div>
