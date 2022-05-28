@@ -6,7 +6,7 @@ interface IAccountChangeName {
 }
 
 export const AccountChangeName = (_: IAccountChangeName) => {
-    const [name, setName] = useState('');
+    const [name, setName] = useState(_.name);
     return <div style={{  marginTop: '20px'}}>
         <Typography sx={{ fontSize: 16, fontWeight: 600, mr: 2}}>NAME </Typography>
         <TextField
