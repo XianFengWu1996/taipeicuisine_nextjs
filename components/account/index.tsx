@@ -1,8 +1,8 @@
 import { Button, Card, CardContent, TextField, Typography } from "@mui/material"
 import { phoneFormat } from "../../utils/functions/phone"
 import { SectionTitle } from "../home/section_title"
-import { AccountChangeName } from "./ChangeName"
-import { AccountChangePhone } from "./ChangePhone"
+import { AccountChangeName } from "./changeName"
+import { AccountChangePhone } from "./changePhone"
 import { TitleForSection } from "./components"
 
 export const AccountRelatedPage = () => {
