@@ -1,6 +1,7 @@
 import { Button, Card, CardContent, TextField, Typography } from "@mui/material"
 import { phoneFormat } from "../../utils/functions/phone"
 import { SectionTitle } from "../home/section_title"
+import { AccountChangeAddress } from "./changeAddress"
 import { AccountChangeName } from "./changeName"
 import { AccountChangePhone } from "./changePhone"
 import { TitleForSection } from "./components"
@@ -14,15 +15,7 @@ export const AccountRelatedPage = () => {
 
             <AccountChangePhone phone="9175787352"/>
 
-            <div style={{  marginTop: '20px'}}>
-                <div>
-                    <Typography sx={{ fontSize: 16, fontWeight: 600, mr: 2}}>ADDRESS </Typography>
-                    <Typography>69 HARVARD ST QUINCY MA 02171, USA</Typography>
-                    <Typography>Delivery Fee: $3</Typography>
-                </div>
-
-                <Button variant='outlined' sx={{ my: 1}}>Change Address</Button>
-            </div>
+            <AccountChangeAddress />
 
             <div style={{  marginTop: '20px', width: '400px'}}>
                 <Typography sx={{ fontSize: 16, fontWeight: 600, mr: 2}}>Change Password</Typography>
