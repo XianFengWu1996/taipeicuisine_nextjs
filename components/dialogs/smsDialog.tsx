@@ -61,7 +61,6 @@ export const SmsDialog = () => {
 export const SmsVerificationButton = ({phone} : {phone: string}) => {
     const [sent, setSent] = useState(false);
     const [timer, setTimer] = useState(process.env.NEXT_PUBLIC_DEFAULT_TIMER);
-    const { phone_list } = useAppSelector(state => state.customer)
 
     useEffect(() => {
         let intervalId: ReturnType<typeof setInterval>;
@@ -90,7 +89,6 @@ export const SmsVerificationButton = ({phone} : {phone: string}) => {
                     onClick={() => {
                         sentCode({
                             phone: phone,
-                            phone_list: phone_list,
                             handleStartLoading: () => setSent(true),
                         })
                     }}

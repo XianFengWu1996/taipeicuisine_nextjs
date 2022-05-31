@@ -1,7 +1,6 @@
 interface ICustomer {
     name: string,
     phone: string,
-    phone_list: string[],
     address: IAddress,
     reward: IReward,
 }
@@ -45,7 +44,6 @@ interface ICalcDelivFee {
 
 interface ISentCode {
     phone: string,
-    phone_list: string[],
     handleStartLoading: () => void
 }
 

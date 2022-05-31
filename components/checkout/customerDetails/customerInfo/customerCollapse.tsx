@@ -1,26 +1,21 @@
 import { Button, Card, Collapse, Grid, Icon, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
-import { v4} from 'uuid'
-import { removePhoneNum, selectDefaultPhone } from "../../../../utils/functions/phone";
 import { ChangeEvent, useState } from "react";
 import {  AiOutlinePlus } from "react-icons/ai";
 import { SmsDialog } from "../../../dialogs/smsDialog";
 import { setShowSmsDialog } from "../../../../store/slice/settingSlice";
 import { PulseLoader, ScaleLoader } from "react-spinners";
 import { red } from "@mui/material/colors";
-import { PhoneCard } from "./phoneCard";
 import { updateNameInCard } from "../../../../utils/functions/account";
 
 
 export const CustomerCardCollaspe = () => {
 
-    const { name, phone, phone_list, } = useAppSelector(state => state.customer);
+    const { name } = useAppSelector(state => state.customer);
     const { show_customer_card, save_name_loading, customer_card_loading} = useAppSelector(state => state.setting)
     const [ customer_name, setName ] = useState(name);
     const dispatch = useAppDispatch();
-
-    const unique_phone_list = Array.from(new Set(phone_list));
 
     const handleNameOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         console.log(e.target.value)
@@ -72,17 +67,7 @@ export const CustomerCardCollaspe = () => {
 
         <Grid container spacing={2}>
 
-            { 
-                unique_phone_list.map((phone_num: string) => {
-                    return <PhoneCard
-                        key={v4()} 
-                        phone_num={phone_num}
-                        isSelected={phone_num === phone}
-                        handlePhoneRemove={removePhoneNum}
-                        handlePhoneSelect={selectDefaultPhone}
-                    />
-                })
-            }
+        
             <Grid item  md={6} sm={12} xs={12}>
                 <Card 
                     onClick={() => dispatch(setShowSmsDialog(true))}
