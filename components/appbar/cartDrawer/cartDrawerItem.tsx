@@ -1,5 +1,4 @@
 import { Card, CardContent, IconButton, Typography } from "@mui/material";
-import { isEmpty } from "lodash";
 import { decreaseQty, increaseQty, removeItemFromCart } from "../../../store/slice/cartSlice";
 import { useAppDispatch } from "../../../store/store";
 import { MenuPreviewImage } from "../../images";
@@ -13,7 +12,7 @@ interface ICartDrawerItemProps {
     item: ICartItem
 }
 
-const PriceText = styled(Typography)(({ theme }) => ({
+const PriceText = styled(Typography)(() => ({
     fontSize: '13px',
     margin: '2px 0',
     fontWeight: 'bold'

@@ -1,6 +1,6 @@
 import {  SelectChangeEvent, Typography } from "@mui/material"
 import { red } from "@mui/material/colors"
-import { SetStateAction, useState } from "react"
+import { SetStateAction } from "react"
 import { CustomizeListDisplay } from "./CustomizeListDisplay"
 import { CustomizeSelect } from "./CustomizeSelect"
 

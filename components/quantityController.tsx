@@ -3,7 +3,7 @@ import { styled } from "@mui/system"
 import { FiChevronLeft, FiChevronRight} from 'react-icons/fi'
 
 
-const QuantityContainer = styled('div')(({theme}) => ({
+const QuantityContainer = styled('div')(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

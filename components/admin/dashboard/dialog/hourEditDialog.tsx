@@ -4,7 +4,7 @@ import { Dialog,DialogActions,DialogContent,DialogTitle  } from '@mui/material'
 import { HourEditDialogContent } from './hourEditDialogContent';
 import { AdminState, updateStoreHour } from '../../../../store/slice/adminSlice';
 import { cloneDeep, isEqual, toNumber } from 'lodash';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import snackbar from '../../../snackbar';
 import { handleAdminTryCatchError } from '../../../../utils/functions/errors';
 import { useAppDispatch, useAppSelector } from '../../../../store/store';

@@ -1,7 +1,7 @@
 import {  ArrowRightAlt } from "@mui/icons-material";
 import { Paper } from "@mui/material";
 import Image from "next/image";
-import { CSSProperties, useState } from "react";
+import { CSSProperties } from "react";
 import Dropzone, { DropEvent, FileRejection } from "react-dropzone";
 
 

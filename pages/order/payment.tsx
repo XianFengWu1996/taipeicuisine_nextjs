@@ -2,7 +2,6 @@ import { PublicAppBar } from "../../components/appbar/appbar";
 import Cookie from 'js-cookie'
 import { PaymentForm } from "../../components/payment/paymentForm";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import { fbAuth } from "../../utils/functions/auth";
 import { handleCatchError } from "../../utils/errors/custom";

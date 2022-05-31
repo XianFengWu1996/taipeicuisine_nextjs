@@ -1,4 +1,4 @@
-import { Button, IconButton, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, TextField, useMediaQuery } from "@mui/material";
+import { Button, IconButton, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 import Router from "next/router";
 import { AiOutlineShoppingCart, AiOutlineUser, AiOutlineSetting, AiOutlineHome, AiOutlineClose } from 'react-icons/ai'
@@ -11,7 +11,6 @@ import { onAuthStateChanged, User } from 'firebase/auth'
 import { fbAuth, handleLogout } from "../../utils/functions/auth";
 import {  useEffect, useState } from "react";
 import snackbar from "../snackbar";
-import { v4 } from "uuid";
 
 interface IMenuDrawerProps {
     open: boolean,
@@ -19,11 +18,11 @@ interface IMenuDrawerProps {
     handleClose: () =>  void,
 }
 
-const DrawerItem = styled('div')(({theme}) => ({
+const DrawerItem = styled('div')(() => ({
     width: '250px'
 }))
 
-const SignInLogoutButton = styled(Button)(({theme}) => ({
+const SignInLogoutButton = styled(Button)(() => ({
     width: '80%',
     alignSelf: 'center',
 }))

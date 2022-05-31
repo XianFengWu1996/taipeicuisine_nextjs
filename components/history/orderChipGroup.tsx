@@ -11,7 +11,7 @@ interface IOrderChipGroup {
     dont_include_utensils: boolean,
 }
 
-const ChipText = styled(Typography)(({ theme }) => ({
+const ChipText = styled(Typography)(() => ({
     fontSize: 13, 
     fontWeight: 600, 
     textTransform: 'uppercase', 

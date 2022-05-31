@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material"
-import { ChangeEvent, HTMLInputTypeAttribute } from "react"
+import { ChangeEvent } from "react"
 
 interface ITextFieldListProps {
     dish: IDish,

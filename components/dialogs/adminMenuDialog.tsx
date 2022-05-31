@@ -14,12 +14,12 @@
 // import { AiOutlineShoppingCart } from 'react-icons/ai'
 // import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 
-interface IAdminMenuDialogProps{
-    open: boolean,
-    handleClose: () => void,
-}
+// interface IAdminMenuDialogProps{
+//     open: boolean,
+//     handleClose: () => void,
+// }
 
-export const AdminMenuDialog = (props: IAdminMenuDialogProps) => {
+export const AdminMenuDialog = () => {
     // const { selectedDish, selectedCategory, selectedMenu, menus} = useAppSelector(state => state.menus)
     // const dispatch = useAppDispatch();
     // const [file, setFile] = useState<IFile>();

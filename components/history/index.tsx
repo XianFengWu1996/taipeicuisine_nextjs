@@ -57,7 +57,7 @@ export const OrderHistory = () => {
             }
 
             {
-                order_list.length > item_per_page && <Pagination sx={{ my: 5}}count={pageCount} variant="outlined" onChange={(event, value) => {
+                order_list.length > item_per_page && <Pagination sx={{ my: 5}}count={pageCount} variant="outlined" onChange={(_, value) => {
                     let new_arr = order_list.slice((value * item_per_page) - item_per_page, (value * item_per_page));
                     setOrderToDisplay(new_arr)
                 }}/>

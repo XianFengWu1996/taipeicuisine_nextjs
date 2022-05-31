@@ -1,8 +1,8 @@
 import { Button, ButtonGroup, InputAdornment, TextField, Typography } from "@mui/material"
 import { red } from "@mui/material/colors";
 import { styled } from "@mui/system";
-import { isEmpty, isNaN, values } from "lodash";
-import { FocusEvent, Ref, useRef } from "react";
+import { isEmpty, isNaN } from "lodash";
+import { FocusEvent, useRef } from "react";
 import { setCustomTip, setTip } from "../../../store/slice/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { BsCurrencyDollar } from 'react-icons/bs'

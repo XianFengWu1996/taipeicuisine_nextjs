@@ -1,6 +1,5 @@
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
-import { breakpoints } from '@mui/system';
 
 const theme = createTheme()
 

@@ -7,6 +7,7 @@ import store from "../../store/store";
 import { handleCatchError, NoTokenFoundError } from "../errors/custom";
 import { fbAuth } from "./auth";
 
+// retrieve order history
 export const getOrderHistory = async (token: string) => {
     try {
         const history_result = await axios({
@@ -25,6 +26,7 @@ export const getOrderHistory = async (token: string) => {
 
 }
 
+// retrieve reward history
 export const getRewardHistory = async (token: string) => {
     try {
         const reward_result = await axios({
@@ -42,6 +44,7 @@ export const getRewardHistory = async (token: string) => {
     }
 }
 
+// retrieve customer information
 export const getCustomerInfo = async  (token: string | undefined) => {
     if(!token) {
         throw new NoTokenFoundError();
@@ -58,6 +61,7 @@ export const getCustomerInfo = async  (token: string | undefined) => {
     return result.data as ICustomer
 }
 
+// handle update name in the front end for the card
 export const updateNameInCard = async(name: string, original_name: string, ) => {
     // if the no change was made, close the collapse card
     if(original_name === name){
@@ -81,6 +85,7 @@ export const updateNameInCard = async(name: string, original_name: string, ) => 
     }
 }
 
+// handle update name in the front end for the account
 export const updateNameInAccount = async(name: string , original_name: string,setLoading:  Dispatch<SetStateAction<boolean>> ) => {
     try {
         setLoading(true);
@@ -99,6 +104,7 @@ export const updateNameInAccount = async(name: string , original_name: string,se
     }
 }
 
+// make request to the backend to update the name
 export const handleUpdateName = async (name: string, token: string | undefined) => {
     if(!token){
         throw new NoTokenFoundError();

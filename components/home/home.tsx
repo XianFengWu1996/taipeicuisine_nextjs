@@ -1,4 +1,4 @@
-import { Button, Grid, Theme, Typography } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 import Image from "next/image"
 import { useRouter } from "next/router"

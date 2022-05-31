@@ -24,7 +24,7 @@ export const PickupTime = () => {
 
     const dispatch = useAppDispatch()
 
-    const handleHourOnOpen = (e: React.SyntheticEvent) => {
+    const handleHourOnOpen = () => {
         setHour('');
         setMinute('');
 
@@ -40,7 +40,7 @@ export const PickupTime = () => {
         setHour(event.target.value as string);
     };
 
-    const handleMinuteOnOpen = (e: React.SyntheticEvent) => {
+    const handleMinuteOnOpen = () => {
 
         let generate_minute_by_5 = []; // generate a array with minutes increment by 5 
 
