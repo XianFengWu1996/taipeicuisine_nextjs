@@ -5,10 +5,10 @@ import { handleAxiosError } from "./handleAxiosError";
 
 // CUSTOM ERROR FOR NOT AUTHORIZE 
 export class NotAuthorizeError extends Error{
-    constructor(msg: string){
+    constructor(msg?: string){
         super(msg);
 
-        this.message = msg;
+        this.message = msg ? msg : 'Not authorized';
         this.name = 'NotAuthorizeError';
     }
 }
@@ -17,6 +17,24 @@ export class NotAuthorizeError extends Error{
 export const isNotAuthError = (error: Error) => {
     return error.name === 'NotAuthorizeError'
 }
+
+
+// NO TOKEN FOUND ERROR
+export class NoTokenFoundError extends Error{
+    constructor(msg?: string){
+        super(msg);
+
+        this.message = msg ? msg : 'No Token Found';
+        this.name = 'NoTokenFoundError';
+    }
+}
+
+// CHECK IF THE ERROR IS AN UNAUTHORIZE ERROR
+export const isNoTokenFoundError = (error: Error) => {
+    return error.name === 'NoTokenFoundError'
+}
+
+
 
 export const handleCatchError = (err: Error, msg: string) => {
     if((err as Error).name === 'FirebaseError'){

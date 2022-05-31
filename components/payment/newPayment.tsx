@@ -7,12 +7,11 @@ import { handleCatchError } from '../../utils/errors/custom';
 import { handlePayWithIntent } from '../../utils/functions/payment';
 import { TipSelection } from '../checkout/customerDetails/tipSelection';
 import { PaymentElement } from '@stripe/react-stripe-js';
-import { useRouter } from 'next/router';
 
 interface INewPaymentFormProps {
     cards: IPublicPaymentMethod [],
     cart: ICartState,
-    customer: ICustomerState,
+    customer: ICustomer,
     stripe: Stripe | null,
     elements: StripeElements | null,
     toggleForm: () => void

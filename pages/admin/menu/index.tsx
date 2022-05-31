@@ -2,7 +2,6 @@ import axios from "axios"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import React, { useEffect } from "react";
 import { MenuSelect } from "../../../components/menu/menuSelect";
-import { MenuTab } from "../../../components/menu/menuTab";
 import ResponsiveAppBar from "../../../components/admin/appbar";
 import { useAppDispatch } from "../../../store/store";
 import { getInitialMenuData } from "../../../store/slice/menuSlice";
@@ -35,7 +34,7 @@ export default function Menu ({ menus, error, expiration }:IMenuProps){
     return <div>
         <ResponsiveAppBar />
         <MenuSelect />
-        <MenuTab />
+        {/* <MenuTab /> */}
     </div>
 }
 

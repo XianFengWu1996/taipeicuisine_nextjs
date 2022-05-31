@@ -12,7 +12,7 @@ import { TipSelection } from '../checkout/customerDetails/tipSelection';
 interface ISavePaymentFormProps {
     cards: IPublicPaymentMethod [],
     cart: ICartState,
-    customer: ICustomerState,
+    customer: ICustomer,
     stripe: Stripe | null,
     elements: StripeElements | null,
     toggleForm: () => void

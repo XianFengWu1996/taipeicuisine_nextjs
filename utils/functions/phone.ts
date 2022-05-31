@@ -5,8 +5,8 @@ import axios from "axios"
 import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth, token } from "./auth"
 import Cookies from "js-cookie"
-import { addNewPhone, removePhoneNumber, setDefaultPhoneNumber, updateAddress, updateCustomerName } from "../../store/slice/customerSlice"
-import { setShowAddressCard, setCustomerCardLoading, setShowCustomerCard, setSaveNameLoading } from '../../store/slice/settingSlice'
+import { addNewPhone, removePhoneNumber, setDefaultPhoneNumber, updateAddress } from "../../store/slice/customerSlice"
+import { setShowAddressCard, setCustomerCardLoading, setShowCustomerCard } from '../../store/slice/settingSlice'
 import { store } from '../../store/store'
 import { handleCatchError } from "../errors/custom"
 import { setDelivery } from "../../store/slice/cartSlice"
@@ -114,33 +114,6 @@ export const removePhoneNum =  async (phone: string) => {
         handleCatchError(error as Error, 'Failed to remove phone number');
     } finally {
         store.dispatch(setCustomerCardLoading(false));
-    }
-}
-
-export const updateName = async(name: string) => {
-    const { customer } = store.getState();
-
-    // if the no change was made, close the collapse card
-    if(customer.name === name){
-       return store.dispatch(setShowCustomerCard(false));
-    }
-
-    store.dispatch(setSaveNameLoading(true)); // start the loading 
-    try {
-        await axios.patch(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/name`, { name }, {
-            headers: {
-                'Authorization': `Bearer ${await fbAuth.currentUser?.getIdToken()}` 
-            }
-        })
-
-        store.dispatch(updateCustomerName(name));
-        snackbar.success('Name has been updated');
-        store.dispatch(setShowCustomerCard(false));
-
-    } catch (error) {
-        handleCatchError(error as Error, 'Failed to update name');
-    } finally {
-        store.dispatch(setSaveNameLoading(false)); // end the loading
     }
 }
 
