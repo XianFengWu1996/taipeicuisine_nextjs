@@ -36,3 +36,8 @@ export const getRewardHistory = async (token: string) => {
         handleCatchError(error as Error, 'Failed to retrieve reward history')
     }
 }
+
+
+export const handleUpdateName = () => {
+    
+}

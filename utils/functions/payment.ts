@@ -82,7 +82,7 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
 }
 
 // handle placing orders before payment or cash / instore payment
-export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICustomerState) => {
+export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICustomer) => {
     try {
       // process the order
     let order_response = await axios({
@@ -98,7 +98,7 @@ export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICust
     }
 }
 
-export const handleOnlineOrder = async(cart: ICartState, customer: ICustomerState) => {
+export const handleOnlineOrder = async(cart: ICartState, customer: ICustomer) => {
     try {
         // process the order
         await axios({
@@ -135,7 +135,7 @@ const handleCompleteOrder = (redirect_url: string) => {
     store.dispatch(orderComplete());
 }
 
-export const validateToPlaceOrder = (cart: ICartState, customer: ICustomerState) => {
+export const validateToPlaceOrder = (cart: ICartState, customer: ICustomer) => {
     if(cart.cart.length === 0){
         throw new Error('Add item before proceeding')
     }

@@ -1,5 +1,8 @@
 import { Button, TextField, Typography } from "@mui/material"
+import axios from "axios";
 import { useState } from "react"
+import { handleCatchError } from "../../utils/errors/custom";
+import { fbAuth } from "../../utils/functions/auth";
 
 interface IAccountChangeName {
     name: string
@@ -15,8 +18,18 @@ export const AccountChangeName = (_: IAccountChangeName) => {
             size='small'
             onChange={(e) => setName(e.target.value)}
         />
-        <Button variant='outlined' sx={{ mx: 3, padding: 0.8}} onChange={() => {
-            
+        <Button variant='outlined' sx={{ mx: 3, padding: 0.8}} onChange={ async () => {
+            try {
+                await axios.patch(`${process.env.NEXT_PUBLIC_CF_URL}/customer/name`, { name }, {
+                    headers: {
+                        'authorization': `${await fbAuth.currentUser?.getIdToken()}`
+                    }
+                })
+
+                
+            } catch (error) {
+                handleCatchError(error as Error, 'Failed to update name');
+            }
         }}>Change Name</Button>
 
     </div>

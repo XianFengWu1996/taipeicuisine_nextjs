@@ -18,6 +18,7 @@ const initialState: ICustomer  = {
     }, 
     reward: {
         points: 0,
+        transactions: []
     }
 }   
 
