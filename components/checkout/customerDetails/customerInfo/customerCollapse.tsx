@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { v4} from 'uuid'
 import { removePhoneNum, selectDefaultPhone } from "../../../../utils/functions/phone";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import {  AiOutlinePlus } from "react-icons/ai";
 import { SmsDialog } from "../../../dialogs/smsDialog";
 import { setShowSmsDialog } from "../../../../store/slice/settingSlice";

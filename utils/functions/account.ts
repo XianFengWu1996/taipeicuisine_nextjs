@@ -1,9 +1,10 @@
 import axios from "axios";
+import { Dispatch, SetStateAction } from "react";
 import snackbar from "../../components/snackbar";
 import { updateCustomerName } from "../../store/slice/customerSlice";
 import { setSaveNameLoading, setShowCustomerCard } from "../../store/slice/settingSlice";
 import store from "../../store/store";
-import { handleCatchError, NotAuthorizeError, NoTokenFoundError } from "../errors/custom";
+import { handleCatchError, NoTokenFoundError } from "../errors/custom";
 import { fbAuth } from "./auth";
 
 export const getOrderHistory = async (token: string) => {
@@ -24,7 +25,6 @@ export const getOrderHistory = async (token: string) => {
 
 }
 
-
 export const getRewardHistory = async (token: string) => {
     try {
         const reward_result = await axios({
@@ -40,6 +40,22 @@ export const getRewardHistory = async (token: string) => {
         console.log(error);
         handleCatchError(error as Error, 'Failed to retrieve reward history')
     }
+}
+
+export const getCustomerInfo = async  (token: string | undefined) => {
+    if(!token) {
+        throw new NoTokenFoundError();
+    }
+
+    let result = await axios({
+        method: 'GET',
+        url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/customer`,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+
+    return result.data as ICustomer
 }
 
 export const updateNameInCard = async(name: string, original_name: string, ) => {
@@ -65,6 +81,23 @@ export const updateNameInCard = async(name: string, original_name: string, ) => 
     }
 }
 
+export const updateNameInAccount = async(name: string , original_name: string,setLoading:  Dispatch<SetStateAction<boolean>> ) => {
+    try {
+        setLoading(true);
+
+        if(name != original_name){
+            let token = await fbAuth.currentUser?.getIdToken();
+            await handleUpdateName(name, token);
+
+            snackbar.success('Name has been updated'); // display message to user
+        }
+
+    } catch (error) {
+        handleCatchError(error as Error, 'Failed to update name');
+    } finally {
+        setLoading(false);
+    }
+}
 
 export const handleUpdateName = async (name: string, token: string | undefined) => {
     if(!token){

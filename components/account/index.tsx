@@ -1,23 +1,40 @@
 import { Typography } from "@mui/material"
-import { useAppSelector } from "../../store/store"
+import { onAuthStateChanged } from "firebase/auth"
+import { useEffect, useState } from "react"
+import { NotAuthorizeError } from "../../utils/errors/custom"
+import { getCustomerInfo } from "../../utils/functions/account"
+import { fbAuth } from "../../utils/functions/auth"
 import { AccountChangeAddress } from "./changeAddress"
 import { AccountChangeName } from "./changeName"
 import { AccountChangePassword } from "./changePassword"
 import { AccountChangePhone } from "./changePhone"
 
 export const AccountRelatedPage = () => {
-    const { name, phone } = useAppSelector(state => state.customer)
+    const [customer, setCustomer] = useState<ICustomer | null>(null);
+    useEffect(() => {
+        onAuthStateChanged(fbAuth, async user => {
+            if(!user){
+                throw new NotAuthorizeError();
+            }
+
+           let customer_result = await getCustomerInfo(await user?.getIdToken());
+            setCustomer(customer_result);
+        })
+    }, [])
+
     return <>
-        <div>
-            <Typography variant="h4">Account</Typography>
+        {
+            customer && <div>
+                <Typography variant="h4">Account</Typography>
 
-            <AccountChangeName name={name} />
+                <AccountChangeName name={customer.name} />
 
-            <AccountChangePhone phone={phone} />
+                <AccountChangePhone phone={customer.phone} />
 
-            <AccountChangeAddress />
+                <AccountChangeAddress />
 
-            <AccountChangePassword />
-        </div>
+                <AccountChangePassword />
+            </div>
+        }
     </>
 }
