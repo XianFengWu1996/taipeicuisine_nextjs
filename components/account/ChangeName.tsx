@@ -1,4 +1,5 @@
 import { Button, TextField } from "@mui/material"
+import { isEmpty } from "lodash";
 import { useState } from "react"
 import { PulseLoader } from "react-spinners";
 import { handleUpdateName } from "../../utils/functions/account";
@@ -22,7 +23,7 @@ export const AccountChangeName = (_: IAccountChangeName) => {
         />
         <Button variant='outlined' sx={{ mx: 3, padding: 0.8}} onClick={() => {
             handleUpdateName(name, _.name, setLoading, _.account)
-        }}>{loading ? <PulseLoader size={5} color='red'/> :'Change Name'}</Button>
+        }}>{loading ? <PulseLoader size={5} color='red'/> : isEmpty(_.name) ? 'Add Name': 'Change Name'}</Button>
 
     </div>
 }
