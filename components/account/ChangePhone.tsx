@@ -4,7 +4,8 @@ import { TitleForSection } from "./components";
 
 
 interface IAccountChangePhone {
-    phone: string
+    phone: string,
+    account: boolean
 }
 
 export const AccountChangePhone = (_:IAccountChangePhone) => {

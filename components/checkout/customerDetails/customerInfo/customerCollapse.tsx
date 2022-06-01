@@ -26,7 +26,7 @@ export const CustomerCardCollaspe = () => {
             autoComplete="off"
         >
             <AccountChangeName name={name} account={false} />
-            <AccountChangePhone phone={phone} />
+            <AccountChangePhone phone={phone} account={false} />
         </Box>
 
         <SmsDialog />

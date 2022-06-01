@@ -1,7 +1,8 @@
-import { Button, TextField, Typography } from "@mui/material"
+import { Button, TextField } from "@mui/material"
 import { useState } from "react"
 import { PulseLoader } from "react-spinners";
 import { handleUpdateName } from "../../utils/functions/account";
+import { TitleForSection } from "./components";
 
 interface IAccountChangeName {
     name: string,
@@ -12,7 +13,7 @@ export const AccountChangeName = (_: IAccountChangeName) => {
     const [name, setName] = useState<string>(_.name);
     const [loading, setLoading] = useState<boolean>(false);
     return <div style={{  marginTop: _.account ? '20px' : '0px'}}>
-        <Typography sx={{ fontSize: 16, fontWeight: 600, mr: 2}}>NAME </Typography>
+        <TitleForSection label={'name'} />
         <TextField
             value={name}
             variant='outlined'

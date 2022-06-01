@@ -29,7 +29,7 @@ export const AccountRelatedPage = () => {
 
                 <AccountChangeName name={customer.name} account/>
 
-                <AccountChangePhone phone={customer.phone}  />
+                <AccountChangePhone phone={customer.phone} account />
 
                 <AccountChangeAddress />
 
