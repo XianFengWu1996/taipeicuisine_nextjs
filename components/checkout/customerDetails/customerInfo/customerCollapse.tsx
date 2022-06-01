@@ -1,26 +1,15 @@
-import { Button, Card, Collapse, Grid, Icon, TextField } from "@mui/material";
+import { Collapse } from "@mui/material";
 import { Box } from "@mui/system";
-import { useAppDispatch, useAppSelector } from "../../../../store/store";
-import { ChangeEvent, useState } from "react";
-import {  AiOutlinePlus } from "react-icons/ai";
+import {  useAppSelector } from "../../../../store/store";
 import { SmsDialog } from "../../../dialogs/smsDialog";
-import { setShowSmsDialog } from "../../../../store/slice/settingSlice";
-import { PulseLoader, ScaleLoader } from "react-spinners";
-import { red } from "@mui/material/colors";
-import { updateNameInCard } from "../../../../utils/functions/account";
+import { AccountChangeName } from "../../../account/changeName";
+import { AccountChangePhone } from "../../../account/changePhone";
 
 
 export const CustomerCardCollaspe = () => {
 
-    const { name } = useAppSelector(state => state.customer);
-    const { show_customer_card, save_name_loading, customer_card_loading} = useAppSelector(state => state.setting)
-    const [ customer_name, setName ] = useState(name);
-    const dispatch = useAppDispatch();
-
-    const handleNameOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log(e.target.value)
-        setName(e.target.value);
-    }
+    const { name, phone } = useAppSelector(state => state.customer);
+    const { show_customer_card} = useAppSelector(state => state.setting)
 
     return <Collapse in={show_customer_card} timeout="auto" unmountOnExit>
         <Box
@@ -30,60 +19,14 @@ export const CustomerCardCollaspe = () => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                '& > :not(style)': {my: 1.5, width: '95%'},
+                '& > :not(style)': {my: 1, width: '95%'},
                 paddingBottom: '40px'
             }}
             noValidate
             autoComplete="off"
         >
-            <div style={{ display: 'flex'}}>
-                <TextField
-                    label="Name" 
-                    variant="outlined" 
-                    fullWidth
-                    value={customer_name}
-                    onChange={handleNameOnChange}
-                    sx={{ flex: 8}}
-                />
-
-                <Button 
-                    variant="outlined" 
-                    onClick={() => updateNameInCard(customer_name, name)}
-                    sx={{flex: 1, marginLeft: '5%'}}
-                >{
-                    save_name_loading ? 
-                         <PulseLoader size={5} color="red"/>
-                    : 'Save'
-                }</Button>
-            </div>
-    
-        {
-            customer_card_loading 
-            ? <div style={{ display: 'flex', justifyContent: 'center'}}>
-                <ScaleLoader height={25} color={red[400]} />
-              </div> 
-            : null
-        }
-
-        <Grid container spacing={2}>
-
-        
-            <Grid item  md={6} sm={12} xs={12}>
-                <Card 
-                    onClick={() => dispatch(setShowSmsDialog(true))}
-                    sx={{ 
-                        padding: 1, 
-                        height: '100%', 
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                    <Icon sx={{ fontSize: 45, color: '#555'}}>
-                        <AiOutlinePlus />
-                    </Icon>
-                </Card>
-            </Grid>
-        </Grid>
+            <AccountChangeName name={name} account={false} />
+            <AccountChangePhone phone={phone} />
         </Box>
 
         <SmsDialog />

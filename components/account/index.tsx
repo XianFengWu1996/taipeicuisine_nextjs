@@ -27,9 +27,9 @@ export const AccountRelatedPage = () => {
             customer && <div>
                 <Typography variant="h4">Account</Typography>
 
-                <AccountChangeName name={customer.name} />
+                <AccountChangeName name={customer.name} account/>
 
-                <AccountChangePhone phone={customer.phone} />
+                <AccountChangePhone phone={customer.phone}  />
 
                 <AccountChangeAddress />
 
