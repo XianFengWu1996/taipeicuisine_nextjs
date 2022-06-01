@@ -1,4 +1,5 @@
 import axios from "axios";
+import Router from "next/router";
 import snackbar from "../../components/snackbar";
 import { handleFirebaseAuthError } from "./firebaseError";
 import { handleAxiosError } from "./handleAxiosError";
@@ -45,6 +46,10 @@ export const handleCatchError = (err: Error, msg: string) => {
       if(axios.isAxiosError(err)){
         handleAxiosError(err);
         return;
+      }
+
+      if(isNotAuthError(err)){
+          return Router.replace('/order');
       }
 
       snackbar.error(err.message ?? msg)
