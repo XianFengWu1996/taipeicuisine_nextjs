@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../store/store";
 import { phoneFormat } from "../../utils/functions/phone";
 import { TitleForSection } from "./components";
 import { SmsDialog } from '../dialogs/smsDialog'
+import { isEmpty } from "lodash";
 
 
 interface IAccountChangePhone {
@@ -19,10 +20,10 @@ export const AccountChangePhone = (_:IAccountChangePhone) => {
     
             <div style={{ display: 'flex', alignItems: 'center'}}>
                 <Typography>
-                    {phoneFormat(_.phone)}
+                    {isEmpty(_.phone) ? 'Please add phone number': phoneFormat(_.phone)}
                 </Typography>
 
-                <Button variant='outlined' sx={{ mx: 3, padding: 0.8}} onClick={() => dispatch(setShowSmsDialog(true)) }>Change Phone</Button>
+                <Button variant='outlined' sx={{ mx: 3, padding: 0.8}} onClick={() => dispatch(setShowSmsDialog(true)) }>{isEmpty(_.phone) ? 'Add Phone' : 'Change Phone'}</Button>
 
                 <SmsDialog />
             </div>
