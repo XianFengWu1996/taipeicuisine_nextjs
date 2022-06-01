@@ -6,7 +6,7 @@ import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth, token } from "./auth"
 import Cookies from "js-cookie"
 import { addNewPhone, updateAddress } from "../../store/slice/customerSlice"
-import { setShowAddressCard, setShowCustomerCard } from '../../store/slice/settingSlice'
+import { setShowAddressCard, setShowCustomerCard, setShowSmsDialog } from '../../store/slice/settingSlice'
 import { store } from '../../store/store'
 import { handleCatchError } from "../errors/custom"
 import { setDelivery } from "../../store/slice/cartSlice"
@@ -64,7 +64,8 @@ export const handleCodeVerify = async (code: string) => {
         }))
 
         store.dispatch(setShowCustomerCard(false));
-        snackbar.success('New phone number has been added');        
+        store.dispatch(setShowSmsDialog(false));
+        snackbar.success('New phone number has been verified');        
     } catch (error) {
         if(axios.isAxiosError(error)){
            return handleAxiosError(error);

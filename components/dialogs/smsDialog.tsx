@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogContent, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
 import ReactCodeInput from 'react-verification-code-input';
 import { setShowSmsDialog } from "../../store/slice/settingSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
@@ -17,6 +17,7 @@ export const SmsDialog = () => {
     const dispatch = useAppDispatch();
 
     const [smsPhone, setSmsPhone] = useState('');
+    const [sent, setSent] = useState<boolean>(false); // this will handle the button and timer
 
     const handlePhoneOnChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         // limits the length to 10
@@ -26,12 +27,18 @@ export const SmsDialog = () => {
 
     }
 
+
     return <Dialog
         open={show_sms_dialog}
-        onClose={() => dispatch(setShowSmsDialog(false))}
+        onClose={() => {
+            dispatch(setShowSmsDialog(false))
+            setSent(false);
+            setSmsPhone('');
+        }}
         maxWidth="sm"
         fullWidth
-    >
+        
+>
         <DialogContent>
             <Typography sx={{ my: 2}}>Add New Phone Number</Typography>
 
@@ -48,18 +55,23 @@ export const SmsDialog = () => {
                     onChange={handlePhoneOnChange}
             />
             
-            <SmsVerificationButton phone={smsPhone}/>
+            <SmsVerificationButton phone={smsPhone} sent={sent} setSent={setSent}/>
         
             </div>
 
             <Typography>Enter Verification Code</Typography>
-            <ReactCodeInput  onComplete={handleCodeVerify} />   
+            <ReactCodeInput  onComplete={handleCodeVerify} /> 
         </DialogContent>
     </Dialog>
 }
 
-export const SmsVerificationButton = ({phone} : {phone: string}) => {
-    const [sent, setSent] = useState(false);
+interface ISmsVerificationButton {
+    phone: string,
+    sent: boolean,
+    setSent:Dispatch<SetStateAction<boolean>>
+}
+
+export const SmsVerificationButton = ({phone, sent, setSent}: ISmsVerificationButton) => {
     const [timer, setTimer] = useState(process.env.NEXT_PUBLIC_DEFAULT_TIMER);
 
     useEffect(() => {
@@ -79,7 +91,7 @@ export const SmsVerificationButton = ({phone} : {phone: string}) => {
 
        return () => clearInterval(intervalId);
 
-    }, [sent, timer])
+    }, [sent, timer, setSent])
 
     return <>
         {

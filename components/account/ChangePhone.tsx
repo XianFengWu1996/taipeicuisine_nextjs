@@ -1,6 +1,9 @@
-import { Button, TextField } from "@mui/material";
-import { useState } from "react";
+import { Button, Typography } from "@mui/material";
+import { setShowSmsDialog } from "../../store/slice/settingSlice";
+import { useAppDispatch } from "../../store/store";
+import { phoneFormat } from "../../utils/functions/phone";
 import { TitleForSection } from "./components";
+import { SmsDialog } from '../dialogs/smsDialog'
 
 
 interface IAccountChangePhone {
@@ -9,18 +12,19 @@ interface IAccountChangePhone {
 }
 
 export const AccountChangePhone = (_:IAccountChangePhone) => {
-    const [phone, setPhone] = useState(_.phone);
-   return <div style={{  marginTop: '20px'}}>
-        <TitleForSection label={'phone'} />
-        <TextField
-            value={phone}
-            variant='outlined'
-            size='small'
-            onChange={(e) => {
-                setPhone(e.target.value);
-            }}
-        />
+    const dispatch = useAppDispatch();
 
-        <Button variant='outlined' sx={{ mx: 3, padding: 0.8}}>Change Phone</Button>
+   return <div style={{  marginTop: '20px' }}>
+            <TitleForSection label={'phone'} />
+    
+            <div style={{ display: 'flex', alignItems: 'center'}}>
+                <Typography>
+                    {phoneFormat(_.phone)}
+                </Typography>
+
+                <Button variant='outlined' sx={{ mx: 3, padding: 0.8}} onClick={() => dispatch(setShowSmsDialog(true)) }>Change Phone</Button>
+
+                <SmsDialog />
+            </div>
     </div>
 }
