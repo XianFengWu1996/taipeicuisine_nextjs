@@ -1,9 +1,10 @@
 import { Typography } from "@mui/material"
 import { onAuthStateChanged } from "firebase/auth"
+import Router from "next/router"
 import { useEffect, useState } from "react"
 import { getCustomer } from "../../store/slice/customerSlice"
 import { useAppDispatch, useAppSelector } from "../../store/store"
-import { handleCatchError, NotAuthorizeError } from "../../utils/errors/custom"
+import { handleCatchError } from "../../utils/errors/custom"
 import { getCustomerInfo } from "../../utils/functions/account"
 import { fbAuth } from "../../utils/functions/auth"
 import { AccountChangeAddress } from "./changeAddress"
@@ -20,7 +21,7 @@ export const AccountRelatedPage = () => {
         onAuthStateChanged(fbAuth, async user => {
            try {
                 if(!user){
-                    throw new NotAuthorizeError();
+                    return Router.replace('/order?redirect=account')
                 }
 
                 let customer_result = await getCustomerInfo(await user?.getIdToken());

@@ -6,7 +6,6 @@ import { PuffLoader, PulseLoader } from "react-spinners";
 import { v4 } from "uuid";
 import { setDelivery } from "../../../../store/slice/cartSlice";
 import { updateAddress } from "../../../../store/slice/customerSlice";
-import { setShowAddressCard } from "../../../../store/slice/settingSlice";
 import { useAppDispatch } from "../../../../store/store";
 import { handleCatchError } from "../../../../utils/errors/custom";
 import { calculateDeliveryFee } from "../../../../utils/functions/phone";

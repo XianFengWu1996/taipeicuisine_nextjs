@@ -33,6 +33,9 @@ export const checkAndRedirect = (query: ParsedUrlQuery) => {
       case 'checkout':
         Router.push('/order/checkout')
         break;
+      case 'account':
+        Router.push('/account?redirect=account')
+        break;
 
       default: 
         break;
