@@ -75,8 +75,7 @@ export const handleCodeVerify = async (code: string) => {
 }
 
 export const calculateDeliveryFee = async(data: ICalcDelivFee) => {
-    try {
-        let result = await axios({
+       let address_result = await axios({
             method: 'POST',
             url:`${process.env.NEXT_PUBLIC_CF_URL}/auth/address/delivery`,
             headers: {
@@ -94,12 +93,7 @@ export const calculateDeliveryFee = async(data: ICalcDelivFee) => {
             }
         })
 
-        // dispatch delivery fee 
-        store.dispatch(updateAddress(result.data.address))
-        store.dispatch(setDelivery(result.data.address.delivery_fee))
-        store.dispatch(setShowAddressCard(false));
-        snackbar.success('Address has been updated')
-    } catch (error) {
-        handleCatchError(error as Error, 'Failed to set addess at the moment')
-    }
+        return {
+            address: address_result.data.address as IAddress,
+        }
 }
