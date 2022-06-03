@@ -1,5 +1,5 @@
 import { Button, FormControl, TextField, Typography } from "@mui/material"
-import { useState } from "react"
+import { SetStateAction, useState } from "react"
 import { updatePassword } from 'firebase/auth'
 import { fbAuth } from "../../utils/functions/auth";
 import { FirebaseError } from "firebase/app";
@@ -73,46 +73,52 @@ export const AccountChangePassword = () => {
         </Box>
         
         <div>
-            <FormControl sx={{ display: 'flex'}}>
+           
+            <ChangePasswordInput
+                value={new_password}
+                show_password={show_password}
+                label='New Password'
+                handleOnChange={setNewPassword}
+            />
 
-           <div>
-                <TextField 
-                    id="new_password"
-                    value={new_password}
-                    label={'New Password'}
-                    type={show_password ? 'text': 'password'}
-                    size='small'
-                    required
-                    onChange={(e) => {
-                        setNewPassword(e.target.value)
-                    }}
-                />
            {
-               !isEmpty(error) &&  <Typography sx={{ fontSize: 11, color: 'red', mt: 0.7}}>{error}</Typography>
+               !isEmpty(error) &&  <Typography sx={{ fontSize: 11, color: 'red', mb: 2, mt: 1}}>{error}</Typography>
            }
 
-           </div>
-
-            </FormControl>
-
-            <TextField 
+            <ChangePasswordInput 
                 value={confirm}
-                label={'Confirm New Password'}
-                variant='outlined'
-                type={show_password ? 'text': 'password'}
-                size='small'
-                fullWidth
-                required
-                sx={{ my: 1}}
-                onChange={(e) => {
-                    setConfirm(e.target.value)
-                }}
+                show_password={show_password}
+                label='Confirm New Password'
+                handleOnChange={setConfirm}
             />
         </div>
-        <Button variant='outlined' sx={{ my: 1}} onClick={handleChangePassword}>Change Password</Button>
+        <Button variant='outlined' sx={{ my: 1.5}} onClick={handleChangePassword}>Change Password</Button>
 
         {
             need_auth && <Button onClick={handleReauthenticate}>Reauthenticate</Button>
         }
     </div>
+}
+
+
+interface IChangePasswordInput {
+    value: string,
+    show_password: boolean,
+    label: string, 
+    handleOnChange: (value: SetStateAction<string>) => void
+}
+
+export const ChangePasswordInput = ({value, label, show_password, handleOnChange}:IChangePasswordInput) => {
+    return  <FormControl sx={{ display: 'flex', mt:1.5}}>
+         <TextField 
+             value={value}
+             label={label}
+             type={show_password ? 'text': 'password'}
+             size='small'
+             required
+             onChange={(e) => {
+                 handleOnChange(e.target.value)
+             }}
+         />
+     </FormControl>
 }
