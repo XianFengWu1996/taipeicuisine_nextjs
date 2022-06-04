@@ -8,6 +8,7 @@ import { AccountLink } from "../../components/account/components"
 import { PublicAppBar } from "../../components/appbar/appbar"
 import { OrderHistory } from "../../components/history"
 import { RewardPage } from "../../components/reward"
+import { WalletPage } from "../../components/wallet"
 
 export default function AccountPage() { 
     return <>
@@ -56,6 +57,10 @@ export default function AccountPage() {
 
             {
                 Router.query.redirect === 'account' && <AccountRelatedPage />
+            }
+
+            {
+                Router.query.redirect === 'wallet' && <WalletPage />
             }
         </div>
         </div>

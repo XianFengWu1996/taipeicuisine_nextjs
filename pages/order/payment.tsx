@@ -4,7 +4,7 @@ import { PaymentForm } from "../../components/payment/paymentForm";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { fbAuth } from "../../utils/functions/auth";
-import { handleCatchError } from "../../utils/errors/custom";
+import { handleCatchError, NotAuthorizeError } from "../../utils/errors/custom";
 import { Elements } from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import { Skeleton } from "@mui/material";
@@ -30,19 +30,16 @@ export default function PaymentPage () {
        
 
        onAuthStateChanged(fbAuth, async user => {  
-       
-
-        if(!user){
-            Router.replace('/order')
-            return snackbar.error('Not authorized, please login first')
-        }
-
-         // only allow the payment if it is from checkout page route 
-         if(!allow_payment_page){
-            return Router.replace('/order/checkout')
-        }
-
         try {
+            if(!user){
+                throw new NotAuthorizeError
+            }
+    
+             // only allow the payment if it is from checkout page route 
+             if(!allow_payment_page){
+                return Router.replace('/order/checkout')
+            }
+
             await handleGetPaymentList(await user.getIdToken(), setCards)
         } catch (error) {
             handleCatchError(error as Error, 'Failed to get payment methods')

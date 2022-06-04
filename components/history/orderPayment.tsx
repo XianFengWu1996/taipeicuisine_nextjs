@@ -10,21 +10,23 @@ interface IOrderPayment {
     card: StripeCard | null
 }
 
-export const OrderPayment = ({ payment_type, card } : IOrderPayment) => {
-    const handleCreditCardBrand = (brand: string) => {
-        switch(brand.toLowerCase()){
-            case 'visa':
-                return <FaCcVisa color={'#1A1F71'} size={35}/>
-            case 'discover':
-                return <FaCcDiscover color={'#e28743'} size={35}/>
-            case 'mastercard':
-                return <FaCcMastercard color={'#FF5F00'} size={35}/>
-            case 'amex':
-                return <FaCcAmex color={'#006BA6'} size={35}/>
-            default: 
-                return <FaCreditCard />
-        }
+export const handleCreditCardBrand = (brand: string) => {
+    switch(brand.toLowerCase()){
+        case 'visa':
+            return <FaCcVisa color={'#1A1F71'} size={35}/>
+        case 'discover':
+            return <FaCcDiscover color={'#e28743'} size={35}/>
+        case 'mastercard':
+            return <FaCcMastercard color={'#FF5F00'} size={35}/>
+        case 'amex':
+            return <FaCcAmex color={'#006BA6'} size={35}/>
+        default: 
+            return <FaCreditCard />
     }
+}
+
+export const OrderPayment = ({ payment_type, card } : IOrderPayment) => {
+   
     return <Box sx={{ ml: 10}}>
         <TitleText>Payment</TitleText>
         <div style={{ display: 'flex'}}> 
