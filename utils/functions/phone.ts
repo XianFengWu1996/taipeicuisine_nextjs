@@ -5,11 +5,9 @@ import axios from "axios"
 import { handleAxiosError } from "../errors/handleAxiosError"
 import { fbAuth, token } from "./auth"
 import Cookies from "js-cookie"
-import { addNewPhone, updateAddress } from "../../store/slice/customerSlice"
-import { setShowAddressCard, setShowCustomerCard, setShowSmsDialog } from '../../store/slice/settingSlice'
+import { addNewPhone } from "../../store/slice/customerSlice"
+import {  setShowCustomerCard, setShowSmsDialog } from '../../store/slice/settingSlice'
 import { store } from '../../store/store'
-import { handleCatchError } from "../errors/custom"
-import { setDelivery } from "../../store/slice/cartSlice"
 
 export const phoneFormat = (phone: string) => {
     return `(${phone.substring(0, 3)}) ${phone.substring(3, 6)}-${phone.substring(6)}`

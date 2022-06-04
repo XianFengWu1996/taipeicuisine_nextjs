@@ -118,7 +118,7 @@ export const handleOnlineOrder = async(cart: ICartState, customer: ICustomer) =>
 export const handleGetPaymentList = async (user_token: string, setCards: (value: SetStateAction<IPublicPaymentMethod[]>) => void) => {
     const method = await axios({
         method: 'GET',
-        url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/get_payment_method`,
+        url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/payment_method`,
         headers: {
             'authorization': `Bearer ${user_token}`
         }
