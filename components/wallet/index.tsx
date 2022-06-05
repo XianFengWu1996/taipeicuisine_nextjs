@@ -8,9 +8,15 @@ import { handleCatchError, NotAuthorizeError } from "../../utils/errors/custom"
 import { fbAuth } from "../../utils/functions/auth"
 import { handleGetPaymentList } from "../../utils/functions/payment"
 import { handleCreditCardBrand } from "../history/orderPayment"
+import snackbar from "../snackbar"
 
 export const WalletPage = () => {
     const [cards, setCards] = useState<IPublicPaymentMethod[]>([])
+
+    const handleRemoveCardWithId = (id: string) => {
+        let temp_cards = cards.filter(card => id !== card.id);
+        setCards(temp_cards);
+    }
 
     useEffect(() => {
         try {
@@ -31,7 +37,7 @@ export const WalletPage = () => {
         <Grid container spacing={3} sx={{ width: '95%'}}>
             {
                 cards.map((card) => {
-                    return <WalletCard key={card.id} card={card}/>
+                    return <WalletCard key={card.id} card={card} handleRemoveCardWithId={handleRemoveCardWithId}/>
                 })
             }
         </Grid>
@@ -40,10 +46,11 @@ export const WalletPage = () => {
 
 
 interface IWalletCard {
-    card: IPublicPaymentMethod
+    card: IPublicPaymentMethod,
+    handleRemoveCardWithId: (id:string) => void
 }
 
-export const WalletCard = ({ card} : IWalletCard) => {
+export const WalletCard = ({ card, handleRemoveCardWithId } : IWalletCard) => {
     const [start_removal, setStartRemoval] = useState<boolean>(false);
     const [confirmation, setConfirmation] = useState<string>('');
 
@@ -57,15 +64,12 @@ export const WalletCard = ({ card} : IWalletCard) => {
                 await axios({
                     method: 'DELETE',
                     url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/payment_method`,
-                    data: {
-                        payment_method_id: card.id
-                    },
-                    headers: {
-                        "Authorization": `Bearer ${await fbAuth.currentUser?.getIdToken()}`
-                    }
+                    data: { payment_method_id: card.id  },
+                    headers: { "Authorization": `Bearer ${await fbAuth.currentUser?.getIdToken()}` }
                 })
 
-                
+                handleRemoveCardWithId(card.id);
+                snackbar.success('Card has been successfully removed')                
             } catch (error) {
                 handleCatchError((error as Error), 'Failed  to delete payment')
             }
