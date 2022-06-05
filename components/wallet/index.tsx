@@ -2,6 +2,7 @@ import { Box, Button, Card, CardContent, Grid, IconButton, TextField, Typography
 import {  red } from "@mui/material/colors"
 import axios from "axios"
 import { onAuthStateChanged } from "firebase/auth"
+import { isEmpty } from "lodash"
 import { useEffect, useState } from "react"
 import { FaMinusCircle } from "react-icons/fa"
 import { handleCatchError, NotAuthorizeError } from "../../utils/errors/custom"
@@ -34,13 +35,18 @@ export const WalletPage = () => {
     }, [])
     return <>
         <Typography variant="h4">Wallet</Typography>
-        <Grid container spacing={3} sx={{ width: '95%'}}>
+        {
+            isEmpty(cards) 
+                ? <Typography>To add a card to the wallet, select &ldquo;I want to save this card for future purchase
+                &rdquo; option during online checkout</Typography> 
+                : <Grid container spacing={3} sx={{ width: '95%'}}>
             {
                 cards.map((card) => {
                     return <WalletCard key={card.id} card={card} handleRemoveCardWithId={handleRemoveCardWithId}/>
                 })
             }
         </Grid>
+        }
     </>
 }
 
