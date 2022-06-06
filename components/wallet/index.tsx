@@ -10,6 +10,7 @@ import { fbAuth } from "../../utils/functions/auth"
 import { handleGetPaymentList } from "../../utils/functions/payment"
 import { handleCreditCardBrand } from "../history/orderPayment"
 import snackbar from "../snackbar"
+import { WalletSkeleton } from "./walletSkeleton"
 
 export const WalletPage = () => {
     const [cards, setCards] = useState<IPublicPaymentMethod[]>([])
@@ -139,10 +140,3 @@ export const WalletCard = ({ card, handleRemoveCardWithId } : IWalletCard) => {
     </Grid>
 }
 
-export const WalletSkeleton = () => {
-    return <>
-        <Grid item lg={6} md={12} sm={12} xs={12}>
-            <Skeleton variant="rectangular" height={170} animation="wave"/>
-        </Grid>
-    </>
-}
