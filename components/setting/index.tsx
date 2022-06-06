@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material"
+import { ContactForm } from "./contactForm";
 
 import { LanguageSelect } from "./languageSelect";
 import { LegalLinks } from "./legalLinks";
@@ -13,5 +14,7 @@ export const SettingPage = () => {
         <LanguageSelect />
         
         <LegalLinks />
+
+        <ContactForm />
     </div>
 }
