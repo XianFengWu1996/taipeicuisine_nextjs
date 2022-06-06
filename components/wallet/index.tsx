@@ -14,6 +14,8 @@ import snackbar from "../snackbar"
 export const WalletPage = () => {
     const [cards, setCards] = useState<IPublicPaymentMethod[]>([])
 
+    const [isReady, setIsReady] = useState<boolean>(false);
+
     const handleRemoveCardWithId = (id: string) => {
         let temp_cards = cards.filter(card => id !== card.id);
         setCards(temp_cards);
@@ -27,6 +29,7 @@ export const WalletPage = () => {
                 }
 
                 await handleGetPaymentList(await user.getIdToken(), setCards)
+                setIsReady(true);
 
             })
         } catch (error) {
@@ -36,16 +39,16 @@ export const WalletPage = () => {
     return <>
         <Typography variant="h4">Wallet</Typography>
         {
-            isEmpty(cards) 
+            isReady && isEmpty(cards) 
                 ? <Typography>To add a card to the wallet, select &ldquo;I want to save this card for future purchase
                 &rdquo; option during online checkout</Typography> 
                 : <Grid container spacing={3} sx={{ width: '95%'}}>
-            {
-                cards.map((card) => {
-                    return <WalletCard key={card.id} card={card} handleRemoveCardWithId={handleRemoveCardWithId}/>
-                })
-            }
-        </Grid>
+                    {
+                        cards.map((card) => {
+                            return <WalletCard key={card.id} card={card} handleRemoveCardWithId={handleRemoveCardWithId}/>
+                        })
+                    }
+                </Grid>
         }
     </>
 }
