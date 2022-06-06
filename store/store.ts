@@ -12,7 +12,7 @@ import settingSlice from './slice/settingSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['menus', 'cart'] // only persist certain reducers
+  whitelist: ['menus', 'cart', 'setting'] // only persist certain reducers
 }
 
 const reducer = combineReducers({ 

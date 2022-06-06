@@ -14,7 +14,11 @@ const initialState: ISettingState  = {
     show_checkout_skeleton: false,
 
     // payment 
-    allow_payment_page: false
+    allow_payment_page: false,
+    
+
+    language: 'english',
+    theme_mode: 'light'
 }   
 
 
@@ -40,7 +44,13 @@ export const settingSlice = createSlice({
     },
     setAllowPayment: (state, {payload}:PayloadAction<boolean>) => {
       state.allow_payment_page = payload;
-    }
+    },
+    setLanguage: (state, {payload}:PayloadAction<string>) => {
+      state.language = payload;
+    },
+    setThemeMode: (state, {payload}:PayloadAction<ThemeMode>) => {
+      state.theme_mode = payload;
+    },
     
     
   }
@@ -54,6 +64,8 @@ export const {
   setShowSmsDialog,
   setShowAddressCard,
   setCheckoutSkeleton,
-  setAllowPayment
+  setAllowPayment,
+  setLanguage,
+  setThemeMode
 } = settingSlice.actions
 

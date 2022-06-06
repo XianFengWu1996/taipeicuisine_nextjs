@@ -7,4 +7,9 @@ interface ISettingState {
 
     show_checkout_skeleton: boolean,
     allow_payment_page: boolean,
+
+    language: string,
+    theme_mode: ThemeMode
 }  
+
+type ThemeMode = 'light' | 'dark'
