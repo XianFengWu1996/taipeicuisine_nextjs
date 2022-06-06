@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Grid, IconButton, TextField, Typography } from "@mui/material"
+import { Box, Button, Card, CardContent, Grid, IconButton, Skeleton, TextField, Typography } from "@mui/material"
 import {  red } from "@mui/material/colors"
 import axios from "axios"
 import { onAuthStateChanged } from "firebase/auth"
@@ -38,7 +38,7 @@ export const WalletPage = () => {
     }, [])
     return <>
         <Typography variant="h4">Wallet</Typography>
-        {
+        {/* {
             isReady && isEmpty(cards) 
                 ? <Typography>To add a card to the wallet, select &ldquo;I want to save this card for future purchase
                 &rdquo; option during online checkout</Typography> 
@@ -49,7 +49,17 @@ export const WalletPage = () => {
                         })
                     }
                 </Grid>
-        }
+        } */}
+
+            <Grid container spacing={3} sx={{ width: '95%'}}>
+                <WalletSkeleton />
+                <WalletSkeleton />
+                <WalletSkeleton />
+                <WalletSkeleton />
+                <WalletSkeleton />
+                <WalletSkeleton />
+
+            </Grid>
     </>
 }
 
@@ -127,4 +137,12 @@ export const WalletCard = ({ card, handleRemoveCardWithId } : IWalletCard) => {
             </CardContent>
         </Card>
     </Grid>
+}
+
+export const WalletSkeleton = () => {
+    return <>
+        <Grid item lg={6} md={12} sm={12} xs={12}>
+            <Skeleton variant="rectangular" height={170} animation="wave"/>
+        </Grid>
+    </>
 }

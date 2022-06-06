@@ -10,7 +10,6 @@ import {loadStripe} from '@stripe/stripe-js';
 import { Skeleton } from "@mui/material";
 import { handleGetPaymentList } from "../../utils/functions/payment";
 import Router from "next/router";
-import snackbar from "../../components/snackbar";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setAllowPayment } from "../../store/slice/settingSlice";
 
@@ -51,7 +50,7 @@ export default function PaymentPage () {
        return () => {
             dispatch(setAllowPayment(false))
        }
-    }, [])
+    }, [allow_payment_page, dispatch])
     return <>
         <PublicAppBar />
         {

@@ -1,4 +1,4 @@
-import { SnackbarAction, useSnackbar, VariantType, WithSnackbarProps } from 'notistack'
+import { useSnackbar, VariantType, WithSnackbarProps } from 'notistack'
 import React from 'react'
 
 let useSnackbarRef: WithSnackbarProps
