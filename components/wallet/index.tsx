@@ -1,10 +1,12 @@
 import { Grid, Typography } from "@mui/material"
 import { onAuthStateChanged } from "firebase/auth"
+import { isEmpty } from "lodash"
 import { useEffect, useState } from "react"
 import { handleCatchError, NotAuthorizeError } from "../../utils/errors/custom"
 import { fbAuth } from "../../utils/functions/auth"
 import { handleGetPaymentList } from "../../utils/functions/payment"
-import { WalletSkeleton } from "./walletSkeleton"
+import { WalletCard } from "./walletCard"
+import { WalletSkeletons } from "./walletSkeleton"
 
 export const WalletPage = () => {
     const [cards, setCards] = useState<IPublicPaymentMethod[]>([])
@@ -28,33 +30,27 @@ export const WalletPage = () => {
 
             })
         } catch (error) {
+            console.log(error);
             handleCatchError(error as Error, 'Failed to get payment lsit');
         }
     }, [])
     return <>
         <Typography variant="h4">Wallet</Typography>
-        {/* {
-            isReady && isEmpty(cards) 
-                ? <Typography>To add a card to the wallet, select &ldquo;I want to save this card for future purchase
-                &rdquo; option during online checkout</Typography> 
-                : <Grid container spacing={3} sx={{ width: '95%'}}>
-                    {
-                        cards.map((card) => {
-                            return <WalletCard key={card.id} card={card} handleRemoveCardWithId={handleRemoveCardWithId}/>
-                        })
-                    }
-                </Grid>
-        } */}
-
-            <Grid container spacing={3} sx={{ width: '95%'}}>
-                <WalletSkeleton />
-                <WalletSkeleton />
-                <WalletSkeleton />
-                <WalletSkeleton />
-                <WalletSkeleton />
-                <WalletSkeleton />
-
-            </Grid>
+        {
+            isReady ?  <>
+                {
+                    isEmpty(cards) 
+                    ? <Typography>To add a card to the wallet, select &ldquo;I want to save this card for future purchase&rdquo; option during online checkout</Typography> 
+                    : <Grid container spacing={3} sx={{ width: '95%'}}>
+                        {
+                            cards.map((card) => {
+                                return <WalletCard key={card.id} card={card} handleRemoveCardWithId={handleRemoveCardWithId}/>
+                            })
+                        }
+                    </Grid>
+                }
+            </> : <WalletSkeletons />
+        }  
     </>
 }
 
