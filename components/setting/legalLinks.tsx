@@ -10,8 +10,5 @@ export const LegalLinks = () => {
         <Link href="/legal/terms_and_conditions">
             <a style={{ textDecoration: 'underline', color: 'red'}}>Terms and Conditions</a>
         </Link>
-        <Link href="/legal/refund_policy">
-            <a style={{ textDecoration: 'underline', color: 'red'}}>Refund Policy</a>
-        </Link>
     </Box>
 }
