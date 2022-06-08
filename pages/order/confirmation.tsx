@@ -22,7 +22,7 @@ export default function Confirmation () {
                     <Typography>Estimate Time: {query.estimate} minutes</Typography>
                 </CardContent>
             </Card>
-            <Typography>Your order has been placed. You will receive a email confirmation in a few minutes. </Typography>
+            <Typography>Your order has been placed. You will receive a email confirmation once the staff confirms the order. </Typography>
             <Button onClick={() => {
                 Router.replace('/order')
             }}>Return to Home</Button>
