@@ -41,6 +41,7 @@ export const AptAndBusiness = () => {
                     }
                 })
                 
+                setShow(false);
                 dispatch(setShowAddressCard(false));
                 dispatch(updateAptBusiness({ apt, business }));
                 snackbar.success('Apt or Business has been updated')
@@ -70,6 +71,7 @@ export const AptAndBusiness = () => {
                     }
                 })
                 
+                setShow(false);
                 dispatch(setShowAddressCard(false));
                 dispatch(removeAptBusiness());
                 snackbar.success('Apt and Business has been removed')

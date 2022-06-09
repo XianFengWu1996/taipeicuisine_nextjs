@@ -13,7 +13,7 @@ interface IAccountChangeName {
 export const AccountChangeName = (_: IAccountChangeName) => {
     const [name, setName] = useState<string>(_.name);
     const [loading, setLoading] = useState<boolean>(false);
-    return <div style={{  marginTop: _.account ? '20px' : '0px'}}>
+    return <form autoComplete={'off'} style={{  marginTop: _.account ? '20px' : '0px'}}>
         <TitleForSection label={'name'} />
         <TextField
             value={name}
@@ -26,5 +26,5 @@ export const AccountChangeName = (_: IAccountChangeName) => {
             handleUpdateName(name, _.name, setLoading, _.account)
         }}>{loading ? <PulseLoader size={5} color='red'/> : isEmpty(_.name) ? 'Add Name': 'Change Name'}</Button>
 
-    </div>
+    </form>
 }

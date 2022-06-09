@@ -64,8 +64,8 @@ export const GoogleAddressSearch = ({ onClose } : {onClose: () => void }) => {
             setLoading(false);
         }
     }
-    return <div style={{ display: 'flex', flexDirection: 'column'}}>
-         <PlacesAutocomplete
+    return <form style={{ display: 'flex', flexDirection: 'column'}} autoComplete={'off'}>
+        <PlacesAutocomplete
                 value={addressInput}
                 onChange={handleAddressOnChange}
                 onSelect={handleAddressOnSelect}
@@ -107,6 +107,6 @@ export const GoogleAddressSearch = ({ onClose } : {onClose: () => void }) => {
         <AptAndBusiness />
         
         { loading && <PuffLoader size={40} color={red[400]} speedMultiplier={1.5}/>}
-    </div>
+    </form>
 }
 

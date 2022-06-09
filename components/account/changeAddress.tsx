@@ -15,6 +15,12 @@ export const AccountChangeAddress = ({ address } : IAccountChangeAddress) => {
         {
             isEmpty(address.address) ?  <Typography>Please add your address...</Typography>: <div>
                 <Typography>{address.address}</Typography>
+                {
+                    address.apt && <Typography>Apt: {address.apt}</Typography>
+                }
+                {
+                    address.business && <Typography>Business: {address.business}</Typography>
+                }
                 <Typography>Delivery Fee: ${address.delivery_fee}</Typography>
             </div>
         }
