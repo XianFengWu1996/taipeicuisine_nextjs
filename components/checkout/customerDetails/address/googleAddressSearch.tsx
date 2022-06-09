@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import {  TextField } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useState } from "react";
 import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../../../store/store";
 import { handleCatchError } from "../../../../utils/errors/custom";
 import { calculateDeliveryFee } from "../../../../utils/functions/phone";
 import snackbar from "../../../snackbar";
+import { AptAndBusiness } from "./aptAndBusiness";
 
 export const GoogleAddressSearch = ({ onClose } : {onClose: () => void }) => {
     const [addressInput, setAddressInput] = useState('');
@@ -63,7 +64,7 @@ export const GoogleAddressSearch = ({ onClose } : {onClose: () => void }) => {
             setLoading(false);
         }
     }
-    return <div style={{ display: 'flex'}}>
+    return <div style={{ display: 'flex', flexDirection: 'column'}}>
          <PlacesAutocomplete
                 value={addressInput}
                 onChange={handleAddressOnChange}
@@ -101,9 +102,11 @@ export const GoogleAddressSearch = ({ onClose } : {onClose: () => void }) => {
                     </div>
                 </div>
                 )}
-            </PlacesAutocomplete>
-            
-
-            { loading && <PuffLoader size={40} color={red[400]} speedMultiplier={1.5}/>}
+        </PlacesAutocomplete>
+        
+        <AptAndBusiness />
+        
+        { loading && <PuffLoader size={40} color={red[400]} speedMultiplier={1.5}/>}
     </div>
 }
+

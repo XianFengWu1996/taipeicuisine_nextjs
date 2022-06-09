@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { isEmpty } from 'lodash'
 
 // Define the initial state using that type
 const initialState: ICustomer  = {
@@ -43,7 +44,14 @@ export const customerSlice = createSlice({
         ...state.address,
         ...payload
       }
-    },    
+    },   
+    updateAptBusiness:(state, {payload} : PayloadAction<{ apt: string, business: string}>) => {
+      state.address = {
+        ...state.address,
+        apt: isEmpty(payload.apt) ? state.address.apt : payload.apt,
+        business: isEmpty(payload.business) ? state.address.business : payload.business
+      }
+    },   
   }
 })
 
@@ -53,6 +61,7 @@ export const {
   updateCustomerName,
   addNewPhone,
   updateAddress,
+  updateAptBusiness,
   getCustomer,
 } = customerSlice.actions
 
