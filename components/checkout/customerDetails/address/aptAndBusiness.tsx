@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
 import axios from "axios";
-import { isEmpty, remove } from "lodash";
+import { isEmpty } from "lodash";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 import { removeAptBusiness, updateAptBusiness } from "../../../../store/slice/customerSlice";
@@ -21,6 +21,13 @@ export const AptAndBusiness = () => {
     const { address } = useAppSelector(state => state.customer)
     const dispatch = useAppDispatch();
 
+    const handleOnComplete = () => {
+        setShow(false);
+        setApt('')
+        setBusiness('');
+        dispatch(setShowAddressCard(false));
+    }
+
     const handleAddAptAndBusiness = async () => {
         setLoading(true);
 
@@ -40,9 +47,8 @@ export const AptAndBusiness = () => {
                         'Authorization': `Bearer ${await fbAuth.currentUser?.getIdToken()}`
                     }
                 })
-                
-                setShow(false);
-                dispatch(setShowAddressCard(false));
+              
+                handleOnComplete()
                 dispatch(updateAptBusiness({ apt, business }));
                 snackbar.success('Apt or Business has been updated')
             }
@@ -71,15 +77,14 @@ export const AptAndBusiness = () => {
                     }
                 })
                 
-                setShow(false);
-                dispatch(setShowAddressCard(false));
+                handleOnComplete()
                 dispatch(removeAptBusiness());
                 snackbar.success('Apt and Business has been removed')
             }
             } catch (error) {
                 handleCatchError((error as Error), 'Failed to remove apt or business')
             } finally {
-                setLoading(false)
+                setRemoveLoading(false)
             }
         
     }
