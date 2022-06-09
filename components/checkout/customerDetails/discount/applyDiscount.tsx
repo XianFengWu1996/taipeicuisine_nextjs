@@ -1,7 +1,7 @@
 import { Button, Icon, styled, TextField, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { motion } from "framer-motion";
-import { FocusEvent, useState } from "react";
+import { useState } from "react";
 import { setPointRedemption } from "../../../../store/slice/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import snackbar from "../../../snackbar";
@@ -19,7 +19,8 @@ const DiscountTitle = styled('div')(() => ({
 })) 
 
 export const ApplyDiscount = () => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const [point, setPoint] = useState<string>('')
 
     const handleOpenToggle = () => {
         setOpen(!open);
@@ -29,10 +30,10 @@ export const ApplyDiscount = () => {
     const { original_subtotal, cart } = useAppSelector(state => state.cart)
     const { reward } = useAppSelector(state => state.customer)
 
-    const handleDiscountOnBlur = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element> ) => {
-        let point = Number(e.target.value);
+    const handleAddPointRedemption = () => {
+        let pt = Number(point);
 
-        if(point > reward.points){
+        if(pt > reward.points){
             return snackbar.error(`Not enough points (${reward.points} pts available)`);
         } 
 
@@ -40,7 +41,7 @@ export const ApplyDiscount = () => {
             return snackbar.error("Cart is empty, try adding something...");
         }
 
-        dispatch(setPointRedemption(point));
+        dispatch(setPointRedemption(pt));
         setOpen(false); 
         snackbar.success('Point applied')
     }
@@ -67,10 +68,17 @@ export const ApplyDiscount = () => {
             <TextField
                 autoComplete='off'
                 type={'number'}
+                size={'small'}
                 placeholder={`Points Available: ${reward.points}`}
-                sx={{ width: '300px', marginBottom: '20px'}}
-                onBlur={handleDiscountOnBlur}
+                sx={{ width: '275px', marginBottom: '20px'}}
+                onChange={(event) => { setPoint(event.target.value) }}
             />
+
+            <Button 
+                variant='contained' 
+                sx={{ mx: 1.2, backgroundColor: blue[300], py: 0.9}}
+                onClick={handleAddPointRedemption}
+            >Redeem</Button>
             </motion.div>
     </>
 }
