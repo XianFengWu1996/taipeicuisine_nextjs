@@ -13,6 +13,8 @@ import { handleCatchError } from "../../../utils/errors/custom"
 import { PickupTime } from "./pickupTime/pickupTime"
 import { handleInStoreOrCashOrder, handleOnlineOrder, validateToPlaceOrder } from "../../../utils/functions/payment"
 import { setAllowPayment } from "../../../store/slice/settingSlice"
+import { useState } from "react"
+import { BeatLoader } from "react-spinners"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -36,6 +38,7 @@ const UtensilPickUpTimeContainer = styled('div')(({ theme }) => ({
 }))
 
 export const CustomerDetails = () => {
+    const [loading, setLoading] = useState<boolean>(false)
 
     const cartState = useAppSelector(state => state.cart)
     const customerState = useAppSelector(state => state.customer)
@@ -46,17 +49,37 @@ export const CustomerDetails = () => {
 
     const handlePlaceOrder = async () => {
         try {
-            validateToPlaceOrder(cartState, customerState);
-            // head to the payment page for online payments
-            if(cartState.payment_type === 'online'){
-                await handleOnlineOrder(cartState, customerState);
-            } else {
-                await handleInStoreOrCashOrder(cartState, customerState)
+            setLoading(true);
+
+            if(!loading){
+                validateToPlaceOrder(cartState, customerState);
+                // head to the payment page for online payments
+                if(cartState.payment_type === 'online'){
+                    await handleOnlineOrder(cartState, customerState);
+                } else {
+                    await handleInStoreOrCashOrder(cartState, customerState)
+                }
+                dispatch(setAllowPayment(true))
             }
-            dispatch(setAllowPayment(true))
+            
         } catch (error) {
             handleCatchError(error as Error, 'Failed to place order');
+        } finally {
+            setLoading(false);
         }
+    }
+
+    const handleButtonDisplay = () => {
+        if(loading){
+            return <BeatLoader color="white" size={7} />
+        }
+
+        if(cartState.payment_type === 'online'){
+            return 'Proceed to Payment'
+        } else {
+            return 'Place Order'
+        } 
+
     }
 
     return <CheckoutContainer>
@@ -83,8 +106,10 @@ export const CustomerDetails = () => {
             variant="contained" 
             sx={{ backgroundColor: '#000', padding: '10px 50px'}}
             onClick={handlePlaceOrder}
-
-        >{cartState.payment_type === 'online' ? 'Proceed to Payment' : 'Place Order'}</Button>
+        >
+            {handleButtonDisplay()}
+            {/* {} */}
+            </Button>
     </CheckoutContainer>
 }
 
