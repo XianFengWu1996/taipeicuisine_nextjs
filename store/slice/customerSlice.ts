@@ -42,7 +42,9 @@ export const customerSlice = createSlice({
     updateAddress:(state, {payload} : PayloadAction<IAddress>) => {
       state.address = {
         ...state.address,
-        ...payload
+        ...payload,
+        apt: '',
+        business: ''
       }
     },   
     updateAptBusiness:(state, {payload} : PayloadAction<{ apt: string, business: string}>) => {
