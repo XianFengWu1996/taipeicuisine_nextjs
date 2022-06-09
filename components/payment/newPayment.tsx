@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 import { FormEvent, useState } from 'react';
 import { handleCatchError } from '../../utils/errors/custom';
 import { handlePayWithIntent } from '../../utils/functions/payment';
-import { TipSelection } from '../checkout/customerDetails/tipSelection';
+import { TipSelection } from './tipSelection';
 import { PaymentElement } from '@stripe/react-stripe-js';
 
 interface INewPaymentFormProps {

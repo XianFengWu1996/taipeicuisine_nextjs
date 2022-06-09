@@ -6,7 +6,7 @@ import { FormEvent, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { handleCatchError } from '../../utils/errors/custom';
 import { handlePayWithMethodId } from '../../utils/functions/payment';
-import { TipSelection } from '../checkout/customerDetails/tipSelection';
+import { TipSelection } from './tipSelection';
 
 
 interface ISavePaymentFormProps {
