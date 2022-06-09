@@ -51,7 +51,14 @@ export const customerSlice = createSlice({
         apt: isEmpty(payload.apt) ? state.address.apt : payload.apt,
         business: isEmpty(payload.business) ? state.address.business : payload.business
       }
-    },   
+    },
+    removeAptBusiness:(state) => {
+      state.address = {
+        ...state.address,
+        apt: '',
+        business: '',
+      }
+    },
   }
 })
 
@@ -62,6 +69,7 @@ export const {
   addNewPhone,
   updateAddress,
   updateAptBusiness,
+  removeAptBusiness,
   getCustomer,
 } = customerSlice.actions
 
