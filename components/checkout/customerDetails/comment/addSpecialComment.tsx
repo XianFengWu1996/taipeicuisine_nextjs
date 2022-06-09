@@ -1,8 +1,10 @@
-import { Button, TextField } from "@mui/material";
-import { blue } from "@mui/material/colors";
+import { Button, IconButton, TextField } from "@mui/material";
+import { blue, red } from "@mui/material/colors";
+import { Box } from "@mui/system";
 import { motion, Variants } from "framer-motion";
 import { isEmpty } from "lodash";
-import { FocusEvent, useState } from "react";
+import { useState } from "react";
+import { FaTimes } from "react-icons/fa";
 import { setComments } from "../../../../store/slice/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import snackbar from "../../../snackbar";
@@ -23,30 +25,38 @@ export const sliding_variant: Variants | undefined = {
 }
 
 export const AddSpecialComment = () => {
-    const [open, setOpen] = useState(false);
-
     const { comments } = useAppSelector(state => state.cart)
     const dispatch = useAppDispatch();
+
+    const [open, setOpen] = useState<boolean>(false);
+    const [comment, setComment] = useState<string>(comments)
 
     const handleOpenToggle = () => {
         setOpen(!open);
     }
 
-    const handleCommentOnBlur = (e: FocusEvent<HTMLTextAreaElement | HTMLInputElement, Element>) => {
-        dispatch(setComments(e.target.value));
+    const handleCommentOnComplete = () => {
+        dispatch(setComments(comment));
         setOpen(false); 
 
-        if(isEmpty(e.target.value)){
+        if(isEmpty(comment)){
             snackbar.warning('Special instruction removed')
             return
         } 
 
-        if(isEmpty(comments)) {
+        if(isEmpty(comment)) {
             snackbar.success('Special instruction added')
             return;
         } 
     
         snackbar.info('Special instruction updated')
+    }
+
+    const handleRemoveComments = () => {
+        setOpen(false)
+        setComment('')
+        dispatch(setComments(''));
+        snackbar.info('Comment removed')
     }
 
     return <>
@@ -62,9 +72,25 @@ export const AddSpecialComment = () => {
                 placeholder="Leave some notes for the restaurant, ex. delivery instruction"
                 multiline
                 rows={3}
-                sx={{ width: '90%', marginBottom: '20px'}}
-                onBlur={handleCommentOnBlur}
+                sx={{ width: '90%', mb: 1}}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
             />
+
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5}}>
+                <Button 
+                    variant='contained' 
+                    sx={{backgroundColor: blue[300],  px: 4, mr: 1.5}}
+                    onClick={handleCommentOnComplete}
+                >Proceed</Button>
+
+                {
+                    !isEmpty(comments) && <IconButton sx={{ color: red[400]}} onClick={handleRemoveComments}>
+                        <FaTimes />
+                    </IconButton>
+                }
+            </Box>
+
             </motion.div>
     </>
 }
