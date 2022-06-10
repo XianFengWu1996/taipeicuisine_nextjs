@@ -52,6 +52,10 @@ export const MenuItemList = () => {
         order: 0,
         pic_url:'',
         is_customizable: false,
+        additional_info: {
+            menu: '',
+            category: ''
+        }
     });
 
     const handleOnClose = () => {

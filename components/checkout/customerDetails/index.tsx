@@ -15,6 +15,10 @@ import { handleInStoreOrCashOrder, handleOnlineOrder, validateToPlaceOrder } fro
 import { setAllowPayment } from "../../../store/slice/settingSlice"
 import { useState } from "react"
 import { BeatLoader } from "react-spinners"
+import snackbar from "../../snackbar"
+import { hasExpired } from "../../../utils/functions/time"
+import { format } from "date-fns"
+import { fetchMenu } from "../../../utils/functions/menu"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -42,6 +46,7 @@ export const CustomerDetails = () => {
 
     const cartState = useAppSelector(state => state.cart)
     const customerState = useAppSelector(state => state.customer)
+    const { menus, expiration } = useAppSelector(state => state.menus)
     const dispatch = useAppDispatch();
 
 
@@ -51,18 +56,75 @@ export const CustomerDetails = () => {
         try {
             setLoading(true);
 
-            if(!loading){
-                validateToPlaceOrder(cartState, customerState);
-                // head to the payment page for online payments
-                if(cartState.payment_type === 'online'){
-                    await handleOnlineOrder(cartState, customerState);
-                } else {
-                    await handleInStoreOrCashOrder(cartState, customerState)
-                }
-                dispatch(setAllowPayment(true))
+            if(hasExpired(expiration)){
+                console.log(hasExpired(expiration))
+                await fetchMenu({ setLoading: null, expiration});
             }
+
+            cartState.cart.forEach((item) => {
+                menus.forEach((menu) => {
+                    if(menu.document_name === item.dish.additional_info.menu){ // locates the menu
+                        menu.category.forEach((category) => {
+                            if(category.document_name === item.dish.additional_info.category){ // locates the category
+                                category.dishes.forEach((dish) => {
+                                    if(dish.id === item.dish.id){
+                                        console.log(dish);
+                                        //  compare the price
+                                        if(!dish.in_stock){
+                                            // remove the dish from the cart
+                                            return snackbar.error('A item in your cart is no longer available')
+                                        }
+        
+                                        if(dish.price !== item.dish.price){
+                                            // item did not change
+                                            
+                                            return snackbar.info('The price for a item has been updated')
+                                        }
+                                    }
+                                })
+                            }   
+                        })
+                    }
+                })
+                // console.log('mapping ran')
+                // menus.forEach(menu => {
+                //     if(menu.id !== 'ca9fe450-064c-4f9c-b3b0-8ead68d88822'){
+                //         menu.category.forEach((category) => {
+                //             category.dishes.forEach((dish) => {
+                //                 if(dish.id === item.id){
+                //                     // compare the price
+                //                     if(!dish.in_stock){
+                //                         // remove the dish from the cart
+                //                         return snackbar.error('A item in your cart is no longer available')
+                //                     }
+    
+                //                     if(dish.price !== item.dish.price){
+                //                         // item did not change
+                //                         return snackbar.info('The price for a item has been updated')
+                //                     }
+                //                 }
+                //             })
+                //         })
+                //     }
+                // })
+                    
+            })
+
+           
+
+            // if(!loading){
+            //     validateToPlaceOrder(cartState, customerState);
+            //     // head to the payment page for online payments
+            //     if(cartState.payment_type === 'online'){
+            //         await handleOnlineOrder(cartState, customerState);
+            //     } else {
+            //         await handleInStoreOrCashOrder(cartState, customerState)
+            //     }
+            //     dispatch(setAllowPayment(true))
+            // }
             
         } catch (error) {
+            console.log(error)
             handleCatchError(error as Error, 'Failed to place order');
         } finally {
             setLoading(false);
@@ -108,7 +170,6 @@ export const CustomerDetails = () => {
             onClick={handlePlaceOrder}
         >
             {handleButtonDisplay()}
-            {/* {} */}
             </Button>
     </CheckoutContainer>
 }
