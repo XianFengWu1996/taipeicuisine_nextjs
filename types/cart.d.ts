@@ -43,6 +43,7 @@ interface ICustomizeItem {
 interface ICustomize {
     protein: ICustomizeItem[],
     veggie: ICustomizeItem[],
+    total: number,
 }
 
 interface ILunchOption {

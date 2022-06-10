@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { isEmpty } from 'lodash';
 import { v4 } from 'uuid';
 
 
@@ -26,43 +27,47 @@ const initialState: ICartState = {
     schedule_time: '',
 }
 
-const calculateTipTotal = (state: ICartState, value: number) => {
-  state.tip = Number((state.subtotal * value).toFixed(2));
-  state.total = Number((state.subtotal + state.tip + state.tax).toFixed(2));
-}
 
-const calculateTotal = (state: ICartState, value:number = 0, quantity: number = 0) => {
+const calculateTotal = (state: ICartState) => {
 
   // handle lunch count and discount
-
   let lunchCount = 0;
-  let discount = 0;
+  let lunchDiscount = 0;
+  let point_redemption_discount = 0;
+  
+  let original_subtotal = 0;
+  let cart_quantity = 0;
 
   state.cart.forEach((item) => {
     if(item.dish.is_lunch){
       lunchCount += item.quantity;
     }
+    original_subtotal += item.total
+    cart_quantity += item.quantity
   })
 
-  if(state.cart.length <= 0){
-    discount = 0;
+  if(isEmpty(state.cart)){
+    point_redemption_discount = 0;
     state.point_redemption = 0;
-    state.payment_type = ''
   } else {
-    discount = Number((state.point_redemption / 100).toFixed(2));
+    point_redemption_discount = Number((state.point_redemption / 100).toFixed(2));
   }
+  
+  lunchDiscount = Math.floor(lunchCount / 3) * 2.9;
+  original_subtotal = Number((original_subtotal).toFixed(2));;
+  const subtotal = Number((original_subtotal - point_redemption_discount - state.lunch_discount).toFixed(2))
+  
 
-  state.lunch_discount = Math.floor(lunchCount / 3) * 2.9
+  state.cart_quantity = cart_quantity;
+  state.original_subtotal = original_subtotal;
+  state.subtotal = subtotal;
+  state.tax = Number((subtotal * 0.07).toFixed(2))
+  state.total = Number((subtotal + state.tax + state.tip + (state.is_delivery ? state.delivery_fee : 0)).toFixed(2))
+  state.lunch_discount = lunchDiscount
+  state.point_redemption = point_redemption_discount;
+  state.payment_type = '' // reset the payment type
 
-  state.cart_quantity = state.cart_quantity + quantity;
-  state.original_subtotal = Number((state.original_subtotal + value).toFixed(2));
-  state.subtotal = Number((state.original_subtotal - discount - state.lunch_discount).toFixed(2));
-  state.tax = Number((state.subtotal * 0.07).toFixed(2))
-  state.total = Number((state.subtotal + state.tax +(state.is_delivery ? state.delivery_fee : 0) ).toFixed(2))
-
-  state.payment_type = ''
 }
-
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -91,7 +96,7 @@ export const cartSlice = createSlice({
         }  
 
          // update the quantity of the cart
-        calculateTotal(state, payload.total, payload.quantity);
+        calculateTotal(state);
     },
     increaseQty: (state, { payload } : PayloadAction<ICartItem>) => {
       let index = state.cart.findIndex((item) => item.id === payload.id);
@@ -103,7 +108,7 @@ export const cartSlice = createSlice({
         total: Number((item.total + item.dish.price).toFixed(2))
       }
 
-      calculateTotal(state, payload.dish.price, 1); 
+      calculateTotal(state); 
     },
     decreaseQty: (state, { payload } : PayloadAction<ICartItem>) => {
       let index = state.cart.findIndex((item) => item.id === payload.id);
@@ -114,12 +119,19 @@ export const cartSlice = createSlice({
         quantity: payload.quantity - 1,
         total: Number((item.total - item.dish.price).toFixed(2))
       }
-      calculateTotal(state, -payload.dish.price, -1)
+      calculateTotal(state)
     },
     removeItemFromCart: (state, {payload} : PayloadAction<ICartItem>) => {
       let index = state.cart.findIndex(item => item.id === payload.id); 
       state.cart.splice(index, 1);
-      calculateTotal(state, -payload.total, -payload.quantity);
+      calculateTotal(state);
+    },
+    updateCartItem: (state, { payload } : PayloadAction<IDish>) => {
+      let index = state.cart.findIndex(item => item.dish.id === payload.id)
+
+      state.cart[index].dish = payload;
+
+      calculateTotal(state);
     },
     clearCart: (state) => {
       state.cart = [];
@@ -149,29 +161,29 @@ export const cartSlice = createSlice({
 
       switch (payload) {
         case '10%':
-          calculateTipTotal(state, .10);
+          state.tip = Number((state.original_subtotal * .10).toFixed(2));
         break;
 
         case '15%':
-          calculateTipTotal(state, .15);
+          state.tip = Number((state.original_subtotal * .15).toFixed(2));
         break;
 
         case '18%':
-          calculateTipTotal(state, .18);
+          state.tip = Number((state.original_subtotal * .18).toFixed(2));
         break;
 
         case '20%':
-          calculateTipTotal(state, .20);
+          state.tip = Number((state.original_subtotal * .20).toFixed(2));
         break;
 
         default:
-          calculateTipTotal(state, 0);
+          state.tip = Number((state.original_subtotal * 0).toFixed(2));
           break;
       }
     },
     setCustomTip: (state, { payload }: PayloadAction<number>) => {
       state.tip = Number((payload).toFixed(2));
-      state.total = Number((state.subtotal + state.tip + state.tax).toFixed(2));
+      calculateTotal(state);
     },
     // PAYMENT RELATED
     setPayment: (state, {payload} : PayloadAction<IPaymentType>) => {

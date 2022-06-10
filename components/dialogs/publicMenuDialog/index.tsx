@@ -47,6 +47,8 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
     // customize 
     const [protein, setProtein] = useState<ICustomizeItem[]>([])
     const [veggie, setVeggie] = useState<ICustomizeItem[]>([]);
+    const [customize_total, setCustomizeTotal] = useState<number>(0);
+
     const [showCustomize, setShowCustomize] = useState<boolean>(false);
 
     //  lunch option
@@ -163,7 +165,8 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
             customize: dish.is_customizable ? (
                 (!isEmpty(protein) || !isEmpty(veggie)) ? {
                     protein,
-                    veggie
+                    veggie,
+                    total: customize_total,
                 } : null
             ) : null
         }));
@@ -180,22 +183,18 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
     }
 
     const handleOnAddCustomizeItem = (amount: number) => {
-        let new_total = total + amount;
-        
-        setTotal(new_total);
+        setCustomizeTotal(customize_total + amount)
     }
 
     const handleOnRemoveCustomizeItem = (amount: number) => {
-        let new_total = total - amount;
-        
-        setTotal(new_total);
+        setCustomizeTotal(customize_total - amount)
     }
 
     const handleResetCustomizeOnClick = () => {
         setShowCustomize(!showCustomize)
         setProtein([])
         setVeggie([])
-        setTotal(quantity * (dish.price + option_price))
+        setCustomizeTotal(0);
     }
 
     // set the total as the select dish price for one, will only change when the dish change
@@ -206,9 +205,9 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
 
     // // will calculate the total, if quantity, the option price, or dish changes
     useEffect(() => {
-        let temp = quantity * (dish.price + option_price);
+        let temp = quantity * (dish.price + option_price + customize_total);
         setTotal(temp);
-    }, [quantity, option?.price])
+    }, [quantity, dish.price, option_price, customize_total])
 
 
     return <Dialog
@@ -235,6 +234,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
                             handleOnRadioChange={handleOnRadioChange}
                         />
 
+                        <Typography>{customize_total}</Typography>
                         <Comments handleOnBlur={(e) => {
                             setComments(e.target.value)
                         }}/>
