@@ -19,6 +19,7 @@ import snackbar from "../../snackbar"
 import { hasExpired } from "../../../utils/functions/time"
 import { format } from "date-fns"
 import { fetchMenu } from "../../../utils/functions/menu"
+import { removeItemFromCart, updateCartItem } from "../../../store/slice/cartSlice"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -56,60 +57,46 @@ export const CustomerDetails = () => {
         try {
             setLoading(true);
 
+            let temp_menus: IMenu[] = [];
+
             if(hasExpired(expiration)){
-                console.log(hasExpired(expiration))
-                await fetchMenu({ setLoading: null, expiration});
+                let data = await fetchMenu({ setLoading: null, expiration});
+
+                if(data){
+                    temp_menus = data;
+                }
             }
 
+            temp_menus = menus; 
+
             cartState.cart.forEach((item) => {
-                menus.forEach((menu) => {
+                temp_menus.forEach((menu) => {
                     if(menu.document_name === item.dish.additional_info.menu){ // locates the menu
                         menu.category.forEach((category) => {
                             if(category.document_name === item.dish.additional_info.category){ // locates the category
                                 category.dishes.forEach((dish) => {
                                     if(dish.id === item.dish.id){
-                                        console.log(dish);
                                         //  compare the price
                                         if(!dish.in_stock){
                                             // remove the dish from the cart
-                                            return snackbar.error('A item in your cart is no longer available')
+                                            dispatch(removeItemFromCart(item))
+                                            throw new Error(`${dish.label_id}.${dish.en_name} ${dish.ch_name} is no longer available`);
                                         }
         
                                         if(dish.price !== item.dish.price){
                                             // item did not change
-                                            
-                                            return snackbar.info('The price for a item has been updated')
+                                            dispatch(updateCartItem(dish))
+                                            return snackbar.info(`The price for (${dish.label_id}.${dish.en_name} ${dish.ch_name}) has been updated`)
                                         }
                                     }
                                 })
                             }   
                         })
                     }
-                })
-                // console.log('mapping ran')
-                // menus.forEach(menu => {
-                //     if(menu.id !== 'ca9fe450-064c-4f9c-b3b0-8ead68d88822'){
-                //         menu.category.forEach((category) => {
-                //             category.dishes.forEach((dish) => {
-                //                 if(dish.id === item.id){
-                //                     // compare the price
-                //                     if(!dish.in_stock){
-                //                         // remove the dish from the cart
-                //                         return snackbar.error('A item in your cart is no longer available')
-                //                     }
-    
-                //                     if(dish.price !== item.dish.price){
-                //                         // item did not change
-                //                         return snackbar.info('The price for a item has been updated')
-                //                     }
-                //                 }
-                //             })
-                //         })
-                //     }
-                // })
-                    
+                })            
             })
 
+            console.log('this is ran no dish error')
            
 
             // if(!loading){

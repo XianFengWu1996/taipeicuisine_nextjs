@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { isEmpty } from 'lodash';
 import { v4 } from 'uuid';
 
-
-
 // Define the initial state using that type
 const initialState: ICartState = {
     order_id: v4(),
@@ -26,7 +24,6 @@ const initialState: ICartState = {
     dont_include_utensils: false, 
     schedule_time: '',
 }
-
 
 const calculateTotal = (state: ICartState) => {
 
@@ -102,10 +99,11 @@ export const cartSlice = createSlice({
       let index = state.cart.findIndex((item) => item.id === payload.id);
 
       let item = state.cart[index];
+      // the dish price already include the option price
       state.cart[index] = {
         ...item,
         quantity: payload.quantity + 1,
-        total: Number((item.total + item.dish.price).toFixed(2))
+        total: Number((item.total + item.dish.price + (item.customize ? item.customize.total : 0)).toFixed(2))
       }
 
       calculateTotal(state); 
@@ -114,10 +112,12 @@ export const cartSlice = createSlice({
       let index = state.cart.findIndex((item) => item.id === payload.id);
 
       let item = state.cart[index];
+   
+      // the dish price already include the option price
       state.cart[index] = {
         ...item,
         quantity: payload.quantity - 1,
-        total: Number((item.total - item.dish.price).toFixed(2))
+        total: Number((item.total - item.dish.price - (item.customize ? item.customize.total : 0)).toFixed(2))
       }
       calculateTotal(state)
     },
@@ -129,10 +129,13 @@ export const cartSlice = createSlice({
     updateCartItem: (state, { payload } : PayloadAction<IDish>) => {
       let index = state.cart.findIndex(item => item.dish.id === payload.id)
 
+      let option_price = state.cart[index].option?.price ?? 0
       state.cart[index].dish = payload;
+      state.cart[index].total = (payload.price + option_price) * state.cart[index].quantity;
 
       calculateTotal(state);
     },
+    
     clearCart: (state) => {
       state.cart = [];
       state.cart_quantity = 0
@@ -226,6 +229,7 @@ export const {
   increaseQty,
   decreaseQty,
   removeItemFromCart,
+  updateCartItem,
   clearCart,
   deliveryToggle,
   setTip,

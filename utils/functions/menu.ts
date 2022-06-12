@@ -23,6 +23,8 @@ export const fetchMenu = async ({ setLoading,expiration }: IFetchMenu) => {
             menus.push(response.data.lunch);
             
             store.dispatch(getInitialMenuData({ menus: menus, expiration: response.data.expiration }))
+
+            return menus
         }
     } catch (error) {
         handleCatchError((error as Error), 'Failed to fetch menu')

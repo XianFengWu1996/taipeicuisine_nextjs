@@ -89,6 +89,7 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
         setLunchOption(lunchOptionInitialState)
         setProtein([])
         setVeggie([]);
+        setCustomizeTotal(0);
         setShowCustomize(false)
     }
 
@@ -234,7 +235,6 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
                             handleOnRadioChange={handleOnRadioChange}
                         />
 
-                        <Typography>{customize_total}</Typography>
                         <Comments handleOnBlur={(e) => {
                             setComments(e.target.value)
                         }}/>
