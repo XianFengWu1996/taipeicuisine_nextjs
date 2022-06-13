@@ -53,12 +53,45 @@ export const CustomerDetails = () => {
 
     const desktop = useMediaQuery('(min-width: 900px)');
 
+    const handleUpdateDish = (cart: ICartItem[], menu: IMenu[]) => {
+        cart.forEach((item) => {
+            menu.forEach((menu) => {
+                if(menu.document_name === item.dish.additional_info.menu){ // locates the menu
+                    menu.category.forEach((category) => {
+                        if(category.document_name === item.dish.additional_info.category){ // locates the category
+                            category.dishes.forEach((dish) => {
+                                if(dish.id === item.dish.id){
+                                    //  compare the price
+                                    if(!dish.in_stock){
+                                        // remove the dish from the cart
+                                        dispatch(removeItemFromCart(item))
+                                        throw new Error(`${dish.label_id}.${dish.en_name} ${dish.ch_name} is no longer available`);
+                                    }
+    
+                                    if(dish.price !== item.dish.price){
+                                        if(item.customize){
+                                            dispatch(removeItemFromCart(item))
+                                            throw new Error(`${dish.label_id}.${dish.en_name} ${dish.ch_name} has been removed from you cart`);
+                                        }
+                                        // item did not change
+                                        dispatch(updateCartItem(dish))
+                                        throw new Error(`The price for (${dish.label_id}.${dish.en_name} ${dish.ch_name}) has been updated`)
+                                    }
+                                }
+                            })
+                        }   
+                    })
+                }
+            })            
+        })
+    }
+
     const handlePlaceOrder = async () => {
         try {
             setLoading(true);
 
-            let temp_menus: IMenu[] = [];
-
+            let temp_menus: IMenu[] = menus;
+            console.log(hasExpired(expiration))
             if(hasExpired(expiration)){
                 let data = await fetchMenu({ setLoading: null, expiration});
 
@@ -66,49 +99,19 @@ export const CustomerDetails = () => {
                     temp_menus = data;
                 }
             }
-
-            temp_menus = menus; 
-
-            cartState.cart.forEach((item) => {
-                temp_menus.forEach((menu) => {
-                    if(menu.document_name === item.dish.additional_info.menu){ // locates the menu
-                        menu.category.forEach((category) => {
-                            if(category.document_name === item.dish.additional_info.category){ // locates the category
-                                category.dishes.forEach((dish) => {
-                                    if(dish.id === item.dish.id){
-                                        //  compare the price
-                                        if(!dish.in_stock){
-                                            // remove the dish from the cart
-                                            dispatch(removeItemFromCart(item))
-                                            throw new Error(`${dish.label_id}.${dish.en_name} ${dish.ch_name} is no longer available`);
-                                        }
-        
-                                        if(dish.price !== item.dish.price){
-                                            // item did not change
-                                            dispatch(updateCartItem(dish))
-                                            return snackbar.info(`The price for (${dish.label_id}.${dish.en_name} ${dish.ch_name}) has been updated`)
-                                        }
-                                    }
-                                })
-                            }   
-                        })
-                    }
-                })            
-            })
-
-            console.log('this is ran no dish error')
-           
-
-            // if(!loading){
-            //     validateToPlaceOrder(cartState, customerState);
-            //     // head to the payment page for online payments
-            //     if(cartState.payment_type === 'online'){
-            //         await handleOnlineOrder(cartState, customerState);
-            //     } else {
-            //         await handleInStoreOrCashOrder(cartState, customerState)
-            //     }
-            //     dispatch(setAllowPayment(true))
-            // }
+            handleUpdateDish(cartState.cart, temp_menus);
+                      
+            if(!loading){
+                console.log('should only run after no dish error')
+                validateToPlaceOrder(cartState, customerState);
+                // head to the payment page for online payments
+                if(cartState.payment_type === 'online'){
+                    await handleOnlineOrder(cartState, customerState);
+                } else {
+                    await handleInStoreOrCashOrder(cartState, customerState)
+                }
+                dispatch(setAllowPayment(true))
+            }
             
         } catch (error) {
             console.log(error)
