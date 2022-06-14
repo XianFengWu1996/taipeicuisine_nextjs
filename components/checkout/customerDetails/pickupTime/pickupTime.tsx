@@ -74,7 +74,7 @@ export const PickupTime = () => {
     return <Card sx={{ margin: '10px 0', width: '400px', height: '100px'}}>
     <CardContent>
         <Typography sx={{ color: blue[300], fontWeight: 700, mb: 0.6,display: 'flex', alignItems: 'center'}}>
-        <GiAlarmClock size={18} style={{ margin: '0 10px'}}/>
+        <GiAlarmClock size={18}/>
         Schedule Time: {hour && minute ? `${hour}:${minute}`: 'ASAP(NOW)'}
 
         <Tooltip title="The time indicate when to pick up the food" arrow>
