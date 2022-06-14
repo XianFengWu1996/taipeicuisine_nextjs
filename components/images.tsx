@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import fallbackImg from '../assets/images/fallback.jpeg'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 interface IImageWithFallbackProps {
     label: string,
@@ -38,14 +40,16 @@ export const MenuPreviewImage = (props: IImageWithFallbackProps) => {
 
     return <>
         {
-            props.src && props.src.length > 0 && <Image
-                src={error ? fallbackImg.src : props.src}
-                alt={`Image for ${props.label}`}
-                width={100}
-                height={100}
-                layout="intrinsic"
-                onError={handleOnError}
-            /> 
+            props.src && props.src.length > 0 && <Zoom>
+                 <Image
+                    src={error ? fallbackImg.src : props.src}
+                    alt={`Image for ${props.label}`}
+                    width={100}
+                    height={100}
+                    layout="intrinsic"
+                    onError={handleOnError}
+                /> 
+            </Zoom>
         }
     </>
 }   

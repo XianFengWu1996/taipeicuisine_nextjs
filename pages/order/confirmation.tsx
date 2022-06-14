@@ -11,7 +11,7 @@ export default function Confirmation () {
             <div><BsPatchCheck size={100} color="#7FFFD4"/></div>
             <Typography variant="h3">Order Confirmation</Typography>
 
-            <Card sx={{ my: 3}}>
+            <Card sx={{ my: 3, width: '500px'}}>
                 <CardContent style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start'}}>
                     <Typography sx={{ fontWeight: 800}}>Order Summary</Typography>
                     <Typography>Name: {query.name}</Typography>

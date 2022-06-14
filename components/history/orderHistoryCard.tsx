@@ -7,11 +7,10 @@ import { OrderPayment } from "./orderPayment";
 import { OrderReward } from "./orderReward";
 import { OrderSpecialInstruction } from "./orderSpecialInstruction";
 import { OrderSummaryList } from "./orderSummaryList";
-import { DateTime } from 'luxon'
+import { format_date } from "../../utils/functions/time";
 
 export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
     const [expand, setExpand] = useState<boolean>(false)
-    const formatted_date = DateTime.fromMillis(order.created_at).toFormat('LLL dd, y T')
 
     return <>
         <Card  sx={{ mt: 3, width: '85%'}} onClick={() => {
@@ -19,7 +18,7 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
         }}>
             <CardContent sx={{ display: 'flex', justifyContent: 'space-between', padding: 3}}>
                 <div>
-                    <Typography sx={{ fontWeight: 500}}>{formatted_date}</Typography>
+                    <Typography sx={{ fontWeight: 500}}>{format_date(order.created_at)}</Typography>
                     <Typography sx={{ fontWeight: 500}}>Order #: {order.order_id}</Typography>
                 </div>
 

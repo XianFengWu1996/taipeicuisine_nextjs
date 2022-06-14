@@ -1,3 +1,5 @@
+import {DateTime} from 'luxon'
+
 export const convertMinuteToDate = (min: number) => {
     // 550 -> '09', '50'
     let hour, minute;
@@ -15,4 +17,10 @@ export const convertMinuteToDate = (min: number) => {
 
 export const hasExpired = (timestamp: number) => {
     return timestamp <= Date.now()
+}
+
+
+// date formatting
+export const format_date = (timestamp:number, format?: string) => {
+    return DateTime.fromMillis(timestamp).toFormat(format ?? 'LLL dd, y T');
 }
