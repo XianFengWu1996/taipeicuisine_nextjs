@@ -32,14 +32,6 @@ const CheckoutContainer = styled('div')(({ theme }) => ({
     },
 }))
 
-const UtensilPickUpTimeContainer = styled('div')(({ theme }) => ({
-    display: 'flex', 
-    justifyContent: 'space-between',
-
-    [theme.breakpoints.down('lg')]: {
-        flexDirection: 'column'
-    },
-}))
 
 export const CustomerDetails = () => {
     const [loading, setLoading] = useState<boolean>(false)
@@ -145,10 +137,9 @@ export const CustomerDetails = () => {
 
         <AddSpecialComment />
 
-        <UtensilPickUpTimeContainer>
-            <IncludeUtensils />
-            <PickupTime />
-        </UtensilPickUpTimeContainer>
+        <IncludeUtensils />
+
+        <PickupTime />
 
         <PaymentSelection />
 

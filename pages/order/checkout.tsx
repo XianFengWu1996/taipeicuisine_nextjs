@@ -62,11 +62,11 @@ export default function CheckoutPage() {
         <PublicAppBar />
             {
                 !show_checkout_skeleton ? <Grid container spacing={8}>
-                    <Grid item lg={7} md={8} sm={12} xs={12}>
+                    <Grid item lg={6.5} md={7} sm={12} xs={12}>
                         <CustomerDetails /> 
                     </Grid> 
             
-                    {  desktop && <Grid item lg={5} md={4} ><CartSummary /></Grid>  } 
+                    {  desktop && <Grid item lg={5.5} md={5} ><CartSummary /></Grid>  } 
                 </Grid> : <CheckoutSkeleton />    
             }
 
