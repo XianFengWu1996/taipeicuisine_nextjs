@@ -3,53 +3,25 @@ import Router from "next/router";
 import snackbar from "../../components/snackbar";
 import { handleFirebaseAuthError } from "./firebaseError";
 import { handleAxiosError } from "./handleAxiosError";
-
-// CUSTOM ERROR FOR NOT AUTHORIZE 
-export class NotAuthorizeError extends Error{
-    constructor(msg?: string){
-        super(msg);
-
-        this.message = msg ? msg : 'Not authorized';
-        this.name = 'NotAuthorizeError';
-    }
-}
-
-// CHECK IF THE ERROR IS AN UNAUTHORIZE ERROR
-export const isNotAuthError = (error: Error) => {
-    return error.name === 'NotAuthorizeError'
-}
-
-
-// NO TOKEN FOUND ERROR
-export class NoTokenFoundError extends Error{
-    constructor(msg?: string){
-        super(msg);
-
-        this.message = msg ? msg : 'No Token Found';
-        this.name = 'NoTokenFoundError';
-    }
-}
-
-// CHECK IF THE ERROR IS AN UNAUTHORIZE ERROR
-export const isNoTokenFoundError = (error: Error) => {
-    return error.name === 'NoTokenFoundError'
-}
-
-
+import { isInfoError } from "./infoError";
+import { isNotAuthError } from "./notAuthError";
 
 export const handleCatchError = (err: Error, msg: string) => {
     if((err as Error).name === 'FirebaseError'){
-        handleFirebaseAuthError(err);
-        return;
+        return handleFirebaseAuthError(err);
       }
 
       if(axios.isAxiosError(err)){
-        handleAxiosError(err);
-        return;
+        return handleAxiosError(err);
+        ;
       }
 
       if(isNotAuthError(err)){
           return Router.replace('/order');
+      }
+
+      if(isInfoError(err)){
+        return snackbar.info(err.message);
       }
 
       snackbar.error(err.message ?? msg)

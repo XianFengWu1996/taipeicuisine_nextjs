@@ -4,7 +4,8 @@ import snackbar from "../../components/snackbar";
 import { updateCustomerName } from "../../store/slice/customerSlice";
 import { setShowCustomerCard } from "../../store/slice/settingSlice";
 import store from "../../store/store";
-import { handleCatchError, NoTokenFoundError } from "../errors/custom";
+import { handleCatchError } from "../errors/custom";
+import { NoTokenFoundError } from "../errors/noTokenError";
 import { fbAuth } from "./auth";
 
 // retrieve order history

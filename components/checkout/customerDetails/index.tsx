@@ -15,11 +15,10 @@ import { handleInStoreOrCashOrder, handleOnlineOrder, validateToPlaceOrder } fro
 import { setAllowPayment } from "../../../store/slice/settingSlice"
 import { useState } from "react"
 import { BeatLoader } from "react-spinners"
-import snackbar from "../../snackbar"
 import { hasExpired } from "../../../utils/functions/time"
-import { format } from "date-fns"
 import { fetchMenu } from "../../../utils/functions/menu"
 import { removeItemFromCart, updateCartItem } from "../../../store/slice/cartSlice"
+import { InfoError } from "../../../utils/errors/infoError"
 
 
 const CheckoutContainer = styled('div')(({ theme }) => ({
@@ -75,7 +74,7 @@ export const CustomerDetails = () => {
                                         }
                                         // item did not change
                                         dispatch(updateCartItem(dish))
-                                        throw new Error(`The price for (${dish.label_id}.${dish.en_name} ${dish.ch_name}) has been updated`)
+                                        throw new InfoError(`The price for (${dish.label_id}.${dish.en_name} ${dish.ch_name}) has been updated`)
                                     }
                                 }
                             })
@@ -102,7 +101,6 @@ export const CustomerDetails = () => {
             handleUpdateDish(cartState.cart, temp_menus);
                       
             if(!loading){
-                console.log('should only run after no dish error')
                 validateToPlaceOrder(cartState, customerState);
                 // head to the payment page for online payments
                 if(cartState.payment_type === 'online'){

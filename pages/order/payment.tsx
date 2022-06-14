@@ -4,7 +4,7 @@ import { PaymentForm } from "../../components/payment/paymentForm";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { fbAuth } from "../../utils/functions/auth";
-import { handleCatchError, NotAuthorizeError } from "../../utils/errors/custom";
+import { handleCatchError } from "../../utils/errors/custom";
 import { Elements } from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import { Skeleton } from "@mui/material";
@@ -12,6 +12,7 @@ import { handleGetPaymentList } from "../../utils/functions/payment";
 import Router from "next/router";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setAllowPayment } from "../../store/slice/settingSlice";
+import { NotAuthorizeError } from "../../utils/errors/notAuthError";
 
 
 const stripePromise = loadStripe('pk_test_MQq0KVxKkSLUx0neZbdLTheo00iB1Ru6a0');
@@ -31,7 +32,7 @@ export default function PaymentPage () {
        onAuthStateChanged(fbAuth, async user => {  
         try {
             if(!user){
-                throw new NotAuthorizeError
+                throw new NotAuthorizeError();
             }
     
              // only allow the payment if it is from checkout page route 

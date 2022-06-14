@@ -12,9 +12,9 @@ import {  AdminState, getInitialStoreInfo, toggleServer, toggleLoginLoading } fr
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { isEmpty } from 'lodash'
 import { checkTokenInToken, handleAdminNotAuthRedirect, handleAdminTryCatchError } from '../../../utils/functions/errors';
-import { isNotAuthError } from '../../../utils/errors/custom';
 import { LoadingButton } from '@mui/lab';
 import { hasExpired } from '../../../utils/functions/time';
+import { isNotAuthError } from '../../../utils/errors/notAuthError';
 
 
 
@@ -68,7 +68,7 @@ export default function Dashboard ({ storeData, error }: IDashboardProps){
         }
 
         dispatch(toggleLoginLoading(false))
-    }, [])
+    }, [dispatch, error, storeData])
 
     const boxStyle: SxProps<Theme> | undefined = {
         display: 'flex',
