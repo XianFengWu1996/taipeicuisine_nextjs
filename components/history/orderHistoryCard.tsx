@@ -1,5 +1,4 @@
 import { Box, Card, CardContent, Collapse, Divider, Typography } from "@mui/material";
-import { format } from "date-fns";
 import { useState } from "react";
 import { OrderCartItem } from "./orderCartItem";
 import { OrderChipGroup } from "./orderChipGroup";
@@ -8,16 +7,19 @@ import { OrderPayment } from "./orderPayment";
 import { OrderReward } from "./orderReward";
 import { OrderSpecialInstruction } from "./orderSpecialInstruction";
 import { OrderSummaryList } from "./orderSummaryList";
+import { DateTime } from 'luxon'
 
 export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
     const [expand, setExpand] = useState<boolean>(false)
+    const formatted_date = DateTime.fromMillis(order.created_at).toFormat('LLL dd, y T')
+
     return <>
         <Card  sx={{ mt: 3, width: '85%'}} onClick={() => {
             setExpand(!expand);
         }}>
             <CardContent sx={{ display: 'flex', justifyContent: 'space-between', padding: 3}}>
                 <div>
-                    <Typography sx={{ fontWeight: 500}}>{format(order.created_at, 'MM/dd/yyyy HH:mm')}</Typography>
+                    <Typography sx={{ fontWeight: 500}}>{formatted_date}</Typography>
                     <Typography sx={{ fontWeight: 500}}>Order #: {order.order_id}</Typography>
                 </div>
 

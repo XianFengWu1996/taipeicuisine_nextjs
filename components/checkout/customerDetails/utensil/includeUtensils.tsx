@@ -12,7 +12,7 @@ export const IncludeUtensils = () => {
         dispatch(setToggleIncludeUtensils(e.target.checked))
     }
 
-    return <Card sx={{ margin: '10px 0', width: '300px', height: '100px'}}>
+    return <Card sx={{ margin: '15px 0', width: '400px', height: '100px'}}>
             <CardContent>
                 <Typography sx={{ color: 'green', fontWeight: 700}}>
                       <GiThreeLeaves />  Eco-Friendly  
