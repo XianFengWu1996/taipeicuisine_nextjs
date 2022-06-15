@@ -40,7 +40,7 @@ export const MenuPreviewImage = (props: IImageWithFallbackProps) => {
 
     return <>
         {
-            props.src && props.src.length > 0 && <Zoom>
+            props.src && props.src.length > 0 && <Zoom zoomMargin={40} overlayBgColorEnd={'rgba(0, 0, 0, 0.85)'}> 
                  <Image
                     src={error ? fallbackImg.src : props.src}
                     alt={`Image for ${props.label}`}
