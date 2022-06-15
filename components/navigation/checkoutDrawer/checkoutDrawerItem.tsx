@@ -68,6 +68,7 @@ export const CartDrawerItem = ({ item }: ICartDrawerItemProps) => {
                         <MenuPreviewImage
                             src={dish.pic_url} 
                             label={dish.en_name} 
+                            allow_zoom
                         />
                     </div>
                 </div>

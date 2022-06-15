@@ -4,13 +4,13 @@ import Router from "next/router";
 import { AiOutlineShoppingCart, AiOutlineUser, AiOutlineSetting, AiOutlineHome, AiOutlineClose } from 'react-icons/ai'
 import { HiOutlineReceiptTax } from 'react-icons/hi'
 import {MdOutlineRestaurantMenu } from 'react-icons/md'
-import { setShowLoginDialog } from "../../store/slice/settingSlice";
-import { useAppDispatch } from "../../store/store";
+import { setShowLoginDialog } from "../../../store/slice/settingSlice";
+import { useAppDispatch } from "../../../store/store";
 
 import { onAuthStateChanged, User } from 'firebase/auth'
-import { fbAuth, handleLogout } from "../../utils/functions/auth";
+import { fbAuth, handleLogout } from "../../../utils/functions/auth";
 import {  useEffect, useState } from "react";
-import snackbar from "../snackbar";
+import snackbar from "../../snackbar";
 
 interface IMenuDrawerProps {
     open: boolean,

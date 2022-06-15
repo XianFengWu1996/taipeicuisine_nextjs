@@ -3,7 +3,7 @@ import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import Router from "next/router";
 import {  useEffect } from "react";
-import { PublicAppBar } from "../../components/appbar/appbar";
+import { PublicAppBar } from "../../components/navigation/appbar/appbar";
 import { CartSummary } from "../../components/checkout/cartSummary";
 import { CustomerDetails } from "../../components/checkout/customerDetails";
 import { setDelivery } from "../../store/slice/cartSlice";

@@ -5,9 +5,9 @@ import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai'
 import BlackLogo from '../../assets/images/blacklogo.png'
 import Image from "next/image";
 import { useState } from "react";
-import { useAppSelector } from "../../store/store";
-import { MenuDrawer } from "./menuDrawer";
-import { CartDrawer } from "./checkoutDrawer";
+import { useAppSelector } from "../../../store/store";
+import { MenuDrawer } from "../menuDrawer/menuDrawer";
+import { CartDrawer } from "../checkoutDrawer";
 
 const StyleAppbar = styled(AppBar)(({theme}) => ({
     position: 'static',

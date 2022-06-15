@@ -1,4 +1,4 @@
-import { PublicAppBar } from "../../components/appbar/appbar";
+import { PublicAppBar } from "../../components/navigation/appbar/appbar";
 import Cookie from 'js-cookie'
 import { PaymentForm } from "../../components/payment/paymentForm";
 import { useEffect, useState } from "react";
