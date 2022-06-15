@@ -1,8 +1,8 @@
 import { IconButton, SwipeableDrawer, Typography } from "@mui/material"
 import { Box, styled } from "@mui/system"
 import { useAppSelector } from "../../../store/store"
-import { CartDrawerActions } from "./cartDrawerActions"
-import { CartDrawerList } from "./cartDrawerList"
+import { CartDrawerActions } from "./checkoutDrawerActions"
+import { CartDrawerList } from "./checkoutDrawerList"
 import { AiOutlineClose } from "react-icons/ai"
 
 interface ICartDrawerProps {
@@ -10,8 +10,6 @@ interface ICartDrawerProps {
     handleOpen: () => void,
     handleClose: () => void,
 }
-
-
 
 export const CartDrawer = (props: ICartDrawerProps) => {
     const cartState = useAppSelector(state => state.cart)

@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useAppSelector } from "../../store/store";
 import { MenuDrawer } from "./menuDrawer";
-import { CartDrawer } from "./cartDrawer";
+import { CartDrawer } from "./checkoutDrawer";
 
 const StyleAppbar = styled(AppBar)(({theme}) => ({
     position: 'static',
