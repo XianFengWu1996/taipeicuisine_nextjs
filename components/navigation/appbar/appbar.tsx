@@ -2,12 +2,14 @@ import { AppBar, Button, IconButton, Toolbar, useMediaQuery } from "@mui/materia
 import { Box, styled } from "@mui/system"
 import MenuIcon from '@mui/icons-material/Menu';
 import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai'
-import BlackLogo from '../../assets/images/blacklogo.png'
+import BlackLogo from '../../../assets/images/blacklogo.png'
 import Image from "next/image";
 import { useState } from "react";
 import { useAppSelector } from "../../../store/store";
 import { MenuDrawer } from "../menuDrawer/menuDrawer";
 import { CartDrawer } from "../checkoutDrawer";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const StyleAppbar = styled(AppBar)(({theme}) => ({
     position: 'static',
@@ -63,6 +65,8 @@ export const PublicAppBar = () => {
     const [cartOpen, setCartOpen] = useState(false);
     const cart = useAppSelector(state => state.cart);
 
+    const isCheckout = useRouter().pathname === '/order/checkout';
+
     const isMobile = useMediaQuery('(max-width: 480px)');
 
     const handleMenuOpen = () => {
@@ -96,25 +100,25 @@ export const PublicAppBar = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    {!isMobile ? <Image src={BlackLogo.src} alt="taipei cuisine logo" width={60} height={50}/> : null }
+                    {!isMobile && <Image src={BlackLogo.src} alt="taipei cuisine logo" width={60} height={50}/>  }
                 </div>
                 <div>
-                    {!isMobile 
-                    ? <IconButton sx={{ marginRight: 4 }}>
+                    {!isMobile && <IconButton sx={{ marginRight: 4 }}>
                         <AiOutlineUser />
                     </IconButton> 
-                    : null }
-                    <CartButton onClick={handleCartOpen}> 
-                        <AiOutlineShoppingCart />
-                        <CartCount>{cart.cart_quantity}</CartCount>
-                    </CartButton>
+                    }
+                    {
+                        !isCheckout && <CartButton onClick={handleCartOpen}> 
+                            <AiOutlineShoppingCart />
+                            <CartCount>{cart.cart_quantity}</CartCount>
+                        </CartButton>
+                    }
                 </div>
             </Toolbar>
             </StyleAppbar>
         </Box>
 
         <MenuDrawer open={menuOpen} handleOpen={handleMenuOpen} handleClose={handleMenuClose}/>
-
         <CartDrawer open={cartOpen} handleOpen={handleCartOpen} handleClose={handleCartClose}/>
     </>
 }

@@ -1,6 +1,7 @@
-import { Divider, List, Typography } from "@mui/material"
+import { Button, Divider, List, Typography } from "@mui/material"
 import { styled } from "@mui/system"
 import { isEmpty } from "lodash"
+import Router from "next/router"
 import { useAppSelector } from "../../../store/store"
 import { PriceDisplay } from "./priceDisplay"
 import { SummaryItem } from "./summaryItem"
@@ -41,7 +42,10 @@ export const CartSummary = () => {
     }
 
     return <SummaryContainer>
-            <Typography variant="h4">Cart Summary</Typography>
+            <div style={{ display: 'flex', alignItems: 'center'}}>
+                <Typography variant="h4" sx={{ m: 0, mr: 2}}>Cart Summary</Typography>
+                <Button onClick={() => Router.replace('/order')}>Modify</Button>
+            </div>
             <ListContainer>
             {
                 cartState.cart.map((item) => {
