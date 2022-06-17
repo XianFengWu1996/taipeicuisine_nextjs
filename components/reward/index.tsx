@@ -9,7 +9,6 @@ import snackbar from "../snackbar"
 import { PointDisplay } from "./pointDisplay"
 import { RewardTextWithLabel } from "./rewardLabel"
 import { RewardHistorySkeleton } from "./rewardSkeleton"
-import { DateTime } from 'luxon'
 import { format_date } from "../../utils/functions/time"
 
 export const RewardPage = () => {

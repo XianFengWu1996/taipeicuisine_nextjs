@@ -8,9 +8,9 @@ import { handleCatchError } from "../../utils/errors/custom"
 import { getCustomerInfo } from "../../utils/functions/account"
 import { fbAuth } from "../../utils/functions/auth"
 import { AccountChangeAddress } from "./changeAddress"
-import { AccountChangeName } from "./changeName"
+import { AccountChangeName } from "./ChangeName"
 import { AccountChangePassword } from "./changePassword"
-import { AccountChangePhone } from "./changePhone"
+import { AccountChangePhone } from "./ChangePhone"
 
 export const AccountRelatedPage = () => {
     const dispatch = useAppDispatch();

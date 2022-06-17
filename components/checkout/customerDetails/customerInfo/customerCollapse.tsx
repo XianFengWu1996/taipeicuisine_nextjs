@@ -1,9 +1,9 @@
 import { Collapse } from "@mui/material";
 import { Box } from "@mui/system";
 import {  useAppSelector } from "../../../../store/store";
+import { AccountChangeName } from "../../../account/ChangeName";
+import { AccountChangePhone } from "../../../account/ChangePhone";
 import { SmsDialog } from "../../../dialogs/smsDialog";
-import { AccountChangeName } from "../../../account/changeName";
-import { AccountChangePhone } from "../../../account/changePhone";
 
 
 export const CustomerCardCollaspe = () => {

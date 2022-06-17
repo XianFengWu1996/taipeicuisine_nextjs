@@ -9,7 +9,6 @@ import { useAppSelector } from "../../../store/store";
 import { MenuDrawer } from "../menuDrawer/menuDrawer";
 import { CartDrawer } from "../checkoutDrawer";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 const StyleAppbar = styled(AppBar)(({theme}) => ({
     position: 'static',
