@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { getInitialMenuData } from "../../store/slice/menuSlice";
+import { retrieveStoreData } from "../../store/slice/storeSlice";
 import store from "../../store/store";
 import { handleCatchError } from "../errors/custom";
 import { hasExpired } from "./time";
@@ -23,6 +24,7 @@ export const fetchMenu = async ({ setLoading,expiration }: IFetchMenu) => {
             menus.push(response.data.lunch);
             
             store.dispatch(getInitialMenuData({ menus: menus, expiration: response.data.expiration }))
+            store.dispatch(retrieveStoreData(response.data.store))
 
             return menus
         }

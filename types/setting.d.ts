@@ -7,7 +7,10 @@ interface ISettingState {
 
     show_checkout_skeleton: boolean,
     allow_payment_page: boolean,
+}  
 
+
+interface IPersistSetting {
     language: string,
     theme_mode: ThemeMode
 }  

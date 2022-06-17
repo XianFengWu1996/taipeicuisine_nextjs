@@ -8,7 +8,7 @@ interface IStore {
     store_summary: {
         name: string,
         primary_phone_number: string,
-        sub_phone_number: [string], 
+        sub_phone_number: string[], 
         address:IAddress
    }
 }

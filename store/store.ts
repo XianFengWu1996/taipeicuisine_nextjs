@@ -3,22 +3,27 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import cartSlice from './slice/cartSlice';
 import customerSlice from './slice/customerSlice';
 import menuSlice from './slice/menuSlice';
+import storeSlice from './slice/storeSlice';
 import storage from 'redux-persist/lib/storage'
+import settingSlice from './slice/settingSlice';
+import persistSettingSlice from './slice/persistSetting';
+
 
 import { persistStore, persistReducer} from 'redux-persist'
-import settingSlice from './slice/settingSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['menus', 'cart', 'setting'] // only persist certain reducers
+  whitelist: ['menus', 'cart', 'persist_setting', 'store'] // only persist certain reducers
 }
 
 const reducer = combineReducers({ 
   menus: menuSlice,
   cart: cartSlice,
   customer: customerSlice, 
+  store: storeSlice,
   setting: settingSlice,
+  persistSetting: persistSettingSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer);

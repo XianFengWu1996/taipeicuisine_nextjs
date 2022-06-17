@@ -1,7 +1,7 @@
 import { FormControlLabel, Switch } from "@mui/material"
 import { styled } from "@mui/system";
 import { ChangeEvent } from "react";
-import { setThemeMode } from "../../store/slice/settingSlice";
+import { setThemeMode } from "../../store/slice/persistSetting";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -52,7 +52,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export const ThemeModeSwitch = () => {
-    const { theme_mode } = useAppSelector(state => state.setting)
+    const { theme_mode } = useAppSelector(state => state.persistSetting)
     const dispatch = useAppDispatch();
     
     const handleSwitchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
