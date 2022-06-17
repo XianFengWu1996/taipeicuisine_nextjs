@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import {  useAppSelector } from "../../../../store/store";
 import { AccountChangeName } from "../../../account/ChangeName";
 import { AccountChangePhone } from "../../../account/ChangePhone";
-import { SmsDialog } from "../../../dialogs/smsDialog";
+import { SmsDialog } from "./smsDialog";
 
 
 export const CustomerCardCollaspe = () => {

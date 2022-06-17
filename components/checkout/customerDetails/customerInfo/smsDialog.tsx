@@ -1,10 +1,9 @@
 import { Button, Dialog, DialogContent, TextField, Typography } from "@mui/material";
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
 import ReactCodeInput from 'react-verification-code-input';
-import { setShowSmsDialog } from "../../store/slice/settingSlice";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { sentCode, handleCodeVerify} from "../../utils/functions/phone";
-// logic (todo)
+import { setShowSmsDialog } from "../../../../store/slice/settingSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store/store";
+import { handleCodeVerify, sentCode } from "../../../../utils/functions/phone";
 
 // check the phone number 
 // - if the number is valid (valid, length, or if it's already verified)

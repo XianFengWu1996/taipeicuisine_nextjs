@@ -3,8 +3,8 @@ import { setShowSmsDialog } from "../../store/slice/settingSlice";
 import { useAppDispatch } from "../../store/store";
 import { phoneFormat } from "../../utils/functions/phone";
 import { TitleForSection } from "./components";
-import { SmsDialog } from '../dialogs/smsDialog'
 import { isEmpty } from "lodash";
+import { SmsDialog } from "../checkout/customerDetails/customerInfo/smsDialog";
 
 
 interface IAccountChangePhone {
