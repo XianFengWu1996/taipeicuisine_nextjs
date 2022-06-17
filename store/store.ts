@@ -14,7 +14,7 @@ import { persistStore, persistReducer} from 'redux-persist'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['menus', 'cart', 'persist_setting', 'store'] // only persist certain reducers
+  whitelist: ['menus', 'cart', 'persistSetting', 'store'] // only persist certain reducers
 }
 
 const reducer = combineReducers({ 
