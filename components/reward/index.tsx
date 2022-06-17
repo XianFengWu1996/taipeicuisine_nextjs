@@ -9,8 +9,9 @@ import snackbar from "../snackbar"
 import { PointDisplay } from "./pointDisplay"
 import { RewardTextWithLabel } from "./rewardLabel"
 import { RewardHistorySkeleton } from "./rewardSkeleton"
-import { DateTime } from 'luxon'
 import { format_date } from "../../utils/functions/time"
+import { handleCatchError } from "../../utils/errors/custom"
+import { NotAuthorizeError } from "../../utils/errors/notAuthError"
 
 export const RewardPage = () => {
 
@@ -30,18 +31,21 @@ export const RewardPage = () => {
         let isMounted = true;
 
         onAuthStateChanged(fbAuth, async(user) => {
-            if(!user){
-                Router.replace('/order')
-                return snackbar.error('No Authorized')
-            }
-
-            const reward_result = await getRewardHistory(await user.getIdToken());
-            
-            if(isMounted && reward_result){
-                setTransactions(reward_result.transactions)
-                setTransactionToDisplay(reward_result.transactions.slice(0, item_per_page));
-                setPoints(reward_result.points)
-                setLoading(false);
+            try {
+                if(!user){
+                    throw new NotAuthorizeError();
+                }
+    
+                const reward_result = await getRewardHistory(await user.getIdToken());
+                
+                if(isMounted && reward_result){
+                    setTransactions(reward_result.transactions)
+                    setTransactionToDisplay(reward_result.transactions.slice(0, item_per_page));
+                    setPoints(reward_result.points)
+                    setLoading(false);
+                }
+            } catch (error) {
+                handleCatchError(error as Error, 'Failed to retrieve rewards')
             }
         })
 

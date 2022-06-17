@@ -20,20 +20,19 @@ export const WalletPage = () => {
     }
 
     useEffect(() => {
-        try {
-            onAuthStateChanged(fbAuth, async user => {
+        onAuthStateChanged(fbAuth, async user => {
+            try {
                 if(!user){
                     throw new NotAuthorizeError();
                 }
 
                 await handleGetPaymentList(await user.getIdToken(), setCards)
-                setIsReady(true);
+                setIsReady(true); 
+            } catch (error) {
+                handleCatchError(error as Error, 'Failed to get payment lsit');
+            }
 
-            })
-        } catch (error) {
-            console.log(error);
-            handleCatchError(error as Error, 'Failed to get payment lsit');
-        }
+        })
     }, [])
     return <>
         <Typography variant="h4">Wallet</Typography>

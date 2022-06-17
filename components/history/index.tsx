@@ -3,6 +3,8 @@ import { onAuthStateChanged } from "firebase/auth"
 import { isEmpty } from "lodash"
 import Router from "next/router"
 import {  useEffect, useState } from "react"
+import { handleCatchError } from "../../utils/errors/custom"
+import { NotAuthorizeError } from "../../utils/errors/notAuthError"
 import { getOrderHistory } from "../../utils/functions/account"
 import { fbAuth } from "../../utils/functions/auth"
 import snackbar from "../snackbar"
@@ -21,17 +23,20 @@ export const OrderHistory = () => {
     useEffect(() => {          
         let isMounted = true;
         onAuthStateChanged(fbAuth, async user => {
-            if(!user){
-                snackbar.error('Not authorized')
-                return Router.replace('/order');
-            }
-
-            const order_result = await getOrderHistory(await user.getIdToken());
-            
-            if(isMounted && order_result){
-                setOrderList(order_result)
-                setOrderToDisplay(order_result.slice(0, item_per_page));
-                setLoading(false)
+            try {
+                if(!user){
+                    throw new NotAuthorizeError();
+                }
+    
+                const order_result = await getOrderHistory(await user.getIdToken());
+                
+                if(isMounted && order_result){
+                    setOrderList(order_result)
+                    setOrderToDisplay(order_result.slice(0, item_per_page));
+                    setLoading(false)
+                }
+            } catch (error) {
+                handleCatchError(error as Error, 'Failed to retrieve orders')
             }
             
         })
