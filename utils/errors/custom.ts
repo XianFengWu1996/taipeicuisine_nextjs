@@ -7,8 +7,7 @@ import { isInfoError } from "./infoError";
 import { isNotAuthError } from "./notAuthError";
 
 export const handleCatchError = (err: Error, msg: string) => {
-  
-      if((err as Error).name === 'FirebaseError'){
+    if((err as Error).name === 'FirebaseError'){
         return handleFirebaseAuthError(err);
       }
 
