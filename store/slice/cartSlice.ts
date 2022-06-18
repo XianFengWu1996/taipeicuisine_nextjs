@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { isEmpty } from 'lodash';
 import { v4 } from 'uuid';
+import { isLunchTime } from '../../utils/functions/time';
 
 // Define the initial state using that type
 const initialState: ICartState = {
@@ -52,7 +53,7 @@ const calculateTotal = (state: ICartState) => {
   
   lunchDiscount = Math.floor(lunchCount / 3) * 2.9;
   original_subtotal = Number((original_subtotal).toFixed(2));;
-  const subtotal = Number((original_subtotal - point_redemption_discount - lunchDiscount).toFixed(2))
+  const subtotal = Number((original_subtotal - point_redemption_discount - (isLunchTime ? lunchDiscount : 0)).toFixed(2))
   
 
   state.cart_quantity = cart_quantity;
@@ -60,7 +61,7 @@ const calculateTotal = (state: ICartState) => {
   state.subtotal = subtotal;
   state.tax = Number((subtotal * 0.07).toFixed(2))
   state.total = Number((subtotal + state.tax + state.tip + (state.is_delivery ? state.delivery_fee : 0)).toFixed(2))
-  state.lunch_discount = lunchDiscount
+  state.lunch_discount = (isLunchTime ? lunchDiscount : 0)
   state.payment_type = '' // reset the payment type
 
 }

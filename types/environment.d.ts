@@ -14,6 +14,10 @@ declare global {
         NEXT_PUBLIC_FB_APP_ID: string,
         NEXT_PUBLIC_FB_MEASUREMENT_ID: string,
         NEXT_PUBLIC_MAP_KEY:string,
+
+        NEXT_PUBLIC_LUNCH_START:number,
+        NEXT_PUBLIC_LUNCH_END:number,
+
       }
     }
 }
