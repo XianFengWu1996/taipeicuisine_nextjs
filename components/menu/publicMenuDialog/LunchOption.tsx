@@ -1,5 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
 import { ChangeEvent } from "react"
+import { isLunchTime } from "../../../utils/functions/time"
 
 interface ILunchOptionProps {
     lunchOption: {
@@ -13,19 +14,23 @@ interface ILunchOptionProps {
 
 export const LunchOption = (_: ILunchOptionProps) => {
     return <FormGroup>
-        <FormControlLabel 
+        {
+            isLunchTime && <FormControlLabel 
             control={<Checkbox
                 name="sub"
                 checked={_.lunchOption.sub}
                 onChange={_.handleOnSubChange}
             />} label="Substitute Hot&Sour Soup" />
-        <FormControlLabel  
+        }
+        {
+            isLunchTime && <FormControlLabel  
             control={<Checkbox 
                 name="no_soup"
                 checked={_.lunchOption.no_soup}
                 onChange={_.handleOnOptionChange}
                 disabled={_.lunchOption.sub}
             />} label="No Soup"/>
+        }
         <FormControlLabel  
             control={<Checkbox 
                 name="no_rice"

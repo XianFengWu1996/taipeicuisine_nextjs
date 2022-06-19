@@ -134,8 +134,7 @@ export const cartSlice = createSlice({
       state.cart[index].total = (payload.price + option_price) * state.cart[index].quantity;
 
       calculateTotal(state);
-    },
-    
+    },    
     clearCart: (state) => {
       state.cart = [];
       state.cart_quantity = 0
@@ -157,7 +156,6 @@ export const cartSlice = createSlice({
       state.payment_type = '';
       calculateTotal(state);
     },
-
     //TIP RELATED
     setTip: (state, {payload} : PayloadAction<string>) => {
       state.tip_type = payload;
@@ -219,6 +217,28 @@ export const cartSlice = createSlice({
     setScheduleTime: (state, { payload }: PayloadAction<string>) => {
       state.schedule_time = payload
     },
+    removeSoupFromLunchOption: (state, { payload }: PayloadAction<string>) => {
+      const index = state.cart.findIndex(cart => cart.id === payload);
+
+      if(index !== -1){
+        const item = state.cart[index];
+        if(item.lunchOption){
+          item.lunchOption!.no_soup = false
+          item.lunchOption!.sub = false
+
+          if(isEmpty(item.comment) && !item.customize){
+              if(item.lunchOption?.no_rice){
+                item.id = `${item.dish.id}${process.env.NEXT_PUBLIC_ID_NORICE}`
+              } else {
+                item.id = `${item.dish.id}`
+              }
+          }
+        }
+
+      }
+     
+      
+    },
   } 
 })
 
@@ -240,7 +260,8 @@ export const {
   setToggleIncludeUtensils,
   setDelivery,
   orderComplete,
-  setScheduleTime
+  setScheduleTime,
+  removeSoupFromLunchOption
 } = cartSlice.actions
 
 // export const menus = (state: MenuState) => state.menus;

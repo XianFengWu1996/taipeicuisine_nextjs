@@ -15,9 +15,9 @@ import { handleInStoreOrCashOrder, handleOnlineOrder, validateToPlaceOrder } fro
 import { setAllowPayment } from "../../../store/slice/settingSlice"
 import { useState } from "react"
 import { BeatLoader } from "react-spinners"
-import { hasExpired } from "../../../utils/functions/time"
+import { hasExpired, isLunchTime } from "../../../utils/functions/time"
 import { fetchMenu } from "../../../utils/functions/menu"
-import { removeItemFromCart, updateCartItem } from "../../../store/slice/cartSlice"
+import { removeItemFromCart, removeSoupFromLunchOption, updateCartItem } from "../../../store/slice/cartSlice"
 import { InfoError } from "../../../utils/errors/infoError"
 
 
@@ -73,7 +73,11 @@ export const CustomerDetails = () => {
                         }   
                     })
                 }
-            })            
+            })
+            
+            if(!isLunchTime && item.lunchOption){
+              dispatch(removeSoupFromLunchOption(item.id));
+            }
         })
     }
 
@@ -82,7 +86,6 @@ export const CustomerDetails = () => {
             setLoading(true);
 
             let temp_menus: IMenu[] = menus;
-            console.log(hasExpired(expiration))
             if(hasExpired(expiration)){
                 let data = await fetchMenu({ setLoading: null, expiration});
 

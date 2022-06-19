@@ -13,6 +13,7 @@ import { DishVariant } from "./DishVariant";
 import { Comments } from "./Comments";
 import { LunchOption } from "./LunchOption";
 import { Customize } from "./Customize";
+import { isLunchTime } from "../../../utils/functions/time";
 
 
 const AddToCartButton = styled(Button)(({theme}) => ({
@@ -113,29 +114,27 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
             return `${dish.id}${option.id}`
         }
 
-        if(!isEmpty())
-
         // if sub and no_rice both true
         if(lunchOption.sub && lunchOption.no_rice){
-            return `${dish.id}24e53f2a-ba72-4726-b1e2-063779de48db`
+            return `${dish.id}${process.env.NEXT_PUBLIC_ID_sub}`
         }
 
         // if no_soup and no_rice both true
         if(lunchOption.no_soup && lunchOption.no_rice){
-            return `${dish.id}cb0a70ca-5aa5-4a3d-8198-e4c49731d2a8`
+            return `${dish.id}${process.env.NEXT_PUBLIC_ID_NORICE_NOSOUP}`
         }
 
         // for individual case
         if(lunchOption.sub){
-            return `${dish.id}baa60cee-c472-4f8b-979e-313c71cc9efe`
+            return `${dish.id}${process.env.NEXT_PUBLIC_ID_SUB}`
         }
 
         if(lunchOption.no_soup){
-            return `${dish.id}01cefbec-744b-4a52-90cf-acae76474e3c`
+            return `${dish.id}${process.env.NEXT_PUBLIC_ID_NOSOUP}`
         }
 
         if(lunchOption.no_rice){
-            return `${dish.id}05b1938d-4db0-4135-ba59-8100a4ef1edc`
+            return `${dish.id}${process.env.NEXT_PUBLIC_ID_NORICE}`
         }
 
         // if nothing match, we will just return the dish id 
@@ -162,7 +161,11 @@ export const PublicMenuDialog = ({ open, handleClose, dish}: IPublicMenuDialogPr
             option: option,
             comment: !isEmpty(comments) ? comments : null,
             total: total,
-            lunchOption: dish.is_lunch ? lunchOption : null,
+            lunchOption: dish.is_lunch ? {
+                no_rice: lunchOption.no_rice,
+                no_soup: isLunchTime? lunchOption.no_soup : false ,
+                sub:  isLunchTime? lunchOption.sub : false,
+            } : null,
             customize: dish.is_customizable ? (
                 (!isEmpty(protein) || !isEmpty(veggie)) ? {
                     protein,

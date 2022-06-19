@@ -18,6 +18,11 @@ declare global {
         NEXT_PUBLIC_LUNCH_START:number,
         NEXT_PUBLIC_LUNCH_END:number,
 
+        NEXT_PUBLIC_ID_NORICE_NOSOUP:string,
+        NEXT_PUBLIC_ID_NORICE_SUB:string,
+        NEXT_PUBLIC_ID_NORICE:string,
+        NEXT_PUBLIC_ID_NOSOUP:string,
+        NEXT_PUBLIC_ID_SUB:string
       }
     }
 }
