@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Typography } from '@mui/material';
+import { Button, Card, CardContent, Radio, Typography } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import { Stripe, StripeElements} from '@stripe/stripe-js'
 import { isEmpty, isString } from 'lodash';
@@ -6,6 +6,7 @@ import { FormEvent, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { handleCatchError } from '../../utils/errors/custom';
 import { handlePayWithMethodId } from '../../utils/functions/payment';
+import { handleCreditCardBrand } from '../history/orderPayment';
 import { TipSelection } from './tipSelection';
 
 
@@ -70,8 +71,12 @@ export const SavedPaymentForm = ({ cards, cart, customer, stripe, elements, togg
                     return <Card key={card.id} sx={{ my: 2}} onClick={() => {
                         setSelectedCard(card.id === selectCard.id ? inititalCard : card)
                     }}>
-                    <CardContent> 
-                        {card.card.brand} xx-{card.card.last_four} exp: {card.card.exp_month} / {card.card.exp_year}  {card.id === selectCard.id && <FaCheck />}
+                    <CardContent sx={{ display: 'flex', alignItems: 'center', padding: '8px !important'}}> 
+                        <Radio />
+                        <div>{handleCreditCardBrand(card.card.brand)}</div>
+                        <Typography sx={{ mx: 2, fontWeight: 500}}>{card.card.brand === 'amex' ? `•••• •••••• •${card.card.last_four}` : `•••• •••• •••• ${card.card.last_four}`}</Typography>
+                        <Typography sx={{ fontWeight: 500}}>EXP:{card.card.exp_month} / {card.card.exp_year}</Typography>
+                           {/* {card.id === selectCard.id && <FaCheck />} */}
                     </CardContent>
                 </Card>
                 })

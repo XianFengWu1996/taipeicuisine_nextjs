@@ -60,7 +60,7 @@ export default function PaymentPage () {
                     <Skeleton   
                         variant="rectangular"
                         height={600} 
-                        width={350}
+                        width={500}
                         sx={{ marginY: 1}} 
                     />
                 </div>
