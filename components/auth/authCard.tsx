@@ -9,6 +9,7 @@ import { PulseLoader} from 'react-spinners'
 import { useAppDispatch } from "../../store/store"
 import { setShowLoginDialog } from "../../store/slice/settingSlice"
 import Router from "next/router"
+import { ForgotPassword } from "./forgotPassword"
 
 interface IAuthCardProps {
     isLogin: boolean,
@@ -78,6 +79,8 @@ export const AuthCard = (props: IAuthCardProps) => {
         return props.isLogin ? 'Log In' : 'Sign Up'
     }
     
+
+    const [showForgotPassword, setShowForgotPassword] = useState<boolean>(false);
     return <>
         <motion.div
             animate={props.animateVariant}
@@ -118,10 +121,14 @@ export const AuthCard = (props: IAuthCardProps) => {
             <Button variant="outlined" size="large" sx={{ my: 1}} onClick={handleOnLogin}>{handleRenderLogInButton()}</Button>
             {
                 props.isLogin 
-                ? <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                    <Button variant="text">Forgot Password?</Button>
-                    <Typography>Dont have an account? <Button variant="text" onClick={props.toggleType}>Sign Up</Button></Typography>
-                </div>
+                ? <>
+                    <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+                        <Button variant="text" onClick={() => setShowForgotPassword(!showForgotPassword)}>Forgot Password?</Button>
+                        <Typography>Dont have an account? <Button variant="text" onClick={props.toggleType}>Sign Up</Button></Typography>
+                    </div>
+
+                    { showForgotPassword && <ForgotPassword /> }
+                </>
                 :  <div>
                     <Typography>Already have an account? <Button variant="text" onClick={props.toggleType}>Log In</Button></Typography>
                 </div>

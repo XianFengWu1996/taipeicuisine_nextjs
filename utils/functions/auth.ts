@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
-import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut, FacebookAuthProvider, OAuthProvider} from 'firebase/auth'
+import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut, FacebookAuthProvider, OAuthProvider, sendPasswordResetEmail} from 'firebase/auth'
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
+import isEmail from 'validator/lib/isEmail';
 import { setShowLoginDialog } from '../../store/slice/settingSlice';
 import store from '../../store/store';
 import { handleCatchError } from '../errors/custom';
@@ -23,9 +24,8 @@ export const fbAuth = getAuth(app);
 
 export const token = async () => {
   return fbAuth.currentUser?.getIdToken();
+
 }
-
-
 
 export const checkAndRedirect = (query: ParsedUrlQuery) => {
   if(query.redirect){
@@ -128,6 +128,8 @@ export const handleSignUp = () => {
     
 }
 
-export const handleForgotPassword = () => {
-
+export const handleForgotPassword = (email:string) => {
+  if(isEmail(email)){
+    sendPasswordResetEmail(fbAuth, email);
+  }
 }
