@@ -5,7 +5,11 @@ import { handleCatchError } from "../../utils/errors/custom";
 import { handleForgotPassword } from "../../utils/functions/auth";
 import snackbar from "../snackbar";
 
-export const ForgotPassword = () => {  
+interface IForgotPassword {
+    onClose: () => void
+}
+
+export const ForgotPassword = ({ onClose }:IForgotPassword) => {  
     const [email, setEmail] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
       
@@ -28,6 +32,7 @@ export const ForgotPassword = () => {
                             handleForgotPassword(email)
                             snackbar.success('Password reset email has been sent to your email, remember to double check spam folder as well.')
                             setEmail('');
+                            onClose();
                         } catch (error) {
                             handleCatchError(error as Error, 'Fail to sent forget password link')
                         } finally {

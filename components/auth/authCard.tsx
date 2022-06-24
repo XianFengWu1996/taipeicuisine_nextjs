@@ -127,7 +127,7 @@ export const AuthCard = (props: IAuthCardProps) => {
                         <Typography>Dont have an account? <Button variant="text" onClick={props.toggleType}>Sign Up</Button></Typography>
                     </div>
 
-                    { showForgotPassword && <ForgotPassword /> }
+                    { showForgotPassword && <ForgotPassword onClose={() => setShowForgotPassword(false)}/> }
                 </>
                 :  <div>
                     <Typography>Already have an account? <Button variant="text" onClick={props.toggleType}>Log In</Button></Typography>
