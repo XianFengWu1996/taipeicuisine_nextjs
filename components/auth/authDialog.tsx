@@ -33,7 +33,8 @@ export const AuthDialog = () => {
             <AuthCard 
                 isLogin={isLogin} 
                 animateVariant={isLogin ? 'hide': 'show'}
-                toggleType={() => setIsLogin(!isLogin)} />
+                toggleType={() => setIsLogin(!isLogin)}
+            />
 
             <Divider style={{width:'100%'}} />
 

@@ -44,12 +44,18 @@ export default function CheckoutPage() {
 
     useEffect(() => {
         const subscribe = onAuthStateChanged(fbAuth, async fbUser => {
+
             if(!fbUser){
                 dispatch(setShowLoginDialog(true));
-                Router.push('/order?redirect=checkout');
-            }  else {
-                getCustomerInfo();
+                return Router.push('/order?redirect=checkout');
+            }  
+
+            if(!fbUser.emailVerified){
+                return  Router.push('/email_verification');
             }
+
+            getCustomerInfo();
+            
         });
 
         return () => {

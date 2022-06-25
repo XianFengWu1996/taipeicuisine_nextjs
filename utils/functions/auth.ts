@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
-import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut, FacebookAuthProvider, OAuthProvider, sendPasswordResetEmail} from 'firebase/auth'
+import {GoogleAuthProvider, signInWithPopup, getAuth, signInWithEmailAndPassword, signOut, FacebookAuthProvider, OAuthProvider, sendPasswordResetEmail, createUserWithEmailAndPassword} from 'firebase/auth'
 import Router from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import isEmail from 'validator/lib/isEmail';
 import { setShowLoginDialog } from '../../store/slice/settingSlice';
 import store from '../../store/store';
 import { handleCatchError } from '../errors/custom';
+import { InfoError } from '../errors/infoError';
 
 
 export const app = initializeApp({
@@ -46,21 +47,16 @@ export const checkAndRedirect = (query: ParsedUrlQuery) => {
 }
 
 
-export const handleEmailLogin = async ({ email, password, handleSuccess, handleFail,query}: IEmailLogin) => {
-    try{
-      let user = await signInWithEmailAndPassword(fbAuth, email, password); // try to sign in
+export const handleEmailLogin = async ({ email, password}: IEmailLogin) => {
+  let user = await signInWithEmailAndPassword(fbAuth, email, password); // try to sign in
 
-      await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/login`, null, {
-        headers: {
-          'authorization': `Bearer ${await user.user.getIdToken()}`
-        }
-      })
-      handleSuccess(); // handle if the request is successful
-      checkAndRedirect(query); // check if the page needs to be redirected
-    } catch (e) {
-      handleFail();
-      handleCatchError(e as Error, 'Fail to login');
-    }
+  await axios({
+    method: 'POST',
+    headers: {
+      'authorization': `Bearer ${await user.user.getIdToken()}`
+    },
+    url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/login`
+  })
 }
 
 export const handleGoogleLogin = async (_:ISocialLogin) => {
@@ -124,8 +120,16 @@ export const handleLogout = () => {
   signOut(fbAuth); // logout
 }
 
-export const handleSignUp = () => {
-    
+export const handleSignUp = async ({ email, password} :IEmailLogin) => {
+  let user = await createUserWithEmailAndPassword(fbAuth, email, password); // try to sign in
+
+  await axios({
+    method: 'POST',
+    headers: {
+      'authorization': `Bearer ${await user.user.getIdToken()}`
+    },
+    url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/login`
+  })
 }
 
 export const handleForgotPassword = (email:string) => {

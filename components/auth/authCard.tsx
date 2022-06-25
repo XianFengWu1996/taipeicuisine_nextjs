@@ -3,13 +3,16 @@ import { motion, Variants } from "framer-motion"
 import { ChangeEvent, useState } from "react"
 import { AiOutlineMail } from "react-icons/ai"
 import { BiLockAlt } from "react-icons/bi"
-import { handleEmailLogin } from "../../utils/functions/auth"
+import { fbAuth, handleEmailLogin, handleSignUp } from "../../utils/functions/auth"
 import { AuthTextField } from "./AuthTextfield"
 import { PulseLoader} from 'react-spinners'
 import { useAppDispatch } from "../../store/store"
 import { setShowLoginDialog } from "../../store/slice/settingSlice"
 import Router from "next/router"
 import { ForgotPassword } from "./forgotPassword"
+import { handleCatchError } from "../../utils/errors/custom"
+import { signOut } from "firebase/auth"
+import snackbar from "../snackbar"
 
 interface IAuthCardProps {
     isLogin: boolean,
@@ -48,28 +51,32 @@ export const AuthCard = (props: IAuthCardProps) => {
         })
     }
 
-    const handleSuccess = () => {
-        setLoading(false);
-        dispatch(setShowLoginDialog(false));
-    } 
-
-    const handleFail = () => {
-        setLoading(false);
-    }
-
     const handleOnLogin = async () => {
-        // to handle login on this component
-        setLoading(true);
+      try {
+          // to handle login on this component
+          setLoading(true);
 
-        if(!loading){
-            await handleEmailLogin({ 
-                email: state.email,
-                password: state.password,
-                handleSuccess: handleSuccess,
-                handleFail: handleFail,
-                query: Router.query,  
-            })
-        }
+          if(!loading){
+              if(props.isLogin){
+                  await handleEmailLogin({ 
+                      email: state.email,
+                      password: state.password,
+                  })
+                  dispatch(setShowLoginDialog(false));
+              } else {
+                  if(state.password !== state.confirmPassword){
+                    throw new Error('Password does not match');
+                  }
+                  await handleSignUp({ email: state.email, password: state.password})
+                  snackbar.success("You've successfully signed up, please verify your email")
+                  dispatch(setShowLoginDialog(false));
+              }
+          }
+      } catch (error) {
+            handleCatchError(error as Error, `${props.isLogin ? 'Failed to Login' : 'Failed to signup'}`)
+      } finally {
+            setLoading(false);
+      }
     }
 
     const handleRenderLogInButton = () => {
