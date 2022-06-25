@@ -13,6 +13,7 @@ import Router from "next/router";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setAllowPayment } from "../../store/slice/settingSlice";
 import { NotAuthorizeError } from "../../utils/errors/notAuthError";
+import { isEmailVerified } from "../email_verification";
 
 
 const stripePromise = loadStripe('pk_test_MQq0KVxKkSLUx0neZbdLTheo00iB1Ru6a0');
@@ -33,6 +34,10 @@ export default function PaymentPage () {
         try {
             if(!user){
                 throw new NotAuthorizeError();
+            }
+
+            if(!isEmailVerified(user)){
+                return Router.replace('/email_verification')
             }
     
              // only allow the payment if it is from checkout page route 

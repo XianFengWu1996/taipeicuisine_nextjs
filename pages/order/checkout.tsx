@@ -13,6 +13,7 @@ import { handleCatchError } from "../../utils/errors/custom";
 import { fbAuth, token } from "../../utils/functions/auth";
 import CheckoutSkeleton from "../../components/checkout/skeleton";
 import { setCheckoutSkeleton, setShowLoginDialog } from "../../store/slice/settingSlice";
+import { isEmailVerified } from "../email_verification";
 
 
 
@@ -50,8 +51,8 @@ export default function CheckoutPage() {
                 return Router.push('/order?redirect=checkout');
             }  
 
-            if(!fbUser.emailVerified){
-                return  Router.push('/email_verification');
+            if(!isEmailVerified(fbUser)){
+                return  Router.replace('/email_verification');
             }
 
             getCustomerInfo();

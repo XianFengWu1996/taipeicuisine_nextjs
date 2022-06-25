@@ -3,15 +3,13 @@ import { motion, Variants } from "framer-motion"
 import { ChangeEvent, useState } from "react"
 import { AiOutlineMail } from "react-icons/ai"
 import { BiLockAlt } from "react-icons/bi"
-import { fbAuth, handleEmailLogin, handleSignUp } from "../../utils/functions/auth"
+import {  handleEmailLogin, handleSignUp } from "../../utils/functions/auth"
 import { AuthTextField } from "./AuthTextfield"
 import { PulseLoader} from 'react-spinners'
 import { useAppDispatch } from "../../store/store"
 import { setShowLoginDialog } from "../../store/slice/settingSlice"
-import Router from "next/router"
 import { ForgotPassword } from "./forgotPassword"
 import { handleCatchError } from "../../utils/errors/custom"
-import { signOut } from "firebase/auth"
 import snackbar from "../snackbar"
 
 interface IAuthCardProps {

@@ -1,11 +1,10 @@
 import { Pagination, Typography } from "@mui/material"
 import { onAuthStateChanged } from "firebase/auth"
 import { isEmpty } from "lodash"
-import Router from "next/router"
 import {  useEffect, useState } from "react"
+import { NotAuthorizeError } from "../../utils/errors/notAuthError"
 import { getOrderHistory } from "../../utils/functions/account"
 import { fbAuth } from "../../utils/functions/auth"
-import snackbar from "../snackbar"
 import { OrderHistorySkeleton } from "./historySkeleton"
 import { OrderHistoryCard } from "./orderHistoryCard"
 
@@ -22,8 +21,7 @@ export const OrderHistory = () => {
         let isMounted = true;
         onAuthStateChanged(fbAuth, async user => {
             if(!user){
-                snackbar.error('Not authorized')
-                return Router.replace('/order');
+                throw new NotAuthorizeError();
             }
 
             const order_result = await getOrderHistory(await user.getIdToken());

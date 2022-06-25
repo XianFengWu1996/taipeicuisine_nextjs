@@ -7,7 +7,6 @@ import isEmail from 'validator/lib/isEmail';
 import { setShowLoginDialog } from '../../store/slice/settingSlice';
 import store from '../../store/store';
 import { handleCatchError } from '../errors/custom';
-import { InfoError } from '../errors/infoError';
 
 
 export const app = initializeApp({
@@ -37,7 +36,6 @@ export const checkAndRedirect = (query: ParsedUrlQuery) => {
       case 'account':
         Router.push('/account?redirect=account')
         break;
-
       default: 
         break;
 

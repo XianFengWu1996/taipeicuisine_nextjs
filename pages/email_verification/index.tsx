@@ -8,15 +8,14 @@ import snackbar from "../../components/snackbar";
 import { NotAuthorizeError } from "../../utils/errors/notAuthError";
 import { fbAuth } from "../../utils/functions/auth"
 
+export const isEmailVerified = (user:User | null) => {
+    return user?.providerData[0].providerId === 'password' && user.emailVerified 
+}
+
 export default function EmailVerification() {
     const [verified, setVerified] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     
-
-    const isEmailVerified = (user:User | null) => {
-        return user?.providerData[0].providerId === 'password' && user.emailVerified 
-    }
- 
     useEffect(() => {
         onAuthStateChanged(fbAuth, async user => {
             if(!user){

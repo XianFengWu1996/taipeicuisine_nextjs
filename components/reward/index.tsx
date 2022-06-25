@@ -1,15 +1,14 @@
 import { Card, CardContent, Pagination, Typography } from "@mui/material"
 import { onAuthStateChanged } from "firebase/auth"
-import Router from "next/router"
 import { useEffect, useState } from "react"
 import { v4 } from "uuid"
 import { getRewardHistory } from "../../utils/functions/account"
 import { fbAuth } from "../../utils/functions/auth"
-import snackbar from "../snackbar"
 import { PointDisplay } from "./pointDisplay"
 import { RewardTextWithLabel } from "./rewardLabel"
 import { RewardHistorySkeleton } from "./rewardSkeleton"
 import { format_date } from "../../utils/functions/time"
+import { NotAuthorizeError } from "../../utils/errors/notAuthError"
 
 export const RewardPage = () => {
 
@@ -30,8 +29,7 @@ export const RewardPage = () => {
 
         onAuthStateChanged(fbAuth, async(user) => {
             if(!user){
-                Router.replace('/order')
-                return snackbar.error('No Authorized')
+                throw new NotAuthorizeError();
             }
 
             const reward_result = await getRewardHistory(await user.getIdToken());
