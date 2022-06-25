@@ -5,6 +5,7 @@ import { onAuthStateChanged, User, sendEmailVerification } from "firebase/auth"
 import { useEffect, useState } from "react"
 import { PublicAppBar } from "../../components/navigation/appbar/appbar";
 import snackbar from "../../components/snackbar";
+import { handleCatchError } from "../../utils/errors/custom";
 import { NotAuthorizeError } from "../../utils/errors/notAuthError";
 import { fbAuth } from "../../utils/functions/auth"
 
@@ -18,12 +19,17 @@ export default function EmailVerification() {
     
     useEffect(() => {
         onAuthStateChanged(fbAuth, async user => {
+        try {
             if(!user){
                 throw new NotAuthorizeError();
             }
 
             setVerified(isEmailVerified(user))
+        } catch (error) {
+            handleCatchError(error as Error, 'Failed to get email verification status')
+        }
         })
+       
     }, [])
 
     const handleSendVerifyEmail = async() => {

@@ -9,6 +9,7 @@ import { RewardTextWithLabel } from "./rewardLabel"
 import { RewardHistorySkeleton } from "./rewardSkeleton"
 import { format_date } from "../../utils/functions/time"
 import { NotAuthorizeError } from "../../utils/errors/notAuthError"
+import { handleCatchError } from "../../utils/errors/custom"
 
 export const RewardPage = () => {
 
@@ -28,17 +29,22 @@ export const RewardPage = () => {
         let isMounted = true;
 
         onAuthStateChanged(fbAuth, async(user) => {
-            if(!user){
-                throw new NotAuthorizeError();
-            }
+            try {
+                if(!user){
+                    throw new NotAuthorizeError();
+                }
+    
+                const reward_result = await getRewardHistory(await user.getIdToken());
+                
+                if(isMounted && reward_result){
+                    setTransactions(reward_result.transactions)
+                    setTransactionToDisplay(reward_result.transactions.slice(0, item_per_page));
+                    setPoints(reward_result.points)
+                    setLoading(false);
+                }
+            } catch (error) {
+                handleCatchError(error as Error, 'Failed to get reward history')
 
-            const reward_result = await getRewardHistory(await user.getIdToken());
-            
-            if(isMounted && reward_result){
-                setTransactions(reward_result.transactions)
-                setTransactionToDisplay(reward_result.transactions.slice(0, item_per_page));
-                setPoints(reward_result.points)
-                setLoading(false);
             }
         })
 

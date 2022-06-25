@@ -46,6 +46,7 @@ export default function CheckoutPage() {
     useEffect(() => {
         const subscribe = onAuthStateChanged(fbAuth, async fbUser => {
 
+           try {
             if(!fbUser){
                 dispatch(setShowLoginDialog(true));
                 return Router.push('/order?redirect=checkout');
@@ -56,7 +57,9 @@ export default function CheckoutPage() {
             }
 
             getCustomerInfo();
-            
+           } catch (error) {
+            handleCatchError(error as Error, 'Some unknown error has occurred');
+           }
         });
 
         return () => {

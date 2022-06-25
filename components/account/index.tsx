@@ -19,7 +19,7 @@ export const AccountRelatedPage = () => {
     const [isReady, setIsReady] = useState<boolean>(false);
     useEffect(() => {
         onAuthStateChanged(fbAuth, async user => {
-           try {
+            try {
                 if(!user){
                     return Router.replace('/order?redirect=account')
                 }
@@ -27,11 +27,13 @@ export const AccountRelatedPage = () => {
                 let customer_result = await getCustomerInfo(await user?.getIdToken());
                 dispatch(getCustomer(customer_result));
                 setIsReady(true);
-           } catch (error) {
+            } catch (error) {
                 handleCatchError(error as Error, 'Failed to retrieve account info')
-           }
-          
+
+            }
         })
+        
+       
     }, [dispatch])
 
     return <>
