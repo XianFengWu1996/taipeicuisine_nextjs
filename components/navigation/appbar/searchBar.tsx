@@ -7,6 +7,7 @@ import { useAppSelector } from "../../../store/store";
 import { isEmpty } from "lodash";
 import { handleCatchError } from "../../../utils/errors/custom";
 import { GoFlame } from "react-icons/go";
+import { HashLoader, MoonLoader } from "react-spinners";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -54,12 +55,18 @@ const Search = styled('div')(({ theme }) => ({
 export const SearchBar = () => {
     const [searchValue, setSearchValue] = useState<string>('');
     const [dish_result, setDishResult] = useState<IDish[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState('');
     const { dishes } = useAppSelector(state => state.menus)
 
     const handleOnSearch = () => {
+      setError(''); 
+      setDishResult([]);
+      setLoading(true);
+
       try {
         if(isEmpty(searchValue)){
-          throw new Error('Please enter a search term..')
+          return setError('Please enter a search term...')
         }
         let temp_arr:IDish[] = [];
         dishes.forEach((dish) => {
@@ -67,9 +74,17 @@ export const SearchBar = () => {
             temp_arr.push(dish);
           }
         })
+
+        if(temp_arr.length === 0){
+          return setError('No result was found...')
+        }
         setDishResult(temp_arr);
       } catch (error) {
         handleCatchError(error as Error, 'Failed to find the item')
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000)
       }
     }
 
@@ -90,21 +105,31 @@ export const SearchBar = () => {
               <Button variant="contained" size="large" sx={{ ml: 2, py:2, px:4, backgroundColor: blue[400]}} onClick={handleOnSearch}>Search</Button>
           </div>
 
-        <Grid container spacing={2} sx={{ pb: 20, px: 5, width: '100vw'}}>
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
+          <MoonLoader size={35}  color={blue[500]} loading={loading}/>
+        </div>
+
         {
-          !isEmpty(dish_result) && dish_result.map((dish) => {
-            return <Grid item xs={12} sm={6} md={6} lg={4} key={dish.id}>
-              <Card >
-                <CardContent>
-                  <Typography sx={{ fontSize: 13, fontWeight: 600}}>{dish.label_id}.{dish.ch_name} {dish.is_spicy && <GoFlame color='red'/>}</Typography>
-                  <Typography sx={{ fontSize: 11, fontWeight: 500}}>{dish.en_name}</Typography>
-                  <Typography sx={{ fontSize: 12}}>${dish.price}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          })
+          !isEmpty(error) && <Typography sx={{ textAlign: 'center', color: 'red', fontWeight: 500, fontSize: 17}}>{error}</Typography>
         }
-        </Grid>
+
+        {
+          !loading && <Grid container spacing={2} sx={{ pb: 20, px: 5, width: '100vw'}}>
+          {
+            !isEmpty(dish_result) && dish_result.map((dish) => {
+              return <Grid item xs={12} sm={6} md={6} lg={4} key={dish.id}>
+                <Card >
+                  <CardContent>
+                    <Typography sx={{ fontSize: 13, fontWeight: 600}}>{dish.label_id}.{dish.ch_name} {dish.is_spicy && <GoFlame color='red'/>}</Typography>
+                    <Typography sx={{ fontSize: 11, fontWeight: 500}}>{dish.en_name}</Typography>
+                    <Typography sx={{ fontSize: 12}}>${dish.price}</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            })
+          }
+          </Grid>
+        }
        
        
 
