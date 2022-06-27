@@ -7,6 +7,7 @@ import { PublicMenuDialog } from "../publicMenuDialog"
 import { DishCard } from "./DishCard"
 
 const CardContainer = styled('div')(({theme}) => ({
+    minHeight: '70vh',
     margin: '1.5rem 5rem',
     [theme.breakpoints.down('md')]: {
         margin: '1.5rem 3.5rem',

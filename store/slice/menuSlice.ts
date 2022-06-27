@@ -9,12 +9,14 @@ export interface MenuState {
   selectedMenu: IMenu,
   selectedCategory: ICategory,
   selectedTab: number,
+  dishes: IDish[]
 }
 
 // Define the initial state using that type
 const initialState: MenuState = {
   menus: [],
   expiration: 0,
+  dishes: [],
   selectedMenu: {} as IMenu,
   selectedCategory: {} as ICategory,
   selectedTab: 0,
@@ -25,10 +27,11 @@ export const menuSlice = createSlice({
   initialState,
   reducers: {
     // menus
-    getInitialMenuData: (state, { payload } : PayloadAction<{ menus: IMenu[], expiration: number}>) => {
+    getInitialMenuData: (state, { payload } : PayloadAction<{ menus: IMenu[], dishes: [], expiration: number}>) => {
       // assign the menus
       if(payload){
         state.menus = payload.menus;
+        state.dishes = payload.dishes;
         state.expiration = payload.expiration
       }
   

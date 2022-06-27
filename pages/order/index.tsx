@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import MenuSkeleton from "../../components/menu/skeleton";
 
 import { fetchMenu } from "../../utils/functions/menu";
+import { SearchBar } from "../../components/navigation/appbar/searchBar";
 
 export default function OrderPage (){
     const { expiration } = useAppSelector(state => state.menus)
@@ -32,7 +33,6 @@ export default function OrderPage (){
                     <MenuSelect />
                     <MenuTab />  
                 </>
-        }
-        
+        }        
     </div>
 }

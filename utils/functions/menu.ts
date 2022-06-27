@@ -15,19 +15,21 @@ export const fetchMenu = async ({ setLoading,expiration }: IFetchMenu) => {
     try {
         if(setLoading) setLoading(true);
 
-        if(hasExpired(expiration)){
+        // if(hasExpired(expiration)){
             let response = await axios.get(`${process.env.NEXT_PUBLIC_CF_URL}/store/menus`);
 
             let menus: IMenu[] = [];
+
+            console.log(response.data);
             menus.push(response.data.special)
             menus.push(response.data.fullday);
             menus.push(response.data.lunch);
             
-            store.dispatch(getInitialMenuData({ menus: menus, expiration: response.data.expiration }))
+            store.dispatch(getInitialMenuData({ menus: menus, expiration: response.data.expiration, dishes: response.data.dishes }))
             store.dispatch(retrieveStoreData(response.data.store))
 
             return menus
-        }
+        // }
     } catch (error) {
         handleCatchError((error as Error), 'Failed to fetch menu')
     } finally {

@@ -12,7 +12,7 @@ import persistSettingSlice from './slice/persistSetting';
 import { persistStore, persistReducer} from 'redux-persist'
 
 const persistConfig = {
-  key: 'root',
+  key: 'taipeicuisine_root',
   storage,
   whitelist: ['menus', 'cart', 'persistSetting', 'store'] // only persist certain reducers
 }

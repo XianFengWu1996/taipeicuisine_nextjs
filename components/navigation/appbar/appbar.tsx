@@ -1,7 +1,7 @@
 import { AppBar, Button, IconButton, Toolbar, useMediaQuery } from "@mui/material"
 import { Box, styled } from "@mui/system"
 import MenuIcon from '@mui/icons-material/Menu';
-import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai'
+import { AiOutlineShoppingCart } from 'react-icons/ai'
 import BlackLogo from '../../../assets/images/blacklogo.png'
 import Image from "next/image";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { useAppSelector } from "../../../store/store";
 import { MenuDrawer } from "../menuDrawer/menuDrawer";
 import { CartDrawer } from "../checkoutDrawer";
 import { useRouter } from "next/router";
+
 
 const StyleAppbar = styled(AppBar)(({theme}) => ({
     position: 'static',
@@ -59,6 +60,8 @@ const CartCount = styled('span')(({theme}) => ({
     }
 }))
 
+
+
 export const PublicAppBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
@@ -101,11 +104,11 @@ export const PublicAppBar = () => {
                     </IconButton>
                     {!isMobile && <Image src={BlackLogo.src} alt="taipei cuisine logo" width={60} height={50}/>  }
                 </div>
-                <div>
-                    {!isMobile && <IconButton sx={{ marginRight: 4 }}>
+                <div style={{ display: 'flex'}}>
+                    {/* {!isMobile && <IconButton sx={{ marginRight: 4 }}>
                         <AiOutlineUser />
                     </IconButton> 
-                    }
+                    } */}
                     {
                         !isCheckout && <CartButton onClick={handleCartOpen}> 
                             <AiOutlineShoppingCart />

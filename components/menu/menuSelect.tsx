@@ -2,6 +2,7 @@ import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, styled } 
 import { isEmpty } from "lodash";
 import { handleOnMenuChange, handleOnTabChange } from "../../store/slice/menuSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store"
+import { SearchBar } from "../navigation/appbar/searchBar";
 
 const MenuSelectFormControl = styled(FormControl)(({theme}) => ({
     margin: '1.5rem 5rem',
@@ -38,6 +39,8 @@ export const MenuSelect = () => {
         }
     }
     return <>
+        <SearchBar />
+
         {
             !isEmpty(menuState.selectedMenu) && 
             <MenuSelectFormControl size="medium">
@@ -57,5 +60,6 @@ export const MenuSelect = () => {
                 </MenuSelectComponent>
             </MenuSelectFormControl>
         }
+
     </>
 }
