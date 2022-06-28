@@ -17,7 +17,6 @@ import { AuthDialog } from '../components/auth/authDialog'
 import { PersistGate } from 'redux-persist/integration/react'
 import Head from 'next/head'
 import Script from 'next/script'
-import { SearchBar } from '../components/navigation/appbar/searchBar'
 
 
 axios.defaults.withCredentials = true;
