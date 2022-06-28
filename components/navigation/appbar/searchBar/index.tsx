@@ -1,15 +1,14 @@
-import { Button, Card, CardActions, CardContent, Grid, InputBase, Typography } from "@mui/material";
-import { styled } from "@mui/system";
+import { Typography } from "@mui/material";
 import { useState } from "react";
 import { blue } from "@mui/material/colors";
 import { useAppSelector } from "../../../../store/store";
 import { isEmpty } from "lodash";
 import { handleCatchError } from "../../../../utils/errors/custom";
-import { GoFlame } from "react-icons/go";
 import { MoonLoader } from "react-spinners";
 import { PublicMenuDialog } from "../../../menu/publicMenuDialog";
 import { SearchBarWithButton } from "./SearchBarWithButton";
 import { InStockSearchResult } from "./inStock";
+import { OutOfStockSearchResult } from "./outOfStock";
 
 
 
@@ -27,6 +26,7 @@ export const SearchBar = () => {
     const handleOnSearch = (searchValue:string) => {
       setError(''); 
       setDishResult([]);
+      setOutOfStock([])
       setLoading(true);
 
       try {
@@ -83,27 +83,9 @@ export const SearchBar = () => {
               }}
             />
             
-            {
-              !isEmpty(out_of_stock) && <Typography sx={{ fontSize: 22, fontWeight: 600, my: 1, ml: 5}}>Out Of Stock</Typography>
-            }
-            <Grid container spacing={2} sx={{ pb: 20, px: 5, width: '100vw'}}>
-            {
-              !isEmpty(out_of_stock) && out_of_stock.map((dish) => {
-                return  <Grid item xs={12} sm={6} md={6} lg={4} key={dish.id}>
-                  <Card >
-                    <CardContent>
-                      <Typography sx={{ fontSize: 13, fontWeight: 600}}>{dish.label_id}.{dish.ch_name} {dish.is_spicy && <GoFlame color='red'/>}</Typography>
-                      <Typography sx={{ fontSize: 11, fontWeight: 500}}>{dish.en_name}</Typography>
-                      <Typography sx={{ fontSize: 12}}>${dish.price.toFixed(2)}</Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Typography sx={{ color: 'red', fontWeight: 500, fontSize: 11 }}>Currently Out of Stock</Typography>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              })
-            }
-            </Grid>
+            <OutOfStockSearchResult 
+              dishes={out_of_stock}
+            />
           </>
         }
        
