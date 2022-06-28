@@ -9,6 +9,7 @@ import { GoFlame } from "react-icons/go";
 import { MoonLoader } from "react-spinners";
 import { PublicMenuDialog } from "../../../menu/publicMenuDialog";
 import { SearchBarWithButton } from "./SearchBarWithButton";
+import { InStockSearchResult } from "./inStock";
 
 
 
@@ -74,7 +75,13 @@ export const SearchBar = () => {
 
         {
           !loading && <>
-           
+            <InStockSearchResult 
+              dishes={dish_result} 
+              handleOnClick={(dish: IDish) => {
+                setSelected(dish)
+                setOpen(true);
+              }}
+            />
             
             {
               !isEmpty(out_of_stock) && <Typography sx={{ fontSize: 22, fontWeight: 600, my: 1, ml: 5}}>Out Of Stock</Typography>
