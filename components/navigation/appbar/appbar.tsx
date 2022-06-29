@@ -5,10 +5,12 @@ import { AiOutlineShoppingCart } from 'react-icons/ai'
 import BlackLogo from '../../../assets/images/blacklogo.png'
 import Image from "next/image";
 import { useState } from "react";
-import { useAppSelector } from "../../../store/store";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { MenuDrawer } from "../menuDrawer/menuDrawer";
 import { CartDrawer } from "../checkoutDrawer";
 import { useRouter } from "next/router";
+import { FaSearch } from "react-icons/fa";
+import { setShowSearchBar } from "../../../store/slice/settingSlice";
 
 
 const StyleAppbar = styled(AppBar)(({theme}) => ({
@@ -66,8 +68,9 @@ export const PublicAppBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
     const cart = useAppSelector(state => state.cart);
+    const dispatch = useAppDispatch();
 
-    const isCheckout = useRouter().pathname === '/order/checkout';
+    const isMenuPage = useRouter().pathname === '/order';
 
     const isMobile = useMediaQuery('(max-width: 480px)');
 
@@ -105,12 +108,13 @@ export const PublicAppBar = () => {
                     {!isMobile && <Image src={BlackLogo.src} alt="taipei cuisine logo" width={60} height={50}/>  }
                 </div>
                 <div style={{ display: 'flex'}}>
-                    {/* {!isMobile && <IconButton sx={{ marginRight: 4 }}>
-                        <AiOutlineUser />
-                    </IconButton> 
-                    } */}
                     {
-                        !isCheckout && <CartButton onClick={handleCartOpen}> 
+                        isMenuPage && <Button sx={{ border: '1px solid #000', borderRadius: '50px', py: 1.5, px: 5, mr: 5}} onClick={() => dispatch(setShowSearchBar(true))}>
+                            <FaSearch size={15} color={'#000'}/>
+                        </Button>
+                    }
+                    {
+                        isMenuPage && <CartButton onClick={handleCartOpen}> 
                             <AiOutlineShoppingCart />
                             <CartCount>{cart.cart_quantity}</CartCount>
                         </CartButton>

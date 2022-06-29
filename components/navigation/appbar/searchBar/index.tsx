@@ -62,7 +62,7 @@ export const SearchBar = () => {
     }
 
     return <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 9999, backgroundColor:'#ecf2ff', overflowY: 'auto'}}>
-        <IconButton sx={{ position: 'absolute', top:30, left: 30 }} onClick={() => {
+        <IconButton sx={{ position: 'absolute', top:50, left: 40 }} onClick={() => {
           dispatch(setShowSearchBar(false));
         }}>
           <FaTimes size={25}/>
@@ -92,7 +92,6 @@ export const SearchBar = () => {
             />
           </>
         }
-       
 
        <PublicMenuDialog open={open} handleClose={() => setOpen(false)} dish={selected}/>
     </div>

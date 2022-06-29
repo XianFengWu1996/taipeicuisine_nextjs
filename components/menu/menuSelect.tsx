@@ -1,6 +1,8 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, styled } from "@mui/material"
+import { Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, styled, Typography, useMediaQuery } from "@mui/material"
 import { isEmpty } from "lodash";
+import { FaSearch } from "react-icons/fa";
 import { handleOnMenuChange, handleOnTabChange } from "../../store/slice/menuSlice";
+import { setShowSearchBar } from "../../store/slice/settingSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store"
 import { SearchBar } from "../navigation/appbar/searchBar";
 
@@ -15,12 +17,12 @@ const MenuSelectFormControl = styled(FormControl)(({theme}) => ({
 }))
 
 const MenuSelectComponent = styled(Select)(({ theme }) => ({
-     minWidth: '40vw',
+     minWidth: '25vw',
      [theme.breakpoints.down('md')]: {
         minWidth: '60vw',
     },
     [theme.breakpoints.down('sm')]: {
-        width: '90vw'
+        width: '60vw'
     }
 }))
 
@@ -28,6 +30,8 @@ export const MenuSelect = () => {
     const menuState = useAppSelector(state => state.menus);
     const { show_search_bar } = useAppSelector(state => state.setting);
     const dispatch = useAppDispatch();
+
+    const isMobile = useMediaQuery('(max-width: 720px)'); // check if it' mobile 
 
     const handleOnSelectChange = (e: SelectChangeEvent<unknown | string>) => {
         //when the select has change, use the id to locate the selected menu
@@ -44,22 +48,24 @@ export const MenuSelect = () => {
 
         {
             !isEmpty(menuState.selectedMenu) && 
-            <MenuSelectFormControl size="medium">
-                <InputLabel id="menu-select">Menu 菜单</InputLabel>
-                <MenuSelectComponent
-                    labelId="menu-select-label"
-                    id="menu-select"
-                    value={menuState.selectedMenu.id}
-                    label="Menu 菜单"
-                    onChange={handleOnSelectChange}
-                >
-                    {
-                        menuState.menus.map((menu) => {
-                            return <MenuItem key={menu.id} value={menu.id}>{menu.en_name} {menu.ch_name}</MenuItem>
-                        })
-                    }
-                </MenuSelectComponent>
-            </MenuSelectFormControl>
+            <div style={{ display: 'flex', alignItems: 'center'}}>
+                <MenuSelectFormControl size="medium">
+                    <InputLabel id="menu-select">Menu 菜单</InputLabel>
+                    <MenuSelectComponent
+                        labelId="menu-select-label"
+                        id="menu-select"
+                        value={menuState.selectedMenu.id}
+                        label="Menu 菜单"
+                        onChange={handleOnSelectChange}
+                    >
+                        {
+                            menuState.menus.map((menu) => {
+                                return <MenuItem key={menu.id} value={menu.id}>{menu.en_name} {menu.ch_name}</MenuItem>
+                            })
+                        }
+                    </MenuSelectComponent>
+                </MenuSelectFormControl>
+            </div>
         }
 
     </>

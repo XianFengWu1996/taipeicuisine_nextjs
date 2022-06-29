@@ -7,10 +7,6 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import MenuSkeleton from "../../components/menu/skeleton";
 
 import { fetchMenu } from "../../utils/functions/menu";
-import { SearchBar } from "../../components/navigation/appbar/searchBar";
-import { FaSearch } from "react-icons/fa";
-import { Fab, IconButton } from "@mui/material";
-import { blue } from "@mui/material/colors";
 import { setShowSearchBar } from "../../store/slice/settingSlice";
 
 export default function OrderPage (){
@@ -24,19 +20,14 @@ export default function OrderPage (){
     useEffect(() => {
         fetchMenu({ setLoading, expiration });
 
-        return () => { dispatch(resetUponUnmount()) }
+        return () => { 
+            dispatch(resetUponUnmount())
+            dispatch(setShowSearchBar(false))
+         }
     }, [])
 
 
     return <div style={{ width: '100%', contain: 'paint'}}>
-        <Fab 
-            color="primary" 
-            aria-label="add" sx={{ position: 'fixed', bottom: 20, right: 40, backgroundColor: blue[400]}}
-            onClick={() => dispatch(setShowSearchBar(true))}
-        >
-            <FaSearch size={30}/>
-        </Fab>
-
         <PublicAppBar />
 
         {
