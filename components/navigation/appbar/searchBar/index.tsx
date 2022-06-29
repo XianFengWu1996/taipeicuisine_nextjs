@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { useState } from "react";
 import { blue } from "@mui/material/colors";
-import { useAppSelector } from "../../../../store/store";
+import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { isEmpty } from "lodash";
 import { handleCatchError } from "../../../../utils/errors/custom";
 import { MoonLoader } from "react-spinners";
@@ -9,9 +9,8 @@ import { PublicMenuDialog } from "../../../menu/publicMenuDialog";
 import { SearchBarWithButton } from "./SearchBarWithButton";
 import { InStockSearchResult } from "./inStock";
 import { OutOfStockSearchResult } from "./outOfStock";
-
-
-
+import { FaTimes } from "react-icons/fa";
+import { setShowSearchBar } from "../../../../store/slice/settingSlice";
 
 export const SearchBar = () => {
     const [dish_result, setDishResult] = useState<IDish[]>([]);
@@ -19,6 +18,7 @@ export const SearchBar = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState('');
     const { dishes } = useAppSelector(state => state.menus)
+    const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState<boolean>(false);
     const [selected, setSelected] = useState<IDish>({} as IDish);
@@ -62,7 +62,11 @@ export const SearchBar = () => {
     }
 
     return <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 9999, backgroundColor:'#ecf2ff', overflowY: 'auto'}}>
-         
+        <IconButton sx={{ position: 'absolute', top:30, left: 30 }} onClick={() => {
+          dispatch(setShowSearchBar(false));
+        }}>
+          <FaTimes size={25}/>
+        </IconButton>
         <SearchBarWithButton handleOnSearch={handleOnSearch}/>
 
         <div style={{ display: 'flex', justifyContent: 'center'}}>

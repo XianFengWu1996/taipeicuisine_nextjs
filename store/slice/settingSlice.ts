@@ -6,6 +6,7 @@ const initialState: ISettingState  = {
     show_login_dialog: false,
     show_sms_dialog: false,
 
+
     // card
     show_customer_card: false,
     show_address_card: false,
@@ -15,6 +16,9 @@ const initialState: ISettingState  = {
 
     // payment 
     allow_payment_page: false,
+
+    // search bar
+    show_search_bar: false
 }   
 
 
@@ -40,7 +44,10 @@ export const settingSlice = createSlice({
     },
     setAllowPayment: (state, {payload}:PayloadAction<boolean>) => {
       state.allow_payment_page = payload;
-    }
+    },
+    setShowSearchBar: (state, {payload}:PayloadAction<boolean>) => {
+      state.show_search_bar = payload;
+    },
   }
 })
 
@@ -52,6 +59,7 @@ export const {
   setShowSmsDialog,
   setShowAddressCard,
   setCheckoutSkeleton,
-  setAllowPayment
+  setAllowPayment,
+  setShowSearchBar
 } = settingSlice.actions
 

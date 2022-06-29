@@ -7,6 +7,8 @@ interface ISettingState {
 
     show_checkout_skeleton: boolean,
     allow_payment_page: boolean,
+    show_search_bar: boolean
+
 }  
 
 

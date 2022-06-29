@@ -26,6 +26,7 @@ const MenuSelectComponent = styled(Select)(({ theme }) => ({
 
 export const MenuSelect = () => {
     const menuState = useAppSelector(state => state.menus);
+    const { show_search_bar } = useAppSelector(state => state.setting);
     const dispatch = useAppDispatch();
 
     const handleOnSelectChange = (e: SelectChangeEvent<unknown | string>) => {
@@ -39,7 +40,7 @@ export const MenuSelect = () => {
         }
     }
     return <>
-        <SearchBar />
+        { show_search_bar && <SearchBar /> }
 
         {
             !isEmpty(menuState.selectedMenu) && 
