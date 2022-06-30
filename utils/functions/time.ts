@@ -42,4 +42,6 @@ export const isStoreOpen = () => {
     if(regular_hour){
         return currentMinute >= regular_hour.open_hour && currentMinute <= regular_hour.close_hour
     }
+
+    return false
 }

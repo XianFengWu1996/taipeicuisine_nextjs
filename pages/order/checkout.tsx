@@ -1,8 +1,8 @@
-import { Grid, useMediaQuery } from "@mui/material";
+import { Alert, Grid, Typography, useMediaQuery } from "@mui/material";
 import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import Router from "next/router";
-import {  useEffect } from "react";
+import {  useEffect, useState } from "react";
 import { PublicAppBar } from "../../components/navigation/appbar/appbar";
 import { CartSummary } from "../../components/checkout/cartSummary";
 import { CustomerDetails } from "../../components/checkout/customerDetails";
@@ -22,6 +22,8 @@ export default function CheckoutPage() {
     const desktop = useMediaQuery('(min-width: 900px)');
     const dispatch = useAppDispatch();
     const { show_checkout_skeleton } = useAppSelector(state => state.setting)
+
+    const [storeOpen, setStoreOpen] = useState<boolean>(false);
 
     // get the customer information back from the backend
     const getCustomerInfo = async () => {
@@ -45,7 +47,8 @@ export default function CheckoutPage() {
     }
 
     useEffect(() => {
-        isStoreOpen();
+        setStoreOpen(isStoreOpen())
+
         const subscribe = onAuthStateChanged(fbAuth, async fbUser => {
 
            try {
@@ -57,8 +60,6 @@ export default function CheckoutPage() {
             if(!isEmailVerified(fbUser)){
                 return  Router.replace('/email_verification');
             }
-
-            
 
             getCustomerInfo();
            } catch (error) {
@@ -74,6 +75,10 @@ export default function CheckoutPage() {
 
     return <>
         <PublicAppBar />
+            {
+                !storeOpen && <Alert severity="error">Store is closed, please check back tomorrow</Alert>
+            }
+
             {
                 !show_checkout_skeleton ? <Grid container spacing={8}>
                     <Grid item lg={6.5} md={7} sm={12} xs={12}>

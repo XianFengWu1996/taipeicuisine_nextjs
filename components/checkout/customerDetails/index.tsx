@@ -15,7 +15,7 @@ import { handleInStoreOrCashOrder, handleOnlineOrder, validateToPlaceOrder } fro
 import { setAllowPayment } from "../../../store/slice/settingSlice"
 import { useState } from "react"
 import { BeatLoader } from "react-spinners"
-import { hasExpired, isLunchTime } from "../../../utils/functions/time"
+import { hasExpired, isLunchTime, isStoreOpen } from "../../../utils/functions/time"
 import { fetchMenu } from "../../../utils/functions/menu"
 import { removeItemFromCart, removeSoupFromLunchOption, updateCartItem } from "../../../store/slice/cartSlice"
 import { InfoError } from "../../../utils/errors/infoError"
@@ -149,6 +149,7 @@ export const CustomerDetails = () => {
         <Button 
             variant="contained" 
             sx={{ backgroundColor: '#000', padding: '10px 50px'}}
+            disabled={!isStoreOpen()}
             onClick={handlePlaceOrder}
         >
             {handleButtonDisplay()}
