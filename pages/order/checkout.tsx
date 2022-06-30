@@ -14,6 +14,7 @@ import { fbAuth, token } from "../../utils/functions/auth";
 import CheckoutSkeleton from "../../components/checkout/skeleton";
 import { setCheckoutSkeleton, setShowLoginDialog } from "../../store/slice/settingSlice";
 import { isEmailVerified } from "../email_verification";
+import { isStoreOpen } from "../../utils/functions/time";
 
 
 
@@ -44,6 +45,7 @@ export default function CheckoutPage() {
     }
 
     useEffect(() => {
+        isStoreOpen();
         const subscribe = onAuthStateChanged(fbAuth, async fbUser => {
 
            try {
@@ -55,6 +57,8 @@ export default function CheckoutPage() {
             if(!isEmailVerified(fbUser)){
                 return  Router.replace('/email_verification');
             }
+
+            
 
             getCustomerInfo();
            } catch (error) {
