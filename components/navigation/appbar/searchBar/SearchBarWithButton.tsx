@@ -20,7 +20,7 @@ const Search = styled('div')(({ theme }) => ({
     },
   }));
   
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
+  const SearchIconWrapper = styled('div')(() => ({
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',

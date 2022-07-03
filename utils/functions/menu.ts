@@ -4,14 +4,13 @@ import { getInitialMenuData } from "../../store/slice/menuSlice";
 import { retrieveStoreData } from "../../store/slice/storeSlice";
 import store from "../../store/store";
 import { handleCatchError } from "../errors/custom";
-import { hasExpired } from "./time";
 
 interface IFetchMenu {
     setLoading: Dispatch<SetStateAction<boolean>> | null,
     expiration: number,
 }
 
-export const fetchMenu = async ({ setLoading,expiration }: IFetchMenu) => {
+export const fetchMenu = async ({ setLoading }: IFetchMenu) => {
     try {
         if(setLoading) setLoading(true);
 

@@ -1,8 +1,6 @@
-import { Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, styled, Typography, useMediaQuery } from "@mui/material"
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, styled } from "@mui/material"
 import { isEmpty } from "lodash";
-import { FaSearch } from "react-icons/fa";
 import { handleOnMenuChange, handleOnTabChange } from "../../store/slice/menuSlice";
-import { setShowSearchBar } from "../../store/slice/settingSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store"
 import { SearchBar } from "../navigation/appbar/searchBar";
 
@@ -30,8 +28,6 @@ export const MenuSelect = () => {
     const menuState = useAppSelector(state => state.menus);
     const { show_search_bar } = useAppSelector(state => state.setting);
     const dispatch = useAppDispatch();
-
-    const isMobile = useMediaQuery('(max-width: 720px)'); // check if it' mobile 
 
     const handleOnSelectChange = (e: SelectChangeEvent<unknown | string>) => {
         //when the select has change, use the id to locate the selected menu

@@ -1,4 +1,4 @@
-import { Alert, Grid, Typography, useMediaQuery } from "@mui/material";
+import { Alert, Grid, useMediaQuery } from "@mui/material";
 import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import Router from "next/router";
