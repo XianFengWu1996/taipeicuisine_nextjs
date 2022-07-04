@@ -40,7 +40,7 @@ export const handlePayWithIntent = async (val: IPayWithIntent) => {
             // process the payment as a one time payment
             // update the intent before submit the order
             await axios({
-                method: 'POST',
+                method: 'PATCH',
                 url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/update_payment_intent`,
                 headers: { 'Authorization': `Bearer ${await token()}`},
                 data: {
