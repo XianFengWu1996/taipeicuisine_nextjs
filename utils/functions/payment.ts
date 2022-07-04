@@ -15,7 +15,7 @@ export const handlePayWithMethodId = async (val: IPayWithMethodId) => {
     try {
         const order_result = await axios({
             method: 'POST',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/payment_method_id`,
+            url: `${process.env.NEXT_PUBLIC_CF_URL}/payment//pay_with_payment_method`,
             headers: { 'Authorization': `Bearer ${await token()}`},
             data: { 
                 card: val.card,
@@ -118,7 +118,7 @@ export const handleOnlineOrder = async(cart: ICartState, customer: ICustomer) =>
 export const handleGetPaymentList = async (user_token: string, setCards: (value: SetStateAction<IPublicPaymentMethod[]>) => void) => {
     const method = await axios({
         method: 'GET',
-        url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/payment_method`,
+        url: `${process.env.NEXT_PUBLIC_CF_URL}/payment//payment_method_list`,
         headers: {
             'authorization': `Bearer ${user_token}`
         }

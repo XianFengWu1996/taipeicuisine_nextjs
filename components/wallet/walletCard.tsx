@@ -26,7 +26,7 @@ export const WalletCard = ({ card, handleRemoveCardWithId } : IWalletCard) => {
             try {
                 await axios({
                     method: 'DELETE',
-                    url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/payment_method`,
+                    url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/payment_method_by_id`,
                     data: { payment_method_id: card.id  },
                     headers: { "Authorization": `Bearer ${await fbAuth.currentUser?.getIdToken()}` }
                 })
