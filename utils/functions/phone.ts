@@ -75,7 +75,7 @@ export const handleCodeVerify = async (code: string) => {
 export const calculateDeliveryFee = async(data: ICalcDelivFee) => {
        let address_result = await axios({
             method: 'POST',
-            url:`${process.env.NEXT_PUBLIC_CF_URL}/auth/address/delivery`,
+            url:`${process.env.NEXT_PUBLIC_CF_URL}/customer/address/calc_delivery`,
             headers: {
                 'Authorization': `Bearer ${await token()}`
             },

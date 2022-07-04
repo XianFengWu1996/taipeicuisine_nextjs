@@ -13,7 +13,7 @@ export const getOrderHistory = async (token: string) => {
     try {
         const history_result = await axios({
             method: 'get',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/order_history`,
+            url: `${process.env.NEXT_PUBLIC_CF_URL}/customer/order_history`,
             headers: {
                 'Authorization':  `Bearer ${token}`,
             }
@@ -32,7 +32,7 @@ export const getRewardHistory = async (token: string) => {
     try {
         const reward_result = await axios({
             method: 'get',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/reward_history`,
+            url: `${process.env.NEXT_PUBLIC_CF_URL}/customer/reward_history`,
             headers: {
                 'Authorization':  `Bearer ${token}`,
             }
@@ -53,7 +53,7 @@ export const getCustomerInfo = async  (token: string | undefined) => {
 
     let result = await axios({
         method: 'GET',
-        url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/customer`,
+        url: `${process.env.NEXT_PUBLIC_CF_URL}/customer/get_customer`,
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -81,7 +81,7 @@ export const handleUpdateName = async (
 
         setLoading(true);
 
-        await axios.patch(`${process.env.NEXT_PUBLIC_CF_URL}/auth/customer/name`, { name }, {
+        await axios.patch(`${process.env.NEXT_PUBLIC_CF_URL}/customer/update_name`, { name }, {
             headers: {
                 'Authorization': `Bearer ${token}` 
             }

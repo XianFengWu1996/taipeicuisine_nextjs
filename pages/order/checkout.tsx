@@ -31,7 +31,7 @@ export default function CheckoutPage() {
             dispatch(setCheckoutSkeleton(true));
             let result = await axios({
                 method: 'GET',
-                url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/customer`,
+                url: `${process.env.NEXT_PUBLIC_CF_URL}/customer/get_customer`,
                 headers: {
                     'Authorization': `Bearer ${await token()}`
                 }

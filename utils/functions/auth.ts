@@ -63,7 +63,7 @@ export const handleGoogleLogin = async (_:ISocialLogin) => {
 
     let user = (await signInWithPopup(fbAuth, google_provider)).user;
 
-    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/login`, null, {
+    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/customer/login`, null, {
       headers: {
         'authorization': `Bearer ${await user.getIdToken()}`
       }

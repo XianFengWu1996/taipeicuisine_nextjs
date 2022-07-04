@@ -39,7 +39,7 @@ export const AptAndBusiness = () => {
             if(!loading){
                 await axios({
                     method: 'PATCH',
-                    url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/address/apt_business`,
+                    url: `${process.env.NEXT_PUBLIC_CF_URL}/customer/address/apt_business`,
                     data: {
                         apt, business, address
                     },
@@ -71,7 +71,7 @@ export const AptAndBusiness = () => {
             if(!remove_loading){
                 await axios({
                     method: 'DELETE',
-                    url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/address/apt_business`,
+                    url: `${process.env.NEXT_PUBLIC_CF_URL}/customer/address/apt_business`,
                     headers: {
                         'Authorization': `Bearer ${await fbAuth.currentUser?.getIdToken()}`
                     }
