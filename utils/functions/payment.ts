@@ -87,7 +87,7 @@ export const handleInStoreOrCashOrder = async (cart: ICartState, customer: ICust
       // process the order
     let order_response = await axios({
         method: 'POST',
-        url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_cash_order`,
+        url: `${process.env.NEXT_PUBLIC_CF_URL}/order/place_cash_order`,
         headers: { 'authorization': `Bearer ${await token()}`},
         data: { cart, customer }
      })
@@ -103,7 +103,7 @@ export const handleOnlineOrder = async(cart: ICartState, customer: ICustomer) =>
         // process the order
         await axios({
           method: 'POST',
-          url: `${process.env.NEXT_PUBLIC_CF_URL}/payment/place_online_order`,
+          url: `${process.env.NEXT_PUBLIC_CF_URL}/order/place_online_order`,
           headers: { 'authorization': `Bearer ${await token()}`},
           data: { cart, customer }
        })
