@@ -10,44 +10,30 @@ import { OrderHistory } from "../../components/history"
 import { RewardPage } from "../../components/reward"
 import { SettingPage } from "../../components/setting"
 import { WalletPage } from "../../components/wallet"
+import { useMediaQuery } from "@mui/material"
+import { styled } from "@mui/system"
+import { AccountMobileNavigation, AccountNavigation } from "./account_nav"
+
+const Contents = styled('div')(({ theme }) => ({
+    width: '60vw',
+
+    [theme.breakpoints.down('md')]: {
+        width: '90%',
+        margin: '0 auto'
+    }
+})) 
 
 export default function AccountPage() { 
+
+    const isMobile = useMediaQuery('(max-width: 900px)'); // check if it' mobile 
+
     return <>
         <PublicAppBar />
-        <div style={{ display: 'flex'}}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '40px', width: '400px'}}>
-                    <AccountLink 
-                        href="/account?redirect=order"
-                        label="Order"
-                        LinkIcon={IoReceiptOutline}
-                    />
-
-                    <AccountLink 
-                        href="/account?redirect=reward"
-                        label="Reward"
-                        LinkIcon={BsCoin}
-                    />
-
-                    <AccountLink 
-                        href="/account?redirect=wallet"
-                        label="Wallet"
-                        LinkIcon={AiOutlineWallet}
-                    />
-                    
-                    <AccountLink 
-                        href="/account?redirect=account"
-                        label="Account"
-                        LinkIcon={AiOutlineUser}
-                    />
-               
-                    <AccountLink 
-                        href="/account?redirect=setting"
-                        label="Setting"
-                        LinkIcon={FiSettings}
-                    />
-                </div>
-
-        <div style={{ flex: 1}}>
+        <div style={{ display: isMobile ? 'block' : 'flex'}}>
+            {
+                !isMobile ? <AccountNavigation /> : <AccountMobileNavigation />
+            }
+        <Contents>
             {
                 Router.query.redirect === 'order' && <OrderHistory />
             }
@@ -67,7 +53,7 @@ export default function AccountPage() {
             {
                 Router.query.redirect === 'setting' && <SettingPage />
             }
-        </div>
+        </Contents>
         </div>
       
     </>

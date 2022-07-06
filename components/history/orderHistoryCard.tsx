@@ -13,7 +13,7 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
     const [expand, setExpand] = useState<boolean>(false)
 
     return <>
-        <Card  sx={{ mt: 3, width: '85%'}} onClick={() => {
+        <Card  sx={{ mt: 3, width: '100%'}} onClick={() => {
             setExpand(!expand);
         }}>
             <CardContent sx={{ display: 'flex', justifyContent: 'space-between', padding: 3}}>

@@ -61,7 +61,7 @@ export const RewardPage = () => {
 
             {
                 transactionToDisplay.map((transaction) => {
-                    return <Card key={v4()} sx={{ my: 2, width: '90%'}}>
+                    return <Card key={v4()} sx={{ my: 2, width: '100%'}}>
 
                             <CardContent sx={{ display: 'flex', justifyContent: 'space-between'}}>
                                 <RewardTextWithLabel label="type" text={transaction.type}/>
