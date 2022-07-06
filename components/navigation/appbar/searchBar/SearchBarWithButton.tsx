@@ -16,7 +16,10 @@ const Search = styled('div')(({ theme }) => ({
     width: '40%',
     padding: '10px',
     [theme.breakpoints.down('md')]: {
-      width: '100%',
+      width: '70%',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '60%',
     },
   }));
   
@@ -43,6 +46,16 @@ const Search = styled('div')(({ theme }) => ({
     },
 }));
 
+  const SearchButton = styled(Button)(({ theme }) => ({
+    marginLeft: '10px',
+    padding: '18px 25px',
+    backgroundColor: blue[400],
+
+    [theme.breakpoints.down('sm')]: {
+      padding: '9px 15px',
+    },
+  }))
+
 interface ISearchBarWithButton {
     handleOnSearch: (search_value: string) =>  void 
 }
@@ -65,11 +78,10 @@ export const SearchBarWithButton = ({ handleOnSearch }:ISearchBarWithButton) => 
                 onChange={handleOnSearchValueChange}
             />
         </Search>
-        <Button 
+        <SearchButton 
             variant="contained" 
             size="large" 
-            sx={{ ml: 2, py:2, px:4, backgroundColor: blue[400]}} 
             onClick={() => handleOnSearch(searchValue)}
-        >Search</Button>
+        >Search</SearchButton>
     </div>
 }

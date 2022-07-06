@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { MenuDrawer } from "../menuDrawer/menuDrawer";
 import { CartDrawer } from "../checkoutDrawer";
 import { useRouter } from "next/router";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
 import { setShowSearchBar } from "../../../store/slice/settingSlice";
 
 
@@ -68,6 +68,7 @@ export const PublicAppBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
     const cart = useAppSelector(state => state.cart);
+    const { show_search_bar } = useAppSelector(state => state.setting);
     const dispatch = useAppDispatch();
 
     const isMenuPage = useRouter().pathname === '/order';
@@ -109,8 +110,8 @@ export const PublicAppBar = () => {
                 </div>
                 <div style={{ display: 'flex'}}>
                     {
-                        isMenuPage && <Button sx={{ border: '1px solid #000', borderRadius: '50px', py: 1.5, px: 5, mr: 5}} onClick={() => dispatch(setShowSearchBar(true))}>
-                            <FaSearch size={15} color={'#000'}/>
+                        isMenuPage && <Button sx={{ border: '1px solid #000', borderRadius: '50px', py: 1.5, px: 5, mr: 3}} onClick={() => dispatch(setShowSearchBar(!show_search_bar))}>
+                            { show_search_bar ? <FaTimes size={15} color={'#000'} /> :<FaSearch size={15} color={'#000'}/>}
                         </Button>
                     }
                     {

@@ -1,4 +1,4 @@
-import { IconButton, Typography } from "@mui/material";
+import { styled, Typography } from "@mui/material";
 import { useState } from "react";
 import { blue } from "@mui/material/colors";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
@@ -9,8 +9,14 @@ import { PublicMenuDialog } from "../../../menu/publicMenuDialog";
 import { SearchBarWithButton } from "./SearchBarWithButton";
 import { InStockSearchResult } from "./inStock";
 import { OutOfStockSearchResult } from "./outOfStock";
-import { FaTimes } from "react-icons/fa";
-import { setShowSearchBar } from "../../../../store/slice/settingSlice";
+
+const SearchBarContainer = styled('div')(() => ({
+  position: 'absolute', 
+  width: '100%', height: '100%', 
+  zIndex: 9999, 
+  backgroundColor:'#ecf2ff', 
+  overflowY: 'auto'
+}))
 
 export const SearchBar = () => {
     const [dish_result, setDishResult] = useState<IDish[]>([]);
@@ -18,7 +24,6 @@ export const SearchBar = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState('');
     const { dishes } = useAppSelector(state => state.menus)
-    const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState<boolean>(false);
     const [selected, setSelected] = useState<IDish>({} as IDish);
@@ -61,24 +66,9 @@ export const SearchBar = () => {
       }
     }
 
-    return <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 9999, backgroundColor:'#ecf2ff', overflowY: 'auto'}}>
-        <IconButton sx={{ position: 'absolute', top:50, left: 40 }} onClick={() => {
-          dispatch(setShowSearchBar(false));
-        }}>
-          <FaTimes size={25}/>
-        </IconButton>
-        <SearchBarWithButton handleOnSearch={handleOnSearch}/>
-
-        <div style={{ display: 'flex', justifyContent: 'center'}}>
-          <MoonLoader size={35}  color={blue[500]} loading={loading}/>
-        </div>
-
-        {
-          !isEmpty(error) && <Typography sx={{ textAlign: 'center', color: 'red', fontWeight: 500, fontSize: 17}}>{error}</Typography>
-        }
-
-        {
-          !loading && <>
+    const handleDisplayResult = () => {
+      if(!loading){
+        return <>
             <InStockSearchResult 
               dishes={dish_result} 
               handleOnClick={(dish: IDish) => {
@@ -90,9 +80,24 @@ export const SearchBar = () => {
             <OutOfStockSearchResult 
               dishes={out_of_stock}
             />
-          </>
+        </>
+      }
+    }
+
+    return <SearchBarContainer>
+        <SearchBarWithButton handleOnSearch={handleOnSearch}/>
+
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
+          <MoonLoader size={35}  color={blue[500]} loading={loading}/>
+        </div>
+
+        {
+          !isEmpty(error) && <Typography sx={{ textAlign: 'center', color: 'red', fontWeight: 500, fontSize: 17}}>{error}</Typography>
         }
 
+        {/* display both the in stock and out of stock results */} 
+        { handleDisplayResult()} 
+
        <PublicMenuDialog open={open} handleClose={() => setOpen(false)} dish={selected}/>
-    </div>
+    </SearchBarContainer>
 }
