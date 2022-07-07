@@ -27,12 +27,16 @@ export const ConfirmationCardText = styled(Typography)(({ theme }) => ({
 export default function Confirmation () {
     const query = useRouter().query as unknown as IOrderResult;
 
+    const handleOnClick = () => {
+        Router.replace('/order')
+    }
+
     return <div style={{ height: '100vh', padding: '0 20px'}}>
         <div style={{ display: 'flex', flexDirection: 'column',justifyContent: 'center', alignItems:'center', height: 'inherit'}}>
             <div><BsPatchCheck size={100} color="#7FFFD4"/></div>
             <ConfirmationTitle>Order Confirmation</ConfirmationTitle>
 
-            <Card sx={{ my: 3, maxWidth: '90%', minWidth: '300px'}}>
+            <Card sx={{ my: 3, maxWidth: '90%', minWidth: '350px', width: '500px'}}>
                 <CardContent style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start'}}>
                     <Typography sx={{ fontWeight: 800}}>Order Summary</Typography>
                     <ConfirmationCardText>Name: {query.name}</ConfirmationCardText>
@@ -44,9 +48,7 @@ export default function Confirmation () {
                 </CardContent>
             </Card>
             <Typography>Your order has been placed. You will receive a email confirmation once the staff confirms the order. </Typography>
-            <Button onClick={() => {
-                Router.replace('/order')
-            }}>Return to Home</Button>
+            <Button onClick={handleOnClick}>Return to Home</Button>
         </div>
      
     </div>

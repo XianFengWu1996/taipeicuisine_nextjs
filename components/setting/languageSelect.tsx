@@ -7,7 +7,7 @@ export const LanguageSelect = () => {
     const { language } = useAppSelector(state => state.persistSetting)
 
     return <>
-        <Box sx={{ minWidth:'30%', maxWidth: '60%', my: 2}}>
+        <Box sx={{ minWidth:'30%', width: '90%', my: 2}}>
             <Typography sx={{ my: 1}}>Choose your prefer language</Typography>
             <FormControl fullWidth>
                 <InputLabel id="language_select_label">Language</InputLabel>

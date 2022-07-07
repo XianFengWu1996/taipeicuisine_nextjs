@@ -3,7 +3,7 @@ import { Typography, TextField, Button } from "@mui/material"
 export const ContactForm = () => {
     return <>
          <Typography variant="h4">Contact Us</Typography>
-        <form style={{ display: 'flex', flexDirection: 'column', width: '60%'}}>
+        <form style={{ display: 'flex', flexDirection: 'column', width: '90%'}}>
 
             <TextField 
                 type={'email'}
