@@ -163,22 +163,27 @@ export const cartSlice = createSlice({
       switch (payload) {
         case '10%':
           state.tip = Number((state.original_subtotal * .10).toFixed(2));
+          calculateTotal(state)
         break;
 
         case '15%':
           state.tip = Number((state.original_subtotal * .15).toFixed(2));
+          calculateTotal(state)
         break;
 
         case '18%':
           state.tip = Number((state.original_subtotal * .18).toFixed(2));
+          calculateTotal(state)
         break;
 
         case '20%':
           state.tip = Number((state.original_subtotal * .20).toFixed(2));
+          calculateTotal(state)
         break;
 
         default:
           state.tip = Number((state.original_subtotal * 0).toFixed(2));
+          calculateTotal(state)
           break;
       }
     },
