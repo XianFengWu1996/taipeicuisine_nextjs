@@ -48,7 +48,7 @@ export const WalletCard = ({ card, handleRemoveCardWithId } : IWalletCard) => {
             <CardContent> 
                 <div style={{ display: 'flex', alignItems: 'center'}}>
                     <Typography>{handleCreditCardBrand(card.card.brand)}</Typography>
-                    <Typography sx={{ ml: 2}}> XX-{card.card.last_four}</Typography>
+                    <Typography sx={{ ml: 2}}>{card.card.brand === 'amex' ? `•••• •••••• •${card.card.last_four}` : `•••• •••• •••• ${card.card.last_four}`}</Typography>
                 </div>
 
                 <Typography>Expiration: {card.card.exp_month} / {card.card.exp_year}</Typography>

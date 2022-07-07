@@ -62,12 +62,15 @@ export const RewardPage = () => {
             {
                 transactionToDisplay.map((transaction) => {
                     return <Card key={v4()} sx={{ my: 2, width: '100%'}}>
-
                             <CardContent sx={{ display: 'flex', justifyContent: 'space-between'}}>
-                                <RewardTextWithLabel label="type" text={transaction.type}/>
-                                <RewardTextWithLabel label="order number" text={transaction.order_id}/>
-                                <RewardTextWithLabel label="amount" text={transaction.amount} negative={transaction.type !== 'reward'}/>
-                                <RewardTextWithLabel label="order place on" text={format_date(transaction.created_at)}/>
+                                <div>
+                                    <RewardTextWithLabel label="order number" text={transaction.order_id}/>
+                                    <RewardTextWithLabel label="amount" text={transaction.amount} negative={transaction.type !== 'reward'}/>
+                                </div>
+                                <div>
+                                    <RewardTextWithLabel label="type" text={transaction.type}/>
+                                    <RewardTextWithLabel label="order place on" text={format_date(transaction.created_at)}/>
+                                </div>
                             </CardContent>
                         </Card>
                 })

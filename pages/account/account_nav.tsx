@@ -55,7 +55,7 @@ export const AccountMobileNavigation = () => {
         }
     }, [redirect_query])
 
-    return <FormControl sx={{ mx: 5, mt: 4, width: '50%'}}>
+    return <FormControl sx={{ mx: 3, mt: 4, width: '75%'}}>
         <InputLabel id="account-nav-select-label">Navigation</InputLabel>
         <Select
             labelId="account-nav-select-label"
