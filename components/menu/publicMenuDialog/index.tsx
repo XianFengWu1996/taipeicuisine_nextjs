@@ -24,6 +24,10 @@ const AddToCartButton = styled(Button)(({theme}) => ({
     justifyContent: 'space-around',
     padding: '10px',
 
+    '&:hover': {
+        backgroundColor: '#666',
+    },
+
     [theme.breakpoints.down('sm')]: {
         marginTop: 10
     }

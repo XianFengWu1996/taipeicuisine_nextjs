@@ -7,6 +7,7 @@ import { handleCatchError } from '../../utils/errors/custom';
 import { handlePayWithIntent } from '../../utils/functions/payment';
 import { TipSelection } from './tipSelection';
 import { PaymentElement } from '@stripe/react-stripe-js';
+import { PaymentFormContainer } from './paymentForm';
 
 interface INewPaymentFormProps {
     cards: IPublicPaymentMethod [],
@@ -52,7 +53,7 @@ export const NewPaymentForm = ({cards, cart, customer, stripe, elements, toggleF
      };
 
     return <>
-        <form id="payment_form" onSubmit={handleSubmit}>
+        <PaymentFormContainer onSubmit={handleSubmit}>
             <PaymentElement id="payment-element" 
                 onChange={(e) => {
                     setAllowSave(e.value.type === 'card');
@@ -79,6 +80,6 @@ export const NewPaymentForm = ({cards, cart, customer, stripe, elements, toggleF
                     use a saved card
                 </Button>
             }
-        </form>
+        </PaymentFormContainer>
     </>
 }

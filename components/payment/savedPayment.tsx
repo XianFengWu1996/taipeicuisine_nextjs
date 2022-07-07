@@ -7,6 +7,7 @@ import { FormEvent, useState } from 'react';
 import { handleCatchError } from '../../utils/errors/custom';
 import { handlePayWithMethodId } from '../../utils/functions/payment';
 import { handleCreditCardBrand } from '../history/orderPayment';
+import { PaymentFormContainer } from './paymentForm';
 import { TipSelection } from './tipSelection';
 
 
@@ -57,7 +58,7 @@ export const SavedPaymentForm = ({ cards, cart, customer, stripe, elements, togg
      };
 
     return <>
-        <form id="payment_form" onSubmit={handleSubmit}>
+        <PaymentFormContainer onSubmit={handleSubmit}>
             <Typography>Saved Card</Typography>
             <FormControl sx={{ width: '100%'}}>
                 <RadioGroup value={value} onChange={(e) => {
@@ -92,6 +93,6 @@ export const SavedPaymentForm = ({ cards, cart, customer, stripe, elements, togg
             </button>       
 
             <Button variant="text" sx={{ color: blue[300], my: 1}} onClick={toggleForm}>Use a new card</Button>            
-        </form>
+        </PaymentFormContainer>
     </>
 }
