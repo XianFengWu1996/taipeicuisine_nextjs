@@ -9,7 +9,7 @@ export const OrderSummaryList = ({is_delivery, summary}:IOrderSummaryList) => {
     return <>
         <Divider sx={{ my: 2}}/>
         
-        <div style={{ width: '350px'}}>
+        <div style={{ minWidth: '350px'}}>
 
             <SummaryPrice label="Subtotal" amount={summary.original_subtotal}/>
 

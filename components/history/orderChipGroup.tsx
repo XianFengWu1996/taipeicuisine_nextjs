@@ -11,11 +11,15 @@ interface IOrderChipGroup {
     dont_include_utensils: boolean,
 }
 
-const ChipText = styled(Typography)(() => ({
+const ChipText = styled(Typography)(({ theme }) => ({
     fontSize: 13, 
     fontWeight: 600, 
     textTransform: 'uppercase', 
-    color: 'white'
+    color: 'white', 
+
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 10
+    },
 }))
 
 export const OrderChipGroup = ({ is_delivery, schedule_time, dont_include_utensils }: IOrderChipGroup) => {

@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Collapse, Divider, Typography } from "@mui/material";
+import { Box, Card, CardContent, Collapse, Divider, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { OrderCartItem } from "./orderCartItem";
 import { OrderChipGroup } from "./orderChipGroup";
@@ -11,20 +11,16 @@ import { format_date } from "../../utils/functions/time";
 
 export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
     const [expand, setExpand] = useState<boolean>(false)
+    const isMobile = useMediaQuery('(max-width: 720px)'); // check if it' mobile 
 
     return <>
-        <Card  sx={{ mt: 3, width: '100%'}} onClick={() => {
-            setExpand(!expand);
-        }}>
+        <Card  sx={{ mt: 3, width: '100%'}} onClick={() => { setExpand(!expand) }}>
             <CardContent sx={{ display: 'flex', justifyContent: 'space-between', padding: 3}}>
                 <div>
-                    <Typography sx={{ fontWeight: 500}}>{format_date(order.created_at)}</Typography>
-                    <Typography sx={{ fontWeight: 500}}>Order #: {order.order_id}</Typography>
-                </div>
-
-                <div>
-                    <Typography sx={{ fontWeight: 500}}>Total: ${order.summary.total.toFixed(2)}</Typography>
-                    <Typography sx={{ fontWeight: 500}}>Number of Items: {order.summary.cart_quantity}</Typography>
+                    <Typography sx={{ fontWeight: 600, fontSize: 11}}>{format_date(order.created_at)}</Typography>
+                    <Typography sx={{ fontWeight: 600, fontSize: 11}}>Number of Items: {order.summary.cart_quantity}</Typography>
+                    <Typography sx={{ fontWeight: 500, fontSize: 14}}>Order #: {order.order_id}</Typography>
+                    <Typography sx={{ fontWeight: 500, fontSize: 14}}>Total: ${order.summary.total.toFixed(2)}</Typography>
                 </div>
             </CardContent>
             <Divider />
@@ -37,7 +33,7 @@ export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
                     dont_include_utensils={order.additional_request.dont_include_utensils}
                 />
 
-                <Box sx={{ display: 'flex'}}>
+                <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row'}}>
                     <OrderContact
                         name={order.user.name}
                         phone={order.user.phone}

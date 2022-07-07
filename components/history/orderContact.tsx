@@ -9,14 +9,18 @@ interface IOrderContact {
     address: IAddress | null
 }
 
-export const TitleText = styled(Typography)(() => ({
+export const TitleText = styled(Typography)(({ theme }) => ({
     fontWeight: 'bolder', 
-    fontSize: 20
+    fontSize: 20,
+
+    [theme.breakpoints.down('sm')]: {
+        marginTop: '10px'
+    },
 }))
 
 export const FieldText = styled(Typography)(() => ({
     fontSize: 15,
-    fontWeight: 600
+    fontWeight: 600,
 }))
 
 
