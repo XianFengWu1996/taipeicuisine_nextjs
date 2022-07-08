@@ -1,11 +1,11 @@
 import { Button, FormControl, TextField, Typography } from "@mui/material"
 import { SetStateAction, useState } from "react"
 import { updatePassword } from 'firebase/auth'
-import { fbAuth } from "../../utils/functions/auth";
+import { fbAuth } from "../../../utils/functions/auth";
 import { FirebaseError } from "firebase/app";
-import { useAppDispatch } from "../../store/store";
-import { setShowLoginDialog } from "../../store/slice/settingSlice";
-import snackbar from "../snackbar";
+import { useAppDispatch } from "../../../store/store";
+import { setShowLoginDialog } from "../../../store/slice/settingSlice";
+import snackbar from "../../snackbar";
 import { Box } from "@mui/system";
 import { isEmpty } from "lodash";
 

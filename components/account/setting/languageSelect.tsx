@@ -1,7 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { setLanguage } from "../../store/slice/persistSetting";
-import store, { useAppSelector } from "../../store/store";
+import { setLanguage } from "../../../store/slice/persistSetting";
+import store, { useAppSelector } from "../../../store/store";
 
 export const LanguageSelect = () => {
     const { language } = useAppSelector(state => state.persistSetting)

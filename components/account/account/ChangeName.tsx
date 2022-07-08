@@ -2,7 +2,7 @@ import { Button, TextField } from "@mui/material"
 import { isEmpty } from "lodash";
 import { useState } from "react"
 import { PulseLoader } from "react-spinners";
-import { handleUpdateName } from "../../utils/functions/account";
+import { handleUpdateName } from "../../../utils/functions/account";
 import { TitleForSection } from "./components";
 
 interface IAccountChangeName {

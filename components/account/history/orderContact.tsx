@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material"
 import { styled } from "@mui/system"
 import { isEmpty } from "lodash"
-import { phoneFormat } from "../../utils/functions/phone"
+import { phoneFormat } from "../../../utils/functions/phone"
 
 interface IOrderContact {
     name: string, 

@@ -1,10 +1,10 @@
 import { Button, Typography } from "@mui/material";
-import { setShowSmsDialog } from "../../store/slice/settingSlice";
-import { useAppDispatch } from "../../store/store";
-import { phoneFormat } from "../../utils/functions/phone";
+import { setShowSmsDialog } from "../../../store/slice/settingSlice";
+import { useAppDispatch } from "../../../store/store";
+import { phoneFormat } from "../../../utils/functions/phone";
 import { TitleForSection } from "./components";
 import { isEmpty } from "lodash";
-import { SmsDialog } from "../checkout/customerDetails/customerInfo/smsDialog";
+import { SmsDialog } from "../../checkout/customerDetails/customerInfo/smsDialog";
 
 
 interface IAccountChangePhone {

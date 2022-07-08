@@ -6,7 +6,7 @@ import { isEmpty } from 'lodash';
 import { FormEvent, useState } from 'react';
 import { handleCatchError } from '../../utils/errors/custom';
 import { handlePayWithMethodId } from '../../utils/functions/payment';
-import { handleCreditCardBrand } from '../history/orderPayment';
+import { handleCreditCardBrand } from '../account/history/orderPayment';
 import { PaymentFormContainer } from './paymentForm';
 import { TipSelection } from './tipSelection';
 

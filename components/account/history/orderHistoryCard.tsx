@@ -7,7 +7,7 @@ import { OrderPayment } from "./orderPayment";
 import { OrderReward } from "./orderReward";
 import { OrderSpecialInstruction } from "./orderSpecialInstruction";
 import { OrderSummaryList } from "./orderSummaryList";
-import { format_date } from "../../utils/functions/time";
+import { format_date } from "../../../utils/functions/time";
 
 export const OrderHistoryCard = ({order} : {order: IPublicOrder}) => {
     const [expand, setExpand] = useState<boolean>(false)

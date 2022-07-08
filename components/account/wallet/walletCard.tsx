@@ -3,10 +3,10 @@ import { red } from "@mui/material/colors";
 import axios from "axios";
 import { useState } from "react";
 import { FaMinusCircle } from "react-icons/fa";
-import { handleCatchError } from "../../utils/errors/custom";
-import { fbAuth } from "../../utils/functions/auth";
+import { handleCatchError } from "../../../utils/errors/custom";
+import { fbAuth } from "../../../utils/functions/auth";
 import { handleCreditCardBrand } from "../history/orderPayment";
-import snackbar from "../snackbar";
+import snackbar from "../../snackbar";
 
 interface IWalletCard {
     card: IPublicPaymentMethod,

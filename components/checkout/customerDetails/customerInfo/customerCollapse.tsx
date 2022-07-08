@@ -1,8 +1,8 @@
 import { Collapse } from "@mui/material";
 import { Box } from "@mui/system";
 import {  useAppSelector } from "../../../../store/store";
-import { AccountChangeName } from "../../../account/ChangeName";
-import { AccountChangePhone } from "../../../account/ChangePhone";
+import { AccountChangeName } from "../../../account/account/ChangeName";
+import { AccountChangePhone } from "../../../account/account/ChangePhone";
 import { SmsDialog } from "./smsDialog";
 
 

@@ -1,8 +1,8 @@
 import { FormControlLabel, Switch } from "@mui/material"
 import { styled } from "@mui/system";
 import { ChangeEvent } from "react";
-import { setThemeMode } from "../../store/slice/persistSetting";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+import { setThemeMode } from "../../../store/slice/persistSetting";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,

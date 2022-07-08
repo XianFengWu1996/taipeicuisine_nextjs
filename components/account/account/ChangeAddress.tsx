@@ -1,7 +1,7 @@
 import { Button, Typography } from "@mui/material"
 import { isEmpty } from "lodash"
 import { useState } from "react";
-import { GoogleAddressSearch } from "../checkout/customerDetails/address/googleAddressSearch";
+import { GoogleAddressSearch } from "../../checkout/customerDetails/address/googleAddressSearch";
 
 interface IAccountChangeAddress {
     address: IAddress
