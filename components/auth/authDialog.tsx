@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Dialog, DialogContent, Divider, Typography } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material";
 import { AuthCard } from '../auth/authCard'
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setShowLoginDialog } from "../../store/slice/settingSlice";
