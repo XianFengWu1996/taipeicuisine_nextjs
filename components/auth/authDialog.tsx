@@ -41,15 +41,20 @@ export const AuthDialog = () => {
             <Typography sx={{ my: 1}}>Social Login</Typography>
 
             <div>
-                <GoogleLoginButton style={{ marginBottom: '10px'}} onClick={() => handleGoogleLogin({ query: router.query})}>
-                    <Typography>Log In With Google</Typography>
-                </GoogleLoginButton>
-                <FacebookLoginButton style={{ marginBottom: '10px'}} onClick={() => handleFacebookLogin({ query: router.query})}>
-                    <Typography>Log In With Facebook</Typography>
-                </FacebookLoginButton>
-                <AppleLoginButton  onClick={() => handleAppleLogin({ query: router.query})}>
-                    <Typography>Log In With Apple</Typography>
-                </AppleLoginButton>
+                <GoogleLoginButton 
+                    style={{ marginBottom: '10px'}} 
+                    text={'Log In With Google'} 
+                    onClick={() => handleGoogleLogin({ query: router.query})} 
+                />
+                <FacebookLoginButton 
+                    style={{ marginBottom: '10px'}} 
+                    text={'Log In With Facebook'}
+                    onClick={() => handleFacebookLogin({ query: router.query})} 
+                />
+                <AppleLoginButton  
+                    text="Log In With Apple"
+                    onClick={() => handleAppleLogin({ query: router.query})}
+                />
             </div>
         </DialogContent>
 </Dialog>
