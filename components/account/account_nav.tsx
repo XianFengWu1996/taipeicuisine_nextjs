@@ -7,7 +7,7 @@ import { BsCoin } from "react-icons/bs"
 import { FiSettings } from "react-icons/fi"
 import { IoReceiptOutline } from "react-icons/io5"
 import { IconType } from "react-icons/lib"
-import { AccountLink } from "../../components/account/account/components"
+import { AccountLink } from "./account/components"
 
 export const AccountNavigation = () => {
     return <>

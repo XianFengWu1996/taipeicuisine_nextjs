@@ -7,7 +7,7 @@ import { SettingPage } from "../../components/account/setting"
 import { WalletPage } from "../../components/account/wallet"
 import { useMediaQuery } from "@mui/material"
 import { styled } from "@mui/system"
-import { AccountMobileNavigation, AccountNavigation } from "./account_nav"
+import { AccountMobileNavigation, AccountNavigation } from "../../components/account/account_nav"
 
 const Contents = styled('div')(({ theme }) => ({
     width: '60vw',
