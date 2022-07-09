@@ -5,7 +5,7 @@ import { DialogImage } from "../../images";
 import { AiOutlineClose, AiOutlineShoppingCart} from 'react-icons/ai'
 import {  ChangeEvent, useEffect, useState } from "react";
 import { addToCart } from "../../../store/slice/cartSlice";
-import { QuantityController } from "../../quantityController";
+import { QuantityController } from "./quantityController";
 import { isEmpty, isNull } from "lodash";
 import { v4 } from "uuid";
 import { ItemDetails } from "./ItemDetails";
