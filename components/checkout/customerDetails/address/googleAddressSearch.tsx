@@ -73,6 +73,7 @@ export const GoogleAddressSearch = ({ onClose } : {onClose: () => void }) => {
                 {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                 <div style={{ width: '270px'}}>
                     <TextField
+                    variant="outlined"
                     size="small"
                     fullWidth
                     {...getInputProps({
