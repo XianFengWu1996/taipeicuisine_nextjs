@@ -1,19 +1,19 @@
 import { useState } from "react";
 
-import { Dialog, DialogContent, Divider, Typography } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material";
 import { AuthCard } from '../auth/authCard'
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setShowLoginDialog } from "../../store/slice/settingSlice";
 
-import { FacebookLoginButton, GoogleLoginButton, AppleLoginButton } from 'react-social-login-buttons'
-import { handleAppleLogin, handleFacebookLogin, handleGoogleLogin } from "../../utils/functions/auth";
-import { useRouter } from "next/router";
+// import { FacebookLoginButton, GoogleLoginButton, AppleLoginButton } from 'react-social-login-buttons'
+// import { handleAppleLogin, handleFacebookLogin, handleGoogleLogin } from "../../utils/functions/auth";
+// import { useRouter } from "next/router";
 
 export const AuthDialog = () => {
     const [isLogin, setIsLogin] = useState(true);
     const { show_login_dialog } = useAppSelector(state => state.setting)
     const dispatch = useAppDispatch();
-    const router = useRouter();
+    // const router = useRouter();
 
     const handleDialogClose = () => {
         dispatch(setShowLoginDialog(false));
@@ -36,11 +36,11 @@ export const AuthDialog = () => {
                 toggleType={() => setIsLogin(!isLogin)}
             />
 
-            <Divider style={{width:'100%'}} />
+            {/* <Divider style={{width:'100%'}} />
 
-            <Typography sx={{ my: 1}}>Social Login</Typography>
+            <Typography sx={{ my: 1}}>Social Login</Typography> */}
 
-            <div>
+            {/* <div>
                 <GoogleLoginButton 
                     style={{ marginBottom: '10px'}} 
                     text={'Log In With Google'} 
@@ -55,7 +55,7 @@ export const AuthDialog = () => {
                     text="Log In With Apple"
                     onClick={() => handleAppleLogin({ query: router.query})}
                 />
-            </div>
+            </div> */}
         </DialogContent>
 </Dialog>
 }
