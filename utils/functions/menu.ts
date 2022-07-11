@@ -4,17 +4,18 @@ import { getInitialMenuData } from "../../store/slice/menuSlice";
 import { retrieveStoreData } from "../../store/slice/storeSlice";
 import store from "../../store/store";
 import { handleCatchError } from "../errors/custom";
+import { hasExpired } from "./time";
 
 interface IFetchMenu {
     setLoading: Dispatch<SetStateAction<boolean>> | null,
     expiration: number,
 }
 
-export const fetchMenu = async ({ setLoading }: IFetchMenu) => {
+export const fetchMenu = async ({ setLoading, expiration}: IFetchMenu) => {
     try {
         if(setLoading) setLoading(true);
 
-        // if(hasExpired(expiration)){
+        if(hasExpired(expiration)){
             let response = await axios.get(`${process.env.NEXT_PUBLIC_CF_URL}/store/menus`);
 
             let menus: IMenu[] = [];
@@ -28,7 +29,7 @@ export const fetchMenu = async ({ setLoading }: IFetchMenu) => {
             store.dispatch(retrieveStoreData(response.data.store))
 
             return menus
-        // }
+        }
     } catch (error) {
         handleCatchError((error as Error), 'Failed to fetch menu')
     } finally {
