@@ -11,7 +11,7 @@ import Router from 'next/router'
 import "nprogress/nprogress.css";
 import { ThemeProvider } from '@emotion/react'
 import { muiCustomTheme } from '../components/theme'
-import { CssBaseline } from '@mui/material'
+import { Alert, CssBaseline } from '@mui/material'
 import { AuthDialog } from '../components/auth/authDialog'
 
 import { PersistGate } from 'redux-persist/integration/react'
@@ -51,6 +51,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                   horizontal: 'right',
             }}>
               <SnackbarUtilsConfigurator />
+                <Alert severity="info">This site is for demo purpose only.</Alert>
+
                 <Component {...pageProps} />
               <AuthDialog />
             </SnackbarProvider>
