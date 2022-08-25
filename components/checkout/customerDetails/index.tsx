@@ -107,7 +107,6 @@ export const CustomerDetails = () => {
             }
             
         } catch (error) {
-            console.log(error)
             handleCatchError(error as Error, 'Failed to place order');
         } finally {
             setLoading(false);

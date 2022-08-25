@@ -26,7 +26,7 @@ export const sentCode = async ({ phone, handleStartLoading} : ISentCode) => {
         const fb_token = await fbAuth.currentUser?.getIdToken();
             
         snackbar.info('The code will be sent momentarily')
-        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/message/sms/send`, {phone}, {
+        await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/v1/message/sms/send`, {phone}, {
             headers: {
                 'Authorization': `Bearer ${fb_token}`
             }
@@ -49,7 +49,7 @@ export const handleCodeVerify = async (code: string) => {
     try {
         snackbar.info("Verify in progress...")
         
-        let response = await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/message/sms/verify`, {
+        let response = await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/v1/message/sms/verify`, {
             code, 
         }, {
             headers: {
@@ -75,7 +75,7 @@ export const handleCodeVerify = async (code: string) => {
 export const calculateDeliveryFee = async(data: ICalcDelivFee) => {
        let address_result = await axios({
             method: 'POST',
-            url:`${process.env.NEXT_PUBLIC_CF_URL}/customer/address/calc_delivery`,
+            url:`${process.env.NEXT_PUBLIC_CF_URL}/v1/customer/address/calc_delivery`,
             headers: {
                 'Authorization': `Bearer ${await token()}`
             },

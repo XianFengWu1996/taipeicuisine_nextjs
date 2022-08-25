@@ -53,7 +53,7 @@ export const handleEmailLogin = async ({ email, password}: IEmailLogin) => {
     headers: {
       'authorization': `Bearer ${await user.user.getIdToken()}`
     },
-    url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/login`
+    url: `${process.env.NEXT_PUBLIC_CF_URL}/v1/auth/login`
   })
 }
 
@@ -63,7 +63,7 @@ export const handleGoogleLogin = async (_:ISocialLogin) => {
 
     let user = (await signInWithPopup(fbAuth, google_provider)).user;
 
-    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/customer/login`, null, {
+    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/v1/customer/login`, null, {
       headers: {
         'authorization': `Bearer ${await user.getIdToken()}`
       }
@@ -82,7 +82,7 @@ export const handleAppleLogin = async (_:ISocialLogin) => {
 
     const user = (await signInWithPopup(fbAuth, apple_provider)).user
 
-    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/login`, null, {
+    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/v1/auth/login`, null, {
       headers: {
         'authorization': `Bearer ${await user.getIdToken()}`
       }
@@ -91,7 +91,6 @@ export const handleAppleLogin = async (_:ISocialLogin) => {
     store.dispatch(setShowLoginDialog(false));
     checkAndRedirect(_.query); 
  } catch (error) {
-   console.log(error);
     handleCatchError(error as Error, 'Fail to login with Google');  
  }
 }
@@ -102,7 +101,7 @@ export const handleFacebookLogin = async(_:ISocialLogin) => {
 
     let user =  (await signInWithPopup(fbAuth, facebook_provider)).user;
 
-    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/auth/login`, null, {
+    await axios.post(`${process.env.NEXT_PUBLIC_CF_URL}/v1/auth/login`, null, {
       headers: {
         'authorization': `Bearer ${await user.getIdToken()}`
       }
@@ -126,7 +125,7 @@ export const handleSignUp = async ({ email, password} :IEmailLogin) => {
     headers: {
       'authorization': `Bearer ${await user.user.getIdToken()}`
     },
-    url: `${process.env.NEXT_PUBLIC_CF_URL}/auth/login`
+    url: `${process.env.NEXT_PUBLIC_CF_URL}/v1/auth/login`
   })
 }
 

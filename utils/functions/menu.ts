@@ -16,11 +16,10 @@ export const fetchMenu = async ({ setLoading, expiration}: IFetchMenu) => {
         if(setLoading) setLoading(true);
 
         if(hasExpired(expiration)){
-            let response = await axios.get(`${process.env.NEXT_PUBLIC_CF_URL}/store/menus`);
+            let response = await axios.get(`${process.env.NEXT_PUBLIC_CF_URL}/v1/store/menus`);
 
             let menus: IMenu[] = [];
 
-            console.log(response.data);
             menus.push(response.data.special)
             menus.push(response.data.fullday);
             menus.push(response.data.lunch);

@@ -31,7 +31,7 @@ export const DishVariant = ({variant, radioError, handleOnRadioChange}: IDishVar
                                         value={option.id} 
                                         control={<Radio required size="small" />} 
                                         label={
-                                            <Typography sx={{ fontSize: 14 }}>
+                                            <Typography>
                                                 {option.en_name} {option.ch_name} 
                                                 +${option.price.toFixed(2)} 
                                                 {option.spicy && <GoFlame color="red"/>}

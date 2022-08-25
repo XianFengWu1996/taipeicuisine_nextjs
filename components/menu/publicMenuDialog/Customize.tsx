@@ -95,7 +95,6 @@ export const Customize = ({ handleAddCustomizeItem, handleRemoveCustomizeItem, p
             return item.id !== val.id
         })
 
-        console.log(temp)
         if(title === 'protein'){
             setProtein(temp)
         } else if(title === 'veggie'){

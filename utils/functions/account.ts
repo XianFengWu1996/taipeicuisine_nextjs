@@ -13,7 +13,7 @@ export const getOrderHistory = async (token: string) => {
     try {
         const history_result = await axios({
             method: 'get',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/customer/order_history`,
+            url: `${process.env.NEXT_PUBLIC_CF_URL}/v1/customer/order_history`,
             headers: {
                 'Authorization':  `Bearer ${token}`,
             }
@@ -21,7 +21,6 @@ export const getOrderHistory = async (token: string) => {
         return history_result.data.order_list as IPublicOrder[];
 
     } catch (error) {
-        console.log(error);
         handleCatchError(error as Error, 'Failed to retrieve order history')
     } 
 
@@ -32,7 +31,7 @@ export const getRewardHistory = async (token: string) => {
     try {
         const reward_result = await axios({
             method: 'get',
-            url: `${process.env.NEXT_PUBLIC_CF_URL}/customer/reward_history`,
+            url: `${process.env.NEXT_PUBLIC_CF_URL}/v1/customer/reward_history`,
             headers: {
                 'Authorization':  `Bearer ${token}`,
             }
@@ -40,7 +39,6 @@ export const getRewardHistory = async (token: string) => {
 
         return reward_result.data.rewards as IReward
     } catch (error) {
-        console.log(error);
         handleCatchError(error as Error, 'Failed to retrieve reward history')
     }
 }
@@ -53,7 +51,7 @@ export const getCustomerInfo = async  (token: string | undefined) => {
 
     let result = await axios({
         method: 'GET',
-        url: `${process.env.NEXT_PUBLIC_CF_URL}/customer/get_customer`,
+        url: `${process.env.NEXT_PUBLIC_CF_URL}/v1/customer/get_customer`,
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -81,7 +79,7 @@ export const handleUpdateName = async (
 
         setLoading(true);
 
-        await axios.patch(`${process.env.NEXT_PUBLIC_CF_URL}/customer/update_name`, { name }, {
+        await axios.patch(`${process.env.NEXT_PUBLIC_CF_URL}/v1/customer/update_name`, { name }, {
             headers: {
                 'Authorization': `Bearer ${token}` 
             }
