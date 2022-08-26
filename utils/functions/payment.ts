@@ -120,12 +120,16 @@ export const handleGetPaymentList = async (user_token: string, setCards: (value:
         method: 'GET',
         url: `${process.env.NEXT_PUBLIC_CF_URL}/v1/payment/payment_method_list`,
         headers: {
-            'authorization': `Bearer ${user_token}`
-        }
+            'authorization': `Bearer ${user_token}`,
+        },
     })
 
     if(method.data.cards){
         setCards(method.data.cards);
+    }
+
+    if(method.data.client_secret){
+        Cookies.set('s_id', method.data.client_secret, { expires: 7})
     }
 }
 

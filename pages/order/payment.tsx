@@ -16,7 +16,7 @@ import { NotAuthorizeError } from "../../utils/errors/notAuthError";
 import { isEmailVerified } from "../email_verification";
 
 
-const stripePromise = loadStripe('pk_test_MQq0KVxKkSLUx0neZbdLTheo00iB1Ru6a0');
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE);
 
 export default function PaymentPage () {
     const [showSkeleton, setShowSkeleton] = useState(true);

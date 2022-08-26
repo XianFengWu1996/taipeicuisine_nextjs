@@ -23,6 +23,9 @@ declare global {
         NEXT_PUBLIC_ID_NORICE:string,
         NEXT_PUBLIC_ID_NOSOUP:string,
         NEXT_PUBLIC_ID_SUB:string
+
+        NEXT_PUBLIC_STRIPE:string
+        
       }
     }
 }
